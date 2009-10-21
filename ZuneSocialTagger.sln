@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZuneSocialTagger.Core", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZuneSocialTagger.UnitTests", "src\app\ZuneSocialTagger.UnitTests\ZuneSocialTagger.UnitTests.csproj", "{915A3D2B-2B11-47DE-9D52-24FC46578DDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZuneSocialTagger.IntegrationTests", "src\test\ZuneSocialTagger.IntegrationTests\ZuneSocialTagger.IntegrationTests.csproj", "{245DAFC8-932E-4EE3-96C7-BD1438260268}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{915A3D2B-2B11-47DE-9D52-24FC46578DDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{915A3D2B-2B11-47DE-9D52-24FC46578DDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{915A3D2B-2B11-47DE-9D52-24FC46578DDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{245DAFC8-932E-4EE3-96C7-BD1438260268}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{245DAFC8-932E-4EE3-96C7-BD1438260268}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{245DAFC8-932E-4EE3-96C7-BD1438260268}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{245DAFC8-932E-4EE3-96C7-BD1438260268}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
