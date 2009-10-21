@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 
@@ -15,16 +17,23 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
         {
             _document = new HtmlDocument();
 
-            HtmlDocument document = _document;
+            _document.Load(page);
+        }
 
-            document.LoadHtml(page);
+        public AlbumMediaIDScraper(Stream stream)
+        {
+            _document = new HtmlDocument();
+
+            _document.Load(stream);
         }
 
         public Dictionary<string, string> Scrape()
         {
             HtmlNode node = _document.GetElementbyId("_albumSongs");
-
             HtmlNodeCollection collection = node.SelectNodes("ul[@class='SongWithOrdinals ']/li[@mediainfo]");
+
+            if (node == null || collection == null)
+                throw new Exception("problem with the html file");
 
             var dict = new Dictionary<string, string>();
 
