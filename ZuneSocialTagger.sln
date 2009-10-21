@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZuneSocialTagger.Core", "src\app\ZuneSocialTagger.Core\ZuneSocialTagger.Core.csproj", "{C5F5D93F-50BC-4BE1-9594-5D3D3CB5BCE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZuneSocialTagger.UnitTests", "src\app\ZuneSocialTagger.UnitTests\ZuneSocialTagger.UnitTests.csproj", "{915A3D2B-2B11-47DE-9D52-24FC46578DDF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZuneSocialTagger.IntegrationTests", "src\test\ZuneSocialTagger.IntegrationTests\ZuneSocialTagger.IntegrationTests.csproj", "{245DAFC8-932E-4EE3-96C7-BD1438260268}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZuneSocialTagger.UnitTests", "src\test\ZuneSocialTagger.UnitTests\ZuneSocialTagger.UnitTests.csproj", "{915A3D2B-2B11-47DE-9D52-24FC46578DDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZuneSocialTagger.GUI", "ZuneSocialTagger.GUI\ZuneSocialTagger.GUI.csproj", "{FF8CC2A4-0CAE-4B62-8CF1-107765A5CF01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,14 +19,18 @@ Global
 		{C5F5D93F-50BC-4BE1-9594-5D3D3CB5BCE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5F5D93F-50BC-4BE1-9594-5D3D3CB5BCE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5F5D93F-50BC-4BE1-9594-5D3D3CB5BCE6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{915A3D2B-2B11-47DE-9D52-24FC46578DDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{915A3D2B-2B11-47DE-9D52-24FC46578DDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{915A3D2B-2B11-47DE-9D52-24FC46578DDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{915A3D2B-2B11-47DE-9D52-24FC46578DDF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{245DAFC8-932E-4EE3-96C7-BD1438260268}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{245DAFC8-932E-4EE3-96C7-BD1438260268}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{245DAFC8-932E-4EE3-96C7-BD1438260268}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{245DAFC8-932E-4EE3-96C7-BD1438260268}.Release|Any CPU.Build.0 = Release|Any CPU
+		{915A3D2B-2B11-47DE-9D52-24FC46578DDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{915A3D2B-2B11-47DE-9D52-24FC46578DDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{915A3D2B-2B11-47DE-9D52-24FC46578DDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{915A3D2B-2B11-47DE-9D52-24FC46578DDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF8CC2A4-0CAE-4B62-8CF1-107765A5CF01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF8CC2A4-0CAE-4B62-8CF1-107765A5CF01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF8CC2A4-0CAE-4B62-8CF1-107765A5CF01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF8CC2A4-0CAE-4B62-8CF1-107765A5CF01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

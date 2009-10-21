@@ -1,0 +1,18 @@
+﻿<Window x:Class="ZuneSocialTagger.GUI.Views.MainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:ZuneSocialTagger.GUI.Commands"
+    Title="Main Window" Width="300">
+    
+    <StackPanel>
+        <TextBlock>FIND ALBUM INFO</TextBlock>
+        <TextBox x:Name="tbSearch" BorderBrush="Black" BorderThickness="1">Search</TextBox>
+        <TextBlock>Please enter the url to the album page</TextBlock>
+        <Button Command="{Binding GetAlbumInfoCommand}">Get Album Info
+            <Button.CommandParameter>
+                <Binding ElementName="tbSearch" Path="Text"/>
+            </Button.CommandParameter>
+        </Button>
+    </StackPanel>
+
+</Window>
