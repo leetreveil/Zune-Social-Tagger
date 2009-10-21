@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -32,9 +33,9 @@ namespace ZuneSocialTagger.IntegrationTests.ZuneWebsiteScraper
         public void Should_be_able_to_scrape_the_first_song_from_the_webpage()
         {
             string firstTrack = "We Were Aborted";
-            string firstTracksZuneMediaID = "39b9f201-0100-11db-89ca-0019b92a3933";
+            Guid firstTracksZuneMediaID = new Guid("39b9f201-0100-11db-89ca-0019b92a3933");
 
-            var expectedOutput = new KeyValuePair<string, string>(firstTrack, firstTracksZuneMediaID);
+            var expectedOutput = new KeyValuePair<string, Guid>(firstTrack, firstTracksZuneMediaID);
 
             var albumMediaIDScraper = new AlbumMediaIDScraper(_fileData);
 
@@ -46,7 +47,7 @@ namespace ZuneSocialTagger.IntegrationTests.ZuneWebsiteScraper
         [Test]
         public void Should_be_able_to_scrape_the_AlbumArtistID()
         {
-            string albumArtistID = "00710a00-0600-11db-89ca-0019b92a3933";
+            Guid albumArtistID = new Guid("00710a00-0600-11db-89ca-0019b92a3933");
 
             var scraper = new AlbumMediaIDScraper(_fileData);
 
@@ -56,11 +57,11 @@ namespace ZuneSocialTagger.IntegrationTests.ZuneWebsiteScraper
         [Test]
         public void Should_be_able_to_scrape_out_the_ZuneAlbumMediaID()
         {
-            var expectedOutput = "37b9f201-0100-11db-89ca-0019b92a3933";
+            Guid zuneAlbumMediaID = new Guid("37b9f201-0100-11db-89ca-0019b92a3933");
 
             var scraper = new AlbumMediaIDScraper(_fileData);
 
-            Assert.That(scraper.ScrapeAlbumMediaID(),Is.EqualTo(expectedOutput));
+            Assert.That(scraper.ScrapeAlbumMediaID(), Is.EqualTo(zuneAlbumMediaID));
         }
     }
 }

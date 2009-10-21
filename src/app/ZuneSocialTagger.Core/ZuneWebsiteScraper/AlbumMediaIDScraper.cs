@@ -19,17 +19,17 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
             _document.LoadHtml(page);
         }
 
-        public string ScrapeAlbumMediaID()
+        public Guid ScrapeAlbumMediaID()
         {
             return GetAlbumMediaIdFromMediaInfo(ScrapeAttribute("_albumHeader", "div/a", "mediainfo"));
         }
 
-        public string ScrapeAlbumArtistID()
+        public Guid ScrapeAlbumArtistID()
         {
             return GetAlbumArtistIDFromFanClubAttribute(ScrapeAttribute("_artistHeader", "div/ul", "id"));
         }
 
-        public IEnumerable<KeyValuePair<string,string>> GetSongTitleAndIDs()
+        public IEnumerable<KeyValuePair<string,Guid>> GetSongTitleAndIDs()
         {
             HtmlNodeCollection collection;
 
@@ -68,18 +68,17 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
         /// </summary>
         /// <param name="attributeString">Should look like this: FanClub00710a00-0600-11db-89ca-0019b92a3933</param>
         /// <returns></returns>
-        private static string GetAlbumArtistIDFromFanClubAttribute(string attributeString)
+        private static Guid GetAlbumArtistIDFromFanClubAttribute(string attributeString)
         {
-            //these guid's are always 36 long
-            return attributeString.Substring(attributeString.Length - 36);
+            return new Guid(attributeString.Substring(attributeString.Length - 36));
         }
 
-        private static KeyValuePair<string, string> GetIDAndSongNameFromMediaInfoAttribute(string attributeString)
+        private static KeyValuePair<string, Guid> GetIDAndSongNameFromMediaInfoAttribute(string attributeString)
         {
             return GetMediaInfoAttributeData(attributeString, "#song#");
         }
 
-        private static string GetAlbumMediaIdFromMediaInfo(string attributeString)
+        private static Guid GetAlbumMediaIdFromMediaInfo(string attributeString)
         {
             return GetMediaInfoAttributeData(attributeString, "#album#").Value;
         }
@@ -90,7 +89,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
         /// <param name="attributeString">Should look like: 41b9f201-0100-11db-89ca-0019b92a3933#song#Hari Kari
         ///                               Should look like: 37b9f201-0100-11db-89ca-0019b92a3933#album#Ignore The Ignorant</param>
         /// <returns></returns>
-        private static KeyValuePair<string,string> GetMediaInfoAttributeData(string attributeString, string splitOn)
+        private static KeyValuePair<string,Guid> GetMediaInfoAttributeData(string attributeString, string splitOn)
         {
             var regex = new Regex(splitOn);
 
@@ -98,7 +97,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 
             string[] split = regex.Split(attributeString, 2);
 
-            return new KeyValuePair<string, string>(split[1], split[0]);
+            return new KeyValuePair<string, Guid>(split[1], new Guid(split[0]));
         }
     }
 }
