@@ -28,13 +28,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void DownloadUrl(string url)
         {
-            PageDownloader.DownloadAsync(url, pageData => { var songs = new AlbumMediaIDScraper(pageData).GetSongTitleAndIDs();
 
-                                                              foreach (var song in songs)
-                                                              {
-                                                                  Console.WriteLine(song);
-                                                              }
-            });
+    
         }
     }
 }
