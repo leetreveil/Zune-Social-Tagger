@@ -9,7 +9,7 @@ namespace ZuneSocialTagger.Core
 
     {
         /// <summary>
-        /// Takes a well formed id and returns the byte data
+        /// Takes a well formed id and returns the byte data, notice how the first 3 sections are flipped and a byte is appended to the start
         /// </summary>
         /// <param name="id">Should look like this: 28cc0700-0600-11db-89ca-0019b92a3933</param>
         /// <returns>Should output like this: 000007cc280006db1189ca0019b92a3933</returns>

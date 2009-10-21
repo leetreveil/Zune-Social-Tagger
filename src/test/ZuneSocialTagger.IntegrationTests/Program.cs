@@ -28,7 +28,11 @@ namespace ZuneSocialTagger.IntegrationTests
                 {
                     var scraper = new AlbumMediaIDScraper(webpageData);
 
-                    foreach (var song in scraper.Scrape())
+                    Console.WriteLine("ZuneAlbumArtistID: {0}",scraper.ScrapeAlbumArtistID());
+                    Console.WriteLine("ZuneAlbumMediaID: {0}",scraper.ScrapeAlbumMediaID());
+                    Console.WriteLine("");
+
+                    foreach (var song in scraper.GetSongTitleAndIDs())
                     {
                         Console.WriteLine(song);
                     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using ZuneSocialTagger.Core.ZuneWebsiteScraper;
 using System.IO;
@@ -8,6 +9,7 @@ namespace ZuneSocialTagger.IntegrationTests.ZuneWebsiteScraper
     [TestFixture]
     public class AlbumMediaIDScraperTests
     {
+        //TODO: Figure out how to get the artist title and artist guid from the same page
         private const string PathToFile = "validalbumlistwebpage.xml";
         private string _fileData;
 
@@ -19,11 +21,11 @@ namespace ZuneSocialTagger.IntegrationTests.ZuneWebsiteScraper
         [Test]
         public void Should_be_able_to_get_a_dictionary_of_song_titles_and_zuneMediaID_from_an_album_document()
         {
-            AlbumMediaIDScraper albumMediaIDScraper = new AlbumMediaIDScraper(_fileData);
+            var albumMediaIDScraper = new AlbumMediaIDScraper(_fileData);
 
-            Dictionary<string,string> songs =  albumMediaIDScraper.Scrape();
+            var songs = albumMediaIDScraper.GetSongTitleAndIDs();
 
-            Assert.That(songs.Count,Is.GreaterThan(0));
+            Assert.That(songs.Count(),Is.GreaterThan(0));
         }
 
         [Test]
@@ -32,22 +34,33 @@ namespace ZuneSocialTagger.IntegrationTests.ZuneWebsiteScraper
             string firstTrack = "We Were Aborted";
             string firstTracksZuneMediaID = "39b9f201-0100-11db-89ca-0019b92a3933";
 
-            AlbumMediaIDScraper albumMediaIDScraper = new AlbumMediaIDScraper(_fileData);
+            var expectedOutput = new KeyValuePair<string, string>(firstTrack, firstTracksZuneMediaID);
 
-            Dictionary<string, string> songs = albumMediaIDScraper.Scrape();
+            var albumMediaIDScraper = new AlbumMediaIDScraper(_fileData);
 
-            Assert.That(songs[firstTrack],Is.EqualTo(firstTracksZuneMediaID));
+            var songs = albumMediaIDScraper.GetSongTitleAndIDs();
+
+            Assert.That(songs.First(),Is.EqualTo(expectedOutput));
         }
 
         [Test]
-        public void Should_be_able_to_convert_a_mediainfo_attribute_to_a_keypair()
+        public void Should_be_able_to_scrape_the_AlbumArtistID()
         {
-            string[] attribute = AlbumMediaIDScraper.GetIDAndSongNameFromMediaInfoAttribute(
-                "41b9f201-0100-11db-89ca-0019b92a3933#song#Hari Kari");
+            string albumArtistID = "00710a00-0600-11db-89ca-0019b92a3933";
 
+            var scraper = new AlbumMediaIDScraper(_fileData);
 
-            Assert.That(attribute[0], Is.EqualTo("41b9f201-0100-11db-89ca-0019b92a3933"));
-            Assert.That(attribute[1], Is.EqualTo("Hari Kari"));
+            Assert.That(scraper.ScrapeAlbumArtistID(), Is.EqualTo(albumArtistID));
+        }
+
+        [Test]
+        public void Should_be_able_to_scrape_out_the_ZuneAlbumMediaID()
+        {
+            var expectedOutput = "37b9f201-0100-11db-89ca-0019b92a3933";
+
+            var scraper = new AlbumMediaIDScraper(_fileData);
+
+            Assert.That(scraper.ScrapeAlbumMediaID(),Is.EqualTo(expectedOutput));
         }
     }
 }

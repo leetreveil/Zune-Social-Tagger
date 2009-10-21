@@ -64,5 +64,16 @@ namespace ZuneSocialTagger.UnitTests.Core
 
             ZuneIDConverter.Convert(zuneAlbumArtistMediaID);
         }
+
+        [Test]
+        public void GuidTest()
+        {
+            Guid guid = new Guid("697cf801-0100-11db-89ca-0019b92a3933");
+
+            byte[] bytes = guid.ToByteArray();
+
+            string s = ZuneIDConverter.ByteArrayToString(bytes);
+        }
+
     }
 }

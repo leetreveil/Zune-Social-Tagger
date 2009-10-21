@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Linq;
 using HtmlAgilityPack;
 
 namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
@@ -15,49 +16,89 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
         public AlbumMediaIDScraper(string page)
         {
             _document = new HtmlDocument();
-            _document.OptionFixNestedTags = true;
-
             _document.LoadHtml(page);
         }
 
-        public Dictionary<string, string> Scrape()
+        public string ScrapeAlbumMediaID()
         {
-            HtmlNode node = _document.GetElementbyId("_albumSongs");
+            return GetAlbumMediaIdFromMediaInfo(ScrapeAttribute("_albumHeader", "div/a", "mediainfo"));
+        }
 
-            //we are selecting all ul nodes with a class attribute and a li child with a media info attribute
-            HtmlNodeCollection collection = node.SelectNodes("ul[@class='SongWithOrdinals ']/li[@mediainfo]");
+        public string ScrapeAlbumArtistID()
+        {
+            return GetAlbumArtistIDFromFanClubAttribute(ScrapeAttribute("_artistHeader", "div/ul", "id"));
+        }
 
-            if (node == null || collection == null)
-                throw new Exception("problem with the html file");
+        public IEnumerable<KeyValuePair<string,string>> GetSongTitleAndIDs()
+        {
+            HtmlNodeCollection collection;
 
-            var dict = new Dictionary<string, string>();
+            try
+            {
+                HtmlNode node = _document.GetElementbyId("_albumSongs");
+                //we are selecting all ul nodes with a class attribute and a li child with a media info attribute
+                 collection = node.SelectNodes("ul[@class='SongWithOrdinals ']/li[@mediainfo]");
+            }
+            catch (Exception){throw new Exception("problem with the html file");}
+
 
             foreach (var nodeCollection in collection)
+                yield return GetIDAndSongNameFromMediaInfoAttribute(nodeCollection.Attributes["mediainfo"].Value);
+        }
+
+        private string ScrapeAttribute(string elementId, string singleNode, string attribute)
+        {
+            try
             {
-                HtmlAttribute htmlAttribute = nodeCollection.Attributes["mediainfo"];
+                HtmlNode node = _document.GetElementbyId(elementId);
+                HtmlNode singleNodex = node.SelectSingleNode(singleNode);
+                HtmlAttribute attributex = singleNodex.Attributes[attribute];
 
-                string[] idAndSongName = GetIDAndSongNameFromMediaInfoAttribute(htmlAttribute.Value);
-
-                dict.Add(idAndSongName[1],idAndSongName[0]);
+                return attributex.Value;
             }
+            catch (Exception)
+            {
+                //TODO: make the exception less generic
+                throw new Exception("problem with the html file");
+            }
+        }
 
-            return dict;
+        /// <summary>
+        /// Extracts the AlbumArtistID from a href attribute
+        /// </summary>
+        /// <param name="attributeString">Should look like this: FanClub00710a00-0600-11db-89ca-0019b92a3933</param>
+        /// <returns></returns>
+        private static string GetAlbumArtistIDFromFanClubAttribute(string attributeString)
+        {
+            //these guid's are always 36 long
+            return attributeString.Substring(attributeString.Length - 36);
+        }
+
+        private static KeyValuePair<string, string> GetIDAndSongNameFromMediaInfoAttribute(string attributeString)
+        {
+            return GetMediaInfoAttributeData(attributeString, "#song#");
+        }
+
+        private static string GetAlbumMediaIdFromMediaInfo(string attributeString)
+        {
+            return GetMediaInfoAttributeData(attributeString, "#album#").Value;
         }
 
         /// <summary>
         /// Splits a mediainfo attribute into a keypair
         /// </summary>
-        /// <param name="attributeString">Should look like this: 41b9f201-0100-11db-89ca-0019b92a3933#song#Hari Kari</param>
+        /// <param name="attributeString">Should look like: 41b9f201-0100-11db-89ca-0019b92a3933#song#Hari Kari
+        ///                               Should look like: 37b9f201-0100-11db-89ca-0019b92a3933#album#Ignore The Ignorant</param>
         /// <returns></returns>
-        public static string[] GetIDAndSongNameFromMediaInfoAttribute(string attributeString)
+        private static KeyValuePair<string,string> GetMediaInfoAttributeData(string attributeString, string splitOn)
         {
-            var regex = new Regex("#song#");
+            var regex = new Regex(splitOn);
 
             //Should only ever split into 2 anyway so the 2 isnt really neccessary
 
             string[] split = regex.Split(attributeString, 2);
 
-            return split;
+            return new KeyValuePair<string, string>(split[1], split[0]);
         }
     }
 }
