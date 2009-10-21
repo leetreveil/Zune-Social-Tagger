@@ -41,16 +41,12 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TidyNet, Version=1.0.0.0, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\tidynet\TidyNet.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZuneIDConverter.cs" />
     <Compile Include="ZuneWebsiteScraper\AlbumMediaIDScraper.cs" />
-    <Compile Include="ZuneWebsiteScraper\TidyHtml.cs" />
+    <Compile Include="ZuneWebsiteScraper\PageDownloader.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ID3Tagger\" />

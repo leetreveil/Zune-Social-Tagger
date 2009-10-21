@@ -7,10 +7,12 @@ namespace ZuneSocialTagger.IntegrationTests.ZuneWebsiteScraper
     [TestFixture]
     public class AlbumMediaIDScraperTests
     {
+        private const string PathToFile = "validalbumlistwebpage.xml";
+
         [Test]
         public void Should_be_able_to_get_a_dictionary_of_song_titles_and_zuneMediaID_from_an_album_document()
         {
-            AlbumMediaIDScraper albumMediaIDScraper = new AlbumMediaIDScraper("test.xml");
+            AlbumMediaIDScraper albumMediaIDScraper = new AlbumMediaIDScraper(PathToFile);
 
             Dictionary<string,string> songs =  albumMediaIDScraper.Scrape();
 
@@ -23,7 +25,7 @@ namespace ZuneSocialTagger.IntegrationTests.ZuneWebsiteScraper
             string firstTrack = "We Were Aborted";
             string firstTracksZuneMediaID = "39b9f201-0100-11db-89ca-0019b92a3933";
 
-            AlbumMediaIDScraper albumMediaIDScraper = new AlbumMediaIDScraper("test.xml");
+            AlbumMediaIDScraper albumMediaIDScraper = new AlbumMediaIDScraper(PathToFile);
 
             Dictionary<string, string> songs = albumMediaIDScraper.Scrape();
 
