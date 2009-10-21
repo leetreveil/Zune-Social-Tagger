@@ -1,0 +1,1253 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+	xmlns:SketchControls="clr-namespace:Microsoft.Expression.Prototyping.SketchControls;assembly=Microsoft.Expression.Prototyping.SketchControls"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	mc:Ignorable="d" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	d:IsSketchFlowStyle="True"
+	d:IsSketchFlowDefaultStyle="True">
+
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="/Microsoft.Expression.Prototyping.SketchControls;Component/ScrollViewerStyles.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
+
+	<SolidColorBrush x:Key="BaseBackground-Sketch" Color="#FFFFFFFF"/>
+	<SolidColorBrush x:Key="BaseForeground-Sketch" Color="#FF606060"/>
+	<SolidColorBrush x:Key="BaseBorder-Sketch" Color="#FF606060"/>
+	<SolidColorBrush x:Key="MouseOverBackground-Sketch" Color="#FFD2D2D2"/>
+	<SolidColorBrush x:Key="PressedBackground-Sketch" Color="#FF959595"/>
+	<SolidColorBrush x:Key="DisabledBackground-Sketch" Color="#FFD8D8D8"/>
+	<SolidColorBrush x:Key="DisabledForeground-Sketch" Color="#FF9F9F9F"/>
+	<SolidColorBrush x:Key="PressedForeground-Sketch" Color="#FF606060"/>
+	<SolidColorBrush x:Key="FocusedBorder-Sketch" Color="#FF000000"/>
+	<SolidColorBrush x:Key="DisabledBorder-Sketch" Color="#FF9F9F9F"/>
+	<SolidColorBrush x:Key="SelectedBackground-Sketch" Color="#FFAFAFAF"/>
+	<FontFamily x:Key="FontFamily-Sketch">./Fonts/#Buxton Sketch</FontFamily>
+	<sys:Double x:Key="SizeDouble-Sketch">19</sys:Double>
+	<FontWeight x:Key="FontWeight-Sketch">Normal</FontWeight>
+
+	<!-- Basic Sketch TextBlock -->
+	<Style x:Key="BasicTextBlock-Sketch" TargetType="{x:Type TextBlock}" d:StyleDefaultContent="Basic Text">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="16"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+	</Style>
+
+	<!-- Sketch TextBlock -->
+	<Style x:Key="TextBlock-Sketch" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BasicTextBlock-Sketch}"/>
+
+	<!-- Sketch Rectangle -->
+	<Style x:Key="Rectangle-Sketch" TargetType="{x:Type SketchControls:SketchRectangleUC}">
+		<Setter Property="BorderBrush" Value="{DynamicResource BaseBorder-Sketch}"/>
+		<Setter Property="StrokeWidth" Value="2"/>
+		<Setter Property="SegmentLength" Value="8"/>
+		<Setter Property="SegmentOffset" Value="0.12"/>
+		<Setter Property="SegmentVariance" Value="0.1"/>
+		<Setter Property="Background" Value="{DynamicResource BaseBackground-Sketch}"/>
+	</Style>
+
+	<!-- Sketch Circle -->
+	<Style x:Key="Circle-Sketch" TargetType="{x:Type SketchControls:SketchCircleUC}">
+		<Setter Property="BorderBrush" Value="{DynamicResource BaseBorder-Sketch}"/>
+		<Setter Property="StrokeWidth" Value="2"/>
+		<Setter Property="SegmentLength" Value="8"/>
+		<Setter Property="SegmentOffset" Value="0.12"/>
+		<Setter Property="SegmentVariance" Value="0.1"/>
+		<Setter Property="Background" Value="{DynamicResource BaseBackground-Sketch}"/>
+	</Style>
+
+	<!-- Sketch Focus Control -->
+	<Style x:Key="FocusControl-Sketch" d:IsControlPart="True" TargetType="{x:Type Control}"/>
+
+	<!-- Sketch Button -->
+	<Style x:Key="Button-Sketch" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource BaseBorder-Sketch}"/>
+		<Setter Property="Background" Value="{DynamicResource BaseBackground-Sketch}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<!-- We use Grid as a root because it is easy to add more elements to customize the button -->
+					<Grid x:Name="Grid">
+						<!-- Content Presenter is where the text content etc is placed by the control -->
+						<SketchControls:SketchRectangleUC x:Name="SketchRectangleUC" BorderBrush="{TemplateBinding BorderBrush}" ExtensionLength="0" ExtensionVariance="0" StrokeWidth="2" SegmentLength="8" Background="{TemplateBinding Background}" SegmentVariance="0.1" SegmentOffset="0.12" FocusVisualStyle="{DynamicResource FocusControl-Sketch}"/>
+						<ContentPresenter HorizontalAlignment="Center"  VerticalAlignment="Center" Content="{TemplateBinding Content}" Margin="8,0,8,0"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="true">
+							<Setter Property="Background" TargetName="SketchRectangleUC" Value="{DynamicResource MouseOverBackground-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter Property="Background" TargetName="SketchRectangleUC" Value="{DynamicResource PressedBackground-Sketch}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}"/>
+		<Setter Property="FocusVisualStyle" Value="{DynamicResource FocusControl-Sketch}"/>
+		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Foreground" Value="{DynamicResource DisabledForeground-Sketch}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource DisabledBorder-Sketch}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+	<!-- Sketch CheckBox -->
+	<Style x:Key="CheckBox-Sketch" TargetType="{x:Type CheckBox}">
+		<Setter Property="SnapsToDevicePixels" Value="true"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="Background" Value="{StaticResource BaseBackground-Sketch}"/>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}"/>
+		<Setter Property="Foreground" Value="{StaticResource BaseBorder-Sketch}"/>
+
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type CheckBox}">
+					<!-- BulletDecorator is used to provide baseline alignment between the checkmark and the Content -->
+					<BulletDecorator Background="Transparent">
+						<BulletDecorator.Bullet>
+							<Grid x:Name="grid" Width="12" Height="12">
+								<SketchControls:SketchRectangleUC Margin="-2,-2,-2,-2"  Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" ExtensionLength="0" SegmentLength="4" x:Name="SketchRectangleUC1" ExtensionVariance="0" SegmentOffset="0.2" StrokeWidth="2" FocusVisualStyle="{DynamicResource FocusControl-Sketch}"/>
+								<Path x:Name="CheckIcon" Fill="{TemplateBinding BorderBrush}" Stretch="Fill" Height="10" Width="10.5" Opacity="0" Data="M102.03442,598.79645 L105.22962,597.78918 L106.78825,600.42358 C106.78825,600.42358 108.51028,595.74304 110.21724,593.60419 C112.00967,591.35822 114.89314,591.42316 114.89314,591.42316 C114.89314,591.42316 112.67844,593.42645 111.93174,594.44464 C110.7449,596.06293 107.15683,604.13837 107.15683,604.13837 z" RenderTransformOrigin="0.5,0.5">
+									<Path.RenderTransform>
+										<TransformGroup>
+											<ScaleTransform/>
+											<SkewTransform/>
+											<RotateTransform/>
+											<TranslateTransform/>
+										</TransformGroup>
+									</Path.RenderTransform>
+								</Path>
+								<SketchControls:SketchRectangleUC Margin="2"  Background="{TemplateBinding BorderBrush}" BorderBrush="{TemplateBinding BorderBrush}" ExtensionLength="0" SegmentLength="4" x:Name="Indetermined" ExtensionVariance="0" SegmentOffset="0.2" StrokeWidth="2" FocusVisualStyle="{DynamicResource FocusControl-Sketch}" Visibility="Collapsed"/>
+							</Grid>
+						</BulletDecorator.Bullet>
+						<ContentPresenter HorizontalAlignment="Left"  VerticalAlignment="Top" Content="{TemplateBinding Content}" Margin="7,0,0,0"/>
+					</BulletDecorator>
+
+					<!-- This uses Visibility to hide and show the CheckMark on IsChecked -->
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsChecked" Value="{x:Null}">
+							<Setter Property="Visibility" TargetName="Indetermined" Value="Visible"/>
+						</Trigger>
+						<Trigger Property="IsFocused" Value="True">
+							<Setter Property="BorderBrush" TargetName="SketchRectangleUC1" Value="{DynamicResource FocusedBorder-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsChecked" Value="True">
+							<Setter Property="Opacity" TargetName="CheckIcon" Value="1"/>
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="true">
+							<Setter Property="Background" TargetName="SketchRectangleUC1" Value="{DynamicResource MouseOverBackground-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="true">
+							<Setter Property="Background" TargetName="SketchRectangleUC1" Value="{DynamicResource PressedBackground-Sketch}"/>
+							<Setter Property="Margin" TargetName="CheckIcon" Value="0,-1,0,0"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Background" TargetName="SketchRectangleUC1" Value="{DynamicResource BaseBackground-Sketch}"/>
+							<Setter Property="BorderBrush" TargetName="SketchRectangleUC1" Value="{DynamicResource DisabledBorder-Sketch}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}"/>
+		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Foreground" Value="{DynamicResource DisabledForeground-Sketch}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+	<!-- Sketch ListBoxItem -->
+	<Style x:Key="ListBoxItem-Sketch" d:IsControlPart="True" TargetType="{x:Type ListBoxItem}">
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+		<Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+		<Setter Property="Padding" Value="2,0,0,0"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ListBoxItem}">
+					<Grid x:Name="Bd" SnapsToDevicePixels="true" Background="#00FF0000">
+						<SketchControls:SketchRectangleUC x:Name="SketchRectangleUC" BorderBrush="{x:Null}" FocusVisualStyle="{DynamicResource FocusControl-Sketch}" SegmentLength="8" SegmentOffset="0.12" SegmentVariance="0.1"/>
+						<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Background" TargetName="SketchRectangleUC" Value="{DynamicResource MouseOverBackground-Sketch}"/>
+							<Setter Property="BorderBrush" TargetName="SketchRectangleUC" Value="{DynamicResource MouseOverBackground-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsKeyboardFocused" Value="True"/>
+						<Trigger Property="IsSelected" Value="true">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+							<Setter Property="StrokeWidth" TargetName="SketchRectangleUC" Value="2"/>
+							<Setter Property="ExtensionLength" TargetName="SketchRectangleUC" Value="0"/>
+							<Setter Property="ExtensionVariance" TargetName="SketchRectangleUC" Value="0"/>
+							<Setter Property="BorderBrush" TargetName="SketchRectangleUC" Value="{DynamicResource SelectedBackground-Sketch}"/>
+							<Setter Property="Background" TargetName="SketchRectangleUC" Value="{DynamicResource SelectedBackground-Sketch}"/>
+						</Trigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="true"/>
+								<Condition Property="Selector.IsSelectionActive" Value="false"/>
+							</MultiTrigger.Conditions>
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+						</MultiTrigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}"/>
+		<Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Foreground" Value="{DynamicResource DisabledForeground-Sketch}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+	<!-- Sketch ScrollViewer ControlTemplate -->
+	<ControlTemplate x:Key="ScrollViewerTemplate-Sketch" TargetType="{x:Type ScrollViewer}">
+		<Grid x:Name="Grid" Background="{TemplateBinding Background}">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<SketchControls:SketchRectangleUC HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{TemplateBinding Foreground}" Grid.ColumnSpan="2" Grid.RowSpan="2" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" StrokeWidth="2"/>
+			<ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Grid.Column="0" Grid.Row="0" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False"/>
+			<ScrollBar x:Name="PART_VerticalScrollBar" Cursor="Arrow" Style="{DynamicResource ScrollBar-Sketch}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Foreground="{TemplateBinding Foreground}" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Grid.Column="1" Grid.Row="0" ViewportSize="{TemplateBinding ViewportHeight}" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Value="{Binding Path=VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" AutomationProperties.AutomationId="VerticalScrollBar"/>
+			<ScrollBar x:Name="PART_HorizontalScrollBar" Cursor="Arrow" Style="{DynamicResource ScrollBar-Sketch}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Foreground="{TemplateBinding Foreground}" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Grid.Column="0" Grid.Row="1" Orientation="Horizontal" ViewportSize="{TemplateBinding ViewportWidth}" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Value="{Binding Path=HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" AutomationProperties.AutomationId="HorizontalScrollBar"/>
+		</Grid>
+	</ControlTemplate>
+
+	<!-- Sketch ScrollViewer -->
+	<Style x:Key="ScrollViewer-Sketch-List" TargetType="{x:Type ScrollViewer}">
+		<Setter Property="BorderBrush" Value="{DynamicResource BaseBorder-Sketch}"/>
+		<Setter Property="Background" Value="{DynamicResource BaseBackground-Sketch}"/>
+		<Setter Property="Template" Value="{StaticResource ScrollViewerTemplate-Sketch}"/>
+		<Setter Property="Padding" Value="2"/>
+	</Style>
+
+	<Style x:Key="ScrollViewer-Sketch" TargetType="{x:Type ScrollViewer}">
+		<Setter Property="BorderBrush" Value="{DynamicResource BaseBorder-Sketch}"/>
+		<Setter Property="Background" Value="{DynamicResource BaseBackground-Sketch}"/>
+		<Setter Property="Template" Value="{DynamicResource ScrollViewer-SketchTemplate2}"/>
+		<Setter Property="Padding" Value="2"/>
+	</Style>
+
+	<!-- Sketch ReadOnly ComboBox ToggleButton -->
+	<Style x:Key="ComboBoxReadonlyToggleButton-Sketch" d:IsControlPart="True" TargetType="{x:Type ToggleButton}">
+		<Setter Property="OverridesDefaultStyle" Value="true"/>
+		<Setter Property="IsTabStop" Value="false"/>
+		<Setter Property="Focusable" Value="false"/>
+		<Setter Property="ClickMode" Value="Press"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ToggleButton}">
+					<Grid>
+						<SketchControls:SketchRectangleUC x:Name="SketchRectangleUC" HorizontalAlignment="Stretch" BorderBrush="{TemplateBinding BorderBrush}" ExtensionLength="0" ExtensionVariance="0" SegmentLength="8" SegmentOffset="0.12" Background="{TemplateBinding Background}" StrokeWidth="2" SegmentVariance="0.1" Foreground="{TemplateBinding Foreground}"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsFocused" Value="True">
+							<Setter Property="BorderBrush" TargetName="SketchRectangleUC" Value="{DynamicResource FocusedBorder-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsChecked" Value="true">
+							<Setter Property="BorderBrush" TargetName="SketchRectangleUC" Value="{DynamicResource FocusedBorder-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false"/>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}"/>
+		<Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="Background" Value="{DynamicResource BaseBackground-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource BaseBorder-Sketch}"/>
+	</Style>
+
+	<!-- Sketch Editable ComboBox TextBox -->
+	<Style x:Key="ComboBoxEditableTextBox-Sketch" d:IsControlPart="true" TargetType="{x:Type TextBox}">
+		<Setter Property="OverridesDefaultStyle" Value="true"/>
+		<Setter Property="AllowDrop" Value="true"/>
+		<Setter Property="MinWidth" Value="0"/>
+		<Setter Property="MinHeight" Value="0"/>
+		<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type TextBox}">
+					<ScrollViewer x:Name="PART_ContentHost" Style="{DynamicResource ScrollViewer-Sketch2}" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- Sketch Editable ComboBox ToggleButton -->
+	<Style x:Key="ComboBoxToggleButton-Sketch" d:IsControlPart="true" TargetType="{x:Type ToggleButton}">
+		<Setter Property="OverridesDefaultStyle" Value="true"/>
+		<Setter Property="IsTabStop" Value="false"/>
+		<Setter Property="Focusable" Value="false"/>
+		<Setter Property="ClickMode" Value="Press"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ToggleButton}">
+					<Grid x:Name="Chrome" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" SnapsToDevicePixels="true" Background="{TemplateBinding Background}">
+						<Rectangle x:Name="CheckedVisual" Visibility="Collapsed" Stroke="{x:Null}" Fill="{StaticResource PressedBackground-Sketch}"/>
+						<Path x:Name="Arrow" Fill="Black" HorizontalAlignment="Center" Margin="0,1,0,0" VerticalAlignment="Center" Data="M0,0L3.5,4 7,0z"/>
+
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsChecked" Value="true">
+							<Setter Property="Visibility" TargetName="CheckedVisual" Value="Visible"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Fill" TargetName="Arrow" Value="#AFAFAF"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- Sketch Editable ComboBox ControlTemplate -->
+	<ControlTemplate x:Key="ComboBoxEditableTemplate-Sketch" d:IsControlPart="true" TargetType="{x:Type ComboBox}">
+		<Grid x:Name="Placement" SnapsToDevicePixels="true">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Popup x:Name="PART_Popup" AllowsTransparency="true" IsOpen="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Grid.ColumnSpan="2">
+				<Border x:Name="DropDownBorder" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1">
+					<ScrollViewer Style="{DynamicResource ScrollViewer-Sketch2}">
+						<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" KeyboardNavigation.DirectionalNavigation="Contained"/>
+					</ScrollViewer>
+				</Border>
+			</Popup>
+			<TextBox x:Name="PART_EditableTextBox" Margin="{TemplateBinding Padding}" Style="{StaticResource ComboBoxEditableTextBox-Sketch}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"/>
+			<ToggleButton Style="{StaticResource ComboBoxToggleButton-Sketch}" Grid.Column="1" IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+		</Grid>
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsKeyboardFocusWithin" Value="true">
+				<Setter Property="Foreground" Value="Black"/>
+			</Trigger>
+			<Trigger Property="HasItems" Value="false">
+				<Setter Property="Height" TargetName="DropDownBorder" Value="95"/>
+			</Trigger>
+			<Trigger Property="IsEnabled" Value="false">
+				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+				<Setter Property="Background" Value="#FFF4F4F4"/>
+			</Trigger>
+			<Trigger Property="IsGrouping" Value="true">
+				<Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+
+	<!-- Sketch ComboBox -->
+	<Style x:Key="ComboBox-Sketch" TargetType="{x:Type ComboBox}">
+		<Setter Property="FocusVisualStyle" Value="{StaticResource FocusControl-Sketch}"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="Background" Value="{DynamicResource BaseBackground-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource BaseBorder-Sketch}"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+		<Setter Property="Padding" Value="4,3"/>
+		<Setter Property="ItemContainerStyle" Value="{DynamicResource ListBoxItem-Sketch}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ComboBox}">
+					<Grid x:Name="MainGrid" SnapsToDevicePixels="true">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="28.25"/>
+						</Grid.ColumnDefinitions>
+						<Popup x:Name="PART_Popup" Margin="1" AllowsTransparency="true" IsOpen="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Grid.ColumnSpan="2">
+							<Grid x:Name="DropDownBorder" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" Width="{Binding ActualWidth, ElementName=MainGrid, Mode=Default}">
+								<ScrollViewer Style="{DynamicResource ScrollViewer-Sketch2}" CanContentScroll="true" d:LayoutOverrides="Width, Height" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Foreground="{TemplateBinding Foreground}">
+									<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" KeyboardNavigation.DirectionalNavigation="Contained" Margin="2,2,2,2"/>
+								</ScrollViewer>
+							</Grid>
+						</Popup>
+						<ToggleButton Style="{StaticResource ComboBoxReadonlyToggleButton-Sketch}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Grid.ColumnSpan="2" IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Foreground="{TemplateBinding Foreground}"/>
+						<Path Fill="{x:Null}" Stretch="Fill" Stroke="{TemplateBinding BorderBrush}" StrokeDashCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeThickness="2" HorizontalAlignment="Center" Width="13" Height="7" Data="M229.75,20.5 L236.08108,25.5 241.93919,20.5" Grid.Column="2" IsHitTestVisible="False"/>
+						<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" IsHitTestVisible="false" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true"/>
+						<Trigger Property="HasItems" Value="false"/>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+							<Setter Property="Background" Value="#FFF4F4F4"/>
+						</Trigger>
+						<Trigger Property="IsGrouping" Value="true">
+							<Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}"/>
+		<Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}"/>
+	</Style>
+
+	<!-- Sketch Note -->
+	<Style x:Key="Note-Sketch" BasedOn="{x:Null}" TargetType="{x:Type TextBox}" d:StyleDefaultContent="Note">
+		<Setter Property="Foreground" Value="#FF5B5B5B"/>
+		<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="Padding" Value="1"/>
+		<Setter Property="AllowDrop" Value="true"/>
+		<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type TextBox}">
+					<Grid>
+						<Rectangle Stroke="{x:Null}" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" RadiusX="1" RadiusY="1">
+							<Rectangle.Fill>
+								<LinearGradientBrush EndPoint="-1.219,-1.195" StartPoint="-1.195,-1.186">
+									<GradientStop Color="#FFFDF47B" Offset="1"/>
+									<GradientStop Color="#FFEBE380" Offset="0"/>
+								</LinearGradientBrush>
+							</Rectangle.Fill>
+							<Rectangle.Effect>
+								<DropShadowEffect Color="#FF000000" BlurRadius="10" Opacity="0.3"/>
+							</Rectangle.Effect>
+						</Rectangle>
+						<ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="21"/>
+		<Setter Property="Width" Value="200"/>
+		<Setter Property="Height" Value="180"/>
+		<Setter Property="IsReadOnly" Value="True"/>
+	</Style>
+
+	<!-- Sketch PasswordBox -->
+	<Style x:Key="PasswordBox-Sketch" TargetType="{x:Type PasswordBox}">
+		<Setter Property="Background" Value="{DynamicResource BaseBackground-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource BaseBorder-Sketch}"/>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="PasswordChar" Value="●"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="HorizontalContentAlignment" Value="Left"/>
+		<Setter Property="Padding" Value="1"/>
+		<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+		<Setter Property="AllowDrop" Value="true"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type PasswordBox}">
+					<ScrollViewer x:Name="PART_ContentHost" Style="{DynamicResource ScrollViewer-Sketch-List}" Padding="0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Foreground="{TemplateBinding Foreground}"/>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Background" TargetName="PART_ContentHost" Value="{DynamicResource MouseOverBackground-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsFocused" Value="True">
+							<Setter Property="BorderBrush" TargetName="PART_ContentHost" Value="{DynamicResource FocusedBorder-Sketch}"/>
+							<Setter Property="Background" TargetName="PART_ContentHost" Value="{DynamicResource MouseOverBackground-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Height" Value="30"/>
+		<Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}"/>
+		<Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}"/>
+		<Setter Property="MinWidth" Value="17"/>
+	</Style>
+
+	<!-- Sketch ProgressBar -->
+	<Style x:Key="ProgressBar-Sketch" TargetType="{x:Type ProgressBar}">
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="Background" Value="{DynamicResource BaseBackground-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource BaseBorder-Sketch}"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ProgressBar}">
+					<ControlTemplate.Resources>
+						<Storyboard x:Key="IndeterminateAnimation" RepeatBehavior="Forever">
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetName="IndeterminateGradientFill" Storyboard.TargetProperty="(UIElement.OpacityMask).(Brush.Transform).(TransformGroup.Children)[0].X">
+								<SplineDoubleKeyFrame KeyTime="0" Value="0"/>
+								<SplineDoubleKeyFrame KeyTime="00:00:.5" Value="20"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</ControlTemplate.Resources>
+					<Grid x:Name="Background" SnapsToDevicePixels="true">
+						<Rectangle x:Name="PART_Track" Margin="1"/>
+						<SketchControls:SketchRectangleUC x:Name="background" HorizontalAlignment="Stretch" Style="{DynamicResource Rectangle-Sketch}" VerticalAlignment="Stretch" Background="{TemplateBinding Background}" Foreground="{x:Null}" BorderBrush="{x:Null}"/>
+						<Decorator x:Name="PART_Indicator" HorizontalAlignment="Left" Margin="1">
+							<Grid x:Name="Foreground">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition MaxWidth="15"/>
+									<ColumnDefinition Width="0.1*"/>
+									<ColumnDefinition MaxWidth="15"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition/>
+									<RowDefinition/>
+								</Grid.RowDefinitions>
+								<SketchControls:SketchRectangleUC x:Name="Determinate" HorizontalAlignment="Stretch" Style="{DynamicResource Rectangle-Sketch}" VerticalAlignment="Stretch" Grid.ColumnSpan="3" Grid.RowSpan="2" Background="{TemplateBinding Foreground}" BorderBrush="{x:Null}" Foreground="{x:Null}"/>
+								<SketchControls:SketchRectangleUC x:Name="Indeterminate" HorizontalAlignment="Stretch" Style="{DynamicResource Rectangle-Sketch}" VerticalAlignment="Stretch" Grid.ColumnSpan="3" Grid.RowSpan="2" Background="{TemplateBinding Background}" BorderBrush="{x:Null}" Visibility="Collapsed"/>
+								<Rectangle x:Name="IndeterminateGradientFill" StrokeThickness="1" RadiusX="2" RadiusY="2" Fill="{TemplateBinding Foreground}" Grid.ColumnSpan="3" Grid.RowSpan="2" Visibility="Collapsed">
+									<Rectangle.OpacityMask>
+										<LinearGradientBrush EndPoint="0,1" StartPoint="20,1" MappingMode="Absolute" SpreadMethod="Repeat">
+											<LinearGradientBrush.Transform>
+												<TransformGroup>
+													<TranslateTransform X="0"/>
+													<SkewTransform AngleX="-30"/>
+												</TransformGroup>
+											</LinearGradientBrush.Transform>
+											<GradientStop Color="#FF000000" Offset="0.237"/>
+											<GradientStop Offset=".25"/>
+											<GradientStop Offset="0.677" Color="#FF000000"/>
+											<GradientStop Offset="0.655"/>
+										</LinearGradientBrush>
+									</Rectangle.OpacityMask>
+								</Rectangle>
+							</Grid>
+						</Decorator>
+						<SketchControls:SketchRectangleUC x:Name="border" HorizontalAlignment="Stretch" Style="{DynamicResource Rectangle-Sketch}" VerticalAlignment="Stretch" Background="{x:Null}" BorderBrush="{TemplateBinding BorderBrush}" Foreground="{x:Null}"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="Orientation" Value="Vertical">
+							<Setter Property="LayoutTransform" TargetName="Background">
+								<Setter.Value>
+									<RotateTransform Angle="-90"/>
+								</Setter.Value>
+							</Setter>
+							<Setter Property="LayoutTransform" TargetName="PART_Track">
+								<Setter.Value>
+									<RotateTransform Angle="90"/>
+								</Setter.Value>
+							</Setter>
+							<Setter Property="LayoutTransform" TargetName="PART_Indicator">
+								<Setter.Value>
+									<RotateTransform Angle="90"/>
+								</Setter.Value>
+							</Setter>
+							<Setter Property="LayoutTransform" TargetName="Foreground">
+								<Setter.Value>
+									<RotateTransform Angle="-90"/>
+								</Setter.Value>
+							</Setter>
+						</Trigger>
+						<Trigger Property="IsIndeterminate" Value="true">
+							<Trigger.EnterActions>
+								<BeginStoryboard x:Name="IndeterminateAnimation_BeginStoryboard" Storyboard="{StaticResource IndeterminateAnimation}"/>
+							</Trigger.EnterActions>
+							<Setter Property="Visibility" TargetName="Indeterminate" Value="Visible"/>
+							<Setter Property="Visibility" TargetName="IndeterminateGradientFill" Value="Visible"/>
+							<Setter Property="Visibility" TargetName="Determinate" Value="Collapsed"/>
+						</Trigger>
+						<Trigger Property="IsIndeterminate" Value="false">
+							<Setter Property="Visibility" TargetName="Determinate" Value="Visible"/>
+							<Setter Property="Visibility" TargetName="Indeterminate" Value="Collapsed"/>
+							<Setter Property="Visibility" TargetName="IndeterminateGradientFill" Value="Collapsed"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- Sketch Repeat button -->
+	<Style x:Key="RepeatButton-Sketch" TargetType="{x:Type RepeatButton}" BasedOn="{x:Null}">
+		<Setter Property="FontFamily" Value="./#Segoe Print"/>
+		<Setter Property="FontSize" Value="13"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="Background" Value="{StaticResource BaseBackground-Sketch}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<!-- We use Grid as a root because it is easy to add more elements to customize the button -->
+					<Grid x:Name="Grid">
+						<!-- Content Presenter is where the text content etc is placed by the control -->
+						<SketchControls:SketchRectangleUC x:Name="SketchRectangleUC"  Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" StrokeWidth="2" SegmentLength="4" SegmentOffset="0.15" SegmentVariance="0.1" Foreground="{TemplateBinding Foreground}"/>
+						<Path x:Name="path" Fill="{x:Null}" Stretch="Fill" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="10" Height="6" Data="M50.25,19.5 L55,12 60.25,19.75"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsFocused" Value="true">
+							<Setter Property="BorderBrush" TargetName="SketchRectangleUC" Value="{DynamicResource FocusedBorder-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="true">
+							<Setter Property="Background" TargetName="SketchRectangleUC" Value="{DynamicResource MouseOverBackground-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="true">
+							<Setter Property="Background" TargetName="SketchRectangleUC" Value="{DynamicResource BaseBorder-Sketch}"/>
+							<Setter Property="Stroke" TargetName="path" Value="{DynamicResource PressedBackground-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="true"/>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Stroke" TargetName="path" Value="{DynamicResource MouseOverBackground-Sketch}"/>
+							<Setter Property="Background" TargetName="SketchRectangleUC" Value="{DynamicResource BaseBackground-Sketch}"/>
+							<Setter Property="BorderBrush" TargetName="SketchRectangleUC" Value="{DynamicResource DisabledBorder-Sketch}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- Sketch Radio Button -->
+	<Style x:Key="RadioButton-Sketch" TargetType="{x:Type RadioButton}">
+		<Setter Property="SnapsToDevicePixels" Value="true"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="Background" Value="{StaticResource BaseBackground-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource BaseBorder-Sketch}"/>
+		<Setter Property="Foreground" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RadioButton}">
+					<!-- BulletDecorator is used to provide baseline alignment between the checkmark and the Content -->
+					<BulletDecorator Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" FocusVisualStyle="{DynamicResource FocusControl-Sketch}">
+						<BulletDecorator.Bullet>
+							<Grid Width="15" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center">
+								<Ellipse x:Name="Ellipse_Border" Fill="{DynamicResource BaseBackground-Sketch}" StrokeThickness="3" Width="12" Height="12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0"/>
+								<SketchControls:SketchCircleUC x:Name="SketchCircleUC" StrokeWidth="2" BorderBrush="{TemplateBinding BorderBrush}" Width="14" Height="14" HorizontalAlignment="Left" VerticalAlignment="Top" ExtensionLength="0" ExtensionVariance="0" SegmentLength="0.8" SegmentOffset="0.8" SegmentVariance="0.1" FocusVisualStyle="{DynamicResource FocusControl-Sketch}" Background="{TemplateBinding Background}"/>
+								<Ellipse Margin="3" x:Name="CheckMark" Fill="{TemplateBinding BorderBrush}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="6" Height="6"/>
+							</Grid>
+						</BulletDecorator.Bullet>
+						<ContentPresenter Margin="3,0,0,0" RecognizesAccessKey="True" HorizontalAlignment="Left" VerticalAlignment="Top" FocusVisualStyle="{DynamicResource FocusControl-Sketch}"/>
+					</BulletDecorator>
+
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsFocused" Value="True">
+							<Setter Property="BorderBrush" TargetName="SketchCircleUC" Value="{DynamicResource FocusedBorder-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsChecked" Value="false">
+							<Setter Property="Visibility" Value="Collapsed" TargetName="CheckMark"/>
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="true">
+							<Setter Property="Fill" TargetName="Ellipse_Border" Value="{DynamicResource MouseOverBackground-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="true">
+							<Setter Property="Fill" TargetName="Ellipse_Border" Value="{DynamicResource PressedBackground-Sketch}"/>
+							<Setter Property="StrokeThickness" TargetName="Ellipse_Border" Value="1"/>
+							<Setter Property="Stroke" TargetName="Ellipse_Border" Value="{x:Null}"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Foreground" Value="{StaticResource BaseBorder-Sketch}"/>
+							<Setter Property="Stroke" TargetName="Ellipse_Border" Value="{x:Null}"/>
+							<Setter Property="BorderBrush" TargetName="SketchCircleUC" Value="{DynamicResource DisabledBorder-Sketch}"/>
+							<Setter Property="Fill" TargetName="Ellipse_Border" Value="{DynamicResource BaseBackground-Sketch}"/>
+							<Setter Property="Fill" TargetName="CheckMark" Value="{DynamicResource DisabledBorder-Sketch}"/>
+							<Setter Property="Background" TargetName="SketchCircleUC" Value="{DynamicResource BaseBackground-Sketch}"/>
+						</Trigger>
+
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}"/>
+		<Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}"/>
+		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Foreground" Value="{DynamicResource DisabledForeground-Sketch}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+	<!--Sketch Thumb - The Thumb is the draggable part of a Slider-->
+	<Style x:Key="Thumb-Sketch" d:IsControlPart="True" TargetType="{x:Type Thumb}">
+		<Setter Property="SnapsToDevicePixels" Value="true"/>
+		<Setter Property="Height" Value="16"/>
+		<Setter Property="Width" Value="16"/>
+		<Setter Property="Foreground" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="Background" Value="{StaticResource BaseBackground-Sketch}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Thumb}">
+					<Grid>
+						<SketchControls:SketchRectangleUC x:Name="SketchRectangleUC" BorderBrush="{TemplateBinding BorderBrush}" ExtensionLength="0" ExtensionVariance="0" SegmentLength="3" SegmentOffset="0.12" StrokeWidth="2" Foreground="{TemplateBinding Foreground}" Background="{TemplateBinding Background}"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsFocused" Value="True">
+							<Setter Property="BorderBrush" TargetName="SketchRectangleUC" Value="{DynamicResource FocusedBorder-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Background" TargetName="SketchRectangleUC" Value="{DynamicResource MouseOverBackground-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsDragging" Value="True">
+							<Setter Property="MinHeight" TargetName="SketchRectangleUC" Value="20"/>
+							<Setter Property="Background" TargetName="SketchRectangleUC" Value="{DynamicResource BaseBorder-Sketch}"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Background" TargetName="SketchRectangleUC" Value="{DynamicResource BaseBackground-Sketch}"/>
+							<Setter Property="BorderBrush" TargetName="SketchRectangleUC" Value="{DynamicResource DisabledBorder-Sketch}"/>
+							<Setter Property="SegmentVariance" TargetName="SketchRectangleUC" Value="0.1"/>
+							<Setter Property="SegmentOffset" TargetName="SketchRectangleUC" Value="0.15"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--Sketch ScrollRepeatButton
+	This is the template for the repeatbuttons on the track of a scrollbar -->
+	<Style x:Key="ScrollRepeatButton-Sketch" d:IsControlPart="True" TargetType="{x:Type RepeatButton}">
+		<Setter Property="Foreground" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="Background" Value="{StaticResource BaseBackground-Sketch}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<!-- We use Grid as a root because it is easy to add more elements to customize the button -->
+					<Grid x:Name="Grid" Background="#00000000"/>
+					<!--Each state sets a brush on the Border in the template -->
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsKeyboardFocused" Value="true"/>
+						<Trigger Property="IsMouseOver" Value="true"/>
+						<Trigger Property="IsPressed" Value="true"/>
+						<Trigger Property="IsEnabled" Value="true"/>
+						<Trigger Property="IsEnabled" Value="false"/>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- Sketch ScrollBar -->
+	<Style x:Key="ScrollBar-Sketch" TargetType="{x:Type ScrollBar}">
+		<Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
+		<Setter Property="Foreground" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="Background" Value="{StaticResource BaseBackground-Sketch}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ScrollBar}">
+					<Grid x:Name="GridRoot">
+						<Grid.RowDefinitions>
+							<RowDefinition MaxHeight="18"/>
+							<RowDefinition Height="0.00001*"/>
+							<RowDefinition MaxHeight="18"/>
+						</Grid.RowDefinitions>
+
+						<Grid>
+							<RepeatButton x:Name="DecreaseRepeat" Style="{StaticResource RepeatButton-Sketch}" Foreground="{TemplateBinding Foreground}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Command="ScrollBar.LineUpCommand" FocusVisualStyle="{DynamicResource FocusControl-Sketch}"/>
+							<!-- a little triangle -->
+						</Grid>
+
+						<!-- Track is a special layout container which sizes the thumb and the repeat button which do jump scrolling either side of it -->
+						<Track Grid.Row="1" x:Name="PART_Track" Orientation="Vertical" IsDirectionReversed="true">
+							<Track.Thumb>
+								<Thumb Style="{StaticResource Thumb-Sketch}"  Foreground="{TemplateBinding Foreground}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Height="Auto" Width="Auto"/>
+							</Track.Thumb>
+							<Track.IncreaseRepeatButton>
+								<RepeatButton x:Name="PageUp" Style="{StaticResource ScrollRepeatButton-Sketch}" Foreground="{TemplateBinding Foreground}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Command="ScrollBar.PageDownCommand" FocusVisualStyle="{DynamicResource FocusControl-Sketch}"/>
+							</Track.IncreaseRepeatButton>
+							<Track.DecreaseRepeatButton>
+								<RepeatButton x:Name="PageDown" Style="{StaticResource ScrollRepeatButton-Sketch}" Foreground="{TemplateBinding Foreground}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Command="ScrollBar.PageUpCommand" FocusVisualStyle="{DynamicResource FocusControl-Sketch}"/>
+							</Track.DecreaseRepeatButton>
+						</Track>
+
+
+						<Grid Grid.Row="2">
+							<RepeatButton  x:Name="IncreaseRepeat" Style="{StaticResource RepeatButton-Sketch}" Foreground="{TemplateBinding Foreground}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Command="ScrollBar.LineDownCommand" RenderTransformOrigin="0.5,0.5" FocusVisualStyle="{DynamicResource FocusControl-Sketch}">
+								<RepeatButton.RenderTransform>
+									<TransformGroup>
+										<ScaleTransform ScaleX="1" ScaleY="-1"/>
+										<SkewTransform AngleX="0" AngleY="0"/>
+										<RotateTransform Angle="0"/>
+										<TranslateTransform X="0" Y="0"/>
+									</TransformGroup>
+								</RepeatButton.RenderTransform>
+							</RepeatButton>
+							<!-- a little triangle -->
+						</Grid>
+						<SketchControls:SketchRectangleUC HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{TemplateBinding Foreground}" Grid.ColumnSpan="1" Grid.RowSpan="3" BorderBrush="{TemplateBinding BorderBrush}" StrokeWidth="2" Background="{x:Null}"/>
+					</Grid>
+
+					<!-- This uses a single template for ScrollBar and rotate it to be Horizontal
+					It also changes the commands so that the it does Left and Right instead of Up and Down Commands -->
+					<ControlTemplate.Triggers>
+						<Trigger Property="Orientation" Value="Horizontal">
+
+							<!-- Rotate the ScrollBar from Vertical to Horizontal -->
+							<Setter Property="LayoutTransform" TargetName="GridRoot">
+								<Setter.Value>
+									<RotateTransform Angle="-90"/>
+								</Setter.Value>
+							</Setter>
+
+							<!-- Track is bound to Orientation internally, so we need to rotate it back to Vertical -->
+							<Setter TargetName="PART_Track" Property="Orientation" Value="Vertical"/>
+
+							<!-- Change the commands to do Horizontal commands -->
+							<Setter Property="Command" Value="ScrollBar.LineLeftCommand" TargetName="DecreaseRepeat"/>
+							<Setter Property="Command" Value="ScrollBar.LineRightCommand" TargetName="IncreaseRepeat"/>
+							<Setter Property="Command" Value="ScrollBar.PageLeftCommand" TargetName="PageDown"/>
+							<Setter Property="Command" Value="ScrollBar.PageRightCommand" TargetName="PageUp"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--Sketch Slider RepeatButton
+	This is the template for the repeatbuttons on the track of a slider -->
+	<Style x:Key="SliderRepeatButton-Sketch" d:IsControlPart="True" TargetType="{x:Type RepeatButton}">
+		<Setter Property="Foreground" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="Background" Value="{StaticResource BaseBackground-Sketch}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<!-- We use Grid as a root because it is easy to add more elements to customize the button -->
+					<Grid x:Name="Grid">
+						<Rectangle Fill="#00000000" Stroke="#00000000"/>
+						<!-- alphad out so we can see the track underneath-->
+					</Grid>
+
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--Sketch Slider
+	Similiar to ScrollBar this template uses Track to layout the draggable Thumb which has an up and down repeat button
+	It uses Thumb-Sketch and SliderRepeatButton-Sketch for the page up and down repeat buttons -->
+	<Style x:Key="Slider-Sketch" TargetType="{x:Type Slider}">
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="Background" Value="{StaticResource BaseBackground-Sketch}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Slider}">
+					<Grid x:Name="GridRoot">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+
+						<Grid Margin="0,0,0,0" VerticalAlignment="Bottom" Height="19" Grid.Row="1">
+							<SketchControls:SketchRectangleUC x:Name="SketchRectangleUC" Margin="4,6,4,6" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" StrokeWidth="2" Foreground="{TemplateBinding Foreground}" FocusVisualStyle="{DynamicResource FocusControl-Sketch}" SegmentLength="8" SegmentOffset="0.1" SegmentVariance="0.1"/>
+						</Grid>
+
+						<!-- TickBar shows the ticks for Slider -->
+						<TickBar Visibility="Collapsed" x:Name="TopTick" Height="4" SnapsToDevicePixels="True" Placement="Top" Fill="{TemplateBinding Foreground}"/>
+
+						<!-- The Track lays out the repeat buttons and thumb -->
+						<Track Grid.Row="1" x:Name="PART_Track">
+							<Track.Thumb>
+								<Thumb Style="{StaticResource Thumb-Sketch}" Foreground="{TemplateBinding Foreground}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" MinHeight="20"/>
+							</Track.Thumb>
+							<Track.IncreaseRepeatButton>
+								<RepeatButton Style="{StaticResource SliderRepeatButton-Sketch}"  Foreground="{TemplateBinding Foreground}" Background="{TemplateBinding Background}" Command="Slider.IncreaseLarge"/>
+								<!-- this is alphad out so that it is interactive but we can still see the track underneath-->
+							</Track.IncreaseRepeatButton>
+							<Track.DecreaseRepeatButton>
+								<RepeatButton Style="{StaticResource SliderRepeatButton-Sketch}" Foreground="{TemplateBinding Foreground}" Background="{TemplateBinding Background}" Command="Slider.DecreaseLarge"/>
+							</Track.DecreaseRepeatButton>
+						</Track>
+
+						<TickBar Visibility="Collapsed" Grid.Row="2" x:Name="BottomTick" Height="4" SnapsToDevicePixels="True" Placement="Bottom" Fill="{TemplateBinding Foreground}"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="TickPlacement" Value="TopLeft">
+							<Setter Property="Visibility" Value="Visible" TargetName="TopTick"/>
+						</Trigger>
+						<Trigger Property="TickPlacement" Value="BottomRight">
+							<Setter Property="Visibility" Value="Visible" TargetName="BottomTick"/>
+						</Trigger>
+						<Trigger Property="TickPlacement" Value="Both">
+							<Setter Property="Visibility" Value="Visible" TargetName="TopTick"/>
+							<Setter Property="Visibility" Value="Visible" TargetName="BottomTick"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Background" TargetName="SketchRectangleUC" Value="{DynamicResource BaseBackground-Sketch}"/>
+							<Setter Property="BorderBrush" TargetName="SketchRectangleUC" Value="{DynamicResource DisabledBorder-Sketch}"/>
+						</Trigger>
+
+						<!-- Use a rotation to create a Vertical Slider form the default Horizontal -->
+						<Trigger Property="Orientation" Value="Vertical">
+							<Setter Property="LayoutTransform" TargetName="GridRoot">
+								<Setter.Value>
+									<RotateTransform Angle="-90"/>
+								</Setter.Value>
+							</Setter>
+							<!-- Track rotates itself based on orientation so need to force it back -->
+							<Setter TargetName="PART_Track" Property="Orientation" Value="Horizontal"/>
+						</Trigger>
+
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--Sketch ListBox -->
+	<Style x:Key="ListBox-Sketch" TargetType="{x:Type ListBox}">
+		<Setter Property="SnapsToDevicePixels" Value="true"/>
+		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+		<Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="Background" Value="{StaticResource BaseBackground-Sketch}"/>
+		<Setter Property="ItemContainerStyle" Value="{DynamicResource ListBoxItem-Sketch}"/>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}"/>
+		<Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ListBox}">
+					<Grid>
+						<ScrollViewer Margin="1" Style="{DynamicResource ScrollViewer-Sketch2}" BorderBrush="{TemplateBinding BorderBrush}" Foreground="{TemplateBinding Foreground}" Focusable="false" Background="{TemplateBinding Background}">
+							<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="2,2,2,2"/>
+							<!-- The StackPanel is used to display the children by setting IsItemsHost to be Trus -->
+						</ScrollViewer>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsEnabled" Value="false"/>
+						<Trigger Property="IsGrouping" Value="true">
+							<Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- Sketch TabControl -->
+	<Style x:Key="TabControl-Sketch" TargetType="{x:Type TabControl}">
+		<Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="Padding" Value="4,4,4,4"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="Foreground" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="Background" Value="{StaticResource BaseBackground-Sketch}"/>
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type TabControl}">
+					<Grid ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
+						<Grid.RowDefinitions>
+							<RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+							<RowDefinition x:Name="RowDefinition1" Height="*"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition x:Name="ColumnDefinition0"/>
+							<ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
+						</Grid.ColumnDefinitions>
+						<TabPanel Margin="0,2,2,0" x:Name="HeaderPanel" Grid.Column="0" Grid.Row="0" IsItemsHost="true" Panel.ZIndex="1" KeyboardNavigation.TabIndex="1" VerticalAlignment="Bottom"/>
+						<Grid x:Name="ContentPanel" Grid.Column="0" Grid.Row="1" KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local" Margin="0,-2,0,0">
+							<SketchControls:SketchRectangleUC x:Name="SketchRectangleUC"  HorizontalAlignment="Stretch" BorderBrush="{TemplateBinding BorderBrush}" VerticalAlignment="Stretch" StrokeWidth="2" ExtensionLength="0" ExtensionVariance="0" SegmentLength="8" SegmentOffset="0.12" SegmentVariance="0.1" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"/>
+							<ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="5,5,5,5" x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"/>
+						</Grid>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="TabStripPlacement" Value="Bottom">
+							<Setter Property="Grid.Row" TargetName="HeaderPanel" Value="1"/>
+							<Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+							<Setter Property="Height" TargetName="RowDefinition1" Value="Auto"/>
+							<Setter Property="Margin" TargetName="HeaderPanel" Value="2,0,2,2"/>
+							<Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+							<Setter Property="Margin" TargetName="ContentPanel" Value="0,0,0,0"/>
+						</Trigger>
+						<Trigger Property="TabStripPlacement" Value="Left">
+							<Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
+							<Setter Property="Grid.Column" TargetName="HeaderPanel" Value="0"/>
+							<Setter Property="Width" TargetName="ColumnDefinition0" Value="Auto"/>
+							<Setter Property="Width" TargetName="ColumnDefinition1" Value="*"/>
+							<Setter Property="Margin" TargetName="HeaderPanel" Value="2,2,0,2"/>
+							<Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+							<Setter Property="Grid.Column" TargetName="ContentPanel" Value="1"/>
+							<Setter Property="Margin" TargetName="ContentPanel" Value="0,0,0,0"/>
+							<Setter Property="Height" TargetName="RowDefinition1" Value="*"/>
+							<Setter Property="Grid.RowSpan" TargetName="ContentPanel" Value="2"/>
+							<Setter Property="Height" TargetName="RowDefinition0" Value="Auto"/>
+							<Setter Property="MinHeight" TargetName="RowDefinition0" Value="12.98"/>
+						</Trigger>
+						<Trigger Property="TabStripPlacement" Value="Right">
+							<Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
+							<Setter Property="Grid.Column" TargetName="HeaderPanel" Value="1"/>
+							<Setter Property="Width" TargetName="ColumnDefinition0" Value="*"/>
+							<Setter Property="Width" TargetName="ColumnDefinition1" Value="Auto"/>
+							<Setter Property="Margin" TargetName="HeaderPanel" Value="0,2,2,2"/>
+							<Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+							<Setter Property="Margin" TargetName="ContentPanel" Value="0,0,0,0"/>
+							<Setter Property="Height" TargetName="RowDefinition0" Value="Auto"/>
+							<Setter Property="Height" TargetName="RowDefinition1" Value="*"/>
+							<Setter Property="Grid.RowSpan" TargetName="ContentPanel" Value="2"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Foreground" Value="{StaticResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+							<Setter Property="BorderBrush" TargetName="SketchRectangleUC" Value="{DynamicResource DisabledBorder-Sketch}"/>
+							<Setter Property="Foreground" TargetName="SketchRectangleUC" Value="{DynamicResource DisabledForeground-Sketch}"/>
+							<Setter Property="Background" TargetName="SketchRectangleUC" Value="{DynamicResource BaseBackground-Sketch}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}"/>
+	</Style>
+
+	<!-- Sketch TabItem Focus Visual -->
+	<Style x:Key="TabItemFocusVisual-Sketch">
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Rectangle SnapsToDevicePixels="true" Margin="3,3,3,1" Stroke="{StaticResource BaseBorder-Sketch}" StrokeDashArray="1 2" StrokeThickness="1"/>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- Sketch TabItem -->
+	<Style x:Key="TabItem-Sketch" d:IsControlPart="true" TargetType="{x:Type TabItem}">
+		<Setter Property="FocusVisualStyle" Value="{StaticResource TabItemFocusVisual-Sketch}"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="Padding" Value="6,1,6,1"/>
+		<Setter Property="Foreground" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource BaseBorder-Sketch}"/>
+		<Setter Property="Background" Value="{StaticResource BaseBackground-Sketch}"/>
+		<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+		<Setter Property="VerticalContentAlignment" Value="Stretch"/>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}"/>
+		<Setter Property="Foreground" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type TabItem}">
+					<Grid x:Name="grid" SnapsToDevicePixels="true" RenderTransformOrigin="0.5,0.5">
+						<Grid.RenderTransform>
+							<TransformGroup>
+								<ScaleTransform/>
+								<SkewTransform/>
+								<RotateTransform/>
+								<TranslateTransform/>
+							</TransformGroup>
+						</Grid.RenderTransform>
+						<Rectangle x:Name="bgUnselected" Fill="{TemplateBinding BorderBrush}" Stroke="{x:Null}" Margin="1,1,1,0" Opacity="0.3"/>
+						<SketchControls:SketchRectangleUC x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" StrokeWidth="2" SegmentLength="8" SegmentOffset="0.12" SegmentVariance="0.1" Foreground="{TemplateBinding Foreground}" Background="{x:Null}"/>
+						<Rectangle x:Name="bgSelected" Fill="{TemplateBinding Background}" Stroke="{x:Null}" Margin="2,2,2,-1" Visibility="Collapsed"/>
+						<Grid x:Name="Bd">
+							<ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+								HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" 
+								Margin="10,5,7,1" 
+								x:Name="Content" 
+								VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" 
+								ContentSource="Header" 
+								RecognizesAccessKey="True"/>
+						</Grid>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="true">
+							<Setter Property="Opacity" TargetName="bgUnselected" Value="0.5"/>
+						</Trigger>
+						<Trigger Property="IsSelected" Value="true">
+							<Setter Property="Panel.ZIndex" Value="1"/>
+							<Setter Property="Visibility" TargetName="bgSelected" Value="Visible"/>
+						</Trigger>
+						<Trigger Property="TabStripPlacement" Value="Bottom">
+							<Setter Property="Margin" TargetName="bgUnselected" Value="1,0,1,1"/>
+							<Setter Property="Margin" TargetName="bgSelected" Value="2,-1,2,2"/>
+							<Setter Property="Margin" TargetName="grid" Value="0,-2,0,0"/>
+						</Trigger>
+						<Trigger Property="TabStripPlacement" Value="Left">
+							<Setter Property="Margin" TargetName="bgUnselected" Value="1,1,0,1"/>
+							<Setter Property="Margin" TargetName="bgSelected" Value="2,2,-1,2"/>
+							<Setter Property="Margin" TargetName="grid" Value="0,0,-2,0"/>
+						</Trigger>
+						<Trigger Property="TabStripPlacement" Value="Right">
+							<Setter Property="Margin" TargetName="grid" Value="-2,0,0,0"/>
+							<Setter Property="Margin" TargetName="bgUnselected" Value="0,1,1,1"/>
+							<Setter Property="Margin" TargetName="bgSelected" Value="-1,2,2,2"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Foreground" Value="{StaticResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+							<Setter Property="Background" TargetName="border" Value="{DynamicResource DisabledBackground-Sketch}"/>
+							<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource DisabledBorder-Sketch}"/>
+							<Setter Property="Foreground" TargetName="border" Value="{DynamicResource DisabledForeground-Sketch}"/>
+							<Setter Property="Opacity" TargetName="Content" Value="0.5"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}"/>
+		<Style.Triggers>
+			<Trigger Property="Selector.IsSelected" Value="True">
+				<Setter Property="Foreground" Value="{DynamicResource PressedForeground-Sketch}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+	<!-- Basic Sketch Textbox -->
+	<Style x:Key="BasicTextBox-Sketch" TargetType="{x:Type TextBox}">
+		<Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+		<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+		<Setter Property="AllowDrop" Value="true"/>
+		<Setter Property="Foreground" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource BaseBorder-Sketch}"/>
+		<Setter Property="Background" Value="{StaticResource BaseBackground-Sketch}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type TextBox}">
+					<Grid>
+						<!-- The implementation places the Content into the ScrollViewer. It must be named PART_ContentHost for the control to function -->
+						<ScrollViewer Style="{DynamicResource ScrollViewer-Sketch2}" x:Name="PART_ContentHost" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}" BorderBrush="{TemplateBinding BorderBrush}" FontFamily="./#Segoe Print" d:IsStaticText="False"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsFocused" Value="True">
+							<Setter Property="Background" TargetName="PART_ContentHost" Value="#FFBBBBBB"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter Property="Background" TargetName="PART_ContentHost" Value="{DynamicResource DisabledBackground-Sketch}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}"/>
+		<Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}"/>
+		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Foreground" Value="{DynamicResource DisabledForeground-Sketch}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+	<!-- Sketch TextBox -->
+	<Style x:Key="TextBox-Sketch" TargetType="{x:Type TextBox}" BasedOn="{StaticResource BasicTextBox-Sketch}"/>
+
+	<!-- Title Left Sketch TextBlock -->
+	<Style x:Key="TitleLeft-Sketch" TargetType="{x:Type TextBlock}" d:StyleDefaultContent="Title Left">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="40"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+	</Style>
+
+	<!-- Title Center Sketch TextBlock -->
+	<Style x:Key="TitleCenter-Sketch" TargetType="{x:Type TextBlock}" d:StyleDefaultContent="Title Center">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="40"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="TextAlignment" Value="Center"/>
+		<Setter Property="HorizontalAlignment" Value="Center"/>
+	</Style>
+
+	<!-- Title Right Sketch TextBlock -->
+	<Style x:Key="TitleRight-Sketch" TargetType="{x:Type TextBlock}" d:StyleDefaultContent="Title Right">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="40"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="TextAlignment" Value="Right"/>
+		<Setter Property="HorizontalAlignment" Value="Right"/>
+	</Style>
+
+	<!-- Subtitle Left Sketch TextBlock -->
+	<Style x:Key="SubtitleLeft-Sketch" TargetType="{x:Type TextBlock}" d:StyleDefaultContent="Subtitle Left">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="23"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+	</Style>
+
+	<!-- Subtitle Center Sketch TextBlock -->
+	<Style x:Key="SubtitleCenter-Sketch" TargetType="{x:Type TextBlock}" d:StyleDefaultContent="Subtitle Center">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="23"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="TextAlignment" Value="Center"/>
+		<Setter Property="HorizontalAlignment" Value="Center"/>
+	</Style>
+
+	<!-- Subtitle Right Sketch TextBlock -->
+	<Style x:Key="SubtitleRight-Sketch" TargetType="{x:Type TextBlock}" d:StyleDefaultContent="Subtitle Right">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="23"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="TextAlignment" Value="Right"/>
+		<Setter Property="HorizontalAlignment" Value="Right"/>
+	</Style>
+
+	<!-- Body Left Sketch TextBlock -->
+	<Style x:Key="BodyLeft-Sketch" TargetType="{x:Type TextBlock}" d:StyleDefaultContent="Body Text Left">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="16"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+	</Style>
+
+	<!-- Body Center Sketch TextBlock -->
+	<Style x:Key="BodyCenter-Sketch" TargetType="{x:Type TextBlock}" d:StyleDefaultContent="Body Text Center">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="16"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="HorizontalAlignment" Value="Center"/>
+		<Setter Property="TextAlignment" Value="Center"/>
+	</Style>
+
+	<!-- Body Right Center TextBlock -->
+	<Style x:Key="BodyRight-Sketch" TargetType="{x:Type TextBlock}" d:StyleDefaultContent="Body Text Right">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}"/>
+		<Setter Property="FontSize" Value="16"/>
+		<Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}"/>
+		<Setter Property="HorizontalAlignment" Value="Right"/>
+		<Setter Property="TextAlignment" Value="Right"/>
+	</Style>
+
+</ResourceDictionary>

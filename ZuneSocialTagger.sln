@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZuneSocialTagger.Integratio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZuneSocialTagger.UnitTests", "src\test\ZuneSocialTagger.UnitTests\ZuneSocialTagger.UnitTests.csproj", "{915A3D2B-2B11-47DE-9D52-24FC46578DDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZuneSocialTagger.GUI", "ZuneSocialTagger.GUI\ZuneSocialTagger.GUI.csproj", "{FF8CC2A4-0CAE-4B62-8CF1-107765A5CF01}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZuneSocialTagger.GUI", "src\app\ZuneSocialTagger.GUI\ZuneSocialTagger.GUI.csproj", "{FF8CC2A4-0CAE-4B62-8CF1-107765A5CF01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
