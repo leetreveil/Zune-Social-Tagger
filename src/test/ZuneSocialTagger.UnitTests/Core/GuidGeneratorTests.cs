@@ -4,6 +4,7 @@ using NUnit.Framework;
 
 namespace ZuneSocialTagger.UnitTests.Core
 {
+    //TODO: Remove this class, only here to verify GUID's work how i expected them to
     [TestFixture]
     public class GuidGeneratorTests
     {
@@ -16,7 +17,7 @@ namespace ZuneSocialTagger.UnitTests.Core
 
             string s = ByteArrayToString(bytes);
 
-            Assert.That(s, Is.EqualTo("01f87c670001db1189ca0019b92a3933"));
+            Assert.That(s, Is.EqualTo("01f87c690001db1189ca0019b92a3933"));
         }
 
         public static string ByteArrayToString(byte[] ba)

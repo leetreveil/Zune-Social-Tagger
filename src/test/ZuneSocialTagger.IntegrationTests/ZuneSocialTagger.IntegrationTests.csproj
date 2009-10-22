@@ -52,12 +52,15 @@
   <ItemGroup>
     <Compile Include="AsyncTesting.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="ZuneWebsiteScraper\AlbumMediaIDScraperTests.cs" />
+    <Compile Include="ZuneWebsiteScraper\ZuneAlbumWebpageScraperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZuneWebsiteScraper\PageDownloaderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="validalbumlistwebpage.xml">
+    <Content Include="ZuneWebsiteScraper\nonzunewebpage.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZuneWebsiteScraper\validalbumlistwebpage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

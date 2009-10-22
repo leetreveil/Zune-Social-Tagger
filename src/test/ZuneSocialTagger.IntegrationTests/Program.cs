@@ -1,7 +1,6 @@
 using System;
 using ZuneSocialTagger.Core.ZuneWebsiteScraper;
 
-
 namespace ZuneSocialTagger.IntegrationTests
 {
     public class Program
@@ -32,7 +31,7 @@ namespace ZuneSocialTagger.IntegrationTests
                 Console.WriteLine("");
 
 
-                var scraper = new AlbumMediaIDScraper(webpageData);
+                var scraper = new ZuneAlbumWebpageScraper(webpageData);
 
                 Console.WriteLine("ZuneAlbumArtistID: {0}", scraper.ScrapeAlbumArtistID());
                 Console.WriteLine("ZuneAlbumMediaID: {0}", scraper.ScrapeAlbumMediaID());

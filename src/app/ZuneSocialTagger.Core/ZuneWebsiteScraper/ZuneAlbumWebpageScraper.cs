@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
+using System.Xml.XPath;
 using HtmlAgilityPack;
 
 namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
@@ -9,19 +10,31 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
     /// <summary>
     /// This class assumes valid input from a webpage and will fail to load on an invalid webpage
     /// </summary>
-    public class AlbumMediaIDScraper
+    public class ZuneAlbumWebpageScraper
     {
         private readonly HtmlDocument _document;
 
-        public AlbumMediaIDScraper(string page)
+        public ZuneAlbumWebpageScraper(string page)
         {
             _document = new HtmlDocument();
             _document.LoadHtml(page);
+
+            VerifyThatWebpageIsAValidZuneWebpage();
+        }
+
+        private void VerifyThatWebpageIsAValidZuneWebpage()
+        {
+            XPathNavigator xPathNavigator = _document.CreateNavigator();
+
+            XPathNavigator titleNode = xPathNavigator.SelectSingleNode("//head/title");
+
+            if (!titleNode.InnerXml.ToLower().Contains("zune.net"))
+                throw new WebpageParseException("could not identify this webpage as being a zune.net webpage");
         }
 
         public Guid ScrapeAlbumMediaID()
         {
-            return GetAlbumMediaIdFromMediaInfo(ScrapeAttribute("_albumHeader", "div/a", "mediainfo"));
+            return GetAlbumMediaIdFromMediaInfoAttribute(ScrapeAttribute("_albumHeader", "div/a", "mediainfo"));
         }
 
         public Guid ScrapeAlbumArtistID()
@@ -36,35 +49,42 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
             try
             {
                 HtmlNode node = _document.GetElementbyId("_albumSongs");
-                //we are selecting all ul nodes with a class attribute and a li child with a media info attribute
+                //we are selecting all ul nodes with a class attributeId and a li child with a media info attributeId
                  collection = node.SelectNodes("ul[@class='SongWithOrdinals ']/li[@mediainfo]");
             }
-            catch (Exception){throw new Exception("problem with the html file");}
+                //TODO: make this exception less generic
+            catch (NullReferenceException){throw new WebpageParseException("could not read the song list from the webpage");}
 
 
-            foreach (var nodeCollection in collection)
-                yield return GetIDAndSongNameFromMediaInfoAttribute(nodeCollection.Attributes["mediainfo"].Value);
+            return collection.Select(nodeCollection => GetIDAndSongNameFromMediaInfoAttribute(nodeCollection.Attributes["mediainfo"].Value));
         }
 
-        private string ScrapeAttribute(string elementId, string singleNode, string attribute)
+        /// <summary>
+        /// Gets the specified attributeId value from the provided values
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <param name="xpathQuery"></param>
+        /// <param name="attributeId"></param>
+        /// <returns></returns>
+        private string ScrapeAttribute(string elementId, string xpathQuery, string attributeId)
         {
             try
             {
                 HtmlNode node = _document.GetElementbyId(elementId);
-                HtmlNode singleNodex = node.SelectSingleNode(singleNode);
-                HtmlAttribute attributex = singleNodex.Attributes[attribute];
+                HtmlNode singleNode = node.SelectSingleNode(xpathQuery);
+                HtmlAttribute attribute = singleNode.Attributes[attributeId];
 
-                return attributex.Value;
+                return attribute.Value;
             }
-            catch (Exception)
+            catch (NullReferenceException)
             {
                 //TODO: make the exception less generic
-                throw new Exception("problem with the html file");
+                throw new WebpageParseException("could not get the requested attributeId");
             }
         }
 
         /// <summary>
-        /// Extracts the AlbumArtistID from a href attribute
+        /// Extracts the AlbumArtistID from a href attributeId
         /// </summary>
         /// <param name="attributeString">Should look like this: FanClub00710a00-0600-11db-89ca-0019b92a3933</param>
         /// <returns></returns>
@@ -78,13 +98,13 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
             return GetMediaInfoAttributeData(attributeString, "#song#");
         }
 
-        private static Guid GetAlbumMediaIdFromMediaInfo(string attributeString)
+        private static Guid GetAlbumMediaIdFromMediaInfoAttribute(string attributeString)
         {
             return GetMediaInfoAttributeData(attributeString, "#album#").Value;
         }
 
         /// <summary>
-        /// Splits a mediainfo attribute into a keypair
+        /// Splits a mediainfo attributeId into a keypair
         /// </summary>
         /// <param name="attributeString">Should look like: 41b9f201-0100-11db-89ca-0019b92a3933#song#Hari Kari
         ///                               Should look like: 37b9f201-0100-11db-89ca-0019b92a3933#album#Ignore The Ignorant</param>
