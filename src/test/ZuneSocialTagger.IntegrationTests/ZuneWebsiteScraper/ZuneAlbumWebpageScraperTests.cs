@@ -95,6 +95,20 @@ namespace ZuneSocialTagger.IntegrationTests.ZuneWebsiteScraper
             Assert.That(releaseYear, Is.EqualTo(2009));
         }
 
+        [Test]
+        public void Then_it_should_be_able_to_scrape_the_url_to_the_albums_artwork()
+        {
+            var scraper = new ZuneAlbumWebpageScraper(_fileData);
+
+            string expectedUrl =
+                "http&#58;&#47;&#47;image.catalog.zune.net&#47;v3.0&#47;image&#47;37b9f201-0300-11db-89ca-0019b92a3933&#63;resize&#61;true&#38;width&#61;240&#38;height&#61;240";
+
+            string url = scraper.ScrapAlbumArtworkUrl();
+
+            Assert.That(url,Is.EqualTo(expectedUrl));
+        }
+
+
     }
 
     /// <summary>

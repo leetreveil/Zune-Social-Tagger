@@ -86,6 +86,15 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
             return Convert.ToInt32(TrimCarriageReturnsAndBlankSpacesAtStartOfString(albumReleaseYearNode.InnerText).Substring(9));
         }
 
+
+        public string ScrapeAlbumArtworkUrl()
+        {
+            HtmlNode node = _document.GetElementbyId("_albumHeader");
+            HtmlNode albumReleaseYearNode = node.SelectSingleNode("div/a/img[@class='LargeImage jsImage']");
+
+            return albumReleaseYearNode.Attributes["src"].Value;
+        }
+
         private static string TrimCarriageReturnsAndBlankSpacesAtStartOfString(string input)
         {
             return input.Replace("\n", "").Replace("\r", "").TrimStart();
