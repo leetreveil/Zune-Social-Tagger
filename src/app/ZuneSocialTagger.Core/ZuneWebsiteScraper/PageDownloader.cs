@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
+using System.Web;
 
 namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 {
@@ -29,8 +30,9 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 
                 Stream stream = response.GetResponseStream();
 
-                using (var reader = new StreamReader(stream, Encoding.UTF8))
-                    return reader.ReadToEnd();
+                //TODO: Move the HtmlDecode to somewhere later down the pipeline as we dont really need to be decoding the entire page
+                using (var reader = new StreamReader(stream, Encoding.Default))
+                    return HttpUtility.HtmlDecode(reader.ReadToEnd());
             }
             catch (NotSupportedException ex)
             {

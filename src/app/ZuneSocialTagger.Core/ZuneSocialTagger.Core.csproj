@@ -40,10 +40,12 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZuneWebsiteScraper\Song.cs" />
     <Compile Include="ZuneWebsiteScraper\WebpageParseException.cs" />
     <Compile Include="ZuneWebsiteScraper\ZuneAlbumWebpageScraper.cs" />
     <Compile Include="ZuneWebsiteScraper\PageDownloader.cs" />

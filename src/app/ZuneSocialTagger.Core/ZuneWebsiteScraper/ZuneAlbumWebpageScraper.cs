@@ -42,7 +42,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
             return GetAlbumArtistIDFromFanClubAttribute(ScrapeAttribute("_artistHeader", "div/ul", "id"));
         }
 
-        public IEnumerable<KeyValuePair<string,Guid>> GetSongTitleAndIDs()
+        public IEnumerable<Song> GetSongTitleAndIDs()
         {
             HtmlNodeCollection collection;
 
@@ -57,6 +57,38 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 
 
             return collection.Select(nodeCollection => GetIDAndSongNameFromMediaInfoAttribute(nodeCollection.Attributes["mediainfo"].Value));
+        }
+
+        public string ScrapeAlbumArtist()
+        {
+            HtmlNode node = _document.GetElementbyId("_albumHeader");
+            HtmlNode albumArtistNode = node.SelectSingleNode("div/ul/li[@class='GeneralMetaData GreyLinkV2 Artist']/a");
+
+            return TrimCarriageReturnsAndBlankSpacesAtStartOfString(albumArtistNode.InnerText);
+        }
+
+        public string ScrapeAlbumTitle()
+        {
+            HtmlNode node = _document.GetElementbyId("_albumHeader");
+            HtmlNode albumTitleNode = node.SelectSingleNode("div/ul/li/ul/li/h5");
+
+
+            //TODO: refactor these three methods
+
+            return TrimCarriageReturnsAndBlankSpacesAtStartOfString(albumTitleNode.InnerText);
+        }
+
+        public int ScrapeAlbumReleaseYear()
+        {
+            HtmlNode node = _document.GetElementbyId("_albumHeader");
+            HtmlNode albumReleaseYearNode = node.SelectSingleNode("div/ul/li[@class='GeneralMetaData ReleaseYear']");
+
+            return Convert.ToInt32(TrimCarriageReturnsAndBlankSpacesAtStartOfString(albumReleaseYearNode.InnerText).Substring(9));
+        }
+
+        private static string TrimCarriageReturnsAndBlankSpacesAtStartOfString(string input)
+        {
+            return input.Replace("\n", "").Replace("\r", "").TrimStart();
         }
 
         /// <summary>
@@ -93,14 +125,14 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
             return new Guid(attributeString.Substring(attributeString.Length - 36));
         }
 
-        private static KeyValuePair<string, Guid> GetIDAndSongNameFromMediaInfoAttribute(string attributeString)
+        private static Song GetIDAndSongNameFromMediaInfoAttribute(string attributeString)
         {
             return GetMediaInfoAttributeData(attributeString, "#song#");
         }
 
         private static Guid GetAlbumMediaIdFromMediaInfoAttribute(string attributeString)
         {
-            return GetMediaInfoAttributeData(attributeString, "#album#").Value;
+            return GetMediaInfoAttributeData(attributeString, "#album#").Guid;
         }
 
         /// <summary>
@@ -109,7 +141,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
         /// <param name="attributeString">Should look like: 41b9f201-0100-11db-89ca-0019b92a3933#song#Hari Kari
         ///                               Should look like: 37b9f201-0100-11db-89ca-0019b92a3933#album#Ignore The Ignorant</param>
         /// <returns></returns>
-        private static KeyValuePair<string,Guid> GetMediaInfoAttributeData(string attributeString, string splitOn)
+        private static Song GetMediaInfoAttributeData(string attributeString, string splitOn)
         {
             var regex = new Regex(splitOn);
 
@@ -117,7 +149,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 
             string[] split = regex.Split(attributeString, 2);
 
-            return new KeyValuePair<string, Guid>(split[1], new Guid(split[0]));
+            return new Song {Guid = new Guid(split[0]), Title = split[1]};
         }
     }
 }

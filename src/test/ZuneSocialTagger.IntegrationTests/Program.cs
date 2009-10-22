@@ -1,4 +1,5 @@
 using System;
+using System.Windows;
 using ZuneSocialTagger.Core.ZuneWebsiteScraper;
 
 namespace ZuneSocialTagger.IntegrationTests
@@ -35,11 +36,14 @@ namespace ZuneSocialTagger.IntegrationTests
 
                 Console.WriteLine("ZuneAlbumArtistID: {0}", scraper.ScrapeAlbumArtistID());
                 Console.WriteLine("ZuneAlbumMediaID: {0}", scraper.ScrapeAlbumMediaID());
+                Console.WriteLine("Album Artist: {0}",scraper.ScrapeAlbumArtist());
+                Console.WriteLine("Title: {0}",scraper.ScrapeAlbumTitle());
+                Console.WriteLine("Release Year: {0}",scraper.ScrapeAlbumReleaseYear());
                 Console.WriteLine("");
 
                 foreach (var song in scraper.GetSongTitleAndIDs())
                 {
-                    Console.WriteLine(song);
+                    Console.WriteLine("{0} == {1}",song.Title,song.Guid);
                 }
             }
 
