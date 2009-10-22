@@ -57,10 +57,10 @@
     <Compile Include="ZuneWebsiteScraper\PageDownloaderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ZuneWebsiteScraper\nonzunewebpage.xml">
+    <Content Include="SampleData\nonzunewebpage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ZuneWebsiteScraper\validalbumlistwebpage.xml">
+    <Content Include="SampleData\validalbumlistwebpage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

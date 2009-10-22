@@ -10,7 +10,7 @@ namespace ZuneSocialTagger.IntegrationTests.ZuneWebsiteScraper
     [TestFixture]
     public class WhenAValidZuneAlbumWebpageIsProvided
     {
-        private const string PathToFile = "ZuneWebsiteScraper/validalbumlistwebpage.xml";
+        private const string PathToFile = "SampleData/validalbumlistwebpage.xml";
         private string _fileData;
 
         public WhenAValidZuneAlbumWebpageIsProvided()
@@ -67,7 +67,7 @@ namespace ZuneSocialTagger.IntegrationTests.ZuneWebsiteScraper
     [TestFixture]
     public class WhenAInvalidZuneWebpageIsProvided
     {
-        private const string PathToFile = "ZuneWebsiteScraper/nonzunewebpage.xml";
+        private const string PathToFile = "SampleData/nonzunewebpage.xml";
         private string _fileData;
 
         public WhenAInvalidZuneWebpageIsProvided()
