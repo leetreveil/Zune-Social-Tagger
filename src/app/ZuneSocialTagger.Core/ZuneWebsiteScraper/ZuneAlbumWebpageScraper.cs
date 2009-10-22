@@ -44,51 +44,48 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
         public IEnumerable<Song> GetSongTitleAndIDs()
         {
             HtmlNodeCollection collection;
+            HtmlNode node = _document.GetElementbyId("_albumSongs");
 
-            try
-            {
-                HtmlNode node = _document.GetElementbyId("_albumSongs");
-                //we are selecting all ul nodes with a class attributeId and a li child with a media info attributeId
-                collection = node.SelectNodes("ul[@class='SongWithOrdinals ']/li[@mediainfo]");
-            }
-                //TODO: make this exception less generic
-            catch (NullReferenceException)
-            {
-                throw new WebpageParseException("could not read the song list from the webpage");
-            }
-
+            //we are selecting all ul nodes with a class attributeId and a li child with a media info attributeId
+            collection = node.SelectNodes("ul[@class='SongWithOrdinals ']/li[@mediainfo]");
 
             return
                 collection.Select(
                     nodeCollection =>
-                        GetIDAndSongNameFromMediaInfoAttribute(nodeCollection.Attributes["mediainfo"].Value));
+                    GetIDAndSongNameFromMediaInfoAttribute(nodeCollection.Attributes["mediainfo"].Value));
         }
 
         public string ScrapeAlbumArtist()
         {
-            return
-                _document.GetNodeByIdAndXpath(_albumHeaderNodeId, "div/ul/li[@class='GeneralMetaData GreyLinkV2 Artist']/a").
-                    InnerText.TrimCarriageReturns().TrimStart();
+            return this.GetTextFromAlbumHeaderNodeAndClean("div/ul/li[@class='GeneralMetaData GreyLinkV2 Artist']/a");
         }
 
         public string ScrapeAlbumTitle()
         {
-            return
-                _document.GetNodeByIdAndXpath(_albumHeaderNodeId, "div/ul/li/ul/li/h5").InnerText.TrimCarriageReturns().TrimStart();
+            return this.GetTextFromAlbumHeaderNodeAndClean("div/ul/li/ul/li/h5");
         }
 
         public int ScrapeAlbumReleaseYear()
         {
-            return Convert.ToInt32(_document.GetNodeByIdAndXpath(_albumHeaderNodeId,
-                                                         "div/ul/li[@class='GeneralMetaData ReleaseYear']").InnerText.
-                                                             TrimCarriageReturns().TrimStart().Substring(9));
+            //the reslease year is extracted from a string like this: Released 2009
+            //substring is skipping the first 9 characters
+            return
+                Convert.ToInt32(
+                    this.GetTextFromAlbumHeaderNodeAndClean("div/ul/li[@class='GeneralMetaData ReleaseYear']").Substring
+                        (9));
         }
 
 
         public string ScrapeAlbumArtworkUrl()
         {
             return
-                _document.GetNodeByIdAndXpath(_albumHeaderNodeId, "div/a/img[@class='LargeImage jsImage']").Attributes["src"].Value;
+                _document.GetNodeByIdAndXpath(_albumHeaderNodeId, "div/a/img[@class='LargeImage jsImage']").Attributes[
+                    "src"].Value;
+        }
+
+        private string GetTextFromAlbumHeaderNodeAndClean(string xPath)
+        {
+            return _document.GetNodeByIdAndXpath(_albumHeaderNodeId, xPath).InnerText.TrimCarriageReturns().TrimStart();
         }
 
         /// <summary>
@@ -99,7 +96,11 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
         /// <returns></returns>
         private static Song GetIDAndSongNameFromMediaInfoAttribute(string attributeString)
         {
-            return new Song { Guid = attributeString.ExtractGuid(), Title = attributeString.Substring(attributeString.LastIndexOf('#') + 1) };
+            return new Song
+                       {
+                           Guid = attributeString.ExtractGuid(),
+                           Title = attributeString.Substring(attributeString.LastIndexOf('#') + 1)
+                       };
         }
     }
 }
