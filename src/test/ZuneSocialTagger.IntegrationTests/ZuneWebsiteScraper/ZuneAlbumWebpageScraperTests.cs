@@ -103,7 +103,7 @@ namespace ZuneSocialTagger.IntegrationTests.ZuneWebsiteScraper
             string expectedUrl =
                 "http&#58;&#47;&#47;image.catalog.zune.net&#47;v3.0&#47;image&#47;37b9f201-0300-11db-89ca-0019b92a3933&#63;resize&#61;true&#38;width&#61;240&#38;height&#61;240";
 
-            string url = scraper.ScrapAlbumArtworkUrl();
+            string url = scraper.ScrapeAlbumArtworkUrl();
 
             Assert.That(url,Is.EqualTo(expectedUrl));
         }

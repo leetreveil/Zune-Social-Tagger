@@ -39,7 +39,7 @@ namespace ZuneSocialTagger.IntegrationTests
                 Console.WriteLine("Album Artist: {0}",scraper.ScrapeAlbumArtist());
                 Console.WriteLine("Title: {0}",scraper.ScrapeAlbumTitle());
                 Console.WriteLine("Release Year: {0}",scraper.ScrapeAlbumReleaseYear());
-                Console.WriteLine("Artwork url: {0}",scraper.ScrapAlbumArtworkUrl());
+                Console.WriteLine("Artwork url: {0}",scraper.ScrapeAlbumArtworkUrl());
                 Console.WriteLine("");
 
                 foreach (var song in scraper.GetSongTitleAndIDs())

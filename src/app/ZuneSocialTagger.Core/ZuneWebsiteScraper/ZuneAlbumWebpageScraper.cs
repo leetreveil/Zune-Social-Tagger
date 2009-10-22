@@ -13,6 +13,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
     public class ZuneAlbumWebpageScraper
     {
         private readonly HtmlDocument _document;
+        private string _albumHeaderNodeId = "_albumHeader";
 
         public ZuneAlbumWebpageScraper(string page)
         {
@@ -34,12 +35,15 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 
         public Guid ScrapeAlbumMediaID()
         {
-            return GetAlbumMediaIdFromMediaInfoAttribute(ScrapeAttribute("_albumHeader", "div/a", "mediainfo"));
+            return
+                GetAlbumMediaIdFromMediaInfoAttribute(
+                    _document.GetNode("_albumHeader", "div/a").Attributes["mediainfo"].Value);
         }
 
         public Guid ScrapeAlbumArtistID()
         {
-            return GetAlbumArtistIDFromFanClubAttribute(ScrapeAttribute("_artistHeader", "div/ul", "id"));
+            return
+                GetAlbumArtistIDFromFanClubAttribute(_document.GetNode("_artistHeader", "div/ul").Attributes["id"].Value);
         }
 
         public IEnumerable<Song> GetSongTitleAndIDs()
@@ -50,78 +54,46 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
             {
                 HtmlNode node = _document.GetElementbyId("_albumSongs");
                 //we are selecting all ul nodes with a class attributeId and a li child with a media info attributeId
-                 collection = node.SelectNodes("ul[@class='SongWithOrdinals ']/li[@mediainfo]");
+                collection = node.SelectNodes("ul[@class='SongWithOrdinals ']/li[@mediainfo]");
             }
                 //TODO: make this exception less generic
-            catch (NullReferenceException){throw new WebpageParseException("could not read the song list from the webpage");}
+            catch (NullReferenceException)
+            {
+                throw new WebpageParseException("could not read the song list from the webpage");
+            }
 
 
-            return collection.Select(nodeCollection => GetIDAndSongNameFromMediaInfoAttribute(nodeCollection.Attributes["mediainfo"].Value));
+            return
+                collection.Select(
+                    nodeCollection =>
+                        GetIDAndSongNameFromMediaInfoAttribute(nodeCollection.Attributes["mediainfo"].Value));
         }
 
         public string ScrapeAlbumArtist()
         {
-            HtmlNode node = _document.GetElementbyId("_albumHeader");
-            HtmlNode albumArtistNode = node.SelectSingleNode("div/ul/li[@class='GeneralMetaData GreyLinkV2 Artist']/a");
-
-            return TrimCarriageReturnsAndBlankSpacesAtStartOfString(albumArtistNode.InnerText);
+            return
+                _document.GetNode(_albumHeaderNodeId, "div/ul/li[@class='GeneralMetaData GreyLinkV2 Artist']/a").
+                    InnerText.TrimCarriageReturns().TrimStart();
         }
 
         public string ScrapeAlbumTitle()
         {
-            HtmlNode node = _document.GetElementbyId("_albumHeader");
-            HtmlNode albumTitleNode = node.SelectSingleNode("div/ul/li/ul/li/h5");
-
-
-            //TODO: refactor these three methods
-
-            return TrimCarriageReturnsAndBlankSpacesAtStartOfString(albumTitleNode.InnerText);
+            return
+                _document.GetNode(_albumHeaderNodeId, "div/ul/li/ul/li/h5").InnerText.TrimCarriageReturns().TrimStart();
         }
 
         public int ScrapeAlbumReleaseYear()
         {
-            HtmlNode node = _document.GetElementbyId("_albumHeader");
-            HtmlNode albumReleaseYearNode = node.SelectSingleNode("div/ul/li[@class='GeneralMetaData ReleaseYear']");
-
-            return Convert.ToInt32(TrimCarriageReturnsAndBlankSpacesAtStartOfString(albumReleaseYearNode.InnerText).Substring(9));
+            return Convert.ToInt32(_document.GetNode(_albumHeaderNodeId,
+                                                         "div/ul/li[@class='GeneralMetaData ReleaseYear']").InnerText.
+                                                             TrimCarriageReturns().TrimStart().Substring(9));
         }
 
 
         public string ScrapeAlbumArtworkUrl()
         {
-            HtmlNode node = _document.GetElementbyId("_albumHeader");
-            HtmlNode albumReleaseYearNode = node.SelectSingleNode("div/a/img[@class='LargeImage jsImage']");
-
-            return albumReleaseYearNode.Attributes["src"].Value;
-        }
-
-        private static string TrimCarriageReturnsAndBlankSpacesAtStartOfString(string input)
-        {
-            return input.Replace("\n", "").Replace("\r", "").TrimStart();
-        }
-
-        /// <summary>
-        /// Gets the specified attributeId value from the provided values
-        /// </summary>
-        /// <param name="elementId"></param>
-        /// <param name="xpathQuery"></param>
-        /// <param name="attributeId"></param>
-        /// <returns></returns>
-        private string ScrapeAttribute(string elementId, string xpathQuery, string attributeId)
-        {
-            try
-            {
-                HtmlNode node = _document.GetElementbyId(elementId);
-                HtmlNode singleNode = node.SelectSingleNode(xpathQuery);
-                HtmlAttribute attribute = singleNode.Attributes[attributeId];
-
-                return attribute.Value;
-            }
-            catch (NullReferenceException)
-            {
-                //TODO: make the exception less generic
-                throw new WebpageParseException("could not get the requested attributeId");
-            }
+            return
+                _document.GetNode(_albumHeaderNodeId, "div/a/img[@class='LargeImage jsImage']").Attributes["src"].Value;
         }
 
         /// <summary>
