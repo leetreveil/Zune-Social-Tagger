@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using ZuneSocialTagger.Core.ZuneWebsiteScraper;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.IntegrationTests
 {
