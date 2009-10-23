@@ -6,12 +6,12 @@ namespace ZuneSocialTagger.Core.ID3Tagger
     {
         public bool Equals(MediaIdGuid x, MediaIdGuid y)
         {
-            return x.Guid == y.Guid;
+            return x.Guid == y.Guid && x.MediaId == y.MediaId;
         }
 
         public int GetHashCode(MediaIdGuid obj)
         {
-            return obj.Guid.GetHashCode();
+            return obj.Guid.GetHashCode() + obj.MediaId.GetHashCode();
         }
     }
 }
