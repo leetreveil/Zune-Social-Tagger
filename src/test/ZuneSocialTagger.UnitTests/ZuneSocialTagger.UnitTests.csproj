@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ID3Tag.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=59639b700fcbf7ba, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\id3tag.net\ID3Tag.Net.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\nunit\nunit.framework.dll</HintPath>
@@ -55,6 +59,8 @@
   <ItemGroup>
     <Compile Include="Core\ExtensionMethodsTests.cs" />
     <Compile Include="Core\GuidGeneratorTests.cs" />
+    <Compile Include="Core\ID3Tagger\ZuneTagContainerFactory.cs" />
+    <Compile Include="Core\ID3Tagger\ZuneTagContainerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

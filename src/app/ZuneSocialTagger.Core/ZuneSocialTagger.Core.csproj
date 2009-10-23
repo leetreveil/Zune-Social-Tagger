@@ -49,12 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="ID3Tagger\IZuneMediaIdReader.cs" />
     <Compile Include="ID3Tagger\MediaIdGuid.cs" />
     <Compile Include="ID3Tagger\MediaIdGuidComparer.cs" />
-    <Compile Include="ID3Tagger\ZuneFrameIds.cs" />
-    <Compile Include="ID3Tagger\ZuneMediaIdReader.cs" />
-    <Compile Include="ID3Tagger\ZuneMediaIdWriter.cs" />
+    <Compile Include="ID3Tagger\MediaIds.cs" />
+    <Compile Include="ID3Tagger\ZuneTagContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZuneWebsiteScraper\HtmlDocumentExtensionMethods.cs" />
     <Compile Include="ZuneWebsiteScraper\Song.cs" />
