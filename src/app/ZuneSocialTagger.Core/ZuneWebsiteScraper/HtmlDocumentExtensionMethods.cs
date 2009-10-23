@@ -6,7 +6,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
     {
         /// <summary>
         /// Gets a HtmlNode from the xpath for the chosen element id i.e. <html id=5><a>something</a></html>
-        /// GetNodeByIdAndXpath("5",a); would get the element with id of 5 and walk the xpath
+        /// GetNodeByIdAndXpath("5",a/ul/li); would get the element with id of 5 and walk the xpath to the li element
         /// </summary>
         /// <param name="elementId"></param>
         /// <param name="xPath"></param>

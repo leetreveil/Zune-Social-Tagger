@@ -16,7 +16,7 @@ namespace ZuneSocialTagger.UnitTests.Core
         public string When_extracting_a_valid_guid_from_a_string_with_other_text_in_it_it_should_return_the_guid(string input)
         {
             //note we are returning a string because we cant use new Guid() inside the TestCase result paramater
-            return ExtensionMethods.ExtractGuid(input).ToString();
+            return input.ExtractGuid().ToString();
         }
 
 
@@ -26,7 +26,7 @@ namespace ZuneSocialTagger.UnitTests.Core
         {
             string noGuidPresent = "hello";
 
-            ExtensionMethods.ExtractGuid(noGuidPresent);
+            noGuidPresent.ExtractGuid();
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace ZuneSocialTagger.UnitTests.Core
             //3 removed from end
             string invalidGuid = "FanClub00710a00-0600-11db-89ca-0019b92a393";
 
-            ExtensionMethods.ExtractGuid(invalidGuid);
+            invalidGuid.ExtractGuid();
         }
 
 
