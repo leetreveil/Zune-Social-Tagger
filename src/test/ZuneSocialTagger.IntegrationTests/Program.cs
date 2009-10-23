@@ -17,6 +17,8 @@ namespace ZuneSocialTagger.IntegrationTests
                                                     "http://social.zune.net/album/Pendulum/In-Silico/7510d300-0100-11db-89ca-0019b92a3933/details"
                                                     ,
                                                     "http://social.zune.net/album/Pendulum/Live-at-Brixton-Academy/febc1800-0400-11db-89ca-0019b92a3933/details"
+                                                    ,
+                                                    "http://social.zune.net/album/Editors/In-This-Light-And-On-This-Evening/4f66ff01-0100-11db-89ca-0019b92a3933/details"
                                                 };
 
         private static void Main()
