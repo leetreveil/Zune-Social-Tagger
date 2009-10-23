@@ -1,0 +1,47 @@
+These are the MediaID's ive discovered of various pages on the zune website
+
+
+Artist = Brand New
+Album = Daisy
+Song = Vices
+
+
+ZumeAlbumArtistMediID = 28cc0700-0600-11db-89ca-0019b92a3933
+		      000007cc28-0006-db11-89ca-0019b92a3933 // 2bytes padding at start!!!
+
+ZuneAlbumMediaID      = 677cf801-0100-11db-89ca-0019b92a3933
+		    = 0001f87c67-0001-db11-89ca-0019b92a3933
+
+ZuneMediaID           = 697cf801-0100-11db-89ca-0019b92a3933
+		      0001f87c69-0001-db11-89ca-0019b92a3933
+
+
+
+ZuneCollectionID is just a GUID that is generated when a selection of tracks are put together to form an album i think!!
+
+
+
+ZuneMediaID is just basically a track identifier
+
+
+
+Artist: The Cribs
+Album: Ignore The Ignorant
+Song: We Were Aborted 
+
+
+ZuneAlbumArtistMediaID = 00000a7100-0006-db11-89ca-0019b92a3933 //2 00 padding at the start on this one
+		           00710a00-0600-11db-89ca-0019b92a3933
+
+ZuneAlbumMediaID = 37b9f201-0100-11db-89ca-0019b92a3933
+		 0001f2b937-0001-db11-89ca-0019b92a3933
+
+ZuneMediaID = 39b9f201-0100-11db-89ca-0019b92a3933
+	    0001f2b939-0001-db11-89ca-0019b92a3933
+
+
+
+
+
+
+

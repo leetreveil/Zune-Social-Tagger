@@ -75,7 +75,6 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
                         (9));
         }
 
-
         public string ScrapeAlbumArtworkUrl()
         {
             return
