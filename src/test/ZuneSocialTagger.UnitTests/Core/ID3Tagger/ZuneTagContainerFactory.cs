@@ -38,7 +38,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         /// Note: this contains an random guid to test for incorrectness
         /// </summary>
         /// <returns></returns>
-        public static ZuneTagContainer CreateContainerWithOneZuneTagWhichIsRandom()
+        public static ZuneTagContainer CreateContainerWithZuneAlbumartistMediaIDWithRandomGuid()
         {
             var container = ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
 

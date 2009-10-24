@@ -11,7 +11,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
     public class WhenATagContainerIsLoadedWithTheCorrectMediaIdsPresent
     {
         [Test]
-        public void Then_it_should_read_a_list_of_three_media_ids()
+        public void Then_it_should_have_3_items()
         {
             var container = ZuneTagContainerFactory.CreateContainerWithThreeZuneTags();
 
@@ -21,7 +21,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         }
 
         [Test]
-        public void Then_it_should_read_the_ZuneAlbumArtistMediaId()
+        public void Then_it_should_be_able_to_read_the_ZuneAlbumArtistMediaId()
         {
             var container = ZuneTagContainerFactory.CreateContainerWithThreeZuneTags();
 
@@ -32,7 +32,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         }
 
         [Test]
-        public void Then_it_should_read_the_ZuneAlbumMediaId()
+        public void Then_it_should_be_able_to_read_the_ZuneAlbumMediaId()
         {
             var container = ZuneTagContainerFactory.CreateContainerWithThreeZuneTags();
             string mediaId = MediaIds.ZuneAlbumArtistMediaID;
@@ -44,7 +44,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         }
 
         [Test]
-        public void Then_it_should_read_the_ZuneAlbumAMediaId()
+        public void Then_it_should_be_able_to_read_the_ZuneAlbumAMediaId()
         {
             var container = ZuneTagContainerFactory.CreateContainerWithThreeZuneTags();
             string mediaId = MediaIds.ZuneMediaID;
@@ -56,21 +56,17 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         }
 
         [Test]
-        public void Then_it_should_not_write_anything_to_the_tag_container()
+        public void Then_it_should_not_be_able_to_write_the_same_media_Id_to_the_container()
         {
             var container = ZuneTagContainerFactory.CreateContainerWithThreeZuneTags();
-            var albumArtistMediaIdGuid = new MediaIdGuid
-                                              {
-                                                  Guid = ZuneTagContainerFactory.SomeGuid,
-                                                  MediaId = MediaIds.ZuneAlbumArtistMediaID
-                                              };
-            var albumMediaIdGuid = new MediaIdGuid
-                                        {Guid = ZuneTagContainerFactory.SomeGuid, MediaId = MediaIds.ZuneAlbumMediaID};
-            var mediaIDGuid = new MediaIdGuid {Guid = ZuneTagContainerFactory.SomeGuid, MediaId = MediaIds.ZuneMediaID};
 
-            var guids = new List<MediaIdGuid> {albumArtistMediaIdGuid, albumMediaIdGuid, mediaIDGuid};
+            var mediaIDGuid = new MediaIdGuid { Guid = ZuneTagContainerFactory.SomeGuid, MediaId = MediaIds.ZuneMediaID };
 
-            Assert.That(container.WriteMediaIdGuidsToContainer(guids), Is.EqualTo(0));
+            container.Add(mediaIDGuid);
+
+            //we know that there are 3 items in the container so there should be no more
+            Assert.That(container.UnderlyingContainer.Count, Is.EqualTo(3));
+
         }
     }
 
@@ -79,7 +75,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
     public class WhenATagContainerIsLoadedWithNoMediaIdsPresent
     {
         [Test]
-        public void Then_it_should_be_able_to_read_an_empty_list()
+        public void Then_the_read_media_ids_method_should_return_0()
         {
             var container = ZuneTagContainerFactory.CreateEmptyContainer();
 
@@ -89,100 +85,51 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         }
 
         [Test]
-        public void Then_it_should_be_able_to_add_the_correct_ids_to_the_tag_container()
+        public void Then_it_should_be_able_to_add_a_mediaId_to_the_container()
         {
             var container = ZuneTagContainerFactory.CreateEmptyContainer();
 
-            //var zuneMediaIDWriter = new ZuneTagContainer(container);
+            var mediaIdGuid = new MediaIdGuid { Guid = ZuneTagContainerFactory.SomeGuid, MediaId = MediaIds.ZuneMediaID };
 
-            var albumArtistMediaIdGuid = new MediaIdGuid
-                                             {
-                                                 Guid = ZuneTagContainerFactory.SomeGuid,
-                                                 MediaId = MediaIds.ZuneAlbumArtistMediaID
-                                             };
-            var albumMediaIdGuid = new MediaIdGuid
-                                       {Guid = ZuneTagContainerFactory.SomeGuid, MediaId = MediaIds.ZuneAlbumMediaID};
-            var mediaIdGuid = new MediaIdGuid {Guid = ZuneTagContainerFactory.SomeGuid, MediaId = MediaIds.ZuneMediaID};
+            container.Add(mediaIdGuid);
 
-            var guids = new List<MediaIdGuid> {albumArtistMediaIdGuid, albumMediaIdGuid, mediaIdGuid};
-
-            container.WriteMediaIdGuidsToContainer(guids);
-
-            //check that the underlying container has actually got these values
-            var artist = container.UnderlyingContainer.OfType<PrivateFrame>().Where(x => x.Owner == MediaIds.ZuneAlbumArtistMediaID).First();
-            var album = container.UnderlyingContainer.OfType<PrivateFrame>().Where(x => x.Owner == MediaIds.ZuneAlbumMediaID).First();
             var track = container.UnderlyingContainer.OfType<PrivateFrame>().Where(x => x.Owner == MediaIds.ZuneMediaID).First();
 
-            Assert.That(new Guid(artist.Data), Is.EqualTo(ZuneTagContainerFactory.SomeGuid));
-            Assert.That(new Guid(album.Data), Is.EqualTo(ZuneTagContainerFactory.SomeGuid));
+            Assert.That(track.Owner, Is.EqualTo("ZuneMediaID"));
             Assert.That(new Guid(track.Data), Is.EqualTo(ZuneTagContainerFactory.SomeGuid));
         }
-
-        [Test]
-        public void Then_it_should_be_able_to_return_the_number_of_tags_added()
-        {
-            var container = ZuneTagContainerFactory.CreateEmptyContainer();
-
-            var albumArtistMediaIdGuid = new MediaIdGuid
-                                             {
-                                                 Guid = ZuneTagContainerFactory.SomeGuid,
-                                                 MediaId = MediaIds.ZuneAlbumArtistMediaID
-                                             };
-            var albumMediaIdGuid = new MediaIdGuid
-                                       {Guid = ZuneTagContainerFactory.SomeGuid, MediaId = MediaIds.ZuneAlbumMediaID};
-            var mediaIdGuid = new MediaIdGuid {Guid = ZuneTagContainerFactory.SomeGuid, MediaId = MediaIds.ZuneMediaID};
-
-            var guids = new List<MediaIdGuid> {albumArtistMediaIdGuid, albumMediaIdGuid, mediaIdGuid};
-
-            Assert.That(container.WriteMediaIdGuidsToContainer(guids), Is.EqualTo(3));
-        }
     }
+
+
+
 
 
     [TestFixture]
     public class WhenATagContainerIsLoadedWithOnlyOneMediaIdButItIsIncorrect
     {
         [Test]
-        public void Then_it_should_update_the_media_id_with_the_correct_guid()
+        public void Then_it_should_be_able_to_update_the_media_id_with_the_correct_guid()
         {
-            var container = ZuneTagContainerFactory.CreateContainerWithOneZuneTagWhichIsRandom();
-      
+            var container = ZuneTagContainerFactory.CreateContainerWithZuneAlbumartistMediaIDWithRandomGuid();
+
             var albumArtistMediaIdGuid = new MediaIdGuid
                                              {
                                                  Guid = ZuneTagContainerFactory.SomeGuid,
                                                  MediaId = MediaIds.ZuneAlbumArtistMediaID
                                              };
-            var albumMediaIdGuid = new MediaIdGuid
-                                       {Guid = ZuneTagContainerFactory.SomeGuid, MediaId = MediaIds.ZuneAlbumMediaID};
-            var mediaIdGuid = new MediaIdGuid {Guid = ZuneTagContainerFactory.SomeGuid, MediaId = MediaIds.ZuneMediaID};
 
-            var guids = new List<MediaIdGuid> {albumArtistMediaIdGuid, albumMediaIdGuid, mediaIdGuid};
-
-            container.WriteMediaIdGuidsToContainer(guids);
+            container.Add(albumArtistMediaIdGuid);
 
             var artist = container.UnderlyingContainer.OfType<PrivateFrame>().Where(x => x.Owner == MediaIds.ZuneAlbumArtistMediaID).First();
+
             Assert.That(new Guid(artist.Data), Is.EqualTo(albumArtistMediaIdGuid.Guid));
-        }
-
-        [Test]
-        public void Then_it_should_return_3_because_1_has_been_updated_and_2_have_been_added()
-        {
-            var container = ZuneTagContainerFactory.CreateContainerWithOneZuneTagWhichIsRandom();
-
-            var albumArtistMediaIdGuid = new MediaIdGuid
-                                             {
-                                                 Guid = ZuneTagContainerFactory.SomeGuid,
-                                                 MediaId = MediaIds.ZuneAlbumArtistMediaID
-                                             };
-            var albumMediaIdGuid = new MediaIdGuid
-                                       {Guid = ZuneTagContainerFactory.SomeGuid, MediaId = MediaIds.ZuneAlbumMediaID};
-            var mediaIdGuid = new MediaIdGuid {Guid = ZuneTagContainerFactory.SomeGuid, MediaId = MediaIds.ZuneMediaID};
-
-            var guids = new List<MediaIdGuid> {albumArtistMediaIdGuid, albumMediaIdGuid, mediaIdGuid};
-
-            Assert.That(container.WriteMediaIdGuidsToContainer(guids), Is.EqualTo(3));
+            Assert.That(container.UnderlyingContainer.Count,Is.EqualTo(1));
         }
     }
+
+
+
+
 
     [TestFixture]
     public class WhenATagContainerContainsMetaDataAboutTheTrack
@@ -194,7 +141,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
 
             MetaData metaData = container.ReadMetaData();
 
-            Assert.That(metaData.AlbumArtist,Is.EqualTo(ZuneTagContainerFactory.SomeArtist));
+            Assert.That(metaData.AlbumArtist, Is.EqualTo(ZuneTagContainerFactory.SomeArtist));
         }
 
         [Test]

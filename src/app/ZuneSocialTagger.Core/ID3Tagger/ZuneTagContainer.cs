@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
@@ -25,45 +26,27 @@ namespace ZuneSocialTagger.Core.ID3Tagger
                    select new MediaIdGuid { MediaId = frame.Owner, Guid = new Guid(frame.Data) };
         }
 
-        /// <summary>
-        /// Returns the number of guids added or updated
-        /// </summary>
-        /// <param name="guids">The guids that you want writing to file</param>
-        /// <returns></returns>
-        public int WriteMediaIdGuidsToContainer(List<MediaIdGuid> guids)
+        public void Add(MediaIdGuid guid)
         {
-            //TODO: change this method to add, and not write a group of guids,
-            //would be much simpler
+            PrivateFrame newFrame = new PrivateFrame(guid.MediaId, guid.Guid.ToByteArray());
 
-            int tagsAddedOrUpdated = 0;
+            PrivateFrame existingFrame = (from frame in UnderlyingContainer.OfType<PrivateFrame>()
+                                          where frame.Owner == newFrame.Owner
+                                          select frame).FirstOrDefault();
 
-            foreach (var idGuid in CheckWhichGuidsNeedWriting(guids))
-            {
-                PrivateFrame newFrame = new PrivateFrame(idGuid.MediaId, idGuid.Guid.ToByteArray());
+            //TODO: we are not checking whether the actual guid is the same
+            //would be better to check than removing and adding the same data again
 
-                PrivateFrame existingFrame = (from frame in UnderlyingContainer.OfType<PrivateFrame>()
-                                              where frame.Owner == newFrame.Owner
-                                              select frame).FirstOrDefault();
+            //if the frame already exists then remove it as we are going to be updating it
+            if (existingFrame != null)
+                UnderlyingContainer.Remove(existingFrame);
 
-                //if the frame already exists then remove it as we are going to be updating it
-                if (existingFrame != null)
-                    UnderlyingContainer.Remove(existingFrame);
-
-                UnderlyingContainer.Add(newFrame);
-                tagsAddedOrUpdated++;
-            }
-
-            return tagsAddedOrUpdated;
-        }
-
-        private IEnumerable<MediaIdGuid> CheckWhichGuidsNeedWriting(IEnumerable<MediaIdGuid> guids)
-        {
-            return guids.Except(this.ReadMediaIds(), new MediaIdGuidComparer());
+            UnderlyingContainer.Add(newFrame);
         }
 
         public MetaData ReadMetaData()
         {
-            string[] metaDataIds = new string[]{"TALB","TPE1","TIT2","TYER"};
+            string[] metaDataIds = new[]{"TALB","TPE1","TIT2","TYER"};
 
             var metaDataFrames = from frame in UnderlyingContainer.OfType<TextFrame>()
                                  where metaDataIds.Contains(frame.Descriptor.ID)
