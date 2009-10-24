@@ -8,20 +8,20 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 {
     public class ZuneTagContainer
     {
-        private readonly TagContainer _container;
+        //TODO: Look into inherting from the Container instead of composition, may make things easier
+        public ICollection<IFrame> UnderlyingContainer { get; private set; }
 
-        public ZuneTagContainer(TagContainer container)
+        public ZuneTagContainer(ICollection<IFrame> container)
         {
-            _container = container;
+            UnderlyingContainer = container;
         }
 
         public IEnumerable<MediaIdGuid> ReadMediaIds()
         {
             //OfType instead of cast because the container could contain other types other than private frames 
             //and we only want private frames
-            //TODO: can probably remove the frametype check becuase of oftype
-            return from frame in _container.OfType<PrivateFrame>()
-                   where frame.Type == FrameType.Private && MediaIds.Ids.Contains(frame.Owner)
+            return from frame in UnderlyingContainer.OfType<PrivateFrame>()
+                   where MediaIds.Ids.Contains(frame.Owner)
                    select new MediaIdGuid { MediaId = frame.Owner, Guid = new Guid(frame.Data) };
         }
 
@@ -32,23 +32,24 @@ namespace ZuneSocialTagger.Core.ID3Tagger
         /// <returns></returns>
         public int WriteMediaIdGuidsToContainer(List<MediaIdGuid> guids)
         {
+            //TODO: change this method to add, and not write a group of guids,
+            //would be much simpler
+
             int tagsAddedOrUpdated = 0;
-
-
 
             foreach (var idGuid in CheckWhichGuidsNeedWriting(guids))
             {
                 PrivateFrame newFrame = new PrivateFrame(idGuid.MediaId, idGuid.Guid.ToByteArray());
 
-                PrivateFrame existingFrame = (from frame in _container.OfType<PrivateFrame>()
+                PrivateFrame existingFrame = (from frame in UnderlyingContainer.OfType<PrivateFrame>()
                                               where frame.Owner == newFrame.Owner
                                               select frame).FirstOrDefault();
 
                 //if the frame already exists then remove it as we are going to be updating it
                 if (existingFrame != null)
-                    _container.Remove(existingFrame);
+                    UnderlyingContainer.Remove(existingFrame);
 
-                _container.Add(newFrame);
+                UnderlyingContainer.Add(newFrame);
                 tagsAddedOrUpdated++;
             }
 
@@ -58,6 +59,43 @@ namespace ZuneSocialTagger.Core.ID3Tagger
         private IEnumerable<MediaIdGuid> CheckWhichGuidsNeedWriting(IEnumerable<MediaIdGuid> guids)
         {
             return guids.Except(this.ReadMediaIds(), new MediaIdGuidComparer());
+        }
+
+        public MetaData ReadMetaData()
+        {
+            string[] metaDataIds = new string[]{"TALB","TPE1","TIT2","TYER"};
+
+            var metaDataFrames = from frame in UnderlyingContainer.OfType<TextFrame>()
+                                 where metaDataIds.Contains(frame.Descriptor.ID)
+                                 select new {Id = frame.Descriptor.ID, Text = frame.Content};
+
+            //TODO: Code smell, do not like this whole switchy business at all
+
+            var metaData = new MetaData();
+
+            foreach (var frame in metaDataFrames)
+            {
+                switch (frame.Id)
+                {
+                    case "TPE1":
+                        metaData.AlbumArtist = frame.Text;
+                        break;
+
+                    case "TALB":
+                        metaData.AlbumTitle = frame.Text;
+                        break;
+
+                    case "TIT2":
+                        metaData.SongTitle = frame.Text;
+                        break;
+
+                    case "TYER":
+                        metaData.Year = frame.Text;
+                        break;
+                }
+            }
+
+            return metaData;
         }
     }
 }

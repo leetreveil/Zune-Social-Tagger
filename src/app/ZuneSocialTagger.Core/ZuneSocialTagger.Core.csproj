@@ -52,6 +52,7 @@
     <Compile Include="ID3Tagger\MediaIdGuid.cs" />
     <Compile Include="ID3Tagger\MediaIdGuidComparer.cs" />
     <Compile Include="ID3Tagger\MediaIds.cs" />
+    <Compile Include="ID3Tagger\MetaData.cs" />
     <Compile Include="ID3Tagger\ZuneTagContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZuneWebsiteScraper\HtmlDocumentExtensionMethods.cs" />
