@@ -65,7 +65,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
             container.Add(mediaIDGuid);
 
             //we know that there are 3 items in the container so there should be no more
-            Assert.That(container.UnderlyingContainer.Count, Is.EqualTo(3));
+            Assert.That(container.Count(), Is.EqualTo(3));
 
         }
     }
@@ -93,7 +93,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
 
             container.Add(mediaIdGuid);
 
-            var track = container.UnderlyingContainer.OfType<PrivateFrame>().Where(x => x.Owner == MediaIds.ZuneMediaID).First();
+            var track = container.OfType<PrivateFrame>().Where(x => x.Owner == MediaIds.ZuneMediaID).First();
 
             Assert.That(track.Owner, Is.EqualTo("ZuneMediaID"));
             Assert.That(new Guid(track.Data), Is.EqualTo(ZuneTagContainerFactory.SomeGuid));
@@ -120,10 +120,10 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
 
             container.Add(albumArtistMediaIdGuid);
 
-            var artist = container.UnderlyingContainer.OfType<PrivateFrame>().Where(x => x.Owner == MediaIds.ZuneAlbumArtistMediaID).First();
+            var artist = container.OfType<PrivateFrame>().Where(x => x.Owner == MediaIds.ZuneAlbumArtistMediaID).First();
 
             Assert.That(new Guid(artist.Data), Is.EqualTo(albumArtistMediaIdGuid.Guid));
-            Assert.That(container.UnderlyingContainer.Count,Is.EqualTo(1));
+            Assert.That(container.Count(),Is.EqualTo(1));
         }
     }
 
