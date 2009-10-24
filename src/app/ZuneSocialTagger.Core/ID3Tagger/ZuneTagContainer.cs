@@ -25,10 +25,10 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             //and we only want private frames
             return from frame in _container.OfType<PrivateFrame>()
                    where MediaIds.Ids.Contains(frame.Owner)
-                   select new MediaIdGuid { MediaId = frame.Owner, Guid = new Guid(frame.Data) };
+                   select new MediaIdGuid {MediaId = frame.Owner, Guid = new Guid(frame.Data)};
 
-            //TODO: could refactor this class to filter the TagContainer because ReadMediaIds And Add
-            //are both working on private frames where ReadMetaData is working on TextFrames
+            //TODO: could factor this class to filter the TagContainer because ReadMediaIds And Add
+            //are both working on private frames
         }
 
         public void Add(MediaIdGuid guid)
@@ -49,39 +49,10 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
         public MetaData ReadMetaData()
         {
-            string[] metaDataIds = new[]{"TALB","TPE1","TIT2","TYER"};
+            IEnumerable<TextFrame> allTextFrames = from frame in _container.OfType<TextFrame>()
+                                                   select frame;
 
-            var metaDataFrames = from frame in _container.OfType<TextFrame>()
-                                 where metaDataIds.Contains(frame.Descriptor.ID)
-                                 select new {Id = frame.Descriptor.ID, Text = frame.Content};
-
-            //TODO: Code smell, do not like this whole switchy business at all
-
-            var metaData = new MetaData();
-
-            foreach (var frame in metaDataFrames)
-            {
-                switch (frame.Id)
-                {
-                    case "TPE1":
-                        metaData.AlbumArtist = frame.Text;
-                        break;
-
-                    case "TALB":
-                        metaData.AlbumTitle = frame.Text;
-                        break;
-
-                    case "TIT2":
-                        metaData.SongTitle = frame.Text;
-                        break;
-
-                    case "TYER":
-                        metaData.Year = frame.Text;
-                        break;
-                }
-            }
-
-            return metaData;
+            return MetaData.CreateMetaDataFrom(allTextFrames);
         }
 
         public IEnumerator<IFrame> GetEnumerator()

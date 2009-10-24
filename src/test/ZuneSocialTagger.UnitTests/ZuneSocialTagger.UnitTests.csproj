@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\ExtensionMethodsTests.cs" />
+    <Compile Include="Core\ID3Tagger\MetaDataTests.cs" />
     <Compile Include="Core\ID3Tagger\ZuneTagContainerFactory.cs" />
     <Compile Include="Core\ID3Tagger\ZuneTagContainerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
