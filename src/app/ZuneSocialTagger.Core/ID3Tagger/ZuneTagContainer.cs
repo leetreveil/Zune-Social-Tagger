@@ -26,6 +26,9 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             return from frame in _container.OfType<PrivateFrame>()
                    where MediaIds.Ids.Contains(frame.Owner)
                    select new MediaIdGuid { MediaId = frame.Owner, Guid = new Guid(frame.Data) };
+
+            //TODO: could refactor this class to filter the TagContainer because ReadMediaIds And Add
+            //are both working on private frames where ReadMetaData is working on TextFrames
         }
 
         public void Add(MediaIdGuid guid)
@@ -36,12 +39,10 @@ namespace ZuneSocialTagger.Core.ID3Tagger
                                           where frame.Owner == newFrame.Owner
                                           select frame).FirstOrDefault();
 
-            //TODO: we are not checking whether the actual guid is the same before removing then adding
-            //would be better to check than removing and adding the same data again
-
-            //if the frame already exists then remove it as we are going to be updating it
+            //if the frame already exists and the data inside is different then remove it
             if (existingFrame != null)
-                _container.Remove(existingFrame);
+                if (existingFrame.Data != newFrame.Data)
+                    _container.Remove(existingFrame);
 
             _container.Add(newFrame);
         }
