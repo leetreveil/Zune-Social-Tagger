@@ -27,22 +27,23 @@ namespace ZuneSocialTagger.Core.ID3Tagger
                    where MediaIds.Ids.Contains(frame.Owner)
                    select new MediaIdGuid {MediaId = frame.Owner, Guid = new Guid(frame.Data)};
 
-            //TODO: could factor this class to filter the TagContainer because ReadMediaIds And Add
-            //are both working on private frames
+            //TODO: could refactor this class to filter the TagContainer because ReadMediaIds And Add are both working on private frames
         }
 
         public void Add(MediaIdGuid guid)
         {
             PrivateFrame newFrame = new PrivateFrame(guid.MediaId, guid.Guid.ToByteArray());
 
+
+            //frame owner is a unique id identifying a private field so we can
+            //be sure that there's only one
             PrivateFrame existingFrame = (from frame in _container.OfType<PrivateFrame>()
                                           where frame.Owner == newFrame.Owner
+                                          where frame.Data != newFrame.Data
                                           select frame).FirstOrDefault();
 
             //if the frame already exists and the data inside is different then remove it
-            if (existingFrame != null)
-                if (existingFrame.Data != newFrame.Data)
-                    _container.Remove(existingFrame);
+            _container.Remove(existingFrame);
 
             _container.Add(newFrame);
         }
@@ -53,12 +54,12 @@ namespace ZuneSocialTagger.Core.ID3Tagger
                                                    select frame;
 
             return new MetaData
-            {
-                AlbumArtist = GetValue(allTextFrames, "TPE1"),
-                AlbumTitle = GetValue(allTextFrames, "TALB"),
-                SongTitle = GetValue(allTextFrames, "TIT2"),
-                Year = GetValue(allTextFrames, "TYER")
-            };
+                       {
+                           AlbumArtist = GetValue(allTextFrames, "TPE1"),
+                           AlbumTitle = GetValue(allTextFrames, "TALB"),
+                           SongTitle = GetValue(allTextFrames, "TIT2"),
+                           Year = GetValue(allTextFrames, "TYER")
+                       };
         }
 
         private static string GetValue(IEnumerable<TextFrame> textFrames, string key)

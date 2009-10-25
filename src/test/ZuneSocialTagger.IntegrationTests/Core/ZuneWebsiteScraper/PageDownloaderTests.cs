@@ -35,22 +35,24 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
     public class WhenAnInvalidUrlIsProvided
     {
         [Test]
-        [ExpectedException(typeof(PageDownloaderException))]
+        [ExpectedException(typeof(PageDownloaderException), ExpectedMessage = "invalid url")]
         public void Then_it_should_throw_an_PageDownloaderException()
         {
             PageDownloader.Download("htzp://www.asdasda.com");
 
         }
+    }
 
-        [TestFixture]
-        public class WhenAValidUrlIsProvidedButThereIsNoResponseFromTheWebsite
+    [TestFixture]
+    public class WhenThereIsNoResponseFromTheWebpage
+    {
+        [Test]
+        [ExpectedException(typeof(PageDownloaderException), ExpectedMessage = "redirected to another webpage")]
+        public void Then_it_should_throw_an_PageDownloaderException_with_a_redirect_message()
         {
-            [Test]
-            [ExpectedException(typeof(PageDownloaderException))]
-            public void Then_it_should_throw_an_PageDownloaderException()
-            {
-                PageDownloader.Download("http://www.hasdhashdahsdhasdwqdygygqwefgywe.com");
-            }
+            //TODO: probably remove this functionality because it might be 
+            //redirecting on my machine because im on open dns
+            PageDownloader.Download("http://www.hasdhashdahsdhasdwqdygygqwefgywe.com");
         }
     }
 }

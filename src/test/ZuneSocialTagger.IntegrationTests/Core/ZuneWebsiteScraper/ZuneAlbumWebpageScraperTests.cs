@@ -30,7 +30,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_scrape_the_first_song_from_the_webpage()
         {
-            var expectedOutput = new Song
+            var expectedOutput = new SongGuid
                                      {
                                          Title = "We Were Aborted",
                                          Guid = new Guid("39b9f201-0100-11db-89ca-0019b92a3933")

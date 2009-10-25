@@ -41,7 +41,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
             return _document.GetNodeByIdAndXpath("_artistHeader", "div/ul").Attributes["id"].Value.ExtractGuid();
         }
 
-        public IEnumerable<Song> GetSongTitleAndIDs()
+        public IEnumerable<SongGuid> GetSongTitleAndIDs()
         {
             HtmlNodeCollection collection;
             HtmlNode node = _document.GetElementbyId("_albumSongs");
@@ -50,8 +50,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
             collection = node.SelectNodes("ul[@class='SongWithOrdinals ']/li[@mediainfo]");
 
             return
-                collection.Select(
-                    nodeCollection =>
+                collection.Select(nodeCollection =>
                     GetIDAndSongNameFromMediaInfoAttribute(nodeCollection.Attributes["mediainfo"].Value));
         }
 
@@ -88,14 +87,14 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
         }
 
         /// <summary>
-        /// Splits a mediainfo attributeId into a Song
+        /// Splits a mediainfo attributeId into a SongGuid
         /// </summary>
         /// <param name="attributeString">Should look like: 41b9f201-0100-11db-89ca-0019b92a3933#song#Hari Kari
         ///                               Should look like: 37b9f201-0100-11db-89ca-0019b92a3933#album#Ignore The Ignorant</param>
         /// <returns></returns>
-        private static Song GetIDAndSongNameFromMediaInfoAttribute(string attributeString)
+        private static SongGuid GetIDAndSongNameFromMediaInfoAttribute(string attributeString)
         {
-            return new Song
+            return new SongGuid
                        {
                            Guid = attributeString.ExtractGuid(),
                            Title = attributeString.Substring(attributeString.LastIndexOf('#') + 1)
