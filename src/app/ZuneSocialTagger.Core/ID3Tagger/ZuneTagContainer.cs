@@ -52,7 +52,18 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             IEnumerable<TextFrame> allTextFrames = from frame in _container.OfType<TextFrame>()
                                                    select frame;
 
-            return MetaData.CreateMetaDataFrom(allTextFrames);
+            return new MetaData
+            {
+                AlbumArtist = GetValue(allTextFrames, "TPE1"),
+                AlbumTitle = GetValue(allTextFrames, "TALB"),
+                SongTitle = GetValue(allTextFrames, "TIT2"),
+                Year = GetValue(allTextFrames, "TYER")
+            };
+        }
+
+        private static string GetValue(IEnumerable<TextFrame> textFrames, string key)
+        {
+            return textFrames.Where(x => x.Descriptor.ID == key).SingleOrDefault().Content;
         }
 
         public IEnumerator<IFrame> GetEnumerator()
