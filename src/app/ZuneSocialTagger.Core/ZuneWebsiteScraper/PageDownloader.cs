@@ -34,6 +34,10 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
                 using (var reader = new StreamReader(stream, Encoding.Default))
                     return HttpUtility.HtmlDecode(reader.ReadToEnd());
             }
+            catch(UriFormatException ex)
+            {
+                throw new PageDownloaderException("invalid url", ex);
+            }
             catch (NotSupportedException ex)
             {
                 throw new PageDownloaderException("invalid url", ex);

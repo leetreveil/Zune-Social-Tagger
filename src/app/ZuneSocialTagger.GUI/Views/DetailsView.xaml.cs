@@ -22,5 +22,20 @@ namespace ZuneSocialTagger.GUI.Views
         {
             InitializeComponent();
         }
+
+        private void Window_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+        	this.DragMove();
+        }
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+        	Application.Current.Shutdown();
+        }
+
+        private void _tbUrl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+        	this._tbUrl.SelectAll();
+        }
     }
 }

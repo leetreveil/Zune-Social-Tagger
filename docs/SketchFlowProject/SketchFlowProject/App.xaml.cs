@@ -5,13 +5,6 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-//
-// SketchFlow needs to know which control assembly contains its screens. This is set automatically
-// on project creation, but if you change the name of the control assembly manually, you must also
-// update it manually here.
-//
-[assembly: Microsoft.Expression.Prototyping.Services.SketchFlowLibraries("SketchFlowProject.Screens")]
-
 namespace SketchFlowProject
 {
 	/// <summary>
@@ -26,7 +19,10 @@ namespace SketchFlowProject
 
 		private void App_Startup(object sender, StartupEventArgs e)
 		{
+			//SketchFlowProject.Screens
 			this.StartupUri = new Uri(@"pack://application:,,,/Microsoft.Expression.Prototyping.Runtime;Component/WPF/Workspace/PlayerWindow.xaml");
+			this.StartupUri = new Uri(@"pack://application:,,,/SketchFlowProject.Screens;Component/Screen_1.xaml");
+
 		}
 	}
 }

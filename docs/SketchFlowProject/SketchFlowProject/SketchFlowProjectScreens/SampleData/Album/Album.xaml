@@ -5,7 +5,7 @@
 -->
 <SampleData:Album xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.Album">
 	<SampleData:Album.Collection>
-		<SampleData:Item Track_Number="1" Song_Title="External reality"/>
+		<SampleData:Item Track_Number="1"  Song_Title="External reality"/>
 		<SampleData:Item Track_Number="11" Song_Title="Silicone"/>
 		<SampleData:Item Track_Number="10" Song_Title="Maecenas praesent accumsan bibendum"/>
 		<SampleData:Item Track_Number="11" Song_Title="Dictumst eleifend facilisi faucibus"/>

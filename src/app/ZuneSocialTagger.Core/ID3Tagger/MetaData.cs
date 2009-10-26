@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using ID3Tag.HighLevel.ID3Frame;
-
 namespace ZuneSocialTagger.Core.ID3Tagger
 {
     public class MetaData

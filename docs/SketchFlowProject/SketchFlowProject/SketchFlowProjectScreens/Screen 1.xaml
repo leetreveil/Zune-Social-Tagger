@@ -6,14 +6,14 @@
 	mc:Ignorable="d Anno"
 	xmlns:ps="clr-namespace:Microsoft.Expression.Prototyping.SketchControls;assembly=Microsoft.Expression.Prototyping.SketchControls" xmlns:Anno="http://schemas.microsoft.com/expression/blend/extensions/annotations/2008" x:Name="Screen_1_Name"
 	x:Class="SketchFlowProjectScreens.Screen_1"
-	Width="640" Height="542.143">
+	Width="640" Height="542">
 
 	<UserControl.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="ProjectDataSources.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
-			<SolidColorBrush x:Key="ListBorder" Color="#828790"/>
+			<SolidColorBrush x:Key="ListBorder"/>
 			<Style x:Key="ListBoxStyle1" TargetType="{x:Type ListBox}">
 				<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
 				<Setter Property="BorderBrush" Value="{StaticResource ListBorder}"/>
@@ -115,7 +115,7 @@
 										<ComboBox.ItemTemplate>
 											<DataTemplate>
 												<StackPanel Height="25" Orientation="Horizontal">
-													<TextBlock Style="{DynamicResource TextBlock-Sketch}" Text="{Binding Track_Number}" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="24"/>
+													<TextBlock Width="14" Style="{DynamicResource TextBlock-Sketch}" Text="{Binding Track_Number}" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="16"/>
 													<TextBlock Style="{DynamicResource TextBlock-Sketch}" Text="{Binding Song_Title}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="10,0,0,0"/>
 												</StackPanel>
 											</DataTemplate>

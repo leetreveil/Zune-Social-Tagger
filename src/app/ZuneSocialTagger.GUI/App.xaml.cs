@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using ZuneSocialTagger.GUI.Views;
 
 namespace ZuneSocialTagger.GUI
 {
@@ -15,9 +16,13 @@ namespace ZuneSocialTagger.GUI
         private void OnStartup(object sender, StartupEventArgs e)
         {
             // Create the ViewModel and expose it using the View's DataContext
-            Views.MainView view = new Views.MainView();
+            var view = new MainView();
+            var detailsView = new DetailsView();
+
             view.DataContext = new ViewModels.MainViewModel();
-            view.Show();
+            detailsView.DataContext = new ViewModels.DetailsViewModel();
+               
+            detailsView.Show();
         }
     }
 }

@@ -51,10 +51,6 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
-  <PropertyGroup>
-    <ExpressionBlendPrototypingEnabled>true</ExpressionBlendPrototypingEnabled>
-    <ExpressionBlendPrototypeHarness>false</ExpressionBlendPrototypeHarness>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="WPFToolkit" />
     <Reference Include="System.Windows.Interactivity" />
