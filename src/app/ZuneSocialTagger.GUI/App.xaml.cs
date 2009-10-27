@@ -18,10 +18,15 @@ namespace ZuneSocialTagger.GUI
             // Create the ViewModel and expose it using the View's DataContext
             var view = new MainView();
             var detailsView = new DetailsView();
+            var detailsViewModel = new ViewModels.DetailsViewModel();
 
             view.DataContext = new ViewModels.MainViewModel();
-            detailsView.DataContext = new ViewModels.DetailsViewModel();
-               
+            detailsView.DataContext = detailsViewModel;
+
+
+            detailsViewModel.SetupWebsiteAlbumMetaDataViewModelDefaults();
+
+
             detailsView.Show();
         }
     }

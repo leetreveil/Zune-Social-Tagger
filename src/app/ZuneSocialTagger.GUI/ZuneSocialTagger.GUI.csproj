@@ -67,7 +67,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ArtworkAndImageDetails.xaml">
+    <Page Include="ArtworkAndImageDetailsControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -83,12 +83,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\WebsiteAlbumMetaDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ArtworkAndImageDetails.xaml.cs">
-      <DependentUpon>ArtworkAndImageDetails.xaml</DependentUpon>
+    <Compile Include="ArtworkAndImageDetailsControl.xaml.cs">
+      <DependentUpon>ArtworkAndImageDetailsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="AsyncObservableCollection.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
@@ -103,6 +107,8 @@
     <Compile Include="ViewModels\ViewModelBase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\WebsiteAlbumMetaDataViewModel.cs" />
+    <Compile Include="Models\ZuneNetAlbumMetaData.cs" />
     <Compile Include="Views\DetailsView.xaml.cs">
       <DependentUpon>DetailsView.xaml</DependentUpon>
     </Compile>
@@ -122,6 +128,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Views\WebsiteAlbumMetaDataView.xaml.cs">
+      <DependentUpon>WebsiteAlbumMetaDataView.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -147,9 +156,6 @@
     <Resource Include="Assets\Fonts\ZegoeUI-U.ttf" />
     <Resource Include="Assets\Fonts\ZegoeUI-UBold.ttf" />
     <Resource Include="Assets\Fonts\ZegoeUISemiBold-U.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

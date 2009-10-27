@@ -1,8 +1,11 @@
 ﻿<Window
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ZuneSocialTagger_GUI="clr-namespace:ZuneSocialTagger.GUI" x:Class="ZuneSocialTagger.GUI.Views.DetailsView"
-    Title="DetailsView" Height="572" Width="663" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+    xmlns:root="clr-namespace:ZuneSocialTagger.GUI" x:Class="ZuneSocialTagger.GUI.Views.DetailsView"
+    xmlns:views="clr-namespace:ZuneSocialTagger.GUI.Views"
+    Title="DetailsView" Height="572" Width="663" WindowStyle="None" 
+    ResizeMode="NoResize" AllowsTransparency="True" 
+    MouseLeftButtonDown="Window_MouseLeftButtonDown">
     
     <Window.Resources>
     	<ResourceDictionary>
@@ -64,12 +67,11 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <ZuneSocialTagger_GUI:ArtworkAndImageDetails VerticalAlignment="Top"/>
-                        <ZuneSocialTagger_GUI:ArtworkAndImageDetails VerticalAlignment="Top"  Grid.Column = "1"/>
-
-
-                        <!--<ps:SketchRectangleUC Style="{DynamicResource Rectangle-Sketch}" Grid.Column="1" Width="100" Height="100" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Center"/>-->
-                        <!--preview image of album artwork goes here-->
+                        
+                        <!--<root:ArtworkAndImageDetailsControl VerticalAlignment="Top"/>-->
+                        <!--<root:ArtworkAndImageDetailsControl VerticalAlignment="Top"  Grid.Column = "1"/>-->
+                        <views:WebsiteAlbumMetaDataView VerticalAlignment="Top" DataContext="{Binding WebsiteAlbumMetaDataViewModel}" Grid.Column = "1" />
+                        <!--<Button Content="{Binding Path= WebsiteAlbumMetaDataViewModel.Count}"></Button>-->
                     </Grid>
                 </Border>
                 <TextBlock Margin="0,10" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" FontSize="13.333">Match song titles for this album</TextBlock>
@@ -85,7 +87,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="SONG TITLES IN THIS ALBUM" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe Caps" FontSize="13.333"/>
                         <TextBlock Grid.Column="1" Text="AVAILABLE SONG TITILES" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe Caps" FontSize="13.333"/>
-                        <ListView Background="Transparent" Grid.Row="1" Grid.ColumnSpan="2" DataContext="{Binding Source={StaticResource SongTitlesWithNumbers}}" ItemsSource="{Binding Collection, Mode=OneWay}" Style="{DynamicResource ListBoxStyle1}">
+                        <ListView Background="Transparent" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Songs, Mode=OneWay}" Style="{DynamicResource ListBoxStyle1}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Height="25" Margin="0,0,0,4" >
@@ -98,7 +100,7 @@
                                             <TextBlock Text="{Binding Title}" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                         </StackPanel>
 
-                                        <ComboBox Text="hello" IsReadOnly="True" SelectedIndex="0" ItemsSource="{Binding Collection, Mode=OneWay}" DataContext="{Binding Source={StaticResource SongTitlesWithNumbers}}" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="280" VerticalAlignment="Center">
+                                        <ComboBox IsReadOnly="True" SelectedIndex="0" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="280" VerticalAlignment="Center">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Height="25" Orientation="Horizontal">
@@ -128,8 +130,8 @@
             </StackPanel>
             <Button HorizontalAlignment="Right" Margin="0,0,21,20.035" VerticalAlignment="Bottom" Width="75" Content="Save" Grid.Column="1" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" FontSize="13.333"/>
             <Button HorizontalAlignment="Right" Margin="0,0,100,20.035" VerticalAlignment="Bottom" Width="75" Content="Back" Grid.Column="1" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" FontSize="13.333" Click="Button_Click"/>
-            <TextBox x:Name="_tbUrl" HorizontalAlignment="Left" Margin="8,0,0,20.035" VerticalAlignment="Bottom" Text="Paste the url to the albums zune.net webpage" MouseDown="_tbUrl_MouseDown"/>
-            <Button Command="{Binding DownloadZuneWebpage}" CommandParameter="{Binding Text, ElementName=_tbUrl}" Margin="264.313,0,319.687,20.035" VerticalAlignment="Bottom" Content="Go!"/>
+            <TextBox x:Name="_tbUrl" Width="250" HorizontalAlignment="Left" Margin="8,0,0,20.035" VerticalAlignment="Bottom" Text="Paste the url to the albums zune.net webpage" MouseDown="_tbUrl_MouseDown"/>
+            <Button Command="{Binding DownloadZuneWebpageCommand}" CommandParameter="{Binding Text, ElementName=_tbUrl}" Margin="264.313,0,319.687,20.035" VerticalAlignment="Bottom" Content="Go!"/>
     </Grid>
 	</Border>
 

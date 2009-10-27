@@ -2,6 +2,7 @@
 using ZuneSocialTagger.GUI.Commands;
 using ZuneSocialTagger.Core.ZuneWebsiteScraper;
 using ZuneSocialTagger.Core.ID3Tagger;
+using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
@@ -9,16 +10,21 @@ namespace ZuneSocialTagger.GUI.ViewModels
     {
     	private DelegateCommand<string> _getZuneAlbumWebpage;
         private readonly AsyncObservableCollection<SongWithNumberString> _songs = new AsyncObservableCollection<SongWithNumberString>();
-        private readonly MetaData _metaData = new MetaData();
 
         public AsyncObservableCollection<SongWithNumberString> Songs
         {
             get{ return _songs;}
         }
 
-        public string AlbumArtist
+        private WebsiteAlbumMetaDataViewModel _websiteAlbumMetaDataViewModel;
+        public WebsiteAlbumMetaDataViewModel WebsiteAlbumMetaDataViewModel
         {
-            get { return _metaData.AlbumArtist; }
+            get { return _websiteAlbumMetaDataViewModel; }
+            set
+            { 
+                _websiteAlbumMetaDataViewModel = value;
+                OnPropertyChanged("WebsiteAlbumMetaDataViewModel");
+            }
         }
 
         public ICommand DownloadZuneWebpageCommand
@@ -49,9 +55,21 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 _songs.Add(new SongWithNumberString() {Number = number.ToString(), Title = songGuid.Title});
             }
 
-            _metaData.AlbumArtist = scraper.ScrapeAlbumArtist();
-            _metaData.AlbumTitle = scraper.ScrapeAlbumTitle();
-            _metaData.Year = scraper.ScrapeAlbumReleaseYear().ToString();
+            var metaData = new ZuneNetAlbumMetaData()
+                               {
+                                   Artist = scraper.ScrapeAlbumArtist(),
+                                   Title = scraper.ScrapeAlbumTitle(),
+                                   Year = scraper.ScrapeAlbumReleaseYear().ToString(),
+                                   ArtworkUrl = scraper.ScrapeAlbumArtworkUrl(),
+                                   SongCount = Songs.Count + " songs"
+                               };
+
+            WebsiteAlbumMetaDataViewModel = new WebsiteAlbumMetaDataViewModel(metaData);
+        }
+
+        public void SetupWebsiteAlbumMetaDataViewModelDefaults()
+        {
+            WebsiteAlbumMetaDataViewModel = new WebsiteAlbumMetaDataViewModel(new ZuneNetAlbumMetaData{ArtworkUrl = "Assets/blankartwork.png"});
         }
     }
 

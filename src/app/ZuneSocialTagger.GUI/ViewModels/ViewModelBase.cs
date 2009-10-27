@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -24,6 +25,5 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
     }
 }

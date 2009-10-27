@@ -11,7 +11,7 @@
         </Border>
         
         <Border Margin="10">
-            <Button Width="110" HorizontalAlignment="Left" VerticalAlignment="Bottom" Command="{Binding GetAlbumInfoCommand}">Load Album Tracks
+            <Button Width="110" HorizontalAlignment="Left" VerticalAlignment="Bottom" Command="{Binding GetAlbumInfoCommand}">Load Title Tracks
                 <Button.CommandParameter>
                     <Binding ElementName="tbSearch" Path="Text"/>
                 </Button.CommandParameter>

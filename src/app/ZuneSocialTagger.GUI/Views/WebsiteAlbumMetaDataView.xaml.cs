@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,16 +12,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ZuneSocialTagger.GUI
+namespace ZuneSocialTagger.GUI.Views
 {
-	/// <summary>
-	/// Interaction logic for ArtworkAndImageDetails.xaml
-	/// </summary>
-	public partial class ArtworkAndImageDetails : UserControl
-	{
-		public ArtworkAndImageDetails()
-		{
-			this.InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for WebsiteAlbumMetaDataView.xaml
+    /// </summary>
+    public partial class WebsiteAlbumMetaDataView : UserControl
+    {
+        public WebsiteAlbumMetaDataView()
+        {
+            InitializeComponent();
+        }
+    }
 }
