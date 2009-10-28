@@ -1,5 +1,5 @@
-using System;
 using NUnit.Framework;
+using ZuneSocialTagger.Core.ZuneWebsiteScraper;
 
 namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
 {
@@ -39,20 +39,5 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
                 "http://social.zune.net/frag/AlbumSearchBlock/?PageIndex=1&IsFullListView=true&keyword=Pendulum&PageSize=&blockName=AlbumSearchBlock&id=_searchAlbums&"));
         }
 
-    }
-
-    public static class ZuneArtistSearchUrlGenerator
-    {
-        public static string CreateUrl(string artist, int pageIndex)
-        {
-            return String.Format(
-                "http://social.zune.net/frag/AlbumSearchBlock/?PageIndex={0}&IsFullListView=true&keyword={1}&PageSize=&blockName=AlbumSearchBlock&id=_searchAlbums&",
-                pageIndex, artist);
-        }
-
-        public static string CreateUrl(string artist)
-        {
-            return CreateUrl(artist, 1);
-        }
     }
 }

@@ -61,6 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlbumWebpageScraperTestHarness.cs" />
+    <Compile Include="ArtistSearchTestHarness.cs" />
     <Compile Include="AsyncTesting.cs" />
     <Compile Include="Core\ZuneWebsiteScraper\ZuneArtistSearchScraperCombinerTests.cs" />
     <Compile Include="Core\ZuneWebsiteScraper\ZuneArtistSearchScraperTests.cs" />
