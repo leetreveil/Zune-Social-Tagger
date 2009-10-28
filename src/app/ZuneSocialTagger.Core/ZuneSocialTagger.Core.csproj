@@ -58,13 +58,13 @@
     <Compile Include="ZuneWebsiteScraper\HtmlDocumentExtensionMethods.cs" />
     <Compile Include="ZuneWebsiteScraper\SongGuid.cs" />
     <Compile Include="ZuneWebsiteScraper\WebpageParseException.cs" />
-    <Compile Include="ZuneWebsiteScraper\ZuneAlbumWebpageScraper.cs" />
+    <Compile Include="ZuneWebsiteScraper\AlbumWebpageScraper.cs" />
     <Compile Include="ZuneWebsiteScraper\PageDownloader.cs" />
     <Compile Include="ZuneWebsiteScraper\PageDownloaderException.cs" />
-    <Compile Include="ZuneWebsiteScraper\ZuneArtistSearch.cs" />
-    <Compile Include="ZuneWebsiteScraper\ZuneArtistSearchScraper.cs" />
-    <Compile Include="ZuneWebsiteScraper\ZuneArtistSearchScraperCombiner.cs" />
-    <Compile Include="ZuneWebsiteScraper\ZuneArtistSearchUrlGenerator.cs" />
+    <Compile Include="ZuneWebsiteScraper\AlbumSearch.cs" />
+    <Compile Include="ZuneWebsiteScraper\AlbumSearchScraper.cs" />
+    <Compile Include="ZuneWebsiteScraper\AlbumSearchScraperCombiner.cs" />
+    <Compile Include="ZuneWebsiteScraper\AlbumSearchUrlGenerator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

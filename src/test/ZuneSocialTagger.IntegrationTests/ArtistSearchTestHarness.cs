@@ -1,5 +1,6 @@
 using System;
 using ZuneSocialTagger.Core.ZuneWebsiteScraper;
+using ZuneSocialTagger.Core;
 
 namespace ZuneSocialTagger.IntegrationTests
 {
@@ -12,10 +13,10 @@ namespace ZuneSocialTagger.IntegrationTests
                 Console.WriteLine("Search for artist:");
                 string artist = Console.ReadLine();
 
-                foreach (var result in AlbumSearch.SearchFor(artist))
-                {
-                    Console.WriteLine("Artist: {0}, Album: {1}",result.Artist,result.Title);
-                }
+                AlbumSearch.SearchForAsync(artist,
+                                           result =>
+                                           result.ForEach(
+                                               x => Console.WriteLine("Artist: {0}, Album: {1}", x.Artist, x.Title)));
             }
         }
     }

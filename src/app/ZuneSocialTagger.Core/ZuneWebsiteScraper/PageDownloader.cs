@@ -4,6 +4,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Web;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 {
@@ -16,6 +17,8 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 
         public static string Download(string url)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             try
             {
                 WebRequest request = WebRequest.Create(url);
@@ -30,11 +33,19 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 
                 Stream stream = response.GetResponseStream();
 
-                //TODO: Move the HtmlDecode to somewhere later down the pipeline as we dont really need to be decoding the entire page
                 using (var reader = new StreamReader(stream, Encoding.Default))
-                    return HttpUtility.HtmlDecode(reader.ReadToEnd());
+                {
+                    string data = HttpUtility.HtmlDecode(reader.ReadToEnd());
+
+                    sw.Stop();
+
+                    Console.WriteLine("time taken to download webpage: {0}",sw.ElapsedMilliseconds);
+
+                    return data;
+                }
+                //TODO: Move the HtmlDecode to somewhere later down the pipeline as we dont really need to be decoding the entire page
             }
-            catch(UriFormatException ex)
+            catch (UriFormatException ex)
             {
                 throw new PageDownloaderException("invalid url", ex);
             }

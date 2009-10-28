@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace ZuneSocialTagger.Core
@@ -29,6 +30,14 @@ namespace ZuneSocialTagger.Core
                 return new Guid(regex.Match(str).Groups[1].Value);
 
             throw new FormatException("could not extract a guid from string");
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            foreach (var enumerable1 in enumerable)
+            {
+                action(enumerable1);
+            }
         }
     }
 }

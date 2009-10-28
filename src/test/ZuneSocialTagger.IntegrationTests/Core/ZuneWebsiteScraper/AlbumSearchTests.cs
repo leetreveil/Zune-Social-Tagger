@@ -31,8 +31,6 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_nothing_should_be_repeated_twice()
         {
-            var search = new AlbumSearch();
-
             IEnumerable<AlbumSearchResult> results = AlbumSearch.SearchFor("Pendulum");
 
             var result =

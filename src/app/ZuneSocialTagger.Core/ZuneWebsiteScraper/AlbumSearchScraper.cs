@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 {
@@ -17,6 +18,8 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 
         public IEnumerable<AlbumSearchResult> ScrapeAlbums()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             HtmlNode node = _document.DocumentNode;
             HtmlNodeCollection albumList = node.SelectNodes("//div[@class='AlbumList']");
 
@@ -34,6 +37,9 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
                             Url = albumLinkNode.Attributes["href"].Value
                         };
             }
+            sw.Stop();
+
+            Console.WriteLine("Time taken to scrape albums: {0}",sw.ElapsedMilliseconds);
         }
 
         public int ScrapeAlbumCountAcrossAllPages()

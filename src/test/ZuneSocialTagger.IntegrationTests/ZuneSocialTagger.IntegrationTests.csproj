@@ -64,12 +64,12 @@
     <Compile Include="AlbumWebpageScraperTestHarness.cs" />
     <Compile Include="ArtistSearchTestHarness.cs" />
     <Compile Include="AsyncTesting.cs" />
-    <Compile Include="Core\ZuneWebsiteScraper\ZuneArtistSearchScraperCombinerTests.cs" />
-    <Compile Include="Core\ZuneWebsiteScraper\ZuneArtistSearchScraperTests.cs" />
-    <Compile Include="Core\ZuneWebsiteScraper\ZuneArtistSearchTests.cs" />
-    <Compile Include="Core\ZuneWebsiteScraper\ZuneArtistSearchUrlGeneratorTests.cs" />
+    <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchScraperCombinerTests.cs" />
+    <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchScraperTests.cs" />
+    <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchTests.cs" />
+    <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchUrlGeneratorTests.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Core\ZuneWebsiteScraper\ZuneAlbumWebpageScraperTests.cs" />
+    <Compile Include="Core\ZuneWebsiteScraper\AlbumWebpageScraperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\ZuneWebsiteScraper\PageDownloaderTests.cs" />
   </ItemGroup>
