@@ -50,8 +50,8 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
             collection = node.SelectNodes("ul[@class='SongWithOrdinals ']/li[@mediainfo]");
 
             return
-                collection.Select(nodeCollection =>
-                    GetIDAndSongNameFromMediaInfoAttribute(nodeCollection.Attributes["mediainfo"].Value));
+                collection.Select(htmlNode =>
+                    GetIDAndSongNameFromMediaInfoAttribute(htmlNode.Attributes["mediainfo"].Value));
         }
 
         public string ScrapeAlbumArtist()

@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.3.9.1, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\htmlagilitypack\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="ID3Tag.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=59639b700fcbf7ba, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\id3tag.net\ID3Tag.Net.dll</HintPath>
@@ -58,12 +62,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncTesting.cs" />
+    <Compile Include="Core\ZuneWebsiteScraper\ZuneArtistSearchScraperCombinerTests.cs" />
+    <Compile Include="Core\ZuneWebsiteScraper\ZuneArtistSearchScraperTests.cs" />
+    <Compile Include="Core\ZuneWebsiteScraper\ZuneArtistSearchTests.cs" />
+    <Compile Include="Core\ZuneWebsiteScraper\ZuneArtistSearchUrlGeneratorTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Core\ZuneWebsiteScraper\ZuneAlbumWebpageScraperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\ZuneWebsiteScraper\PageDownloaderTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SampleData\albumsearchresult.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SampleData\Editors - In This Light And On This Evening\01 - In This Light And On This Evening.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
