@@ -4,7 +4,7 @@ using ZuneSocialTagger.Core;
 
 namespace ZuneSocialTagger.IntegrationTests
 {
-    public class ArtistSearchTestHarness
+    public class AlbumSearchTestHarness
     {
         public static void Main()
         {

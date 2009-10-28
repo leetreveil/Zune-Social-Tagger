@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlbumWebpageScraperTestHarness.cs" />
-    <Compile Include="ArtistSearchTestHarness.cs" />
+    <Compile Include="AlbumSearchTestHarness.cs" />
     <Compile Include="AsyncTesting.cs" />
     <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchScraperCombinerTests.cs" />
     <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchScraperTests.cs" />

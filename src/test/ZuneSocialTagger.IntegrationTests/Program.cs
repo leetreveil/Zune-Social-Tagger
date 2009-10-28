@@ -22,7 +22,7 @@ namespace ZuneSocialTagger.IntegrationTests
             }
             if (line == "2")
             {
-                ArtistSearchTestHarness.Main();
+                AlbumSearchTestHarness.Main();
             }
         }
     }

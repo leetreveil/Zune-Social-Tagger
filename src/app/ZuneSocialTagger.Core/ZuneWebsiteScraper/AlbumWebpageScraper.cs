@@ -38,7 +38,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 
         public Guid ScrapeAlbumArtistID()
         {
-            return _document.GetNodeByIdAndXpath(_albumHeaderNodeId, "div/ul").Attributes["id"].Value.ExtractGuid();
+            return _document.GetNodeByIdAndXpath("_artistHeader", "div/ul").Attributes["id"].Value.ExtractGuid();
         }
 
         public IEnumerable<SongGuid> GetSongTitleAndIDs()
