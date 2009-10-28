@@ -2,7 +2,7 @@ using System;
 
 namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 {
-    public static class ZuneArtistSearchUrlGenerator
+    public static class AlbumSearchUrlGenerator
     {
         public static string CreateUrl(string artist, int pageIndex)
         {

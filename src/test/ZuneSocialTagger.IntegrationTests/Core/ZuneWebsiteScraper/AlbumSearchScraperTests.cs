@@ -20,7 +20,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_get_a_list_of_18_albums()
         {
-            var zuneArtistSearchScraper = new ZuneArtistSearchScraper(_fileData);
+            var zuneArtistSearchScraper = new AlbumSearchScraper(_fileData);
             IEnumerable<AlbumSearchResult> results = zuneArtistSearchScraper.ScrapeAlbums();
 
 
@@ -32,7 +32,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_the_first_result_should_be()
         {
-            var zuneArtistSearchScraper = new ZuneArtistSearchScraper(_fileData);
+            var zuneArtistSearchScraper = new AlbumSearchScraper(_fileData);
             IEnumerable<AlbumSearchResult> results = zuneArtistSearchScraper.ScrapeAlbums();
 
             //i know that the first result in the xml file is pendulum
@@ -46,7 +46,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_contain()
         {
-            var zuneArtistSearchScraper = new ZuneArtistSearchScraper(_fileData);
+            var zuneArtistSearchScraper = new AlbumSearchScraper(_fileData);
             IEnumerable<AlbumSearchResult> results = zuneArtistSearchScraper.ScrapeAlbums();
 
             Assert.That(results.Where(srch => srch.Artist == "Mary Anne Czapla").FirstOrDefault(), Is.Not.Null, "could not find Mary Anne Czapla");
@@ -55,7 +55,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_get_the_total_number_of_albums_available()
         {
-            var zuneArtistSearchScraper = new ZuneArtistSearchScraper(_fileData);
+            var zuneArtistSearchScraper = new AlbumSearchScraper(_fileData);
 
             int result = zuneArtistSearchScraper.ScrapeAlbumCountAcrossAllPages();
 
@@ -70,9 +70,9 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_get_a_list_of_all_the_album_data_for_the_search()
         {
-            string pageData = PageDownloader.Download(ZuneArtistSearchUrlGenerator.CreateUrl("Pendulum"));
+            string pageData = PageDownloader.Download(AlbumSearchUrlGenerator.CreateUrl("Pendulum"));
 
-            var scraper = new ZuneArtistSearchScraper(pageData);
+            var scraper = new AlbumSearchScraper(pageData);
 
             Assert.That(scraper.ScrapeAlbums().Count(),Is.GreaterThan(0));
         }
@@ -80,9 +80,9 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_get_the_total_number_of_albums_available()
         {
-            string pageData = PageDownloader.Download(ZuneArtistSearchUrlGenerator.CreateUrl("Pendulum"));
+            string pageData = PageDownloader.Download(AlbumSearchUrlGenerator.CreateUrl("Pendulum"));
 
-            var scraper = new ZuneArtistSearchScraper(pageData);
+            var scraper = new AlbumSearchScraper(pageData);
 
             Assert.That(scraper.ScrapeAlbumCountAcrossAllPages(), Is.GreaterThan(0));
         }
@@ -92,9 +92,9 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_get_the_first_albums_details_which_is_creedance()
         {
-            string pageData = PageDownloader.Download(ZuneArtistSearchUrlGenerator.CreateUrl("Pendulum"));
+            string pageData = PageDownloader.Download(AlbumSearchUrlGenerator.CreateUrl("Pendulum"));
 
-            var scraper = new ZuneArtistSearchScraper(pageData);
+            var scraper = new AlbumSearchScraper(pageData);
 
             IEnumerable<AlbumSearchResult> albumSearchResults = scraper.ScrapeAlbums();
 
@@ -106,9 +106,9 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_contain()
         {
-            string pageData = PageDownloader.Download(ZuneArtistSearchUrlGenerator.CreateUrl("Pendulum"));
+            string pageData = PageDownloader.Download(AlbumSearchUrlGenerator.CreateUrl("Pendulum"));
 
-            var scraper = new ZuneArtistSearchScraper(pageData);
+            var scraper = new AlbumSearchScraper(pageData);
 
             IEnumerable<AlbumSearchResult> albumSearchResults = scraper.ScrapeAlbums();
 

@@ -9,12 +9,12 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
     /// <summary>
     /// This class assumes valid input from a webpage and will fail to load on an invalid webpage
     /// </summary>
-    public class ZuneAlbumWebpageScraper
+    public class AlbumWebpageScraper
     {
         private readonly HtmlDocument _document;
-        private string _albumHeaderNodeId = "_albumHeader";
+        private const string _albumHeaderNodeId = "_albumHeader";
 
-        public ZuneAlbumWebpageScraper(string page)
+        public AlbumWebpageScraper(string page)
         {
             _document = new HtmlDocument();
             _document.LoadHtml(page);
@@ -33,12 +33,12 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 
         public Guid ScrapeAlbumMediaID()
         {
-            return _document.GetNodeByIdAndXpath("_albumHeader", "div/a").Attributes["mediainfo"].Value.ExtractGuid();
+            return _document.GetNodeByIdAndXpath(_albumHeaderNodeId, "div/a").Attributes["mediainfo"].Value.ExtractGuid();
         }
 
         public Guid ScrapeAlbumArtistID()
         {
-            return _document.GetNodeByIdAndXpath("_artistHeader", "div/ul").Attributes["id"].Value.ExtractGuid();
+            return _document.GetNodeByIdAndXpath(_albumHeaderNodeId, "div/ul").Attributes["id"].Value.ExtractGuid();
         }
 
         public IEnumerable<SongGuid> GetSongTitleAndIDs()

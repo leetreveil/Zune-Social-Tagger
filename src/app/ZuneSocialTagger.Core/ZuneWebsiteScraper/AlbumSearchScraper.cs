@@ -5,11 +5,11 @@ using HtmlAgilityPack;
 
 namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 {
-    public class ZuneArtistSearchScraper
+    public class AlbumSearchScraper
     {
         private readonly HtmlDocument _document;
 
-        public ZuneArtistSearchScraper(string pageData)
+        public AlbumSearchScraper(string pageData)
         {
             _document = new HtmlDocument();
             _document.LoadHtml(pageData);

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using NUnit.Framework;
 using System.Linq;
 using System.Collections.Generic;
@@ -13,7 +11,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_get_a_list_of_all_albums_matching_the_search()
         {
-            IEnumerable<AlbumSearchResult> results =  ZuneArtistSearch.SearchFor("Pendulum");
+            IEnumerable<AlbumSearchResult> results =  AlbumSearch.SearchFor("Pendulum");
 
             Assert.That(results.Count(), Is.GreaterThan(0));
         }
@@ -21,7 +19,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_find_in_silico_in_the_search_result()
         {
-            IEnumerable<AlbumSearchResult> results = ZuneArtistSearch.SearchFor("Pendulum");
+            IEnumerable<AlbumSearchResult> results = AlbumSearch.SearchFor("Pendulum");
 
             AlbumSearchResult result = results.Where(album => album.Title == "In Silico").FirstOrDefault();
 
@@ -33,9 +31,9 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_nothing_should_be_repeated_twice()
         {
-            var search = new ZuneArtistSearch();
+            var search = new AlbumSearch();
 
-            IEnumerable<AlbumSearchResult> results = ZuneArtistSearch.SearchFor("Pendulum");
+            IEnumerable<AlbumSearchResult> results = AlbumSearch.SearchFor("Pendulum");
 
             var result =
                 results.Where(album => album.Title == "Pendulum" && album.Artist == "Creedence Clearwater Revival");

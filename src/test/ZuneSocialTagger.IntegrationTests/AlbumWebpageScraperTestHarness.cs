@@ -37,7 +37,7 @@ namespace ZuneSocialTagger.IntegrationTests
                 Console.WriteLine("");
 
 
-                var scraper = new ZuneAlbumWebpageScraper(webpageData);
+                var scraper = new AlbumWebpageScraper(webpageData);
 
                 Console.WriteLine("ZuneAlbumArtistID: {0}", scraper.ScrapeAlbumArtistID());
                 Console.WriteLine("ZuneAlbumMediaID: {0}", scraper.ScrapeAlbumMediaID());

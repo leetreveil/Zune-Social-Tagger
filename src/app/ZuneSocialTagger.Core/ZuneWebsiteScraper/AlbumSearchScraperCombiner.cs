@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 {
-    public class ZuneArtistSearchScraperCombiner
+    public class AlbumSearchScraperCombiner
     {
         /// <summary>
         /// Default page count is set to 20
@@ -23,7 +23,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 
             foreach (var page in pages)
             {
-                var searchScraper = new ZuneArtistSearchScraper(page);
+                var searchScraper = new AlbumSearchScraper(page);
 
                 temp.AddRange(searchScraper.ScrapeAlbums());
             }

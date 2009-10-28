@@ -2,18 +2,18 @@ using System.Collections.Generic;
 
 namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 {
-    public class ZuneArtistSearch
+    public class AlbumSearch
     {
         public static IEnumerable<AlbumSearchResult> SearchFor(string artist)
         {
             var tempList = new List<AlbumSearchResult>();
-            string url = ZuneArtistSearchUrlGenerator.CreateUrl(artist);
+            string url = AlbumSearchUrlGenerator.CreateUrl(artist);
 
             string firstAlbumPage = PageDownloader.Download(url);
 
-            var scraper = new ZuneArtistSearchScraper(firstAlbumPage);
+            var scraper = new AlbumSearchScraper(firstAlbumPage);
   
-            var combiner = new ZuneArtistSearchScraperCombiner();
+            var combiner = new AlbumSearchScraperCombiner();
 
             int pageCount = combiner.GetPageCount(scraper.ScrapeAlbumCountAcrossAllPages());
 
@@ -22,9 +22,9 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
             for (int i = 0; i < pageCount; i++)
             {
                 // + 1 because the url starts at 1 and i starts at 0
-                string page = ZuneArtistSearchUrlGenerator.CreateUrl(artist, i +1);
+                string page = AlbumSearchUrlGenerator.CreateUrl(artist, i +1);
                 var newPageScraper =
-                    new ZuneArtistSearchScraper(
+                    new AlbumSearchScraper(
                         PageDownloader.Download(page));
 
                 tempList.AddRange(newPageScraper.ScrapeAlbums());

@@ -21,7 +21,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_calculate_the_number_of_pages_required_to_download_all_the_albums()
         {
-            var combiner = new ZuneArtistSearchScraperCombiner();
+            var combiner = new AlbumSearchScraperCombiner();
 
             int result =  combiner.GetPageCount(38);
 
@@ -31,7 +31,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_combine_the_results_of_both_pages()
         {
-            var combiner = new ZuneArtistSearchScraperCombiner();
+            var combiner = new AlbumSearchScraperCombiner();
 
             string[] pageData = new[]{_fileData,_fileData};
 

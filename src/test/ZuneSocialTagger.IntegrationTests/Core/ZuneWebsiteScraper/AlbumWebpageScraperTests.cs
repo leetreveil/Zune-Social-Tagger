@@ -20,7 +20,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_get_a_list_of_song_titles_and_zuneMediaID_from_an_album_document()
         {
-            var albumMediaIDScraper = new ZuneAlbumWebpageScraper(_fileData);
+            var albumMediaIDScraper = new AlbumWebpageScraper(_fileData);
 
             var songs = albumMediaIDScraper.GetSongTitleAndIDs();
 
@@ -36,7 +36,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
                                          Guid = new Guid("39b9f201-0100-11db-89ca-0019b92a3933")
                                      };
 
-            var albumMediaIDScraper = new ZuneAlbumWebpageScraper(_fileData);
+            var albumMediaIDScraper = new AlbumWebpageScraper(_fileData);
 
             var songs = albumMediaIDScraper.GetSongTitleAndIDs();
 
@@ -49,7 +49,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         {
             Guid albumArtistID = new Guid("00710a00-0600-11db-89ca-0019b92a3933");
 
-            var scraper = new ZuneAlbumWebpageScraper(_fileData);
+            var scraper = new AlbumWebpageScraper(_fileData);
 
             Assert.That(scraper.ScrapeAlbumArtistID(), Is.EqualTo(albumArtistID));
         }
@@ -59,7 +59,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         {
             Guid zuneAlbumMediaID = new Guid("37b9f201-0100-11db-89ca-0019b92a3933");
 
-            var scraper = new ZuneAlbumWebpageScraper(_fileData);
+            var scraper = new AlbumWebpageScraper(_fileData);
 
             Assert.That(scraper.ScrapeAlbumMediaID(), Is.EqualTo(zuneAlbumMediaID));
         }
@@ -68,7 +68,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_scrape_the_album_artist()
         {
-            var scraper = new ZuneAlbumWebpageScraper(_fileData);
+            var scraper = new AlbumWebpageScraper(_fileData);
 
             string artist = scraper.ScrapeAlbumArtist();
 
@@ -78,7 +78,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_scrape_the_album_title()
         {
-            var scraper = new ZuneAlbumWebpageScraper(_fileData);
+            var scraper = new AlbumWebpageScraper(_fileData);
 
             string albumTitle = scraper.ScrapeAlbumTitle();
 
@@ -88,7 +88,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_scrape_the_albums_release_year()
         {
-            var scraper = new ZuneAlbumWebpageScraper(_fileData);
+            var scraper = new AlbumWebpageScraper(_fileData);
 
             int releaseYear = scraper.ScrapeAlbumReleaseYear();
 
@@ -98,7 +98,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [Test]
         public void Then_it_should_be_able_to_scrape_the_url_to_the_albums_artwork()
         {
-            var scraper = new ZuneAlbumWebpageScraper(_fileData);
+            var scraper = new AlbumWebpageScraper(_fileData);
 
             string expectedUrl =
                 "http&#58;&#47;&#47;image.catalog.zune.net&#47;v3.0&#47;image&#47;37b9f201-0300-11db-89ca-0019b92a3933&#63;resize&#61;true&#38;width&#61;240&#38;height&#61;240";
@@ -129,7 +129,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         [ExpectedException(typeof(WebpageParseException))]
         public void Then_it_should_throw_a_PageDownloaderException()
         {
-            new ZuneAlbumWebpageScraper(_fileData);
+            new AlbumWebpageScraper(_fileData);
         }
     }
 }

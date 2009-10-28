@@ -46,7 +46,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void ScrapeWebpage(string pageData)
         {
-            var scraper = new ZuneAlbumWebpageScraper(pageData);
+            var scraper = new AlbumWebpageScraper(pageData);
 
             int number = 0;
             foreach (var songGuid in scraper.GetSongTitleAndIDs())
