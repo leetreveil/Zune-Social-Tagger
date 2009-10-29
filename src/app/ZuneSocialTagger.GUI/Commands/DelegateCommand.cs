@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 
 namespace ZuneSocialTagger.GUI.Commands
 {
+
+    [DebuggerStepThrough]
     /// <summary>
     ///     This class allows delegating the commanding logic to methods passed as parameters,
     ///     and enables a View to bind commands to objects that are not part of the element tree.

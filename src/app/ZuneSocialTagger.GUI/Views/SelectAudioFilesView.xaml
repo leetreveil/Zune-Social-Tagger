@@ -14,9 +14,9 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="50"/>
 			<RowDefinition Height="25"/>
-
 		<RowDefinition/>
 		</Grid.RowDefinitions>
+        
 		<TextBlock FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" FontSize="26.667" Text="SELECT AUDIO FILES"/>
 		<Grid Grid.Row="2" VerticalAlignment="Top" Height="25">
 		<Grid.ColumnDefinitions>
@@ -24,8 +24,8 @@
 			<ColumnDefinition Width="10"/>
 			<ColumnDefinition Width="0.5*"/>
 		</Grid.ColumnDefinitions>
-				<Button HorizontalAlignment="Right" Width="80">From Folder</Button>
-				<Button HorizontalAlignment="Left" Width="80" Grid.Column="2">Single Files</Button>
+				<Button Command="{Binding FromFolderCommand}" HorizontalAlignment="Right" Width="80">From Folder</Button>
+				<Button Command="{Binding FromFilesCommand}" HorizontalAlignment="Left" Width="80" Grid.Column="2">Single Files</Button>
 		</Grid>
 		<Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75" Content="Close" Grid.Row="2"/>
 

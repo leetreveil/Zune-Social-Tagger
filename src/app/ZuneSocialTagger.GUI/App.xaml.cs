@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using ZuneSocialTagger.GUI.ViewModels;
 using ZuneSocialTagger.GUI.Views;
 
 namespace ZuneSocialTagger.GUI
@@ -16,18 +17,20 @@ namespace ZuneSocialTagger.GUI
         private void OnStartup(object sender, StartupEventArgs e)
         {
             // Create the ViewModel and expose it using the View's DataContext
-            var view = new MainView();
             var detailsView = new DetailsView();
-            var detailsViewModel = new ViewModels.DetailsViewModel();
+            var detailsViewModel = new DetailsViewModel();
 
-            view.DataContext = new ViewModels.MainViewModel();
+            var audioFilesView = new SelectAudioFilesView();
+            var audioFilesViewModel = new SelectAudioFilesViewModel();
+
+
             detailsView.DataContext = detailsViewModel;
+            audioFilesView.DataContext = audioFilesViewModel;
 
 
             detailsViewModel.SetupWebsiteAlbumMetaDataViewModelDefaults();
 
-
-            detailsView.Show();
+            audioFilesView.Show();
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Windows.Input;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
+    [DebuggerStepThrough]
     /// <summary>
     /// Provides common functionality for ViewModel classes
     /// </summary>

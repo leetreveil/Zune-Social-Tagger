@@ -1,7 +1,6 @@
 ﻿using System.Windows.Input;
 using ZuneSocialTagger.GUI.Commands;
 using ZuneSocialTagger.Core.ZuneWebsiteScraper;
-using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewModels
