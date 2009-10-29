@@ -11,6 +11,10 @@ namespace ZuneSocialTagger.GUI.ViewModels
         public WebsiteAlbumMetaDataViewModel(ZuneNetAlbumMetaData metaData)
         {
             _metaData = metaData;
+
+            //Defaults
+            if (string.IsNullOrEmpty(metaData.ArtworkUrl))
+                _metaData.ArtworkUrl = "Assets/blankartwork.png";
         }
 
         public string Title

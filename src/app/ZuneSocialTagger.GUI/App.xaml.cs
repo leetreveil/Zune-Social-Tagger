@@ -27,10 +27,7 @@ namespace ZuneSocialTagger.GUI
             detailsView.DataContext = detailsViewModel;
             audioFilesView.DataContext = audioFilesViewModel;
 
-
-            detailsViewModel.SetupWebsiteAlbumMetaDataViewModelDefaults();
-
-            audioFilesView.Show();
+            detailsView.Show();
         }
     }
 }

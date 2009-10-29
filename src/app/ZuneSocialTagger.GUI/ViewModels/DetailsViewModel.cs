@@ -10,6 +10,12 @@ namespace ZuneSocialTagger.GUI.ViewModels
     	private DelegateCommand<string> _getZuneAlbumWebpage;
         private readonly AsyncObservableCollection<SongWithNumberString> _songs = new AsyncObservableCollection<SongWithNumberString>();
 
+        public DetailsViewModel()
+        {
+            //provide it with blank data as we need to set the defaults
+            WebsiteAlbumMetaDataViewModel = new WebsiteAlbumMetaDataViewModel(new ZuneNetAlbumMetaData());
+        }
+
         public AsyncObservableCollection<SongWithNumberString> Songs
         {
             get{ return _songs;}
@@ -51,10 +57,10 @@ namespace ZuneSocialTagger.GUI.ViewModels
             foreach (var songGuid in scraper.GetSongTitleAndIDs())
             {
                 number++;
-                _songs.Add(new SongWithNumberString() {Number = number.ToString(), Title = songGuid.Title});
+                _songs.Add(new SongWithNumberString {Number = number.ToString(), Title = songGuid.Title});
             }
 
-            var metaData = new ZuneNetAlbumMetaData()
+            var metaData = new ZuneNetAlbumMetaData
                                {
                                    Artist = scraper.ScrapeAlbumArtist(),
                                    Title = scraper.ScrapeAlbumTitle(),
@@ -65,16 +71,5 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             WebsiteAlbumMetaDataViewModel = new WebsiteAlbumMetaDataViewModel(metaData);
         }
-
-        public void SetupWebsiteAlbumMetaDataViewModelDefaults()
-        {
-            WebsiteAlbumMetaDataViewModel = new WebsiteAlbumMetaDataViewModel(new ZuneNetAlbumMetaData{ArtworkUrl = "Assets/blankartwork.png"});
-        }
-    }
-
-    internal class SongWithNumberString
-    {
-        public string Title { get; set; }
-        public string Number { get; set; }
     }
 }
