@@ -4,14 +4,14 @@
     xmlns:views="clr-namespace:ZuneSocialTagger.GUI.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Class="ZuneSocialTagger.GUI.Views.DetailsView"
-    Title="DetailsView" Height="572" Width="663"
+    Title="DetailsView" Height="572"
     MouseLeftButtonDown="Window_MouseLeftButtonDown" Style="{DynamicResource DefaultWindowStyle}" mc:Ignorable="d">
     
     <Window.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
     </Window.Resources>
 	
-	<Grid>
+	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="40"></RowDefinition>
 			<RowDefinition Height="100"></RowDefinition>

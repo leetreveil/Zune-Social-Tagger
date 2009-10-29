@@ -4,6 +4,7 @@
     	<Style x:Key="DefaultWindowStyle" TargetType="{x:Type Window}">
 			<Setter Property="ResizeMode" Value="NoResize" />
    			<Setter Property="WindowStyle" Value="None" />
+			<Setter Property="Width" Value="663" />
     		<Setter Property="Template">
     			<Setter.Value>
     				<ControlTemplate TargetType="{x:Type Window}">

@@ -87,6 +87,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\SelectAudioFilesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\WebsiteAlbumMetaDataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -132,6 +136,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Views\SelectAudioFilesView.xaml.cs">
+      <DependentUpon>SelectAudioFilesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WebsiteAlbumMetaDataView.xaml.cs">
       <DependentUpon>WebsiteAlbumMetaDataView.xaml</DependentUpon>

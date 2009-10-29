@@ -2,5 +2,5 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SongTitlesWithNumbers" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="ZuneSocialTagger.GUI.App"
-    Startup="OnStartup" mc:Ignorable="d">
+    Startup="OnStartup" mc:Ignorable="d" StartupUri="Views/SelectAudioFilesView.xaml">
 </Application>
