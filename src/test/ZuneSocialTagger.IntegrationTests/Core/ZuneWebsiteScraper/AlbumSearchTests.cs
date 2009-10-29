@@ -36,7 +36,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
             var result =
                 results.Where(album => album.Title == "Pendulum" && album.Artist == "Creedence Clearwater Revival");
 
-            Assert.That(result.Count(),Is.EqualTo(1),"Found the same album twice");
+            Assert.That(result.Count(),Is.Not.GreaterThan(1),"Found the same album twice");
         }
 
         [Test]
