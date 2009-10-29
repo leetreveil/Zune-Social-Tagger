@@ -37,6 +37,7 @@
     <Reference Include="PresentationFramework">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -85,6 +86,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\SearchView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\SelectAudioFilesView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -111,6 +116,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />
+    <Compile Include="Models\SongWithNumberString.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -135,6 +141,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Views\SearchView.xaml.cs">
+      <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectAudioFilesView.xaml.cs">
       <DependentUpon>SelectAudioFilesView.xaml</DependentUpon>
@@ -166,6 +175,7 @@
     <Resource Include="Assets\Fonts\ZegoeUI-U.ttf" />
     <Resource Include="Assets\Fonts\ZegoeUI-UBold.ttf" />
     <Resource Include="Assets\Fonts\ZegoeUISemiBold-U.ttf" />
+    <Resource Include="Assets\magnifyingglass.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
