@@ -48,7 +48,7 @@
                         <ListView Background="Transparent" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Songs, Mode=OneWay}" Style="{DynamicResource ListBoxStyle1}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Height="25" ShowGridLines="True" Margin="0,0,0,4" >
+                                    <Grid Height="25" Margin="0,0,0,4" >
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="305"/>
                                             <ColumnDefinition/>

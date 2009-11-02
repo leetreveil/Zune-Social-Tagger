@@ -30,10 +30,10 @@
 
 				<StackPanel HorizontalAlignment="Left" Grid.Column="1">
 				<TextBlock Text="SEARCH"/>
-				<TextBox Width="309" Grid.Column="1" Style="{DynamicResource TextBoxSearchStyle}"></TextBox>
+				<TextBox x:Name="tbSearch" Width="309" Grid.Column="1" Style="{DynamicResource TextBoxSearchStyle}"></TextBox>
 				</StackPanel>
 			</Grid>
 		<Button HorizontalAlignment="Right" Width="75" Content="Cancel" Grid.Row="2" VerticalAlignment="Bottom"/>
-		<Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75" Content="Search" Margin="0,0,79,0" Grid.Row="2"/>
+		<Button Command="{Binding SearchCommand}" CommandParameter="{Binding tbSearch.Text}"  HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75" Content="Search" Margin="0,0,79,0" Grid.Row="2"/>
 	</Grid>
 </Window>

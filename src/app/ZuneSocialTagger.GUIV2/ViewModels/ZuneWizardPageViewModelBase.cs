@@ -1,0 +1,57 @@
+using System.ComponentModel;
+using System;
+
+namespace ZuneSocialTagger.GUIV2.ViewModels
+{
+    public abstract class ZuneWizardPageViewModelBase : INotifyPropertyChanged
+    {
+        bool _isCurrentPage;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler MoveNextOverride;
+
+        protected void OnMoveNextOverride()
+        {
+            EventHandler mNextoverride = MoveNextOverride;
+            if (mNextoverride != null) mNextoverride(this, new EventArgs());
+        }
+
+
+        public virtual string NextButtonText
+        {
+            get { return "Next"; }
+        }
+
+        public virtual string BackButtonText
+        {
+            get { return "Back"; }
+        }
+
+        public bool IsCurrentPage
+        {
+            get { return _isCurrentPage; }
+            set
+            {
+                if (value == _isCurrentPage)
+                    return;
+
+                _isCurrentPage = value;
+                this.OnPropertyChanged("IsCurrentPage");
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the user has filled in this page properly
+        /// and the wizard should allow the user to progress to the 
+        /// next page in the workflow.
+        /// </summary>
+        internal abstract bool IsValid();
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = this.PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+}

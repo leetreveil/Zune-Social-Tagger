@@ -1,0 +1,30 @@
+﻿<Application
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SearchResultsSampleData" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="ZuneSocialTagger.GUIV2.App"
+    StartupUri="ZuneWizardDialog.xaml" mc:Ignorable="d">
+	<Application.Resources>
+		<SampleData:SearchResultsSampleData x:Key="SearchResultsSampleData" d:IsDataSource="True"/>
+		<ControlTemplate x:Key="bleh" TargetType="{x:Type ListBoxItem}">
+			<Border x:Name="Bd" SnapsToDevicePixels="True" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+				<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+			</Border>
+			<ControlTemplate.Triggers>
+				<Trigger Property="IsSelected" Value="True">
+					<Setter Property="Background" TargetName="Bd" Value="#D4D4D5"/>
+				</Trigger>
+				<MultiTrigger>
+					<MultiTrigger.Conditions>
+						<Condition Property="IsSelected" Value="True"/>
+						<Condition Property="Selector.IsSelectionActive" Value="False"/>
+					</MultiTrigger.Conditions>
+					<Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+					<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+				</MultiTrigger>
+				<Trigger Property="IsEnabled" Value="False">
+					<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+				</Trigger>
+			</ControlTemplate.Triggers>
+		</ControlTemplate>
+	</Application.Resources>
+</Application>

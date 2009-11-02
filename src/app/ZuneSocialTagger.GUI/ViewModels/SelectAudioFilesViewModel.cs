@@ -43,6 +43,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 string[] files = Directory.GetFiles(fbd.SelectedPath,"*.mp3");
 
                 IEnumerable<FilePathAndContainer> containers = CreateContainerFromFiles(files);
+
+
             }
         }
 

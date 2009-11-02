@@ -10,23 +10,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ZuneSocialTagger.GUI.Views
+namespace ZuneSocialTagger.GUIV2.Views
 {
     /// <summary>
-    /// Interaction logic for SelectAudioFilesView.xaml
+    /// Interaction logic for SearchView.xaml
     /// </summary>
-    public partial class SelectAudioFilesView : Window
+    public partial class SearchView : UserControl
     {
-        public SelectAudioFilesView()
+        public SearchView()
         {
             this.InitializeComponent();
 			
             // Insert code required on object creation below this point.
-        }
-
-        private void Window_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            this.DragMove();
         }
     }
 }
