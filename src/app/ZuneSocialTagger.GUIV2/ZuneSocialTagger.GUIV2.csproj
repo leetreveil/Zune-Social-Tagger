@@ -79,6 +79,7 @@
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Commands\CommandReference.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Models\AsyncObservableCollection.cs" />
     <Compile Include="Models\FilePathAndContainer.cs" />
     <Compile Include="Models\SongWithNumberString.cs" />
     <Compile Include="Models\ZuneNetAlbumMetaData.cs" />
@@ -93,6 +94,7 @@
       <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="SearchEventArgs.cs" />
+    <Compile Include="ViewModels\DetailsViewModel.cs" />
     <Compile Include="ViewModels\SearchResultsViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
     <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />
@@ -113,6 +115,9 @@
     <Compile Include="ViewModels\WebsiteAlbumMetaDataViewModel.cs" />
     <Compile Include="ViewModels\ZuneWizardPageViewModelBase.cs" />
     <Compile Include="ViewModels\ZuneWizardViewModel.cs" />
+    <Compile Include="Views\DetailsView.xaml.cs">
+      <DependentUpon>DetailsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SearchResultsView.xaml.cs">
       <DependentUpon>SearchResultsView.xaml</DependentUpon>
     </Compile>
@@ -211,6 +216,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SearchBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -6,7 +6,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         internal override bool IsValid()
         {
-            return false;
+            return true;
         }
     }
 }

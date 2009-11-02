@@ -17,6 +17,9 @@
         <DataTemplate DataType="{x:Type viewModels:SearchResultsViewModel}">
             <views:SearchResultsView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:DetailsViewModel}">
+            <views:DetailsView />
+        </DataTemplate>
 
         <Style TargetType="{x:Type Button}">
             <Setter Property="Padding" Value="3.5,0" />

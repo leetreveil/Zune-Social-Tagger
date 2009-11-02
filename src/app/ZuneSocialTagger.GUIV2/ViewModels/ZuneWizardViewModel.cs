@@ -188,6 +188,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             pages.Add(new SelectAudioFilesViewModel());
             pages.Add(new SearchViewModel());
             pages.Add(new SearchResultsViewModel());
+            pages.Add(new DetailsViewModel());
 
             _pages = new ReadOnlyCollection<ZuneWizardPageViewModelBase>(pages);
         }
