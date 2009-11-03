@@ -25,12 +25,6 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 
                 WebResponse response = request.GetResponse();
 
-                //we have to do contains here because to different url's can be the same
-                //for example www.google.com is the same as www.google.com/
-                if (response.ResponseUri.ToString() != url && !response.ResponseUri.ToString().Contains(url))
-                    throw new PageDownloaderException("redirected to another webpage");
-
-
                 Stream stream = response.GetResponseStream();
 
                 using (var reader = new StreamReader(stream, Encoding.Default))

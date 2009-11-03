@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -22,6 +23,13 @@ namespace ZuneSocialTagger.GUIV2.Views
             this.InitializeComponent();
 			
             // Insert code required on object creation below this point.
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            var dataContext = (SearchViewModel)this.DataContext;
+
+            dataContext.ViewShown();
         }
     }
 }

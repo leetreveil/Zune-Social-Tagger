@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Input;
 using ZuneSocialTagger.Core.ZuneWebsiteScraper;
 using ZuneSocialTagger.GUIV2.Commands;
@@ -73,6 +74,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         }
 
         internal override bool IsValid()
+        {
+            return true;
+        }
+
+        internal override bool CanMoveNext()
         {
             return true;
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -19,8 +20,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             return true;
         }
 
-        //private DelegateCommand _fromFolderCommand;
-        //private DelegateCommand _fromFilesCommand;
+        internal override bool CanMoveNext()
+        {
+            return true;
+        }
 
         public ICommand FromFolderCommand
         {

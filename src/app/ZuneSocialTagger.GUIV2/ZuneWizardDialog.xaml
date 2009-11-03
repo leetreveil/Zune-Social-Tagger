@@ -5,8 +5,7 @@
     SizeToContent="Height"
     Title="ZuneWizardDialog" 
     WindowStartupLocation="CenterScreen" 
-    Style="{DynamicResource DefaultWindowStyle}" 
-    MouseLeftButtonDown="Window_MouseLeftButtonDown">
+    Style="{DynamicResource DefaultWindowStyle}" MouseLeftButtonDown="Window_MouseLeftButtonDown">
     
     <Window.Resources>
         <ResourceDictionary Source="Resources.xaml" />

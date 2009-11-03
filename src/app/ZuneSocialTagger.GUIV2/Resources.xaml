@@ -4,12 +4,25 @@
 						xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 						xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SearchResults"
 							xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                        xmlns:ctrls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
+                   xmlns:converters="clr-namespace:ZuneSocialTagger.GUIV2.Converters"
 							mc:Ignorable="d">
 					
-							<SampleData:SearchResults x:Key="SearchResults" d:IsDataSource="True"/>
+		<SampleData:SearchResults x:Key="SearchResults" d:IsDataSource="True"/>
+							
+	    <Storyboard x:Key="SearchingAnim">
+    		<StringAnimationUsingKeyFrames RepeatBehavior="Forever" BeginTime="00:00:00" Storyboard.TargetName="textBlock" Storyboard.TargetProperty="(TextBlock.Text)">
+    			<DiscreteStringKeyFrame KeyTime="00:00:00" Value="Searching"/>
+    			<DiscreteStringKeyFrame KeyTime="00:00:00.2000000" Value="Searching."/>
+    			<DiscreteStringKeyFrame KeyTime="00:00:00.4000000" Value="Searching.."/>
+    			<DiscreteStringKeyFrame KeyTime="00:00:00.6000000" Value="Searching..."/>
+    		</StringAnimationUsingKeyFrames>
+    	</Storyboard>
+    
+        <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <converters:TextToVisibilityConverter x:Key="TextToVisConverter" />
 
-		
-    	<Style x:Key="DefaultWindowStyle" TargetType="{x:Type Window}">
+    <Style x:Key="DefaultWindowStyle" TargetType="{x:Type Window}">
 			<Setter Property="ResizeMode" Value="NoResize" />
    			<Setter Property="WindowStyle" Value="None" />
 			<Setter Property="Width" Value="663" />
@@ -45,9 +58,9 @@
     	</Style>
 		
 
-<Style x:Key="SelectedItemHighlight" TargetType="{x:Type ListViewItem}">
-	<Setter Property="Template" Value="{DynamicResource bleh}"/>
-</Style>
+    <Style x:Key="SelectedItemHighlight" TargetType="{x:Type ListViewItem}">
+	    <Setter Property="Template" Value="{DynamicResource bleh}"/>
+    </Style>
 
     <Style x:Key="ListBoxStyle1" TargetType="{x:Type ListBox}">
         <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
@@ -76,4 +89,5 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
 </ResourceDictionary>

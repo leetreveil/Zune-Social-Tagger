@@ -79,6 +79,8 @@
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Commands\CommandReference.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Converters\TextToVisibilityConverter.cs" />
+    <Compile Include="Models\AlbumArtistAndTitleWithUrl.cs" />
     <Compile Include="Models\AsyncObservableCollection.cs" />
     <Compile Include="Models\FilePathAndContainer.cs" />
     <Compile Include="Models\SongWithNumberString.cs" />
@@ -98,7 +100,6 @@
     <Compile Include="ViewModels\SearchResultsViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
     <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

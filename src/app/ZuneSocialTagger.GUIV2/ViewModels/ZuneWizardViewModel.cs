@@ -116,7 +116,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             if (this.CanMoveToNextPage)
             {
                 if (this.CurrentPageIndex < this.Pages.Count - 1)
-                    this.CurrentPage = this.Pages[this.CurrentPageIndex + 1];
+                {
+                    this.CurrentPage.InvokeIsMovingNext();
+                    //if the current page allows us to move next
+                    if (this.CurrentPage.CanMoveNext())
+                    {
+                        this.CurrentPage = this.Pages[this.CurrentPageIndex + 1];
+                    }
+                }
                 else
                     this.OnRequestClose();
             }

@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
+using ZuneSocialTagger.GUIV2.Models;
+using ZuneSocialTagger.GUIV2.ViewModels;
+using System.Linq;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -21,6 +13,22 @@ namespace ZuneSocialTagger.GUIV2.Views
         public SearchResultsView()
         {
             this.InitializeComponent();
+        }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var dContext = (SearchResultsViewModel) this.DataContext;
+
+            if (dContext != null)
+                dContext.LoadAlbum((AlbumArtistAndTitleWithUrl) e.AddedItems[0]);
+        }
+
+        private void StackPanel_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var dContext = (SearchResultsViewModel) this.DataContext;
+
+            if (dContext != null)
+                dContext.ViewShown();
         }
 
   

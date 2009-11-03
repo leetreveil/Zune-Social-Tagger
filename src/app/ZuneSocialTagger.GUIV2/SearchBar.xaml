@@ -4,10 +4,12 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+    xmlns:converters="clr-namespace:ZuneSocialTagger.GUIV2.Converters"
 	mc:Ignorable="d"
 	x:Class="ZuneSocialTagger.GUIV2.SearchBar">
 	
 	    <UserControl.Resources>
+        <converters:TextToVisibilityConverter x:Key="TextToVisConverter" />
         <ControlTemplate x:Key="TextboxChromeStyle" TargetType="{x:Type ScrollViewer}">
             <Grid x:Name="Grid" Background="{TemplateBinding Background}">
                 <Grid.ColumnDefinitions>
@@ -19,7 +21,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Button Style="{DynamicResource SearchButton}" Command="{Binding SearchCommand}" Grid.Row="0" Grid.Column="1"></Button>
+                <Button IsEnabled="{Binding ElementName=tbSearch, Path=Text,Converter={StaticResource TextToVisConverter}}" Style="{DynamicResource SearchButton}" Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=tbSearch,Path=Text}" Grid.Row="0" Grid.Column="1"></Button>
 
                 <Rectangle x:Name="Corner" Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Grid.Column="1" Grid.Row="1"/>
                 <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Margin="{TemplateBinding Padding}" Grid.Column="0" Grid.Row="0" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False"/>
@@ -75,7 +77,7 @@
 
     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1">
 				<TextBlock Foreground="#FF8A8D90" Text="SEARCH" FontFamily="Assets/Fonts/#Zegoe Caps" FontSize="10.667" Margin="0,0,0,3"/>
-        <TextBox x:Name="tbSearch" Width="309" Grid.Column="1" Style="{DynamicResource TextBoxSearchStyle}">
+        <TextBox x:Name="tbSearch" Width="309" Grid.Column="1" Style="{DynamicResource TextBoxSearchStyle}" TextChanged="tbSearch_TextChanged">
 
         </TextBox>
     </StackPanel>

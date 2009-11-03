@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2
 {
@@ -22,5 +23,15 @@ namespace ZuneSocialTagger.GUIV2
 		{
 			this.InitializeComponent();
 		}
+
+        private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //TODO: change this because we should not be casting to SearchViewModel inside a sub view
+            var dataContext = (SearchViewModel) this.DataContext;
+            var tb = (TextBox) sender;
+
+            dataContext.FlagCanMoveNext = tb.Text.Length > 0;
+            dataContext.SearchText = tb.Text;
+        }
 	}
 }

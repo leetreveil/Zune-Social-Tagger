@@ -4,12 +4,18 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views"
 	xmlns:root="clr-namespace:ZuneSocialTagger.GUIV2"
-	x:Class="ZuneSocialTagger.GUIV2.Views.SearchView" mc:Ignorable="d">
+	x:Class="ZuneSocialTagger.GUIV2.Views.SearchView" mc:Ignorable="d"
+	FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U" Loaded="UserControl_Loaded">
 
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources.xaml" >
         </ResourceDictionary>
     </UserControl.Resources>
+	<UserControl.Triggers>
+		<EventTrigger RoutedEvent="FrameworkElement.Loaded">
+			<BeginStoryboard Storyboard="{StaticResource SearchingAnim}"/>
+		</EventTrigger>
+	</UserControl.Triggers>
 	
 	<Grid x:Name="LayoutRoot">
 			<Grid>
@@ -20,7 +26,10 @@
 				
             <views:WebsiteAlbumMetaDataView VerticalAlignment="Top" DataContext="{Binding WebsiteAlbumMetaDataViewModel}" Grid.Column="0"  />
 
-			<root:SearchBar Grid.Column="1" VerticalAlignment="Top" />
+            <StackPanel Grid.Column="1">
+                <root:SearchBar VerticalAlignment="Top" />
+                <TextBlock Visibility="{Binding Path=IsSearching,Converter = {StaticResource BoolToVisConverter}}" x:Name="textBlock" Foreground="#FF8A8D90" Text="Searching" HorizontalAlignment="Right" Width="62" FontSize="13.333"/>
+            </StackPanel>
         </Grid>
 	</Grid>
 </UserControl>

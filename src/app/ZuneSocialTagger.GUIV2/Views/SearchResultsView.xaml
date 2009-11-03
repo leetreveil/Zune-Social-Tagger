@@ -15,7 +15,7 @@
 	</ResourceDictionary>
 	</UserControl.Resources>
 
-	<Border x:Name="LayoutRoot" DataContext="{Binding Source={StaticResource SearchResults}}">
+	<Border x:Name="LayoutRoot">
 		<Grid>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition/>
@@ -29,30 +29,37 @@
 			
             <root:WebsiteAlbumMetaDataViewMock VerticalAlignment="Top"/>
 			<root:SearchBar VerticalAlignment="Top" Grid.Column="1" />
-			<TextBlock Grid.Row="1" Text="ALBUMS (54)" VerticalAlignment="Bottom" FontSize="13.333"/>
-			<ListView Style="{DynamicResource ListBoxStyle1}" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="2" ItemsSource="{Binding Collection}" Margin="0,0,36,0" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U" ItemContainerStyle="{DynamicResource SelectedItemHighlight}">
+			<TextBlock Grid.Row="1" Text="{Binding AlbumCount}" VerticalAlignment="Bottom" FontSize="13.333"/>
+			<ListView SelectedIndex="0" Style="{DynamicResource ListBoxStyle1}" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="2" ItemsSource="{Binding Albums}" Margin="0,0,36,0" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U" ItemContainerStyle="{DynamicResource SelectedItemHighlight}" SelectionChanged="ListView_SelectionChanged">
 				<ListView.ItemTemplate>
 					<DataTemplate>
-						<StackPanel Margin="0,5,0,5">
-							<TextBlock Text="{Binding Album_Title}" FontSize="13.333"/>
+						<StackPanel Margin="0,5,5,5" Loaded="StackPanel_Loaded">
+							<TextBlock Text="{Binding Title}" FontSize="13.333"/>
 							<TextBlock Text="{Binding Artist}" Foreground="#FF8A8D90" />
 						</StackPanel>	
 					</DataTemplate>
 				</ListView.ItemTemplate>
 			</ListView>
 			
-			<StackPanel Grid.Row="2" Grid.Column="1" DataContext="{Binding Source={StaticResource SearchResultsSampleData}}">
-				<TextBlock FontSize="21.333" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI Semi Bold - U">Very Proud of Ya</TextBlock>
-				<ItemsControl Background="Transparent" ItemsSource="{Binding Collection}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+			<StackPanel Grid.Row="2" Grid.Column="1">
+                <TextBlock FontSize="18.667" Text="{Binding SelectedAlbumTitle}" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI Semi Bold - U"/>
+                <ItemsControl Height="245" Background="Transparent" ItemsSource="{Binding SelectedAlbumSongs}">
 						<ItemsControl.ItemTemplate>
-												<DataTemplate>
+						<DataTemplate>
                                         <StackPanel Orientation="Horizontal" Margin="3">
-                                            <TextBlock Width="23" Text="{Binding Track_Index}" VerticalAlignment="Center" FontSize="18"/>
-                                            <TextBlock Text="{Binding Track_Title}" VerticalAlignment="Center" FontSize="13.333" Margin="10,0,0,0"/>
+                                            <TextBlock Width="23" Text="{Binding Number}" VerticalAlignment="Center" FontSize="18"/>
+                                            <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontSize="13.333" Margin="10,0,0,0"/>
                                         </StackPanel>
 						</DataTemplate>
 						</ItemsControl.ItemTemplate>
-				</ItemsControl>
+                    <ItemsControl.Template>
+                        <ControlTemplate>
+                            <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}">
+                                <ItemsPresenter />
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+                </ItemsControl>
 			</StackPanel>
 		</Grid>
 	</Border>
