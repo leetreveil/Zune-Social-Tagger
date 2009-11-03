@@ -9,17 +9,7 @@
 							mc:Ignorable="d">
 					
 		<SampleData:SearchResults x:Key="SearchResults" d:IsDataSource="True"/>
-							
-	    <Storyboard x:Key="SearchingAnim">
-    		<StringAnimationUsingKeyFrames RepeatBehavior="Forever" BeginTime="00:00:00" Storyboard.TargetName="textBlock" Storyboard.TargetProperty="(TextBlock.Text)">
-    			<DiscreteStringKeyFrame KeyTime="00:00:00" Value="Searching"/>
-    			<DiscreteStringKeyFrame KeyTime="00:00:00.2000000" Value="Searching."/>
-    			<DiscreteStringKeyFrame KeyTime="00:00:00.4000000" Value="Searching.."/>
-    			<DiscreteStringKeyFrame KeyTime="00:00:00.6000000" Value="Searching..."/>
-    		</StringAnimationUsingKeyFrames>
-    	</Storyboard>
-    
-        <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+					
         <converters:TextToVisibilityConverter x:Key="TextToVisConverter" />
 
     <Style x:Key="DefaultWindowStyle" TargetType="{x:Type Window}">

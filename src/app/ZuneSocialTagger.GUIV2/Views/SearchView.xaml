@@ -11,11 +11,6 @@
         <ResourceDictionary Source="../Resources.xaml" >
         </ResourceDictionary>
     </UserControl.Resources>
-	<UserControl.Triggers>
-		<EventTrigger RoutedEvent="FrameworkElement.Loaded">
-			<BeginStoryboard Storyboard="{StaticResource SearchingAnim}"/>
-		</EventTrigger>
-	</UserControl.Triggers>
 	
 	<Grid x:Name="LayoutRoot">
 			<Grid>
@@ -27,8 +22,7 @@
             <views:WebsiteAlbumMetaDataView VerticalAlignment="Top" DataContext="{Binding WebsiteAlbumMetaDataViewModel}" Grid.Column="0"  />
 
             <StackPanel Grid.Column="1">
-                <root:SearchBar VerticalAlignment="Top" />
-                <TextBlock Visibility="{Binding Path=IsSearching,Converter = {StaticResource BoolToVisConverter}}" x:Name="textBlock" Foreground="#FF8A8D90" Text="Searching" HorizontalAlignment="Right" Width="62" FontSize="13.333"/>
+                <root:SearchBar VerticalAlignment="Top" DataContext="{Binding SearchBarViewModel}" />
             </StackPanel>
         </Grid>
 	</Grid>

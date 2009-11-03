@@ -5,10 +5,11 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
     xmlns:converters="clr-namespace:ZuneSocialTagger.GUIV2.Converters"
+    xmlns:ctrls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
 	mc:Ignorable="d"
 	x:Class="ZuneSocialTagger.GUIV2.SearchBar">
 	
-	    <UserControl.Resources>
+	<UserControl.Resources>
         <converters:TextToVisibilityConverter x:Key="TextToVisConverter" />
         <ControlTemplate x:Key="TextboxChromeStyle" TargetType="{x:Type ScrollViewer}">
             <Grid x:Name="Grid" Background="{TemplateBinding Background}">
@@ -21,12 +22,13 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Button IsEnabled="{Binding ElementName=tbSearch, Path=Text,Converter={StaticResource TextToVisConverter}}" Style="{DynamicResource SearchButton}" Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=tbSearch,Path=Text}" Grid.Row="0" Grid.Column="1"></Button>
+                <Button IsEnabled="{Binding CanSearch}" Style="{DynamicResource SearchButton}" Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=tbSearch,Path=Text}" Grid.Row="0" Grid.Column="1"></Button>
 
                 <Rectangle x:Name="Corner" Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Grid.Column="1" Grid.Row="1"/>
                 <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Margin="{TemplateBinding Padding}" Grid.Column="0" Grid.Row="0" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False"/>
             </Grid>
         </ControlTemplate>
+            
 
         <Style x:Key="SearchButton" TargetType="{x:Type Button}">
             <Setter Property="Template">
@@ -73,12 +75,27 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Storyboard x:Key="SearchingAnim">
+            <StringAnimationUsingKeyFrames RepeatBehavior="Forever" BeginTime="00:00:00" Storyboard.TargetName="textBlock" Storyboard.TargetProperty="(TextBlock.Text)">
+                <DiscreteStringKeyFrame KeyTime="00:00:00" Value="Searching"/>
+                <DiscreteStringKeyFrame KeyTime="00:00:00.2000000" Value="Searching."/>
+                <DiscreteStringKeyFrame KeyTime="00:00:00.4000000" Value="Searching.."/>
+                <DiscreteStringKeyFrame KeyTime="00:00:00.6000000" Value="Searching..."/>
+            </StringAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
     </UserControl.Resources>
 
-    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1">
-				<TextBlock Foreground="#FF8A8D90" Text="SEARCH" FontFamily="Assets/Fonts/#Zegoe Caps" FontSize="10.667" Margin="0,0,0,3"/>
-        <TextBox x:Name="tbSearch" Width="309" Grid.Column="1" Style="{DynamicResource TextBoxSearchStyle}" TextChanged="tbSearch_TextChanged">
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource SearchingAnim}"/>
+        </EventTrigger>
+    </UserControl.Triggers>
 
-        </TextBox>
+    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1">
+		<TextBlock Foreground="#FF8A8D90" Text="SEARCH" FontFamily="Assets/Fonts/#Zegoe Caps" FontSize="10.667" Margin="0,0,0,3"/>
+        <TextBox x:Name="tbSearch" Width="309" Grid.Column="1" Style="{DynamicResource TextBoxSearchStyle}" TextChanged="tbSearch_TextChanged" />
+        <TextBlock Visibility="{Binding Path=IsSearching,Converter = {StaticResource BoolToVisConverter}}" x:Name="textBlock" Foreground="#FF8A8D90" Text="Searching" HorizontalAlignment="Right" Width="62" FontSize="13.333"/>
     </StackPanel>
 </UserControl>

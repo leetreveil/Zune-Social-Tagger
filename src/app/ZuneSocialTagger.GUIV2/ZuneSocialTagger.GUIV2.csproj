@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="SearchEventArgs.cs" />
     <Compile Include="ViewModels\DetailsViewModel.cs" />
+    <Compile Include="ViewModels\SearchBarViewModel.cs" />
     <Compile Include="ViewModels\SearchResultsViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
     <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />

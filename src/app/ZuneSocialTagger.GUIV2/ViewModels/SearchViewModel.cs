@@ -10,21 +10,25 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SearchViewModel : ZuneWizardPageViewModelBase
     {
-        private RelayCommand<string> _searchCommand;
-        private WebsiteAlbumMetaDataViewModel _websiteAlbumMetaDataViewModel;
-        private bool _canMoveNext;
-
         public SearchViewModel()
         {
-            WebsiteAlbumMetaDataViewModel = new WebsiteAlbumMetaDataViewModel();
+            this.SearchBarViewModel = new SearchBarViewModel();
+            this.SearchBarViewModel.FinishedSearching += SearchBarViewModel_FinishedSearching;
+            this.WebsiteAlbumMetaDataViewModel = new WebsiteAlbumMetaDataViewModel();
             base.IsMovingNext += SearchViewModel_IsMovingNext;
+        }
+
+        void SearchBarViewModel_FinishedSearching(object sender, EventArgs e)
+        {
+            base.OnMoveNextOverride();
         }
 
         private void SearchViewModel_IsMovingNext(object sender, EventArgs e)
         {
-            SearchFor(SearchText);
+           _searchBarViewModel.Search();
         }
 
+        private WebsiteAlbumMetaDataViewModel _websiteAlbumMetaDataViewModel;
         public WebsiteAlbumMetaDataViewModel WebsiteAlbumMetaDataViewModel
         {
             get { return _websiteAlbumMetaDataViewModel; }
@@ -35,54 +39,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        private bool _isSearching;
-
-        public bool IsSearching
+        private SearchBarViewModel _searchBarViewModel;
+        public SearchBarViewModel SearchBarViewModel
         {
-            get { return _isSearching; }
+            get { return _searchBarViewModel; }
             set
             {
-                _isSearching = value;
-                OnPropertyChanged("IsSearching");
+                _searchBarViewModel = value;
+                OnPropertyChanged("SearchBarViewModel");
             }
-        }
-
-        public ICommand SearchCommand
-        {
-            get
-            {
-                if (_searchCommand == null)
-                {
-                    _searchCommand = new RelayCommand<string>(SearchFor);
-                }
-
-                return _searchCommand;
-            }
-        }
-
-        private void SearchFor(string artist)
-        {
-            this.IsSearching = true;
-
-            AlbumSearch.SearchForAsync(artist, results =>
-                                                   {
-                                                       var tempList = new List<AlbumArtistAndTitleWithUrl>();
-
-                                                       foreach (var result in results)
-                                                           tempList.Add(new AlbumArtistAndTitleWithUrl()
-                                                                            {
-                                                                                Title = result.Title,
-                                                                                Artist = result.Artist,
-                                                                                Url = result.Url
-                                                                            });
-
-                                                       ZuneWizardModel.GetInstance().InvokeNewAlbumsAvailable(tempList);
-
-                                                       this.IsSearching = false;
-                                                       this._canMoveNext = true;
-
-                                                       MoveNext();
-                                                   });
         }
 
         public override string NextButtonText
@@ -94,12 +59,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         internal override bool IsValid()
         {
-            return this.FlagCanMoveNext;
+            return _searchBarViewModel.CanSearch;
         }
 
         internal override bool CanMoveNext()
         {
-            return this._canMoveNext;
+            return _searchBarViewModel.IsSearching == false;
         }
 
         private int _moveNextAttempts;
