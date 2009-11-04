@@ -14,6 +14,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     public class SelectAudioFilesViewModel : ZuneWizardPageViewModelBase
     {
         private RelayCommand _fromFolderCommand;
+        private RelayCommand _fromFilesCommand;
 
         internal override bool IsValid()
         {
@@ -22,7 +23,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         internal override bool CanMoveNext()
         {
-            return true;
+            return false;
         }
 
         public ICommand FromFolderCommand
@@ -36,62 +37,67 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        //public ICommand FromFilesCommand
-        //{
-        //    get
-        //    {
-        //        if (_fromFilesCommand == null)
-        //            _fromFilesCommand = new DelegateCommand(SelectFiles);
+        public ICommand FromFilesCommand
+        {
+            get
+            {
+                if (_fromFilesCommand == null)
+                    _fromFilesCommand = new RelayCommand(SelectFiles);
 
-        //        return _fromFilesCommand;
-        //    }
-        //}
+                return _fromFilesCommand;
+            }
+        }
 
         private void SelectFolder()
+        {
+            var fbd = new FolderBrowserDialog { ShowNewFolderButton = false };
+
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+
+                string[] files = Directory.GetFiles(fbd.SelectedPath, "*.mp3");
+                ReadFiles(files);
+            }
+        }
+
+        private void ReadFiles(string[] files)
         {
             WebsiteAlbumMetaDataViewModel albumDetailsFromFile = ZuneWizardModel.GetInstance().AlbumDetailsFromFile;
             ObservableCollection<DetailRow> detailViewRows = ZuneWizardModel.GetInstance().Rows;
 
             detailViewRows.Clear();
 
-            var fbd = new FolderBrowserDialog { ShowNewFolderButton = false };
+            IEnumerable<FilePathAndContainer> containers = CreateContainerFromFiles(files);
 
-            if (fbd.ShowDialog() == DialogResult.OK)
+            int counter = 0;
+            foreach (var cont in containers)
             {
-                string[] files = Directory.GetFiles(fbd.SelectedPath, "*.mp3");
+                counter++;
+                MetaData metaData = cont.Container.ReadMetaData();
 
-                IEnumerable<FilePathAndContainer> containers = CreateContainerFromFiles(files);
-
-                int counter = 0;
-                foreach (var cont in containers)
-                {
-                    counter++;
-                    MetaData metaData = cont.Container.ReadMetaData();
-
-                    detailViewRows.Add(new DetailRow(new SongWithNumberAndGuid{Title = metaData.SongTitle,Number = counter.ToString()}){SongPathAndContainer = cont});
-                }
-
-
-                ZuneTagContainer container = containers.Select(x=> x.Container).First();
-
-                MetaData data = container.ReadMetaData();
-
-                albumDetailsFromFile.Artist = data.AlbumArtist;
-                albumDetailsFromFile.Title = data.AlbumTitle;
-                albumDetailsFromFile.Year = data.Year;
-                albumDetailsFromFile.SongCount = counter.ToString();
+                detailViewRows.Add(new DetailRow(new SongWithNumberAndGuid{Title = metaData.SongTitle,Number = counter.ToString()}){SongPathAndContainer = cont});
             }
+
+
+            ZuneTagContainer container = containers.Select(x=> x.Container).First();
+
+            MetaData data = container.ReadMetaData();
+
+            albumDetailsFromFile.Artist = data.AlbumArtist;
+            albumDetailsFromFile.Title = data.AlbumTitle;
+            albumDetailsFromFile.Year = data.Year;
+            albumDetailsFromFile.SongCount = counter.ToString();
+
+            base.OnMoveNextOverride();
         }
 
-        //private static void SelectFiles()
-        //{
-        //    var ofd = new OpenFileDialog {Multiselect = true, Filter = "Audio files (*.mp3)|*.mp3"};
+        private void SelectFiles()
+        {
+            var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files (*.mp3)|*.mp3" };
 
-        //    if (ofd.ShowDialog() == DialogResult.OK)
-        //    {
-        //        IEnumerable<FilePathAndContainer> containers = CreateContainerFromFiles(ofd.FileNames);
-        //    }
-        //}
+            if (ofd.ShowDialog() == DialogResult.OK)
+                ReadFiles(ofd.FileNames);
+        }
 
         private static IEnumerable<FilePathAndContainer> CreateContainerFromFiles(IEnumerable<string> filePaths)
         {
