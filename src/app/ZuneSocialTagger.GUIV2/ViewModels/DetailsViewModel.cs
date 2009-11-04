@@ -1,76 +1,56 @@
-using System;
-using System.Windows.Input;
-using ZuneSocialTagger.Core.ZuneWebsiteScraper;
-using ZuneSocialTagger.GUIV2.Commands;
+using System.Collections.ObjectModel;
 using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     class DetailsViewModel : ZuneWizardPageViewModelBase
     {
-        private RelayCommand<string> _getZuneAlbumWebpage;
-        private readonly AsyncObservableCollection<SongWithNumberString> _songs = new AsyncObservableCollection<SongWithNumberString>();
-
         public DetailsViewModel()
         {
             //provide it with blank data as we need to set the defaults
-            WebsiteAlbumMetaDataViewModel = new WebsiteAlbumMetaDataViewModel();
+            this.AlbumDetailsFromWebsite = ZuneWizardModel.GetInstance().AlbumDetailsFromWebsite;
+            this.AlbumDetailsFromFile = ZuneWizardModel.GetInstance().AlbumDetailsFromFile;
+
+            this.Rows = ZuneWizardModel.GetInstance().Rows;
         }
 
-        public AsyncObservableCollection<SongWithNumberString> Songs
-        {
-            get { return _songs; }
-        }
+        public ObservableCollection<DetailRow> Rows { get; set; }
 
-        private WebsiteAlbumMetaDataViewModel _websiteAlbumMetaDataViewModel;
-        public WebsiteAlbumMetaDataViewModel WebsiteAlbumMetaDataViewModel
+        private WebsiteAlbumMetaDataViewModel _albumDetailsFromWebsite;
+        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromWebsite
         {
-            get { return _websiteAlbumMetaDataViewModel; }
+            get { return _albumDetailsFromWebsite; }
             set
             {
-                _websiteAlbumMetaDataViewModel = value;
-                OnPropertyChanged("WebsiteAlbumMetaDataViewModel");
+                _albumDetailsFromWebsite = value;
+                OnPropertyChanged("AlbumDetailsFromWebsite");
             }
         }
 
-        public ICommand DownloadZuneWebpageCommand
+        private WebsiteAlbumMetaDataViewModel _albumDetailsFromFile;
+        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
+        {
+            get { return _albumDetailsFromFile; }
+            set
+            {
+                _albumDetailsFromFile = value;
+                OnPropertyChanged("AlbumDetailsFromWebsite");
+            }
+        }
+
+        private SongWithNumberAndGuid _selectedSong;
+        public SongWithNumberAndGuid SelectedSong
         {
             get
             {
-                if (_getZuneAlbumWebpage == null)
-                {
-                    _getZuneAlbumWebpage = new RelayCommand<string>(DownloadUrl);
-                }
-                return _getZuneAlbumWebpage;
+                return _selectedSong;
             }
-        }
-
-        private void DownloadUrl(string url)
-        {
-            PageDownloader.DownloadAsync(url, ScrapeWebpage);
-        }
-
-        private void ScrapeWebpage(string pageData)
-        {
-            var scraper = new AlbumWebpageScraper(pageData);
-
-            int number = 0;
-            foreach (var songGuid in scraper.GetSongTitleAndIDs())
+            set
             {
-                number++;
-                _songs.Add(new SongWithNumberString { Number = number.ToString(), Title = songGuid.Title });
+                _selectedSong = value;
+                OnPropertyChanged("SelectedSong");
             }
 
-            var metaData = new ZuneNetAlbumMetaData
-            {
-                Artist = scraper.ScrapeAlbumArtist(),
-                Title = scraper.ScrapeAlbumTitle(),
-                Year = scraper.ScrapeAlbumReleaseYear().ToString(),
-                ArtworkUrl = scraper.ScrapeAlbumArtworkUrl(),
-                SongCount = Songs.Count + " songs"
-            };
-
-            WebsiteAlbumMetaDataViewModel = new WebsiteAlbumMetaDataViewModel();
         }
 
         internal override bool IsValid()
@@ -81,6 +61,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         internal override bool CanMoveNext()
         {
             return true;
+        }
+
+        public override string NextButtonText
+        {
+            get
+            {
+                return "Save";
+            }
         }
     }
 }

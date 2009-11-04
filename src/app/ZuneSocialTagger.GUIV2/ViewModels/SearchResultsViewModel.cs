@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.ObjectModel;
+using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.Core.ZuneWebsiteScraper;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Threading;
@@ -9,25 +9,19 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SearchResultsViewModel : ZuneWizardPageViewModelBase
     {
-        public AsyncObservableCollection<AlbumArtistAndTitleWithUrl> Albums { get; set; }
-        public AsyncObservableCollection<SongWithNumberString> SelectedAlbumSongs { get; set; }
+        public ObservableCollection<AlbumSearchResult> Albums 
+        { 
+            get{return this.SearchBarViewModel.SearchResults;}
+        }
 
-        private int _albumCounter;
-
-        private string _albumCount;
+        public AsyncObservableCollection<SongWithNumberAndGuid> SelectedAlbumSongs { get; set; }
 
         public string AlbumCount
         {
-            get { return _albumCount; }
-            set
-            {
-                _albumCount = value;
-                base.OnPropertyChanged("AlbumCount");
-            }
+            get { return String.Format("ALBUMS ({0})", Albums.Count); }
         }
 
         private string _selectedAlbumTitle;
-
         public string SelectedAlbumTitle
         {
             get { return _selectedAlbumTitle; }
@@ -36,6 +30,86 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 _selectedAlbumTitle = value;
                 base.OnPropertyChanged("SelectedAlbumTitle");
             }
+        }
+
+        private SearchBarViewModel _searchBarViewModel;
+        public SearchBarViewModel SearchBarViewModel
+        {
+            get { return _searchBarViewModel; }
+            set
+            {
+                _searchBarViewModel = value;
+                OnPropertyChanged("SearchBarViewModel");
+            }
+        }
+
+        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile { get; set; }
+
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged("IsLoading");
+            }
+        }
+
+        public SearchResultsViewModel()
+        {
+            this.AlbumDetailsFromFile = ZuneWizardModel.GetInstance().AlbumDetailsFromFile;
+            this.SelectedAlbumSongs = ZuneWizardModel.GetInstance().SelectedAlbumSongs;
+            this.SearchBarViewModel = ZuneWizardModel.GetInstance().SearchBarViewModel;
+        }
+
+        public void LoadAlbum(AlbumSearchResult albumArtistAndTitleWithUrl)
+        {
+            this.IsLoading = true;
+            PageDownloader.DownloadAsync(albumArtistAndTitleWithUrl.Url, ScrapedPage);
+        }
+
+        private void ScrapedPage(string pageData)
+        {
+            var albumDetails = ZuneWizardModel.GetInstance().AlbumDetailsFromWebsite;
+            ObservableCollection<DetailRow> detailRows = ZuneWizardModel.GetInstance().Rows;
+
+            var scraper = new AlbumWebpageScraper(pageData);
+
+            this.SelectedAlbumTitle = scraper.ScrapeAlbumTitle();
+            albumDetails.Title = scraper.ScrapeAlbumTitle();
+            albumDetails.Artist = scraper.ScrapeAlbumArtist();
+            albumDetails.ArtworkUrl = scraper.ScrapeAlbumArtworkUrl();
+            albumDetails.Year = scraper.ScrapeAlbumReleaseYear().ToString();
+
+            SelectedAlbumSongs.Clear();
+
+            //TODO: fix this hack that allows it to clear properly
+            //without this being here there are extra items at the end where it hasnt cleared fully before adding new items
+            Thread.Sleep(50);
+
+            int counter = 0;
+            foreach (var song in scraper.GetSongTitleAndIDs())
+            {
+                counter++;
+                SelectedAlbumSongs.Add(new SongWithNumberAndGuid {Number = counter.ToString(),Title = song.Title,Guid = song.Guid});
+                Console.WriteLine("added {0}",song.Title);
+            }
+
+            foreach (var row in detailRows)
+            {
+                row.SongsFromWebsite = SelectedAlbumSongs;
+                row.AlbumArtistGuid = new MediaIdGuid {Guid = scraper.ScrapeAlbumArtistID(),MediaId = MediaIds.ZuneAlbumArtistMediaID};
+                row.AlbumMediaGuid = new MediaIdGuid {Guid = scraper.ScrapeAlbumMediaID(),MediaId = MediaIds.ZuneAlbumMediaID};
+            }
+   
+            albumDetails.SongCount = counter.ToString();
+
+            this.IsLoading = false;
+        }
+
+        public void ViewShown()
+        {
         }
 
         internal override bool IsValid()
@@ -48,56 +122,5 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             return true;
         }
 
-        public SearchResultsViewModel()
-        {
-            Albums = new AsyncObservableCollection<AlbumArtistAndTitleWithUrl>();
-            SelectedAlbumSongs = new AsyncObservableCollection<SongWithNumberString>();
-            ZuneWizardModel.GetInstance().NewAlbumsAvail += SearchResultsViewModel_NewAlbumsAvail;
-        }
-
-        private void SearchResultsViewModel_NewAlbumsAvail(IEnumerable<AlbumArtistAndTitleWithUrl> albums)
-        {
-            _albumCounter += albums.Count();
-
-            foreach (var album in albums)
-                this.Albums.Add(album);
-
-            this.AlbumCount = string.Format("Albums ({0})", _albumCounter);
-        }
-
-        public void LoadAlbum(AlbumArtistAndTitleWithUrl albumArtistAndTitleWithUrl)
-        {
-            PageDownloader.DownloadAsync(albumArtistAndTitleWithUrl.Url, ScrapedPage);
-        }
-
-        private void ScrapedPage(string pageData)
-        {
-            var scraper = new AlbumWebpageScraper(pageData);
-
-            this.SelectedAlbumTitle = scraper.ScrapeAlbumTitle();
-
-            var enumerable =
-                scraper.GetSongTitleAndIDs().Select(x => new{x.Title});
-
-            SelectedAlbumSongs.Clear();
-
-            //TODO: fix this hack that allows it to clear properly
-            //without this being here there are extra items at the end where it hasnt cleared fully before adding new items
-            Thread.Sleep(50);
-
-            int counter = 0;
-            foreach (var song in enumerable)
-            {
-                counter++;
-                SelectedAlbumSongs.AddItemAsync(new SongWithNumberString(){Number = counter.ToString(),Title = song.Title});
-                Console.WriteLine("added {0}",song.Title);
-            }
-
-        }
-
-        public void ViewShown()
-        {
-           // Albums.Clear();
-        }
     }
 }

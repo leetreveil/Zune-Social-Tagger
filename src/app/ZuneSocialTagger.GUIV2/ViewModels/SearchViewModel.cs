@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Input;
-using ZuneSocialTagger.Core.ZuneWebsiteScraper;
-using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
@@ -12,30 +7,24 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         public SearchViewModel()
         {
-            this.SearchBarViewModel = new SearchBarViewModel();
-            this.SearchBarViewModel.FinishedSearching += SearchBarViewModel_FinishedSearching;
-            this.WebsiteAlbumMetaDataViewModel = new WebsiteAlbumMetaDataViewModel();
-            base.IsMovingNext += SearchViewModel_IsMovingNext;
+            this.SearchBarViewModel = ZuneWizardModel.GetInstance().SearchBarViewModel;
+            this.AlbumDetailsFromFile = ZuneWizardModel.GetInstance().AlbumDetailsFromFile;
         }
 
         void SearchBarViewModel_FinishedSearching(object sender, EventArgs e)
         {
-            base.OnMoveNextOverride();
+           this.SearchBarViewModel.FinishedSearching -= SearchBarViewModel_FinishedSearching;
+           base.OnMoveNextOverride();
         }
 
-        private void SearchViewModel_IsMovingNext(object sender, EventArgs e)
+        private WebsiteAlbumMetaDataViewModel _albumDetailsFromFile;
+        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
         {
-           _searchBarViewModel.Search();
-        }
-
-        private WebsiteAlbumMetaDataViewModel _websiteAlbumMetaDataViewModel;
-        public WebsiteAlbumMetaDataViewModel WebsiteAlbumMetaDataViewModel
-        {
-            get { return _websiteAlbumMetaDataViewModel; }
+            get { return _albumDetailsFromFile; }
             set
             {
-                _websiteAlbumMetaDataViewModel = value;
-                OnPropertyChanged("WebsiteAlbumMetaDataViewModel");
+                _albumDetailsFromFile = value;
+                OnPropertyChanged("AlbumDetailsFromFile");
             }
         }
 
@@ -52,34 +41,23 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public override string NextButtonText
         {
-            get { return "Search"; }
+            get { return "Next"; }
         }
-
-        public string SearchText { get; set; }
 
         internal override bool IsValid()
         {
-            return _searchBarViewModel.CanSearch;
+            return true;
         }
 
         internal override bool CanMoveNext()
         {
-            return _searchBarViewModel.IsSearching == false;
-        }
-
-        private int _moveNextAttempts;
-
-        private void MoveNext()
-        {
-            _moveNextAttempts++;
-
-            if (_moveNextAttempts <= 1)
-                base.OnMoveNextOverride();
+            return false;
         }
 
         //this is invoked when the view is loaded, different to when the view is constructed
         public void ViewShown()
         {
+            this.SearchBarViewModel.FinishedSearching += SearchBarViewModel_FinishedSearching;
         }
     }
 }

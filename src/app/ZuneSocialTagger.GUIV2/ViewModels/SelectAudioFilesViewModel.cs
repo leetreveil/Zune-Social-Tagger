@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.IO;
@@ -7,7 +8,6 @@ using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
-using FilePathAndContainer=ZuneSocialTagger.GUIV2.Models.FilePathAndContainer;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -49,6 +49,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void SelectFolder()
         {
+            WebsiteAlbumMetaDataViewModel albumDetailsFromFile = ZuneWizardModel.GetInstance().AlbumDetailsFromFile;
+            ObservableCollection<DetailRow> detailViewRows = ZuneWizardModel.GetInstance().Rows;
+
+            detailViewRows.Clear();
+
             var fbd = new FolderBrowserDialog { ShowNewFolderButton = false };
 
             if (fbd.ShowDialog() == DialogResult.OK)
@@ -57,20 +62,24 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                 IEnumerable<FilePathAndContainer> containers = CreateContainerFromFiles(files);
 
+                int counter = 0;
+                foreach (var cont in containers)
+                {
+                    counter++;
+                    MetaData metaData = cont.Container.ReadMetaData();
+
+                    detailViewRows.Add(new DetailRow(new SongWithNumberAndGuid{Title = metaData.SongTitle,Number = counter.ToString()}){SongPathAndContainer = cont});
+                }
+
+
                 ZuneTagContainer container = containers.Select(x=> x.Container).First();
 
                 MetaData data = container.ReadMetaData();
-            
-                var metaData = new ZuneNetAlbumMetaData
-                                   {
-                                       Artist = data.AlbumArtist,
-                                       Title = data.AlbumTitle,
-                                       Year = data.Year,
-                                       SongCount = container.Count().ToString()
-                                   };
 
-
-                ZuneWizardModel.GetInstance().InvokeAlbumMetaDataChanged(metaData);
+                albumDetailsFromFile.Artist = data.AlbumArtist;
+                albumDetailsFromFile.Title = data.AlbumTitle;
+                albumDetailsFromFile.Year = data.Year;
+                albumDetailsFromFile.SongCount = counter.ToString();
             }
         }
 

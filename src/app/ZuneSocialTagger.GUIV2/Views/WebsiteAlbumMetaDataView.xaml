@@ -5,11 +5,11 @@
     <Grid x:Name="LayoutRoot" Height="84">
         <StackPanel Orientation="Horizontal">
         <Border BorderBrush="White" BorderThickness="1" >
-			<Image Source="../Assets/blankartwork.png" Stretch="Fill" Height="84" Width="84"/>
+			<Image Source="{Binding ArtworkUrl}" Stretch="Fill" Height="84" Width="84"/>
 		</Border>
             <Border VerticalAlignment="Top">
                 <StackPanel x:Name="AlbumDetails" Margin="10,0,0,0">
-                    <TextBlock x:Name="Title" Text="{Binding Title}" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI Semi Bold - U" FontSize="13.333" />
+                    <TextBlock x:Name="Title" ToolTip="{Binding Title}" Text="{Binding Title}" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI Semi Bold - U" FontSize="13.333" />
                     <TextBlock x:Name="Artist" Text="{Binding Artist}" Foreground="#FF8A8D90" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" />
                     <TextBlock x:Name="Song_Count" Text="{Binding SongCount}" Foreground="#FF8A8D90" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U"  />
                     <TextBlock x:Name="Year" Text="{Binding Year}" Foreground="#FF8A8D90" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U"  />

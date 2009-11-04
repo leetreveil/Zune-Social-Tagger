@@ -14,7 +14,6 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 
         public static void SearchForAsync(string artist,Action<IEnumerable<AlbumSearchResult>> callback)
         {
-            //TODO: add some async tests
             ThreadPool.QueueUserWorkItem(state => GetAlbumFromPagesCallback(artist,GetPageCount(artist), callback));
         }
 
@@ -31,6 +30,9 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
         {
             for (int i = 0; i < pageCount; i++)
                 callback(GetPage(i, artist));
+
+            Console.WriteLine("search completed");
+            InvokeSearchForAsyncCompleted();
         }
 
         private static IEnumerable<AlbumSearchResult> GetPage(int pageIndex, string artist)
@@ -54,6 +56,14 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
             var combiner = new AlbumSearchScraperCombiner();
 
             return combiner.GetPageCount(scraper.ScrapeAlbumCountAcrossAllPages());
+        }
+
+        public static event Action SearchForAsyncCompleted;
+
+        private static void InvokeSearchForAsyncCompleted()
+        {
+            Action completed = SearchForAsyncCompleted;
+            if (completed != null) completed();
         }
     }
 }

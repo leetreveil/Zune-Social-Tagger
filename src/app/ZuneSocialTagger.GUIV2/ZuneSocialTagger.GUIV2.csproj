@@ -79,11 +79,12 @@
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Commands\CommandReference.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Converters\AlbumCountToStringConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Models\AlbumArtistAndTitleWithUrl.cs" />
     <Compile Include="Models\AsyncObservableCollection.cs" />
-    <Compile Include="Models\FilePathAndContainer.cs" />
-    <Compile Include="Models\SongWithNumberString.cs" />
+    <Compile Include="Models\DetailRow.cs" />
+    <Compile Include="Models\SongWithNumberAndGuid.cs" />
     <Compile Include="Models\ZuneNetAlbumMetaData.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
     <Compile Include="SampleData\SearchResultsSampleData\SearchResultsSampleData.xaml.cs">

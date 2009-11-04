@@ -1,9 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 using ZuneSocialTagger.Core.ZuneWebsiteScraper;
 using ZuneSocialTagger.GUIV2.Commands;
+using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -11,32 +11,38 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         private RelayCommand<string> _searchCommand;
         private bool _isSearching;
-        private bool _canSearch;
+        private bool _textBoxValid;
 
-        public List<AlbumSearchResult> SearchResults { get; set; }
+        public AsyncObservableCollection<AlbumSearchResult> SearchResults { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler FinishedSearching;
 
         private void InvokeFinishedSearching()
         {
+            this.IsSearching = false;
+
             EventHandler searching = FinishedSearching;
             if (searching != null) searching(this, new EventArgs());
         }
 
         private string _searchText;
+
         public string SearchText
         {
             get { return _searchText; }
             set
             {
                 _searchText = value;
-                CanSearch = !String.IsNullOrEmpty(_searchText);
+                TextBoxValid = !String.IsNullOrEmpty(_searchText);
+                OnPropertyChanged("SearchText");
             }
         }
 
         public SearchBarViewModel()
         {
-            SearchResults = new List<AlbumSearchResult>();
+            SearchResults = new AsyncObservableCollection<AlbumSearchResult>();
+            AlbumSearch.SearchForAsyncCompleted += InvokeFinishedSearching;
         }
 
         public bool IsSearching
@@ -49,13 +55,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        public bool CanSearch
+        public bool TextBoxValid
         {
-            get { return _canSearch; }
+            get { return _textBoxValid; }
             set
             {
-                _canSearch = value;
-                OnPropertyChanged("CanSearch");
+                _textBoxValid = value;
+                OnPropertyChanged("TextBoxValid");
             }
         }
 
@@ -83,21 +89,20 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void SearchFor(string searchString)
         {
+            this.SearchResults.Clear();
             this.IsSearching = true;
 
             AlbumSearch.SearchForAsync(searchString, results =>
-            {
-                SearchResults.AddRange(results);
-
-                this.IsSearching = false;
-                InvokeFinishedSearching();
-            });
+                                                         {
+                                                             foreach (var result in results)
+                                                                 this.SearchResults.Add(result);
+                                                         });
         }
 
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler changed = PropertyChanged;
-            if (changed != null) changed(this,new PropertyChangedEventArgs(propertyName));
+            if (changed != null) changed(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

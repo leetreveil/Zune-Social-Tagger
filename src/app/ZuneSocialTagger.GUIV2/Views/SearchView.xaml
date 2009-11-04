@@ -19,7 +19,7 @@
 					<ColumnDefinition/>
 				</Grid.ColumnDefinitions>
 				
-            <views:WebsiteAlbumMetaDataView VerticalAlignment="Top" DataContext="{Binding WebsiteAlbumMetaDataViewModel}" Grid.Column="0"  />
+            <views:WebsiteAlbumMetaDataView VerticalAlignment="Top" DataContext="{Binding AlbumDetailsFromFile}" Grid.Column="0"  />
 
             <StackPanel Grid.Column="1">
                 <root:SearchBar VerticalAlignment="Top" DataContext="{Binding SearchBarViewModel}" />

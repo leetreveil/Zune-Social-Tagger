@@ -1,7 +1,6 @@
 ﻿using System.Windows.Controls;
-using ZuneSocialTagger.GUIV2.Models;
+using ZuneSocialTagger.Core.ZuneWebsiteScraper;
 using ZuneSocialTagger.GUIV2.ViewModels;
-using System.Linq;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -20,7 +19,10 @@ namespace ZuneSocialTagger.GUIV2.Views
             var dContext = (SearchResultsViewModel) this.DataContext;
 
             if (dContext != null)
-                dContext.LoadAlbum((AlbumArtistAndTitleWithUrl) e.AddedItems[0]);
+            {
+                if (e.AddedItems.Count > 0)
+                    dContext.LoadAlbum((AlbumSearchResult)e.AddedItems[0]);
+            }
         }
 
         private void StackPanel_Loaded(object sender, System.Windows.RoutedEventArgs e)

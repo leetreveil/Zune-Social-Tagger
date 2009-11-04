@@ -62,6 +62,11 @@ namespace ZuneSocialTagger.Core.ID3Tagger
                        };
         }
 
+        public TagContainer GetContainer()
+        {
+            return this._container;
+        }
+
         private static string GetValue(IEnumerable<TextFrame> textFrames, string key)
         {
             return textFrames.Where(x => x.Descriptor.ID == key).SingleOrDefault().Content;

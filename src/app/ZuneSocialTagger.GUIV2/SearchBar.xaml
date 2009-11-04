@@ -22,7 +22,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Button IsEnabled="{Binding CanSearch}" Style="{DynamicResource SearchButton}" Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=tbSearch,Path=Text}" Grid.Row="0" Grid.Column="1"></Button>
+                <Button IsEnabled="{Binding TextBoxValid}" Style="{DynamicResource SearchButton}" Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=tbSearch,Path=Text}" Grid.Row="0" Grid.Column="1"></Button>
 
                 <Rectangle x:Name="Corner" Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Grid.Column="1" Grid.Row="1"/>
                 <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Margin="{TemplateBinding Padding}" Grid.Column="0" Grid.Row="0" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False"/>
@@ -76,7 +76,7 @@
             </Setter>
         </Style>
         <Storyboard x:Key="SearchingAnim">
-            <StringAnimationUsingKeyFrames RepeatBehavior="Forever" BeginTime="00:00:00" Storyboard.TargetName="textBlock" Storyboard.TargetProperty="(TextBlock.Text)">
+            <StringAnimationUsingKeyFrames RepeatBehavior="Forever" BeginTime="00:00:00" Storyboard.TargetName="tbSearching" Storyboard.TargetProperty="(TextBlock.Text)">
                 <DiscreteStringKeyFrame KeyTime="00:00:00" Value="Searching"/>
                 <DiscreteStringKeyFrame KeyTime="00:00:00.2000000" Value="Searching."/>
                 <DiscreteStringKeyFrame KeyTime="00:00:00.4000000" Value="Searching.."/>
@@ -95,7 +95,7 @@
 
     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1">
 		<TextBlock Foreground="#FF8A8D90" Text="SEARCH" FontFamily="Assets/Fonts/#Zegoe Caps" FontSize="10.667" Margin="0,0,0,3"/>
-        <TextBox x:Name="tbSearch" Width="309" Grid.Column="1" Style="{DynamicResource TextBoxSearchStyle}" TextChanged="tbSearch_TextChanged" />
-        <TextBlock Visibility="{Binding Path=IsSearching,Converter = {StaticResource BoolToVisConverter}}" x:Name="textBlock" Foreground="#FF8A8D90" Text="Searching" HorizontalAlignment="Right" Width="62" FontSize="13.333"/>
+        <TextBox Text="{Binding Path=SearchText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="tbSearch" Width="309" Grid.Column="1" Style="{DynamicResource TextBoxSearchStyle}" />
+        <TextBlock Visibility="{Binding Path=IsSearching,Converter = {StaticResource BoolToVisConverter}}" x:Name="tbSearching" Foreground="#FF8A8D90" HorizontalAlignment="Right" Width="62" FontSize="13.333"/>
     </StackPanel>
 </UserControl>

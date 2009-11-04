@@ -24,8 +24,8 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-						<views:WebsiteAlbumMetaDataView DataContext="{Binding WebsiteAlbumMetaDataViewModel}" Grid.Column = "0" />
-                        <views:WebsiteAlbumMetaDataView DataContext="{Binding WebsiteAlbumMetaDataViewModel}" Grid.Column = "1" />
+						<views:WebsiteAlbumMetaDataView DataContext="{Binding AlbumDetailsFromFile}" Grid.Column = "0" />
+                        <views:WebsiteAlbumMetaDataView DataContext="{Binding AlbumDetailsFromWebsite}" Grid.Column = "1" />
                     </Grid>
                 </Border>
 		<TextBlock Grid.Row="1" VerticalAlignment="Center" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" FontSize="13.333">Match song titles for this album</TextBlock>
@@ -41,7 +41,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="SONG TITLES IN THIS ALBUM" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe Caps" FontSize="13.333"/>
                         <TextBlock Grid.Column="1" Text="AVAILABLE SONG TITLES FROM ZUNE.NET" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe Caps" FontSize="13.333"/>
-                        <ListView Background="Transparent" Grid.Row="3" Grid.ColumnSpan="2" ItemsSource="{Binding Songs, Mode=OneWay}" Style="{DynamicResource ListBoxStyle1}">
+                        <ListView VerticalAlignment="Top" Height="300"  Background="Transparent" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Rows}" Style="{DynamicResource ListBoxStyle1}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Height="25" Margin="0,0,0,4" >
@@ -50,11 +50,11 @@
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                            <TextBlock Width="23" Text="{Binding Number}" VerticalAlignment="Center" FontSize="18"/>
-                                            <TextBlock Text="{Binding Title}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                            <TextBlock Width="23" Text="{Binding FileSong.Number}" VerticalAlignment="Center" FontSize="18"/>
+                                            <TextBlock Text="{Binding FileSong.Title}" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                         </StackPanel>
 
-                                        <ComboBox IsReadOnly="True" SelectedIndex="0" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="280" VerticalAlignment="Center">
+                                        <ComboBox ItemsSource="{Binding SongsFromWebsite}" SelectedItem="{Binding SelectedSong}" IsReadOnly="True" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="280" VerticalAlignment="Center">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Height="25" Orientation="Horizontal">

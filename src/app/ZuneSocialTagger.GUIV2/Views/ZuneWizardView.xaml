@@ -31,7 +31,7 @@
         <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}" x:Key="moveNextButtonStyle">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=IsOnLastPage}" Value="True">
-                    <Setter Property="IsEnabled" Value="False" />
+                    <Setter Property="Content" Value="Save" />
                  </DataTrigger>
             </Style.Triggers>
         </Style>

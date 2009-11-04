@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Windows.Input;
 using ZuneSocialTagger.GUIV2.Commands;
 using System.Linq;
+using ZuneSocialTagger.GUIV2.Models;
+using ZuneSocialTagger.Core.ID3Tagger;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -34,7 +36,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             this.CurrentPage = this.Pages[0];
 
-            //set up the handler for overrides (this allows a page to move to the next page on demand)
+            //set up the handler for overrides (this allows a page to move to the next page on demand without having to click next)
             foreach (var page in Pages)
                 page.MoveNextOverride += page_MoveNextOverride;
         }
@@ -100,7 +102,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 if (_moveNextCommand == null)
                     _moveNextCommand = new RelayCommand(
                         () => this.TryToMoveToNextPage(),
-                        () => this.CanMoveToNextPage);
+                        () => this.IsButtonEnabled);
 
                 return _moveNextCommand;
             }
@@ -111,21 +113,36 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return this.CurrentPage != null && this.CurrentPage.IsValid(); }
         }
 
+        bool IsButtonEnabled
+        {
+            get { return this.CurrentPage != null && this.CurrentPage.CanMoveNext(); }
+        }
+
         void TryToMoveToNextPage()
         {
             if (this.CanMoveToNextPage)
             {
                 if (this.CurrentPageIndex < this.Pages.Count - 1)
                 {
-                    this.CurrentPage.InvokeIsMovingNext();
                     //if the current page allows us to move next
-                    if (this.CurrentPage.CanMoveNext())
+                    if (this.CurrentPage.IsValid())
                     {
                         this.CurrentPage = this.Pages[this.CurrentPageIndex + 1];
                     }
                 }
                 else
-                    this.OnRequestClose();
+                {
+                    //do whatever you want at the very end
+                    foreach (var row in ZuneWizardModel.GetInstance().Rows)
+                    {
+                        row.UpdateContainer();
+                        SaveContainerToFile saveContainerToFile = new SaveContainerToFile(row.SongPathAndContainer);
+
+                        saveContainerToFile.Save();
+                    }
+
+                }
+
             }
         }
 

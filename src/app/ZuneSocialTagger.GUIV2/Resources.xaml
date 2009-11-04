@@ -11,6 +11,17 @@
 		<SampleData:SearchResults x:Key="SearchResults" d:IsDataSource="True"/>
 					
         <converters:TextToVisibilityConverter x:Key="TextToVisConverter" />
+    <converters:AlbumCountToStringConverter x:Key="AlbumCountToStringConverter" />
+    <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+
+    <Storyboard x:Key="LoadingAnim">
+        <StringAnimationUsingKeyFrames RepeatBehavior="Forever" BeginTime="00:00:00" Storyboard.TargetName="tbLoading" Storyboard.TargetProperty="(TextBlock.Text)">
+            <DiscreteStringKeyFrame KeyTime="00:00:00" Value="Loading"/>
+            <DiscreteStringKeyFrame KeyTime="00:00:00.2000000" Value="Loading."/>
+            <DiscreteStringKeyFrame KeyTime="00:00:00.4000000" Value="Loading.."/>
+            <DiscreteStringKeyFrame KeyTime="00:00:00.6000000" Value="Loading..."/>
+        </StringAnimationUsingKeyFrames>
+    </Storyboard>
 
     <Style x:Key="DefaultWindowStyle" TargetType="{x:Type Window}">
 			<Setter Property="ResizeMode" Value="NoResize" />

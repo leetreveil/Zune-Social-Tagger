@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using System.Linq;
 using System.Collections.Generic;
@@ -69,6 +70,26 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
             base.WaitOne(4000, "did not get second page");
             Assert.That(listOfResults.Count(), Is.EqualTo(38));
         }
+
+        [Test]
+        public void Then_it_should_raise_a_completed_event_when_all_pages_have_been_downloaded_asyncronously()
+        {
+            var listOfResults = new List<AlbumSearchResult>();
+
+            AlbumSearch.SearchForAsyncCompleted += (() => base.Set());
+
+            AlbumSearch.SearchForAsync("Pendulum", searchResults =>
+            {
+                listOfResults.AddRange(searchResults);
+                base.Set();
+            });
+
+            base.WaitOne(4000, "did not get first page");
+            base.WaitOne(4000, "did not get second page");
+            base.WaitOneWith500MsTimeoutAnd("did not get completed event");
+            Assert.That(listOfResults.Count(), Is.EqualTo(38));
+        }
+
     }
 
 }
