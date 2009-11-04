@@ -4,8 +4,7 @@
     Title="SuccessView" 
     Style="{DynamicResource DefaultWindowStyle}"  
     WindowStartupLocation="CenterScreen"
-    FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" 
-    xmlns:root="clr-namespace:ZuneSocialTagger.GUIV2"
+    FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U"
     xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views" MouseLeftButtonDown="Window_MouseLeftButtonDown"
     Width="600" Height="200">
 

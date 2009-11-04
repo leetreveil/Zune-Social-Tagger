@@ -78,6 +78,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             AboutView view = new AboutView();
 
+            view.ShowInTaskbar = false;
             view.Show();
         }
 
@@ -153,6 +154,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 else
                 {
                     SaveView view = new SaveView();
+                    view.ShowInTaskbar = false;
                     view.Show();
                 }
 

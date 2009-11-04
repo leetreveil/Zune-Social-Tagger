@@ -39,6 +39,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 }
 
                 SuccessView successView = new SuccessView();
+                successView.ShowInTaskbar = false;
+                successView.Topmost = true;
                 successView.Show();
             }
             catch (Exception ex)
