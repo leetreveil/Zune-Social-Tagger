@@ -90,7 +90,6 @@
     <Compile Include="SearchBar.xaml.cs">
       <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SearchEventArgs.cs" />
     <Compile Include="ViewModels\DetailsViewModel.cs" />
     <Compile Include="ViewModels\SaveViewModel.cs" />
     <Compile Include="ViewModels\SearchBarViewModel.cs" />
@@ -140,9 +139,6 @@
     </Compile>
     <Compile Include="Views\ZuneWizardView.xaml.cs">
       <DependentUpon>ZuneWizardView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WebsiteAlbumMetaDataViewMock.xaml.cs">
-      <DependentUpon>WebsiteAlbumMetaDataViewMock.xaml</DependentUpon>
     </Compile>
     <Compile Include="ZuneWizardDialog.xaml.cs">
       <DependentUpon>ZuneWizardDialog.xaml</DependentUpon>
@@ -252,10 +248,6 @@
     <Page Include="Views\ZuneWizardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WebsiteAlbumMetaDataViewMock.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="ZuneWizardDialog.xaml">
       <SubType>Designer</SubType>
