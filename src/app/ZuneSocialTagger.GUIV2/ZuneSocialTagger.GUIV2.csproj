@@ -87,12 +87,6 @@
     <Compile Include="Models\SongWithNumberAndGuid.cs" />
     <Compile Include="Models\ZuneNetAlbumMetaData.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
-    <Compile Include="SampleData\SearchResultsSampleData\SearchResultsSampleData.xaml.cs">
-      <DependentUpon>SearchResultsSampleData.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SampleData\SearchResults\SearchResults.xaml.cs">
-      <DependentUpon>SearchResults.xaml</DependentUpon>
-    </Compile>
     <Compile Include="SearchBar.xaml.cs">
       <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>
@@ -205,8 +199,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <DesignTimeOnly Include="SampleData\SearchResultsSampleData\SearchResultsSampleData.xsd" />
-    <DesignTimeOnly Include="SampleData\SearchResults\SearchResults.xsd" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -218,14 +210,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Resources.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SampleData\SearchResultsSampleData\SearchResultsSampleData.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SampleData\SearchResults\SearchResults.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
