@@ -34,6 +34,7 @@
             <views:WebsiteAlbumMetaDataView DataContext="{Binding AlbumDetailsFromWebsite}" Grid.Column="2"/>
         </Grid>
         
+        <TextBlock Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"  Text="This album should now be correctly linked to the zune social." FontSize="13" />
         <Button Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="60" Grid.Row="2" Content="OK" Click="Button_Click" />
     </Grid>
 </Window>

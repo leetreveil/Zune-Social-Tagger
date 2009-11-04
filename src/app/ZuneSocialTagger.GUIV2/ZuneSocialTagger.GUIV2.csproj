@@ -87,7 +87,7 @@
     <Compile Include="Models\SongWithNumberAndGuid.cs" />
     <Compile Include="Models\ZuneNetAlbumMetaData.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
-    <Compile Include="SearchBar.xaml.cs">
+    <Compile Include="Views\SearchBar.xaml.cs">
       <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\DetailsViewModel.cs" />
@@ -209,7 +209,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SearchBar.xaml">
+    <Page Include="Views\SearchBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -22,7 +22,7 @@
             <views:WebsiteAlbumMetaDataView VerticalAlignment="Top" DataContext="{Binding AlbumDetailsFromFile}" Grid.Column="0"  />
 
             <StackPanel Grid.Column="1">
-                <root:SearchBar VerticalAlignment="Top" DataContext="{Binding SearchBarViewModel}" />
+                <views:SearchBar VerticalAlignment="Top" DataContext="{Binding SearchBarViewModel}" />
             </StackPanel>
         </Grid>
 	</Grid>
