@@ -81,7 +81,6 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\AlbumCountToStringConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
-    <Compile Include="Models\AlbumArtistAndTitleWithUrl.cs" />
     <Compile Include="Models\AsyncObservableCollection.cs" />
     <Compile Include="Models\DetailRow.cs" />
     <Compile Include="Models\SongWithNumberAndGuid.cs" />
