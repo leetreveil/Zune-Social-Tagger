@@ -24,7 +24,7 @@
 				<Button Command="{Binding FromFilesCommand}" HorizontalAlignment="Left" Width="80" Grid.Column="2">Single Files</Button>
 		</Grid>
         
-        <TextBlock HorizontalAlignment="Center" Height="30" Text="Select the album you want linking with the zune social" />
+        <TextBlock HorizontalAlignment="Center" Height="30" Text="Select the album you want linking to the zune social" />
 
 	</Grid>
 </UserControl>

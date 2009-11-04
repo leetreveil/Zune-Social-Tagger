@@ -54,6 +54,7 @@
             <ContentControl Content="{Binding Path=CurrentPage}"/>
         </Border>
 
+        <Button Command="{Binding AboutCommand}" Grid.Row="4" HorizontalAlignment="Left" Content="About"/>
         <!-- NAVIGATION BUTTONS -->
         <Grid
             Grid.Row="4"

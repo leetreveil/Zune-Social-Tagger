@@ -67,28 +67,38 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             detailViewRows.Clear();
 
-            IEnumerable<FilePathAndContainer> containers = CreateContainerFromFiles(files);
-
-            int counter = 0;
-            foreach (var cont in containers)
+            try
             {
-                counter++;
-                MetaData metaData = cont.Container.ReadMetaData();
+                IEnumerable<FilePathAndContainer> containers = CreateContainerFromFiles(files);
 
-                detailViewRows.Add(new DetailRow(new SongWithNumberAndGuid{Title = metaData.SongTitle,Number = counter.ToString()}){SongPathAndContainer = cont});
+                int counter = 0;
+                foreach (var cont in containers)
+                {
+                    counter++;
+                    MetaData metaData = cont.Container.ReadMetaData();
+
+                    detailViewRows.Add(new DetailRow(new SongWithNumberAndGuid { Title = metaData.SongTitle, Number = counter.ToString() }) { SongPathAndContainer = cont });
+                }
+
+
+                ZuneTagContainer container = containers.Select(x => x.Container).First();
+
+                MetaData data = container.ReadMetaData();
+
+                albumDetailsFromFile.Artist = data.AlbumArtist;
+                albumDetailsFromFile.Title = data.AlbumTitle;
+                albumDetailsFromFile.Year = data.Year;
+                albumDetailsFromFile.SongCount = counter.ToString();
+
+                base.OnMoveNextOverride();
+            }
+            catch (Exception ex)
+            {
+                //TODO: display message to user
+               Console.WriteLine("could not read one or more audio files");
             }
 
 
-            ZuneTagContainer container = containers.Select(x=> x.Container).First();
-
-            MetaData data = container.ReadMetaData();
-
-            albumDetailsFromFile.Artist = data.AlbumArtist;
-            albumDetailsFromFile.Title = data.AlbumTitle;
-            albumDetailsFromFile.Year = data.Year;
-            albumDetailsFromFile.SongCount = counter.ToString();
-
-            base.OnMoveNextOverride();
         }
 
         private void SelectFiles()

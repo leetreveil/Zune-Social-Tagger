@@ -1,0 +1,30 @@
+﻿<Window x:Class="ZuneSocialTagger.GUIV2.Views.SaveView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewModels="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels"
+    Title="SaveView"
+    Style="{DynamicResource DefaultWindowStyle}"  
+    WindowStartupLocation="CenterScreen"
+    FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" MouseLeftButtonDown="Window_MouseLeftButtonDown" Width="450" Height="200">
+
+    <Window.Resources>
+        <ResourceDictionary Source="../Resources.xaml" />
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="70"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <!--HEADER-->
+        <TextBlock  FontSize="26.667" Text="CONFIRM CHANGES"/>
+        <TextBlock HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Text="Are you sure you want to update the audio files selected?" FontSize="15" />
+        <StackPanel HorizontalAlignment="Center" Height="25" Grid.Row="2" Orientation="Horizontal">
+            <Button Command="{Binding SaveCommand}"  Width="60" Margin="0,0,10,0" Content="Yes" Click="Button_Click_1" />
+            <Button Width="60" Content="No" Click="Button_Click" />
+ 
+        </StackPanel>
+    </Grid>
+</Window>

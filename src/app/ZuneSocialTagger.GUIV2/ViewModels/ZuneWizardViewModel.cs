@@ -8,6 +8,7 @@ using ZuneSocialTagger.GUIV2.Commands;
 using System.Linq;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.Core.ID3Tagger;
+using ZuneSocialTagger.GUIV2.Views;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -18,6 +19,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         ZuneWizardPageViewModelBase _currentPage;
         RelayCommand _moveNextCommand;
         RelayCommand _movePreviousCommand;
+        private RelayCommand _aboutCommand;
         ReadOnlyCollection<ZuneWizardPageViewModelBase> _pages;
 
         public string NextButtonText 
@@ -59,6 +61,24 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                 return _cancelCommand;
             }
+        }
+
+        public ICommand AboutCommand
+        {
+            get
+            {
+                if (_aboutCommand == null)
+                    _aboutCommand = new RelayCommand(ShowAbout);
+
+                return _aboutCommand;
+            }
+        }
+
+        public void ShowAbout()
+        {
+            AboutView view = new AboutView();
+
+            view.Show();
         }
 
         /// <summary>
@@ -132,15 +152,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 }
                 else
                 {
-                    //do whatever you want at the very end
-                    foreach (var row in ZuneWizardModel.GetInstance().Rows)
-                    {
-                        row.UpdateContainer();
-                        SaveContainerToFile saveContainerToFile = new SaveContainerToFile(row.SongPathAndContainer);
-
-                        saveContainerToFile.Save();
-                    }
-
+                    SaveView view = new SaveView();
+                    view.Show();
                 }
 
             }

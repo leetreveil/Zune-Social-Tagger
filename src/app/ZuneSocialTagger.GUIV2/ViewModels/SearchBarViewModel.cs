@@ -92,11 +92,20 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.SearchResults.Clear();
             this.IsSearching = true;
 
-            AlbumSearch.SearchForAsync(searchString, results =>
-                                                         {
-                                                             foreach (var result in results)
-                                                                 this.SearchResults.Add(result);
-                                                         });
+            try
+            {
+                AlbumSearch.SearchForAsync(searchString, results =>
+                {
+                    foreach (var result in results)
+                        this.SearchResults.Add(result);
+                });
+            }
+            catch (PageDownloaderException ex)
+            {           
+                //TODO: display message to user
+                Console.WriteLine("error in downloading the album info");
+            }
+
         }
 
         private void OnPropertyChanged(string propertyName)

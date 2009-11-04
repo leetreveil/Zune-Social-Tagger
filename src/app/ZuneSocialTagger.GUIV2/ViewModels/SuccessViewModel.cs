@@ -1,19 +1,15 @@
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    class DetailsViewModel : ZuneWizardPageViewModelBase
+    public class SuccessViewModel : INotifyPropertyChanged
     {
-        public DetailsViewModel()
+        public SuccessViewModel()
         {
             this.AlbumDetailsFromWebsite = ZuneWizardModel.GetInstance().AlbumDetailsFromWebsite;
             this.AlbumDetailsFromFile = ZuneWizardModel.GetInstance().AlbumDetailsFromFile;
-
-            this.Rows = ZuneWizardModel.GetInstance().Rows;
         }
-
-        public ObservableCollection<DetailRow> Rows { get; set; }
 
         private WebsiteAlbumMetaDataViewModel _albumDetailsFromWebsite;
         public WebsiteAlbumMetaDataViewModel AlbumDetailsFromWebsite
@@ -37,37 +33,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        private SongWithNumberAndGuid _selectedSong;
-        public SongWithNumberAndGuid SelectedSong
-        {
-            get
-            {
-                return _selectedSong;
-            }
-            set
-            {
-                _selectedSong = value;
-                OnPropertyChanged("SelectedSong");
-            }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        }
-
-        internal override bool IsValid()
+        private void OnPropertyChanged(string propertyName)
         {
-            return true;
-        }
-
-        internal override bool CanMoveNext()
-        {
-            return true;
-        }
-
-        public override string NextButtonText
-        {
-            get
-            {
-                return "Save";
-            }
+            PropertyChangedEventHandler changed = PropertyChanged;
+            if (changed != null) changed(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
