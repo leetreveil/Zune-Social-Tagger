@@ -1,4 +1,5 @@
 using ID3Tag;
+using ID3Tag.HighLevel;
 
 namespace ZuneSocialTagger.Core.ID3Tagger
 {

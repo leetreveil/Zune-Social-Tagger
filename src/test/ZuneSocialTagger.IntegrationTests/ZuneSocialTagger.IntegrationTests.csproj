@@ -105,6 +105,9 @@
     <Content Include="SampleData\Editors - In This Light And On This Evening\09 - Walk The Fleet Road.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SampleData\id3v2.2.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SampleData\nonzunewebpage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
