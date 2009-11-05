@@ -77,10 +77,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     counter++;
                     MetaData metaData = cont.Container.ReadMetaData();
 
-                    detailViewRows.Add(
-                        new DetailRow(new SongWithNumberAndGuid
+                    detailViewRows.Add(new DetailRow(new SongWithNumberAndGuid
                                           {Title = metaData.SongTitle, Number = counter.ToString()})
-                            {SongPathAndContainer = cont});
+                                          {SongPathAndContainer = cont});
                 }
 
                 ZuneTagContainer container = containers.Select(x => x.Container).First();
@@ -103,7 +102,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             catch (ID3TagException id3TagException)
             {
                 //TODO: display the error from reading the tags
-                Console.WriteLine("could not read one or more audio files");
+                Console.WriteLine(id3TagException);
+                new ErrorMessageBox().Show("Could not read one or more audio files.");
             }
         }
 

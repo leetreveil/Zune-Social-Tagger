@@ -87,6 +87,10 @@
     <Compile Include="Models\SongWithNumberAndGuid.cs" />
     <Compile Include="Models\ZuneNetAlbumMetaData.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
+    <Compile Include="ErrorMessageBox.cs" />
+    <Compile Include="Views\ErrorMessageBoxView.xaml.cs">
+      <DependentUpon>ErrorMessageBoxView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SearchBar.xaml.cs">
       <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>
@@ -209,6 +213,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\ErrorMessageBoxView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SearchBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -268,6 +276,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\zuneicondark.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\error.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
