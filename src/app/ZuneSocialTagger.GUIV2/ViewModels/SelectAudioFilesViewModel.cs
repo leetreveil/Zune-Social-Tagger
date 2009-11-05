@@ -51,17 +51,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void SelectFolder()
         {
-            var fbd = new FolderBrowserDialog { ShowNewFolderButton = false };
+            var fbd = new FolderBrowserDialog {ShowNewFolderButton = false};
 
             if (fbd.ShowDialog() == DialogResult.OK)
             {
-
                 string[] files = Directory.GetFiles(fbd.SelectedPath, "*.mp3");
                 ReadFiles(files);
             }
         }
 
-        private void ReadFiles(string[] files)
+        private void ReadFiles(IEnumerable<string> files)
         {
             WebsiteAlbumMetaDataViewModel albumDetailsFromFile = ZuneWizardModel.GetInstance().AlbumDetailsFromFile;
             ObservableCollection<DetailRow> detailViewRows = ZuneWizardModel.GetInstance().Rows;
@@ -78,33 +77,39 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     counter++;
                     MetaData metaData = cont.Container.ReadMetaData();
 
-                    detailViewRows.Add(new DetailRow(new SongWithNumberAndGuid { Title = metaData.SongTitle, Number = counter.ToString() }) { SongPathAndContainer = cont });
+                    detailViewRows.Add(
+                        new DetailRow(new SongWithNumberAndGuid
+                                          {Title = metaData.SongTitle, Number = counter.ToString()})
+                            {SongPathAndContainer = cont});
                 }
-
 
                 ZuneTagContainer container = containers.Select(x => x.Container).First();
 
-                MetaData data = container.ReadMetaData();
+                MetaData songMetaData = container.ReadMetaData();
 
-                albumDetailsFromFile.Artist = data.AlbumArtist;
-                albumDetailsFromFile.Title = data.AlbumTitle;
-                albumDetailsFromFile.Year = data.Year;
+                albumDetailsFromFile.Artist = songMetaData.AlbumArtist;
+                albumDetailsFromFile.Title = songMetaData.AlbumTitle;
+                albumDetailsFromFile.Year = songMetaData.Year;
                 albumDetailsFromFile.SongCount = counter.ToString();
+
+                //add info so search bar displays what the album artist and album title from 
+                //the album that has been selected
+
+                ZuneWizardModel.GetInstance().SearchBarViewModel.SearchText = songMetaData.AlbumTitle + " " +
+                                                                              songMetaData.AlbumArtist;
 
                 base.OnMoveNextOverride();
             }
             catch (ID3TagException id3TagException)
             {
                 //TODO: display the error from reading the tags
-               Console.WriteLine("could not read one or more audio files");
+                Console.WriteLine("could not read one or more audio files");
             }
-
-
         }
 
         private void SelectFiles()
         {
-            var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files (*.mp3)|*.mp3" };
+            var ofd = new OpenFileDialog {Multiselect = true, Filter = "Audio files (*.mp3)|*.mp3"};
 
             if (ofd.ShowDialog() == DialogResult.OK)
                 ReadFiles(ofd.FileNames);
@@ -114,7 +119,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             foreach (var file in filePaths)
             {
-                yield return new FilePathAndContainer { FilePath = file, Container = ZuneTagContainerFactory.GetContainer(file) };
+                yield return
+                    new FilePathAndContainer {FilePath = file, Container = ZuneTagContainerFactory.GetContainer(file)};
             }
         }
     }
