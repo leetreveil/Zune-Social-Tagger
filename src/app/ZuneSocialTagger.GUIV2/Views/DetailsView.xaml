@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:Class="ZuneSocialTagger.GUIV2.Views.DetailsView" Height="572" mc:Ignorable="d">
+    x:Class="ZuneSocialTagger.GUIV2.Views.DetailsView" mc:Ignorable="d">
     
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
@@ -41,7 +41,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="SONG TITLES IN THIS ALBUM" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe Caps" FontSize="13.333"/>
                         <TextBlock Grid.Column="1" Text="AVAILABLE SONG TITLES FROM ZUNE.NET" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe Caps" FontSize="13.333"/>
-                        <ListView VerticalAlignment="Top" Height="300"  Background="Transparent" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Rows}" Style="{DynamicResource ListBoxStyle1}">
+                        <ListView VerticalAlignment="Top" Background="Transparent" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Rows}" Style="{DynamicResource ListBoxStyle1}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Height="25" Margin="0,0,0,4" >

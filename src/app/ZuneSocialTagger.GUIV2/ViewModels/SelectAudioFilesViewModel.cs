@@ -8,6 +8,7 @@ using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
+using ID3Tag;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -92,9 +93,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                 base.OnMoveNextOverride();
             }
-            catch (Exception ex)
+            catch (ID3TagException id3TagException)
             {
-                //TODO: display message to user
+                //TODO: display the error from reading the tags
                Console.WriteLine("could not read one or more audio files");
             }
 
