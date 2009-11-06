@@ -29,6 +29,7 @@ namespace ZuneSocialTagger.GUIV2.Models
             set
             {
                 _songsFromWebsite = value;
+                //update selected song
                 SelectedSong = GetSongFromSongsFromFileIfItAvailable();
             }
         }

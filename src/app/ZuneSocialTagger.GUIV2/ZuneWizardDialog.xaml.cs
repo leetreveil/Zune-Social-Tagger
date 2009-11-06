@@ -18,7 +18,7 @@ namespace ZuneSocialTagger.GUIV2
             InitializeComponent();
 
             _zuneWizardViewModel = new ZuneWizardViewModel();
-            _zuneWizardViewModel.RequestClose += new EventHandler(_zuneWizardViewModel_RequestClose);
+            _zuneWizardViewModel.RequestClose += _zuneWizardViewModel_RequestClose;
             base.DataContext = _zuneWizardViewModel;   
 
         }

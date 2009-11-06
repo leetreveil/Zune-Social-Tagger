@@ -33,7 +33,7 @@ namespace ZuneSocialTagger.GUIV2.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            this.Close();
         }
     }
 }

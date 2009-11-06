@@ -153,6 +153,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 }
                 else
                 {
+                    //last page do this
                     SaveView view = new SaveView();
                     view.ShowInTaskbar = false;
                     view.Show();
