@@ -12,6 +12,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private RelayCommand<string> _searchCommand;
         private bool _isSearching;
         private bool _textBoxValid;
+        private int _pageCount;
 
         public AsyncObservableCollection<AlbumSearchResult> SearchResults { get; set; }
 
@@ -20,14 +21,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void InvokeFinishedSearching()
         {
-            this.IsSearching = false;
-
             EventHandler searching = FinishedSearching;
             if (searching != null) searching(this, new EventArgs());
         }
 
         private string _searchText;
-
         public string SearchText
         {
             get { return _searchText; }
@@ -42,7 +40,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public SearchBarViewModel()
         {
             SearchResults = new AsyncObservableCollection<AlbumSearchResult>();
-            AlbumSearch.SearchForAsyncCompleted += InvokeFinishedSearching;
+            AlbumSearch.SearchForAsyncCompleted += AlbumSearch_SearchForAsyncCompleted;
+        }
+
+        void AlbumSearch_SearchForAsyncCompleted()
+        {
+            this.IsSearching = false;
+            _pageCount = 0;
+
+            if (FinishedSearching != null) FinishedSearching(this, new EventArgs());
         }
 
         public bool IsSearching
@@ -98,6 +104,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 {
                     foreach (var result in results)
                         this.SearchResults.Add(result);
+
+                    if (_pageCount == 0)
+                        InvokeFinishedSearching();
+
+                    _pageCount++;
+
                 });
             }
             catch (PageDownloaderException ex)
