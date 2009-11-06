@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using System.Linq;
+using System.IO;
 
 namespace ZuneSocialTagger.Core.ID3Tagger
 {
@@ -58,13 +60,26 @@ namespace ZuneSocialTagger.Core.ID3Tagger
                            AlbumArtist = GetValue(allTextFrames, "TPE1"),
                            AlbumTitle = GetValue(allTextFrames, "TALB"),
                            SongTitle = GetValue(allTextFrames, "TIT2"),
-                           Year = GetValue(allTextFrames, "TYER")
+                           Year = GetValue(allTextFrames, "TYER"),
+                           Picture = ReadImage()
                        };
         }
 
         public TagContainer GetContainer()
         {
             return this._container;
+        }
+
+        private Image ReadImage()
+        {
+            var pictureFrame = _container.OfType<PictureFrame>().Select(frame => frame).FirstOrDefault();
+
+            if (pictureFrame != null)
+                return pictureFrame.Type == FrameType.Picture
+                           ? Image.FromStream(new MemoryStream(pictureFrame.PictureData))
+                           : null;
+
+            return null;
         }
 
         private static string GetValue(IEnumerable<TextFrame> textFrames, string key)

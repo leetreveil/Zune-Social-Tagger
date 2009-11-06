@@ -51,6 +51,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -65,6 +66,7 @@
     <Compile Include="AlbumSearchTestHarness.cs" />
     <Compile Include="AsyncTesting.cs" />
     <Compile Include="Core\ID3Tagger\ZuneTagContainerFactoryTests.cs" />
+    <Compile Include="Core\ID3Tagger\ZuneTagContainerTests.cs" />
     <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchScraperCombinerTests.cs" />
     <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchScraperTests.cs" />
     <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchTests.cs" />
@@ -106,6 +108,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SampleData\id3v2.2.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleData\id3v2.3withartwork.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SampleData\nonzunewebpage.xml">
