@@ -113,8 +113,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 });
             }
             catch (PageDownloaderException ex)
-            {           
-                //TODO: display message to user
+            {
                 Console.WriteLine("error in downloading the album info");
             }
 

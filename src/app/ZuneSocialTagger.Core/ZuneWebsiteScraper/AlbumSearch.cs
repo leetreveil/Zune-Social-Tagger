@@ -42,8 +42,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
         {
             string page = AlbumSearchUrlGenerator.CreateUrl(artist, pageIndex + 1);
 
-            var newPageScraper = new AlbumSearchScraper(
-                PageDownloader.Download(page));
+            var newPageScraper = new AlbumSearchScraper(PageDownloader.Download(page));
 
             return newPageScraper.ScrapeAlbums();
         }
