@@ -7,7 +7,7 @@
     xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views"
 	x:Class="ZuneSocialTagger.GUIV2.Views.SearchResultsView"
 	x:Name="UserControl"
-	d:DesignWidth="663" Height="400" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U">
+	d:DesignWidth="663" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U">
 
 	<UserControl.Resources>
 	<ResourceDictionary Source="../Resources.xaml ">
@@ -52,7 +52,7 @@
 			
 			<StackPanel Grid.Row="2" Grid.Column="1">
                 <TextBlock ToolTip="{Binding SelectedAlbumTitle}" FontSize="18.667" Text="{Binding SelectedAlbumTitle}" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI Semi Bold - U"/>
-                <ItemsControl Height="245" Background="Transparent" ItemsSource="{Binding SelectedAlbumSongs}">
+                <ItemsControl MaxHeight="245" Background="Transparent" ItemsSource="{Binding SelectedAlbumSongs}">
 						<ItemsControl.ItemTemplate>
 						<DataTemplate>
                                         <StackPanel Orientation="Horizontal" Margin="3">
