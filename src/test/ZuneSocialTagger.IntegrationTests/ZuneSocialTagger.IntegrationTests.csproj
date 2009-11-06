@@ -80,31 +80,7 @@
     <Content Include="SampleData\albumsearchresult.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SampleData\Editors - In This Light And On This Evening\01 - In This Light And On This Evening.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\Editors - In This Light And On This Evening\02 - Bricks And Mortar.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\Editors - In This Light And On This Evening\onemediaidthatisincorrect.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\Editors - In This Light And On This Evening\04 - You Don%27t Know Love.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\Editors - In This Light And On This Evening\05 - The Big Exit.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\Editors - In This Light And On This Evening\06 - The Boxer.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\Editors - In This Light And On This Evening\07 - Like Treasure.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\Editors - In This Light And On This Evening\08 - Eat Raw Meat = Blood Drool.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\Editors - In This Light And On This Evening\09 - Walk The Fleet Road.mp3">
+    <Content Include="SampleData\id3v1.1.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SampleData\id3v2.2.mp3">

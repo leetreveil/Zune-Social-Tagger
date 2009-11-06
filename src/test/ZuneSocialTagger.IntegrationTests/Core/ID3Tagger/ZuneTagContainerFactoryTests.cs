@@ -10,8 +10,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
     [TestFixture]
     public class WhenProvidedWithAFileWithAnID3Tag
     {
-        private const string FilePath =
-            "SampleData/Editors - In This Light And On This Evening/01 - In This Light And On This Evening.mp3";
+        private const string FilePath = "SampleData/id3v2.3withartwork.mp3";
 
         [Test]
         public void Then_it_should_load_a_Zune_Tag_Container_for_that_file()
@@ -25,10 +24,12 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
     [TestFixture]
     public class WhenProvidedWithAFileWithJustID3V1Point1
     {
+        private const string FilePath = "SampleData/id3v1.1.mp3";
         [Test]
-        public void Then_it_should_get_back_an_empty_container_where_we_can_put_the_zune_data_in()
+        [ExpectedException(typeof(ID3Tag.ID3TagException))]
+        public void Then_it_should_throw_a_not_supported_exception()
         {
-            Assert.Fail("Not implemented");
+            ZuneTagContainerFactory.GetContainer(FilePath);
         }
     }
 
