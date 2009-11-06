@@ -22,6 +22,7 @@ namespace ZuneSocialTagger.GUIV2.Models
         public FilePathAndContainer SongPathAndContainer { get; set; }
 
         private ObservableCollection<SongWithNumberAndGuid> _songsFromWebsite;
+
         public ObservableCollection<SongWithNumberAndGuid> SongsFromWebsite
         {
             get { return _songsFromWebsite; }
@@ -34,33 +35,27 @@ namespace ZuneSocialTagger.GUIV2.Models
 
 
         private SongWithNumberAndGuid _fileSong;
+
         public SongWithNumberAndGuid FileSong
         {
-            get
-            {
-                return _fileSong;
-            }
+            get { return _fileSong; }
             set
             {
                 _fileSong = value;
                 OnPropertyChanged("FileSong");
             }
-
         }
 
         private SongWithNumberAndGuid _selectedSong;
+
         public SongWithNumberAndGuid SelectedSong
         {
-            get
-            {
-                return _selectedSong;
-            }
+            get { return _selectedSong; }
             set
             {
                 _selectedSong = value;
                 OnPropertyChanged("SelectedSong");
             }
-
         }
 
         /// <summary>
@@ -68,6 +63,7 @@ namespace ZuneSocialTagger.GUIV2.Models
         /// </summary>
         public void UpdateContainer()
         {
+            //TODO: check if the tags are already correct because we shouldnt be writing anything to disk if the tags are already the same
             ZuneTagContainer container = this.SongPathAndContainer.Container;
 
             //VERY IMPORTANT WE DO NOT WRITE BLANK GUIDS
@@ -75,7 +71,7 @@ namespace ZuneSocialTagger.GUIV2.Models
             {
                 container.Add(AlbumArtistGuid);
                 container.Add(AlbumMediaGuid);
-                container.Add(new MediaIdGuid() { Guid = this.SelectedSong.Guid, MediaId = MediaIds.ZuneMediaID });
+                container.Add(new MediaIdGuid() {Guid = this.SelectedSong.Guid, MediaId = MediaIds.ZuneMediaID});
             }
         }
 
@@ -87,9 +83,11 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         private SongWithNumberAndGuid GetSongFromSongsFromFileIfItAvailable()
         {
-            IEnumerable<SongWithNumberAndGuid> foundSongs = SongsFromWebsite.Where(song => song.Title == FileSong.Title);
+            //this matches album songs to zune website songs in the details view
+            IEnumerable<SongWithNumberAndGuid> matchedSongs =
+                SongsFromWebsite.Where(song => song.Title.ToLower() == FileSong.Title.ToLower());
 
-            return foundSongs.Count() > 0 ? foundSongs.First() : new SongWithNumberAndGuid();
+            return matchedSongs.Count() > 0 ? matchedSongs.First() : new SongWithNumberAndGuid();
         }
     }
 }
