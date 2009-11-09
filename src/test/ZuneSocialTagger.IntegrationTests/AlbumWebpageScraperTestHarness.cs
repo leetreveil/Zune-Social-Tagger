@@ -20,6 +20,8 @@ namespace ZuneSocialTagger.IntegrationTests
                                                     "http://social.zune.net/album/Pendulum/Live-at-Brixton-Academy/febc1800-0400-11db-89ca-0019b92a3933/details"
                                                     ,
                                                     "http://social.zune.net/album/Editors/In-This-Light-And-On-This-Evening/4f66ff01-0100-11db-89ca-0019b92a3933/details"
+                                                    ,
+                                                    "http://social.zune.net/album/Nirvana/Live-At-Reading-(1992)/355c0802-0100-11db-89ca-0019b92a3933/details"
                                                 };
 
         #endregion

@@ -47,7 +47,7 @@
         </Grid.RowDefinitions>
 
         <!--HEADER-->
-        <TextBlock Grid.Column="0" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" FontSize="26.667" Text="FIND ALBUM INFO"/>
+        <TextBlock Grid.Column="0" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" FontSize="26.667" Text="ZUNE SOCIAL TAGGER"/>
 
         <!--CONTENT-->
         <Border Grid.Row="2">

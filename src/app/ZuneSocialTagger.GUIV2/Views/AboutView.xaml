@@ -19,7 +19,7 @@
         
 		<StackPanel Grid.Row="1" >
 			<TextBlock Text="Zune Social Tagger" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe Caps" FontSize="21.333"/>
-			<TextBlock Text="Version 0.9 BETA"/>
+			<TextBlock Text="Version 0.9.1 BETA"/>
 			<TextBlock Text="Developed by: Lee Treveil"/>
 			<TextBlock Text="leetreveil@gmail.com"/>
             <TextBlock Text="">
