@@ -103,7 +103,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 //TODO: make the errormessagebox static
                 Console.WriteLine(id3TagException);
-                new ErrorMessageBox().Show("Error reading album " + Environment.NewLine + id3TagException.Message);
+                ErrorMessageBox.Show("Error reading album " + Environment.NewLine + id3TagException.Message);
             }
         }
 

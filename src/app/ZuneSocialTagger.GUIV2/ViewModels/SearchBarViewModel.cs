@@ -60,7 +60,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 if (_searchCommand == null)
                 {
-                    _searchCommand = new RelayCommand<string>(SearchFor);
+                    _searchCommand = new RelayCommand<string>(searchString =>
+                      {
+                          InvokeStartedSearching();
+                          SearchFor(searchString);
+                      });
                 }
 
                 return _searchCommand;
@@ -78,7 +82,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void SearchFor(string searchString)
         {
-            InvokeStartedSearching();
             this.SearchResults.Clear();
             this.IsSearching = true;
 

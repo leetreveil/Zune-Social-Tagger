@@ -18,10 +18,18 @@ namespace ZuneSocialTagger.GUIV2.Views
     /// </summary>
     public partial class ErrorMessageBoxView : Window
     {
-        public ErrorMessageBoxView(ErrorMessageBox errorMessageBox)
+        private readonly string _errorMessage;
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+        }
+
+        public ErrorMessageBoxView(string errorMessage)
         {
             InitializeComponent();
-            this.DataContext = errorMessageBox;
+
+            _errorMessage = errorMessage;
+            this.DataContext = this;
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

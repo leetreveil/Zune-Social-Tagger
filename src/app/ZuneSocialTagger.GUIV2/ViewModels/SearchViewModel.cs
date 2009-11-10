@@ -1,4 +1,6 @@
 using System;
+using System.Windows.Input;
+using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
@@ -9,11 +11,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             this.SearchBarViewModel = ZuneWizardModel.GetInstance().SearchBarViewModel;
             this.AlbumDetailsFromFile = ZuneWizardModel.GetInstance().AlbumDetailsFromFile;
+            this.SearchBarViewModel.StartedSearching += SearchBarViewModel_StartedSearching;
         }
 
-        void SearchBarViewModel_FinishedSearching(object sender, EventArgs e)
+        void SearchBarViewModel_StartedSearching(object sender, EventArgs e)
         {
-           this.SearchBarViewModel.StartedSearching -= SearchBarViewModel_FinishedSearching;
+           this.SearchBarViewModel.StartedSearching -= SearchBarViewModel_StartedSearching;
            base.OnMoveNextOverride();
         }
 
@@ -39,6 +42,23 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
+        private RelayCommand<string> _searchCommand;
+        public ICommand SearchCommand
+        {
+            get
+            {
+                if (_searchCommand == null)
+                {
+                    _searchCommand = new RelayCommand<string>(searchString =>
+                    {
+
+                    });
+                }
+
+                return _searchCommand;
+            }
+        }
+
         public override string NextButtonText
         {
             get { return "Next"; }
@@ -57,7 +77,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         //this is invoked when the view is loaded, different to when the view is constructed
         public void ViewShown()
         {
-            this.SearchBarViewModel.StartedSearching += SearchBarViewModel_FinishedSearching;
+           // this.SearchBarViewModel.StartedSearching += SearchBarViewModel_StartedSearching;
         }
     }
 }

@@ -2,20 +2,11 @@ using ZuneSocialTagger.GUIV2.Views;
 
 namespace ZuneSocialTagger.GUIV2
 {
-    public class ErrorMessageBox
+    public static class ErrorMessageBox
     {
-        private  string _errorMessage;
-
-        public string ErrorMessage
+        public static void Show(string errorMessage)
         {
-            get { return _errorMessage; }
-        }
-
-        public void Show(string errorMessage)
-        {
-            _errorMessage = errorMessage;
-            var errorMessageBoxView = new ErrorMessageBoxView(this);
-            errorMessageBoxView.Show();
+            new ErrorMessageBoxView(errorMessage).Show();
         }
     }
 }

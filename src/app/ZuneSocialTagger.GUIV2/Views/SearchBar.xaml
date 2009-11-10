@@ -4,13 +4,11 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
-    xmlns:converters="clr-namespace:ZuneSocialTagger.GUIV2.Converters"
     xmlns:ctrls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
 	mc:Ignorable="d"
 	x:Class="ZuneSocialTagger.GUIV2.Views.SearchBar">
-	
+    	
 	<UserControl.Resources>
-        <converters:TextToVisibilityConverter x:Key="TextToVisConverter" />
         <ControlTemplate x:Key="TextboxChromeStyle" TargetType="{x:Type ScrollViewer}">
             <Grid x:Name="Grid" Background="{TemplateBinding Background}">
                 <Grid.ColumnDefinitions>
