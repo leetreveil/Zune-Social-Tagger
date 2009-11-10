@@ -101,7 +101,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
             catch (ID3TagException id3TagException)
             {
-                //TODO: make the errormessagebox static
                 Console.WriteLine(id3TagException);
                 ErrorMessageBox.Show("Error reading album " + Environment.NewLine + id3TagException.Message);
             }

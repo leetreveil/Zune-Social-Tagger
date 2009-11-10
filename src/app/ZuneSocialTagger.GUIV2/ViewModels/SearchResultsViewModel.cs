@@ -108,10 +108,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.IsLoading = false;
         }
 
-        public void ViewShown()
-        {
-        }
-
         internal override bool IsValid()
         {
             return true;

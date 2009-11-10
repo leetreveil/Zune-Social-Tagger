@@ -18,21 +18,8 @@ namespace ZuneSocialTagger.GUIV2.Views
         {
             var dContext = (SearchResultsViewModel) this.DataContext;
 
-            if (dContext != null)
-            {
-                if (e.AddedItems.Count > 0)
-                    dContext.LoadAlbum((AlbumSearchResult)e.AddedItems[0]);
-            }
+            if (dContext != null && e.AddedItems.Count > 0)
+                dContext.LoadAlbum((AlbumSearchResult) e.AddedItems[0]);
         }
-
-        private void StackPanel_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            var dContext = (SearchResultsViewModel) this.DataContext;
-
-            if (dContext != null)
-                dContext.ViewShown();
-        }
-
-  
     }
 }

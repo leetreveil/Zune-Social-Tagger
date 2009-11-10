@@ -39,7 +39,7 @@
 			<ListView Style="{DynamicResource ListBoxStyle1}" IsSynchronizedWithCurrentItem="True" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="2" ItemsSource="{Binding Albums}" Margin="0,0,36,0" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U" ItemContainerStyle="{DynamicResource SelectedItemHighlight}" SelectionChanged="ListView_SelectionChanged">
 				<ListView.ItemTemplate>
 					<DataTemplate>
-						<StackPanel Margin="0,5,5,5" Loaded="StackPanel_Loaded">
+						<StackPanel Margin="0,5,5,5">
                             <StackPanel.ToolTip>
                                 <TextBlock Text="{Binding Title}"/>
                             </StackPanel.ToolTip>
