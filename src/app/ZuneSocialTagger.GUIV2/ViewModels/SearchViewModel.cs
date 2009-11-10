@@ -13,7 +13,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         void SearchBarViewModel_FinishedSearching(object sender, EventArgs e)
         {
-           this.SearchBarViewModel.FinishedSearching -= SearchBarViewModel_FinishedSearching;
+           this.SearchBarViewModel.StartedSearching -= SearchBarViewModel_FinishedSearching;
            base.OnMoveNextOverride();
         }
 
@@ -57,7 +57,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         //this is invoked when the view is loaded, different to when the view is constructed
         public void ViewShown()
         {
-            this.SearchBarViewModel.FinishedSearching += SearchBarViewModel_FinishedSearching;
+            this.SearchBarViewModel.StartedSearching += SearchBarViewModel_FinishedSearching;
         }
     }
 }

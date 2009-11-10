@@ -9,20 +9,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SearchBarViewModel : INotifyPropertyChanged
     {
-        private RelayCommand<string> _searchCommand;
-        private bool _isSearching;
-        private bool _textBoxValid;
-        private int _pageCount;
-
         public AsyncObservableCollection<AlbumSearchResult> SearchResults { get; set; }
-
         public event PropertyChangedEventHandler PropertyChanged;
-        public event EventHandler FinishedSearching;
+        public event EventHandler StartedSearching;
 
-        private void InvokeFinishedSearching()
+        public SearchBarViewModel()
         {
-            EventHandler searching = FinishedSearching;
-            if (searching != null) searching(this, new EventArgs());
+            SearchResults = new AsyncObservableCollection<AlbumSearchResult>();
+            AlbumSearch.SearchForAsyncCompleted += (() => this.IsSearching = false);
         }
 
         private string _searchText;
@@ -37,20 +31,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        public SearchBarViewModel()
-        {
-            SearchResults = new AsyncObservableCollection<AlbumSearchResult>();
-            AlbumSearch.SearchForAsyncCompleted += AlbumSearch_SearchForAsyncCompleted;
-        }
-
-        void AlbumSearch_SearchForAsyncCompleted()
-        {
-            this.IsSearching = false;
-            _pageCount = 0;
-
-            if (FinishedSearching != null) FinishedSearching(this, new EventArgs());
-        }
-
+        private bool _isSearching;
         public bool IsSearching
         {
             get { return _isSearching; }
@@ -61,6 +42,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
+        private bool _textBoxValid;
         public bool TextBoxValid
         {
             get { return _textBoxValid; }
@@ -71,6 +53,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
+        private RelayCommand<string> _searchCommand;
         public ICommand SearchCommand
         {
             get
@@ -95,6 +78,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void SearchFor(string searchString)
         {
+            InvokeStartedSearching();
             this.SearchResults.Clear();
             this.IsSearching = true;
 
@@ -104,17 +88,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 {
                     foreach (var result in results)
                         this.SearchResults.Add(result);
-
-                    if (_pageCount == 0)
-                        InvokeFinishedSearching();
-
-                    _pageCount++;
-
                 });
             }
             catch (PageDownloaderException ex)
             {
-                Console.WriteLine("error in downloading the album info");
+                Console.WriteLine("error downloading the album info");
             }
 
         }
@@ -123,6 +101,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             PropertyChangedEventHandler changed = PropertyChanged;
             if (changed != null) changed(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void InvokeStartedSearching()
+        {
+            EventHandler searching = StartedSearching;
+            if (searching != null) searching(this, new EventArgs());
         }
     }
 }
