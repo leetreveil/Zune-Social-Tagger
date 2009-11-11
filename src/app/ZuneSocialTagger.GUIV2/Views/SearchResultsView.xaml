@@ -29,7 +29,7 @@
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="40"/>
-				<RowDefinition/>
+				<RowDefinition MaxHeight="300"/>
 			</Grid.RowDefinitions>
 			
             <views:WebsiteAlbumMetaDataView DataContext="{Binding AlbumDetailsFromFile}"  VerticalAlignment="Top"/>
@@ -50,26 +50,8 @@
 				</ListView.ItemTemplate>
 			</ListView>
 			
-			<StackPanel Grid.Row="2" Grid.Column="1">
-                <TextBlock ToolTip="{Binding SelectedAlbumTitle}" FontSize="18.667" Text="{Binding SelectedAlbumTitle}" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI Semi Bold - U"/>
-                <ItemsControl MaxHeight="245" Background="Transparent" ItemsSource="{Binding SelectedAlbumSongs}">
-						<ItemsControl.ItemTemplate>
-						<DataTemplate>
-                                        <StackPanel Orientation="Horizontal" Margin="3">
-                                            <TextBlock Width="23" Text="{Binding Number}" VerticalAlignment="Center" FontSize="18"/>
-                                            <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontSize="13.333" Margin="10,0,0,0"/>
-                                        </StackPanel>
-						</DataTemplate>
-						</ItemsControl.ItemTemplate>
-                    <ItemsControl.Template>
-                        <ControlTemplate>
-                            <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}">
-                                <ItemsPresenter />
-                            </ScrollViewer>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
-                </ItemsControl>
-			</StackPanel>
+            <views:SearchResultsDetailView Grid.Row="2" Grid.Column="1" DataContext="{Binding SearchResultsDetailsViewModel}"/>
+
 		</Grid>
 	</Border>
 </UserControl>

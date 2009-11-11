@@ -9,8 +9,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SaveViewModel
     {
+        private readonly ZuneWizardModel _model;
+        private RelayCommand _saveCommand;
 
-        private RelayCommand _saveCommand; 
+
+        public SaveViewModel(ZuneWizardModel model)
+        {
+            _model = model;
+        }
+
         public ICommand SaveCommand
         {
             get
@@ -29,7 +36,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             try
             {
-                foreach (var row in ZuneWizardModel.GetInstance().Rows)
+                foreach (var row in _model.Rows)
                 {
                     row.UpdateContainer();
 
@@ -38,9 +45,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     saveContainerToFile.Save();
                 }
 
-                SuccessView successView = new SuccessView();
-                successView.ShowInTaskbar = false;
-                successView.Topmost = true;
+                var successView = new SuccessView(new SuccessViewModel(_model)) {ShowInTaskbar = false, Topmost = true};
                 successView.Show();
             }
             catch (Exception ex)

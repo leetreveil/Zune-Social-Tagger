@@ -21,6 +21,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         RelayCommand _movePreviousCommand;
         private RelayCommand _aboutCommand;
         ReadOnlyCollection<ZuneWizardPageViewModelBase> _pages;
+        private ZuneWizardModel _sharedModel;
 
         public string NextButtonText 
         {
@@ -154,8 +155,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 else
                 {
                     //last page do this
-                    SaveView view = new SaveView();
-                    view.ShowInTaskbar = false;
+                    var view = new SaveView(new SaveViewModel(_sharedModel)) {ShowInTaskbar = false};
                     view.Show();
                 }
 
@@ -181,10 +181,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 if (_currentPage != null)
                     _currentPage.IsCurrentPage = true;
 
-                this.CurrentPage.MoveNextOverride += delegate
-                                                         {
-                                                             Console.WriteLine("Override invoked");
-                                                         };
 
                 this.OnPropertyChanged("CurrentPage");
                 this.OnPropertyChanged("IsOnLastPage");
@@ -224,11 +220,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         void CreatePages()
         {
+            _sharedModel = new ZuneWizardModel();
+
             var pages = new List<ZuneWizardPageViewModelBase>();
-            pages.Add(new SelectAudioFilesViewModel());
-            pages.Add(new SearchViewModel());
-            pages.Add(new SearchResultsViewModel());
-            pages.Add(new DetailsViewModel());
+            pages.Add(new SelectAudioFilesViewModel(_sharedModel));
+            pages.Add(new SearchViewModel(_sharedModel));
+            pages.Add(new SearchResultsViewModel(_sharedModel));
+            pages.Add(new DetailsViewModel(_sharedModel));
 
             _pages = new ReadOnlyCollection<ZuneWizardPageViewModelBase>(pages);
         }

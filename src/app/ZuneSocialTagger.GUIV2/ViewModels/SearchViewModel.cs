@@ -1,62 +1,34 @@
 using System;
-using System.Windows.Input;
-using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SearchViewModel : ZuneWizardPageViewModelBase
     {
-        public SearchViewModel()
+        private readonly ZuneWizardModel _model;
+
+        public SearchViewModel(ZuneWizardModel model)
         {
-            this.SearchBarViewModel = ZuneWizardModel.GetInstance().SearchBarViewModel;
-            this.AlbumDetailsFromFile = ZuneWizardModel.GetInstance().AlbumDetailsFromFile;
+            _model = model;
             this.SearchBarViewModel.StartedSearching += SearchBarViewModel_StartedSearching;
         }
 
         void SearchBarViewModel_StartedSearching(object sender, EventArgs e)
         {
-           this.SearchBarViewModel.StartedSearching -= SearchBarViewModel_StartedSearching;
-           base.OnMoveNextOverride();
+            //we only want to move to the next page if we are on the current one
+            //this prevents moving to another page when this page is not 'visible'
+            if (base.IsCurrentPage)
+                base.OnMoveNextOverride();
         }
 
-        private WebsiteAlbumMetaDataViewModel _albumDetailsFromFile;
         public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
         {
-            get { return _albumDetailsFromFile; }
-            set
-            {
-                _albumDetailsFromFile = value;
-                OnPropertyChanged("AlbumDetailsFromFile");
-            }
+            get { return _model.AlbumDetailsFromFile; }
         }
 
-        private SearchBarViewModel _searchBarViewModel;
         public SearchBarViewModel SearchBarViewModel
         {
-            get { return _searchBarViewModel; }
-            set
-            {
-                _searchBarViewModel = value;
-                OnPropertyChanged("SearchBarViewModel");
-            }
-        }
-
-        private RelayCommand<string> _searchCommand;
-        public ICommand SearchCommand
-        {
-            get
-            {
-                if (_searchCommand == null)
-                {
-                    _searchCommand = new RelayCommand<string>(searchString =>
-                    {
-
-                    });
-                }
-
-                return _searchCommand;
-            }
+            get { return _model.SearchBarViewModel; }
         }
 
         public override string NextButtonText
@@ -72,12 +44,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         internal override bool CanMoveNext()
         {
             return false;
-        }
-
-        //this is invoked when the view is loaded, different to when the view is constructed
-        public void ViewShown()
-        {
-           // this.SearchBarViewModel.StartedSearching += SearchBarViewModel_StartedSearching;
         }
     }
 }

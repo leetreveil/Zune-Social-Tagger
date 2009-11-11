@@ -89,6 +89,7 @@
     <Compile Include="Models\ZuneNetAlbumMetaData.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
     <Compile Include="ErrorMessageBox.cs" />
+    <Compile Include="ViewModels\SearchResultsDetailsViewModel.cs" />
     <Compile Include="Views\ErrorMessageBoxView.xaml.cs">
       <DependentUpon>ErrorMessageBoxView.xaml</DependentUpon>
     </Compile>
@@ -126,6 +127,9 @@
     </Compile>
     <Compile Include="Views\SaveView.xaml.cs">
       <DependentUpon>SaveView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchResultsDetailView.xaml.cs">
+      <DependentUpon>SearchResultsDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SearchResultsView.xaml.cs">
       <DependentUpon>SearchResultsView.xaml</DependentUpon>
@@ -231,6 +235,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SaveView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchResultsDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

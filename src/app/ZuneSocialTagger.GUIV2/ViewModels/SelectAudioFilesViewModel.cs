@@ -14,8 +14,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SelectAudioFilesViewModel : ZuneWizardPageViewModelBase
     {
+        private readonly ZuneWizardModel _model;
         private RelayCommand _fromFolderCommand;
         private RelayCommand _fromFilesCommand;
+
+        public SelectAudioFilesViewModel(ZuneWizardModel model)
+        {
+            _model = model;
+        }
 
         internal override bool IsValid()
         {
@@ -62,13 +68,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void ReadFiles(IEnumerable<string> files)
         {
-            WebsiteAlbumMetaDataViewModel albumDetailsFromFile = ZuneWizardModel.GetInstance().AlbumDetailsFromFile;
-            ObservableCollection<DetailRow> detailViewRows = ZuneWizardModel.GetInstance().Rows;
-
-            detailViewRows.Clear();
 
             try
             {
+                _model.Rows = new ObservableCollection<DetailRow>();
                 IEnumerable<FilePathAndContainer> containers = CreateContainerFromFiles(files);
 
                 int counter = 0;
@@ -77,25 +80,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     counter++;
                     MetaData metaData = cont.Container.ReadMetaData();
 
-                    detailViewRows.Add(new DetailRow(new SongWithNumberAndGuid
-                                          {Title = metaData.SongTitle, Number = counter.ToString()})
-                                          {SongPathAndContainer = cont});
+                    _model.Rows.Add(new DetailRow(new SongWithNumberAndGuid
+                                                      {Title = metaData.SongTitle, Number = counter.ToString()})
+                                                      {SongPathAndContainer = cont});
                 }
 
-                ZuneTagContainer container = containers.Select(x => x.Container).First();
+                SetModelDetailsFromFirstAudioFile(counter, containers.Select(x => x.Container).First());
 
-                MetaData songMetaData = container.ReadMetaData();
-
-                albumDetailsFromFile.Artist = songMetaData.AlbumArtist;
-                albumDetailsFromFile.Title = songMetaData.AlbumTitle;
-                albumDetailsFromFile.Year = songMetaData.Year;
-                albumDetailsFromFile.SongCount = counter.ToString();
-
-                //add info so search bar displays what the album artist and album title from 
-                //the album that has been selected
-
-                ZuneWizardModel.GetInstance().SearchBarViewModel.SearchText = songMetaData.AlbumTitle + " " +
-                                                                              songMetaData.AlbumArtist;
 
                 base.OnMoveNextOverride();
             }
@@ -104,6 +95,26 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 Console.WriteLine(id3TagException);
                 ErrorMessageBox.Show("Error reading album " + Environment.NewLine + id3TagException.Message);
             }
+        }
+
+        private void SetModelDetailsFromFirstAudioFile(int counter, ZuneTagContainer container)
+        {
+            MetaData songMetaData = container.ReadMetaData();
+
+            _model.AlbumDetailsFromFile = new WebsiteAlbumMetaDataViewModel
+                                              {
+                                                  Artist = songMetaData.AlbumArtist,
+                                                  Title = songMetaData.AlbumTitle,
+                                                  Year = songMetaData.Year,
+                                                  SongCount = counter.ToString(),
+                                              };
+
+
+            //add info so search bar displays what the album artist and album title from 
+            //the album that has been selected
+
+            _model.SearchBarViewModel.SearchText = songMetaData.AlbumTitle + " " +
+                                                   songMetaData.AlbumArtist;
         }
 
         private void SelectFiles()

@@ -1,44 +1,24 @@
-using System.ComponentModel;
 using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SuccessViewModel : INotifyPropertyChanged
+    public class SuccessViewModel
     {
-        public SuccessViewModel()
+        private readonly ZuneWizardModel _model;
+
+        public SuccessViewModel(ZuneWizardModel model)
         {
-            this.AlbumDetailsFromWebsite = ZuneWizardModel.GetInstance().AlbumDetailsFromWebsite;
-            this.AlbumDetailsFromFile = ZuneWizardModel.GetInstance().AlbumDetailsFromFile;
+            _model = model;
         }
 
-        private WebsiteAlbumMetaDataViewModel _albumDetailsFromWebsite;
         public WebsiteAlbumMetaDataViewModel AlbumDetailsFromWebsite
         {
-            get { return _albumDetailsFromWebsite; }
-            set
-            {
-                _albumDetailsFromWebsite = value;
-                OnPropertyChanged("AlbumDetailsFromWebsite");
-            }
+            get { return _model.AlbumDetailsFromWebsite; }
         }
 
-        private WebsiteAlbumMetaDataViewModel _albumDetailsFromFile;
         public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
         {
-            get { return _albumDetailsFromFile; }
-            set
-            {
-                _albumDetailsFromFile = value;
-                OnPropertyChanged("AlbumDetailsFromWebsite");
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler changed = PropertyChanged;
-            if (changed != null) changed(this, new PropertyChangedEventArgs(propertyName));
+            get { return _model.AlbumDetailsFromFile; }
         }
     }
 }

@@ -17,7 +17,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             if (mNextoverride != null) mNextoverride(this, new EventArgs());
         }
 
-
         public virtual string NextButtonText
         {
             get { return "Next"; }
@@ -50,25 +49,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         /// <summary>
         /// Returns true if the user can move next, is different to IsValid because this 
-        /// is just called on when it trys to move next and does not disable the next button
+        /// is just called when it trys to move next and does not disable the next button
         /// </summary>
         /// <returns></returns>
         internal abstract bool CanMoveNext();
 
-        internal virtual bool FlagCanMoveNext { get; set; }
-
-        public virtual void BeforeMoveNext()
-        {
-            
-        }
-
-        public event EventHandler IsMovingNext;
-
-        public void InvokeIsMovingNext()
-        {
-            EventHandler handler = IsMovingNext;
-            if (handler != null) handler(this, new EventArgs());
-        }
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

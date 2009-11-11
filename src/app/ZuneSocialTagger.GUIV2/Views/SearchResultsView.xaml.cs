@@ -19,7 +19,9 @@ namespace ZuneSocialTagger.GUIV2.Views
             var dContext = (SearchResultsViewModel) this.DataContext;
 
             if (dContext != null && e.AddedItems.Count > 0)
+            {
                 dContext.LoadAlbum((AlbumSearchResult) e.AddedItems[0]);
+            }
         }
     }
 }

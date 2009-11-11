@@ -19,11 +19,11 @@ namespace ZuneSocialTagger.GUIV2.Views
     /// </summary>
     public partial class SaveView : Window
     {
-        public SaveView()
+        public SaveView(SaveViewModel model)
         {
             InitializeComponent();
 
-            this.DataContext = new SaveViewModel();
+            this.DataContext = model;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

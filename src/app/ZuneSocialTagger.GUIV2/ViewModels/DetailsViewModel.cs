@@ -5,36 +5,26 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     class DetailsViewModel : ZuneWizardPageViewModelBase
     {
-        public DetailsViewModel()
-        {
-            this.AlbumDetailsFromWebsite = ZuneWizardModel.GetInstance().AlbumDetailsFromWebsite;
-            this.AlbumDetailsFromFile = ZuneWizardModel.GetInstance().AlbumDetailsFromFile;
+        private readonly ZuneWizardModel _model;
 
-            this.Rows = ZuneWizardModel.GetInstance().Rows;
+        public DetailsViewModel(ZuneWizardModel model)
+        {
+            _model = model;
         }
 
-        public ObservableCollection<DetailRow> Rows { get; set; }
+        public ObservableCollection<DetailRow> Rows 
+        {
+            get { return _model.Rows; }
+        } 
 
-        private WebsiteAlbumMetaDataViewModel _albumDetailsFromWebsite;
         public WebsiteAlbumMetaDataViewModel AlbumDetailsFromWebsite
         {
-            get { return _albumDetailsFromWebsite; }
-            set
-            {
-                _albumDetailsFromWebsite = value;
-                OnPropertyChanged("AlbumDetailsFromWebsite");
-            }
+            get { return _model.AlbumDetailsFromWebsite; }
         }
 
-        private WebsiteAlbumMetaDataViewModel _albumDetailsFromFile;
         public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
         {
-            get { return _albumDetailsFromFile; }
-            set
-            {
-                _albumDetailsFromFile = value;
-                OnPropertyChanged("AlbumDetailsFromWebsite");
-            }
+            get { return _model.AlbumDetailsFromFile; }
         }
 
         private SongWithNumberAndGuid _selectedSong;

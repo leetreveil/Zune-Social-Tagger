@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,21 +9,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
     /// <summary>
-    /// Interaction logic for SearchView.xaml
+    /// Interaction logic for SearchResultsDetailView.xaml
     /// </summary>
-    public partial class SearchView : UserControl
+    public partial class SearchResultsDetailView : UserControl
     {
-        public SearchView()
+        public SearchResultsDetailView()
         {
-            this.InitializeComponent();
-			
-            // Insert code required on object creation below this point.
+            InitializeComponent();
         }
     }
 }

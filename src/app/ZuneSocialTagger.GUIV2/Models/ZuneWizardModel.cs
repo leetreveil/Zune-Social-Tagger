@@ -1,49 +1,18 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Collections;
-using System.Collections.Generic;
-using ZuneSocialTagger.Core.ZuneWebsiteScraper;
 using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
     public class ZuneWizardModel : INotifyPropertyChanged
     {
-        #region SingletonStuff
-
-        private static ZuneWizardModel instance = new ZuneWizardModel();
-
-        private ZuneWizardModel()
+        public ZuneWizardModel()
         {
             this.SearchBarViewModel = new SearchBarViewModel();
-            this.SelectedAlbumSongs = new AsyncObservableCollection<SongWithNumberAndGuid>();
             this.AlbumDetailsFromWebsite = new WebsiteAlbumMetaDataViewModel();
             this.AlbumDetailsFromFile = new WebsiteAlbumMetaDataViewModel();
             this.SongsFromFile = new ObservableCollection<SongWithNumberAndGuid>();
             this.Rows = new ObservableCollection<DetailRow>();
-        }
-
-        public static ZuneWizardModel GetInstance()
-        {
-            return instance;
-        }
-
-        #endregion
-
-        public event Action<ZuneNetAlbumMetaData> AlbumMetaDataChanged = delegate { };
-        public event Action<IEnumerable<AlbumSearchResult>> NewAlbumsAvail = delegate { };
-
-        public void InvokeNewAlbumsAvailable(IEnumerable<AlbumSearchResult> albums)
-        {
-            Action<IEnumerable<AlbumSearchResult>> action = NewAlbumsAvail;
-            if (action != null) action(albums);
-        }
-
-        public void InvokeAlbumMetaDataChanged(ZuneNetAlbumMetaData obj)
-        {
-            Action<ZuneNetAlbumMetaData> changed = AlbumMetaDataChanged;
-            if (changed != null) changed(obj);
         }
 
         private SearchBarViewModel _searchBarViewModel;
@@ -79,10 +48,7 @@ namespace ZuneSocialTagger.GUIV2.Models
             }
         }
 
-        public AsyncObservableCollection<SongWithNumberAndGuid> SelectedAlbumSongs { get; set; }
-
         public ObservableCollection<SongWithNumberAndGuid> SongsFromFile { get; set; }
-
         public ObservableCollection<DetailRow> Rows { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
