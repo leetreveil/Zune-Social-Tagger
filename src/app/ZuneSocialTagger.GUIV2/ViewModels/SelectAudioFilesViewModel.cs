@@ -68,25 +68,24 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void ReadFiles(IEnumerable<string> files)
         {
+            _model.Rows = new ObservableCollection<DetailRow>();
 
             try
             {
-                _model.Rows = new ObservableCollection<DetailRow>();
-                IEnumerable<FilePathAndContainer> containers = CreateContainerFromFiles(files);
-
                 int counter = 0;
-                foreach (var cont in containers)
+                foreach (var filePath in files)
                 {
                     counter++;
-                    MetaData metaData = cont.Container.ReadMetaData();
+                    ZuneTagContainer container = ZuneTagContainerFactory.GetContainer(filePath);
 
-                    _model.Rows.Add(new DetailRow(new SongWithNumberAndGuid
-                                                      {Title = metaData.SongTitle, Number = counter.ToString()})
-                                                      {SongPathAndContainer = cont});
+                    var metaData = container.ReadMetaData();
+                    var songDetails = new SongWithNumberAndGuid
+                                          {Title = metaData.SongTitle, Number = counter.ToString()};
+
+                    _model.Rows.Add(new DetailRow(songDetails,filePath,container));
                 }
 
-                SetModelDetailsFromFirstAudioFile(counter, containers.Select(x => x.Container).First());
-
+                SetModelDetailsFromFirstAudioFile(counter, _model.Rows.First().TagContainer.ReadMetaData());
 
                 base.OnMoveNextOverride();
             }
@@ -97,16 +96,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        private void SetModelDetailsFromFirstAudioFile(int counter, ZuneTagContainer container)
+        private void SetModelDetailsFromFirstAudioFile(int songCount, MetaData songMetaData)
         {
-            MetaData songMetaData = container.ReadMetaData();
-
             _model.AlbumDetailsFromFile = new WebsiteAlbumMetaDataViewModel
                                               {
                                                   Artist = songMetaData.AlbumArtist,
                                                   Title = songMetaData.AlbumTitle,
                                                   Year = songMetaData.Year,
-                                                  SongCount = counter.ToString(),
+                                                  SongCount = songCount.ToString(),
                                               };
 
 
@@ -123,15 +120,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             if (ofd.ShowDialog() == DialogResult.OK)
                 ReadFiles(ofd.FileNames);
-        }
-
-        private static IEnumerable<FilePathAndContainer> CreateContainerFromFiles(IEnumerable<string> filePaths)
-        {
-            foreach (var file in filePaths)
-            {
-                yield return
-                    new FilePathAndContainer {FilePath = file, Container = ZuneTagContainerFactory.GetContainer(file)};
-            }
         }
     }
 }

@@ -39,61 +39,6 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
 
             Assert.That(result.Count(), Is.Not.GreaterThan(1), "Found the same album twice");
         }
-
-        [Test]
-        public void Then_it_should_be_able_to_get_the_result_of_the_first_page_asyncronously()
-        {
-            var listOfResults = new List<AlbumSearchResult>();
-
-            AlbumSearch.SearchForAsync("Pendulum", searchResults =>
-                                                       {
-                                                           listOfResults.AddRange(searchResults);
-                                                           base.Set();
-                                                       });
-
-            base.WaitOne(4000, "did not first page");
-
-            Assert.That(listOfResults.Count(), Is.EqualTo(20));
-        }
-
-        [Test]
-        public void Then_it_should_be_able_to_get_the_result_of_all_the_pages_asyncronously()
-        {
-            var listOfResults = new List<AlbumSearchResult>();
-
-            AlbumSearch.SearchForAsync("Pendulum", searchResults =>
-            {
-                listOfResults.AddRange(searchResults);
-                base.Set();
-            });
-
-            base.WaitOne(4000, "did not get first page");
-            base.WaitOne(4000, "did not get second page");
-
-            Assert.That(listOfResults.Count(), Is.EqualTo(38));
-        }
-
-        [Test]
-        public void Then_it_should_raise_a_completed_event_when_all_pages_have_been_downloaded_asyncronously()
-        {
-            //TODO: fix bug where running these tests in a group is failing this test
-            var listOfResults = new List<AlbumSearchResult>();
-
-
-            AlbumSearch.SearchForAsyncCompleted += () => base.Set();
-
-            AlbumSearch.SearchForAsync("Pendulum", searchResults =>
-            {
-                listOfResults.AddRange(searchResults);
-                base.Set();
-            });
-
-            base.WaitOne(4000, "did not get first page");
-            base.WaitOne(4000, "did not get second page");
-            base.WaitOne(4000, "did not get completed event");
-
-            Assert.That(listOfResults.Count(), Is.EqualTo(38));
-        }
     }
 
 }

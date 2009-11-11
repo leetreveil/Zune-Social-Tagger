@@ -1,6 +1,6 @@
 using System;
 using System.Windows.Input;
-using ZuneSocialTagger.Core.ID3Tagger;
+using ID3Tag;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Views;
@@ -34,27 +34,23 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         /// </summary>
         public void Save()
         {
-            try
+            foreach (var row in _model.Rows)
             {
-                foreach (var row in _model.Rows)
+                try
                 {
                     row.UpdateContainer();
 
-                    var saveContainerToFile = new SaveContainerToFile(row.SongPathAndContainer);
-
-                    saveContainerToFile.Save();
+                    Id3TagManager.WriteV2Tag(row.FilePath, row.TagContainer.GetContainer());
                 }
-
-                var successView = new SuccessView(new SuccessViewModel(_model)) {ShowInTaskbar = false, Topmost = true};
-                successView.Show();
-            }
-            catch (Exception ex)
-            {
-                //TODO: better error handling
-                Console.WriteLine("saving error");
+                catch (Exception ex)
+                {
+                    //TODO: better error handling
+                    Console.WriteLine("error saving {0}", row.FilePath);
+                }
             }
 
+            var successView = new SuccessView(new SuccessViewModel(_model)) {ShowInTaskbar = false, Topmost = true};
+            successView.Show();
         }
-
     }
 }

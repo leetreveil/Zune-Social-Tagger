@@ -7,22 +7,24 @@ using ZuneSocialTagger.Core.ID3Tagger;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
-    public class DetailRow : INotifyPropertyChanged
+    public class DetailRow
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public DetailRow(SongWithNumberAndGuid fileSong)
+        public DetailRow(SongWithNumberAndGuid fileSong, string filePath, ZuneTagContainer container)
         {
+            this.FilePath = filePath;
+            this.TagContainer = container;
             this.FileSong = fileSong;
         }
 
         public MediaIdGuid AlbumArtistGuid { get; set; }
         public MediaIdGuid AlbumMediaGuid { get; set; }
-
-        public FilePathAndContainer SongPathAndContainer { get; set; }
+        public string FilePath { get; set; }
+        public ZuneTagContainer TagContainer { get; set; }
+        public SongWithNumberAndGuid FileSong { get; set; }
+        public SongWithNumberAndGuid SelectedSong { get; set; }
+    
 
         private ObservableCollection<SongWithNumberAndGuid> _songsFromWebsite;
-
         public ObservableCollection<SongWithNumberAndGuid> SongsFromWebsite
         {
             get { return _songsFromWebsite; }
@@ -30,59 +32,29 @@ namespace ZuneSocialTagger.GUIV2.Models
             {
                 _songsFromWebsite = value;
                 //update selected song
-                SelectedSong = GetSongFromSongsFromFileIfItAvailable();
+                SelectedSong = MatchThisSongToAvailableSongs();
             }
         }
 
-
-        private SongWithNumberAndGuid _fileSong;
-
-        public SongWithNumberAndGuid FileSong
-        {
-            get { return _fileSong; }
-            set
-            {
-                _fileSong = value;
-                OnPropertyChanged("FileSong");
-            }
-        }
-
-        private SongWithNumberAndGuid _selectedSong;
-
-        public SongWithNumberAndGuid SelectedSong
-        {
-            get { return _selectedSong; }
-            set
-            {
-                _selectedSong = value;
-                OnPropertyChanged("SelectedSong");
-            }
-        }
-
+ 
         /// <summary>
         /// Updates the container with the new details selected by the user
         /// </summary>
         public void UpdateContainer()
         {
             //TODO: check if the tags are already correct because we shouldnt be writing anything to disk if the tags are already the same
-            ZuneTagContainer container = this.SongPathAndContainer.Container;
 
             //VERY IMPORTANT WE DO NOT WRITE BLANK GUIDS
             if (SelectedSong.Guid != Guid.Empty)
             {
-                container.Add(AlbumArtistGuid);
-                container.Add(AlbumMediaGuid);
-                container.Add(new MediaIdGuid() {Guid = this.SelectedSong.Guid, MediaId = MediaIds.ZuneMediaID});
+                this.TagContainer.Add(AlbumArtistGuid);
+                this.TagContainer.Add(AlbumMediaGuid);
+                this.TagContainer.Add(new MediaIdGuid { Guid = this.SelectedSong.Guid, MediaId = MediaIds.ZuneMediaID });
             }
         }
 
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler changed = PropertyChanged;
-            if (changed != null) changed(this, new PropertyChangedEventArgs(propertyName));
-        }
 
-        private SongWithNumberAndGuid GetSongFromSongsFromFileIfItAvailable()
+        private SongWithNumberAndGuid MatchThisSongToAvailableSongs()
         {
             //this matches album songs to zune website songs in the details view
             IEnumerable<SongWithNumberAndGuid> matchedSongs =

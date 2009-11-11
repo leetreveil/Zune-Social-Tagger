@@ -50,11 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="ID3Tagger\FilePathAndContainer.cs" />
     <Compile Include="ID3Tagger\MediaIdGuid.cs" />
     <Compile Include="ID3Tagger\MediaIds.cs" />
     <Compile Include="ID3Tagger\MetaData.cs" />
-    <Compile Include="ID3Tagger\SaveContainerToFile.cs" />
     <Compile Include="ID3Tagger\ZuneTagContainer.cs" />
     <Compile Include="ID3Tagger\ZuneTagContainerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
