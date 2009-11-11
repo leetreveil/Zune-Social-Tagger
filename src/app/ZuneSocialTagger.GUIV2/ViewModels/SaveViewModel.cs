@@ -38,8 +38,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 try
                 {
-                    row.UpdateContainer();
-
                     Id3TagManager.WriteV2Tag(row.FilePath, row.TagContainer.GetContainer());
                 }
                 catch (Exception ex)

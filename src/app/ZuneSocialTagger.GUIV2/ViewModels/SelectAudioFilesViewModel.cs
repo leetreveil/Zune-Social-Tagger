@@ -72,20 +72,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             try
             {
-                int counter = 0;
                 foreach (var filePath in files)
                 {
-                    counter++;
                     ZuneTagContainer container = ZuneTagContainerFactory.GetContainer(filePath);
 
                     var metaData = container.ReadMetaData();
-                    var songDetails = new SongWithNumberAndGuid
-                                          {Title = metaData.SongTitle, Number = counter.ToString()};
 
-                    _model.Rows.Add(new DetailRow(songDetails,filePath,container));
+                    _model.Rows.Add(new DetailRow(metaData.SongTitle,filePath,container));
                 }
 
-                SetModelDetailsFromFirstAudioFile(counter, _model.Rows.First().TagContainer.ReadMetaData());
+                SetModelDetailsFromFirstAudioFile(files.Count(), _model.Rows.First().TagContainer.ReadMetaData());
 
                 base.OnMoveNextOverride();
             }

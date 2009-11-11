@@ -50,8 +50,8 @@
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                            <TextBlock Width="23" Text="{Binding FileSong.Number}" VerticalAlignment="Center" FontSize="18"/>
-                                            <TextBlock Text="{Binding FileSong.Title}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                            <TextBlock Width="23" Text="{Binding Number}" VerticalAlignment="Center" FontSize="18"/>
+                                            <TextBlock Text="{Binding SongTitle}" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                         </StackPanel>
 
                                         <ComboBox ItemsSource="{Binding SongsFromWebsite}" SelectedItem="{Binding SelectedSong}" IsReadOnly="True" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="280" VerticalAlignment="Center">

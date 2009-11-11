@@ -121,14 +121,18 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 row.SongsFromWebsite = this.SearchResultsDetailsViewModel.SelectedAlbumSongs;
 
-                row.AlbumArtistGuid = new MediaIdGuid
+                var albumArtistGuid = new MediaIdGuid
                                           {
                                               Guid = scraper.ScrapeAlbumArtistID(),
                                               MediaId = MediaIds.ZuneAlbumArtistMediaID
                                           };
 
-                row.AlbumMediaGuid = new MediaIdGuid
+                var albumMediaGuid = new MediaIdGuid
                                          {Guid = scraper.ScrapeAlbumMediaID(), MediaId = MediaIds.ZuneAlbumMediaID};
+
+
+                row.TagContainer.Add(albumArtistGuid);
+                row.TagContainer.Add(albumMediaGuid);
             }
         }
 
