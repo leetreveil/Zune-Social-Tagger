@@ -13,11 +13,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private readonly ZuneWizardModel _model;
         private bool _isLoading;
         private AlbumSearchResult _lastLoaded;
+        private SearchResultsDetailsViewModel _searchResultsDetailsViewModel;
 
         public SearchResultsViewModel(ZuneWizardModel model)
         {
             _model = model;
             this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel();
+            this.SearchBarViewModel.StartedSearching += SearchBarViewModel_StartedSearching;
+        }
+
+        void SearchBarViewModel_StartedSearching(object sender, EventArgs e)
+        {
+            if (base.IsCurrentPage)
+            {
+                this.SearchResultsDetailsViewModel = null;
+                //this.Albums.Clear();
+            }
         }
 
         public ObservableCollection<AlbumSearchResult> Albums
@@ -25,7 +36,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return this.SearchBarViewModel.SearchResults; }
         }
 
-        private SearchResultsDetailsViewModel _searchResultsDetailsViewModel;
         public SearchResultsDetailsViewModel SearchResultsDetailsViewModel
         {
             get { return _searchResultsDetailsViewModel; }
@@ -36,13 +46,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-
         public string AlbumCount
         {
             get { return String.Format("ALBUMS ({0})", Albums.Count); }
         }
-
-
 
         public SearchBarViewModel SearchBarViewModel
         {
@@ -91,7 +98,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             AddSelectedSongs(scraper);
             AddRowInfo(scraper);
-
 
             this.IsLoading = false;
         }

@@ -17,11 +17,10 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public DetailRow(string songTitle, string filePath, ZuneTagContainer container)
         {
-            SongTitle = songTitle;
+            this.SongTitle = songTitle;
             this.FilePath = filePath;
             this.TagContainer = container;
         }
-
 
         public SongWithNumberAndGuid SelectedSong
         {

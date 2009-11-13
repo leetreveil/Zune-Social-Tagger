@@ -16,7 +16,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public SearchBarViewModel()
         {
             SearchResults = new AsyncObservableCollection<AlbumSearchResult>();
-            AlbumSearch.SearchForAsyncCompleted += (() => this.IsSearching = false);
+            AlbumSearch.SearchForAsyncCompleted += (() =>
+                                                        {
+                                                            this.IsSearching = false;
+                                                        });
         }
 
         private string _searchText;
@@ -26,7 +29,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             set
             {
                 _searchText = value;
-                TextBoxValid = !String.IsNullOrEmpty(_searchText);
+                CanSearch = !String.IsNullOrEmpty(_searchText);
                 OnPropertyChanged("SearchText");
             }
         }
@@ -38,18 +41,21 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             set
             {
                 _isSearching = value;
+
+                this.CanSearch = !value;
+
                 OnPropertyChanged("IsSearching");
             }
         }
 
-        private bool _textBoxValid;
-        public bool TextBoxValid
+        private bool _canSearch;
+        public bool CanSearch
         {
-            get { return _textBoxValid; }
+            get { return _canSearch; }
             set
             {
-                _textBoxValid = value;
-                OnPropertyChanged("TextBoxValid");
+                _canSearch = value;
+                OnPropertyChanged("CanSearch");
             }
         }
 
