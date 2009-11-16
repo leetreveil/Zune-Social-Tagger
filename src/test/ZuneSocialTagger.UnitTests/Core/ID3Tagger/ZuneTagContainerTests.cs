@@ -100,10 +100,6 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         }
     }
 
-
-
-
-
     [TestFixture]
     public class WhenATagContainerIsLoadedWithOnlyOneMediaIdButItIsIncorrect
     {
