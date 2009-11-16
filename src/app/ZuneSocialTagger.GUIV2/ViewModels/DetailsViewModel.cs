@@ -37,7 +37,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             set
             {
                 _selectedSong = value;
-                OnPropertyChanged("SelectedSong");
+                base.InvokePropertyChanged("SelectedSong");
             }
 
         }

@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.Windows.Input;
 using ZuneSocialTagger.Core.ZuneWebsiteScraper;
 using ZuneSocialTagger.GUIV2.Commands;
@@ -7,13 +6,13 @@ using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SearchBarViewModel : INotifyPropertyChanged
+    public class SearchBarViewModel : NotifyPropertyChangedImpl
     {
+        private int _searchPageCount;
+
         public AsyncObservableCollection<AlbumSearchResult> SearchResults { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler StartedSearching;
         public event EventHandler FirstItemsFound;
-        private int _searchPageCount;
 
         public SearchBarViewModel()
         {
@@ -33,7 +32,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 _searchText = value;
                 CanSearch = !String.IsNullOrEmpty(_searchText);
-                OnPropertyChanged("SearchText");
+                base.InvokePropertyChanged("SearchText");
             }
         }
 
@@ -47,7 +46,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                 this.CanSearch = !value;
 
-                OnPropertyChanged("IsSearching");
+                base.InvokePropertyChanged("IsSearching");
             }
         }
 
@@ -58,7 +57,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             set
             {
                 _canSearch = value;
-                OnPropertyChanged("CanSearch");
+                base.InvokePropertyChanged("CanSearch");
             }
         }
 
@@ -112,12 +111,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 Console.WriteLine("error downloading the album info");
             }
 
-        }
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler changed = PropertyChanged;
-            if (changed != null) changed(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void InvokeStartedSearching()

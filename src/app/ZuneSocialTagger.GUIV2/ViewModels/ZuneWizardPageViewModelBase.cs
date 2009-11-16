@@ -1,15 +1,12 @@
-using System.ComponentModel;
 using System;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public abstract class ZuneWizardPageViewModelBase : INotifyPropertyChanged
+    public abstract class ZuneWizardPageViewModelBase : NotifyPropertyChangedImpl
     {
         bool _isCurrentPage;
 
-        public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler MoveNextOverride;
-
 
         protected void OnMoveNextOverride()
         {
@@ -36,7 +33,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     return;
 
                 _isCurrentPage = value;
-                this.OnPropertyChanged("IsCurrentPage");
+                base.InvokePropertyChanged("IsCurrentPage");
             }
         }
 
@@ -46,13 +43,5 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         /// </summary>
         /// <returns></returns>
         internal abstract bool IsNextEnabled();
-
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

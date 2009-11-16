@@ -89,6 +89,7 @@
     <Compile Include="Models\ZuneNetAlbumMetaData.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
     <Compile Include="ErrorMessageBox.cs" />
+    <Compile Include="NotifyPropertyChangedImpl.cs" />
     <Compile Include="ViewModels\SearchResultsDetailsViewModel.cs" />
     <Compile Include="Views\ErrorMessageBoxView.xaml.cs">
       <DependentUpon>ErrorMessageBoxView.xaml</DependentUpon>

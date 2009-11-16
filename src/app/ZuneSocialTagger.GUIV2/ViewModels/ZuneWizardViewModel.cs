@@ -10,7 +10,7 @@ using ZuneSocialTagger.GUIV2.Views;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class ZuneWizardViewModel : INotifyPropertyChanged
+    public class ZuneWizardViewModel : NotifyPropertyChangedImpl
     {
         private RelayCommand _cancelCommand;
         private ZuneWizardPageViewModelBase _currentPage;
@@ -29,8 +29,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             get { return this.CurrentPage.BackButtonText; }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public ZuneWizardViewModel()
         {
@@ -167,10 +165,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     _currentPage.IsCurrentPage = true;
 
 
-                this.OnPropertyChanged("CurrentPage");
-                this.OnPropertyChanged("IsOnLastPage");
-                this.OnPropertyChanged("NextButtonText");
-                this.OnPropertyChanged("BackButtonText");
+                base.InvokePropertyChanged("CurrentPage");
+                base.InvokePropertyChanged("IsOnLastPage");
+                base.InvokePropertyChanged("NextButtonText");
+                base.InvokePropertyChanged("BackButtonText");
             }
         }
 
@@ -236,14 +234,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             EventHandler handler = this.RequestClose;
             if (handler != null)
                 handler(this, EventArgs.Empty);
-        }
-
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void CloseWizard()

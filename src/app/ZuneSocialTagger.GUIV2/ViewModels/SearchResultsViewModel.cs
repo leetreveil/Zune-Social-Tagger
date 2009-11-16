@@ -38,7 +38,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             set
             {
                 _searchResultsDetailsViewModel = value;
-                base.OnPropertyChanged("SearchResultsDetailsViewModel");
+                base.InvokePropertyChanged("SearchResultsDetailsViewModel");
             }
         }
 
@@ -63,7 +63,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             set
             {
                 _isLoading = value;
-                OnPropertyChanged("IsLoading");
+                base.InvokePropertyChanged("IsLoading");
             }
         }
 
