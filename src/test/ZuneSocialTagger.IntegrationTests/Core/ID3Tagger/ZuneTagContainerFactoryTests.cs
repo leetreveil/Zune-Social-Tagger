@@ -23,6 +23,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
     public class WhenProvidedWithAFileWithJustID3V1Point1
     {
         private const string FilePath = "SampleData/id3v1.1.mp3";
+
         [Test]
         [ExpectedException(typeof(ID3Tag.ID3TagException))]
         public void Then_it_should_throw_a_not_supported_exception()
