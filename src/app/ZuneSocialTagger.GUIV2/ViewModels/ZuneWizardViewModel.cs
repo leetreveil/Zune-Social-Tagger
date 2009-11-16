@@ -5,25 +5,22 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
 using ZuneSocialTagger.GUIV2.Commands;
-using System.Linq;
 using ZuneSocialTagger.GUIV2.Models;
-using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.GUIV2.Views;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class ZuneWizardViewModel : INotifyPropertyChanged
     {
-
-        RelayCommand _cancelCommand;
-        ZuneWizardPageViewModelBase _currentPage;
-        RelayCommand _moveNextCommand;
-        RelayCommand _movePreviousCommand;
+        private RelayCommand _cancelCommand;
+        private ZuneWizardPageViewModelBase _currentPage;
+        private RelayCommand _moveNextCommand;
+        private RelayCommand _movePreviousCommand;
         private RelayCommand _aboutCommand;
-        ReadOnlyCollection<ZuneWizardPageViewModelBase> _pages;
+        private ReadOnlyCollection<ZuneWizardPageViewModelBase> _pages;
         private ZuneWizardModel _sharedModel;
 
-        public string NextButtonText 
+        public string NextButtonText
         {
             get { return this.CurrentPage.NextButtonText; }
         }
@@ -44,7 +41,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 page.MoveNextOverride += page_MoveNextOverride;
         }
 
-        void page_MoveNextOverride(object sender, EventArgs e)
+        private void page_MoveNextOverride(object sender, EventArgs e)
         {
             TryToMoveToNextPage();
         }
@@ -100,7 +97,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        bool CanMoveToPreviousPage
+        private bool CanMoveToPreviousPage
         {
             get { return 0 < this.CurrentPageIndex; }
         }
@@ -124,41 +121,29 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 if (_moveNextCommand == null)
                     _moveNextCommand = new RelayCommand(
                         () => this.TryToMoveToNextPage(),
-                        () => this.IsButtonEnabled);
+                        () => this.IsNextButtonVisible);
 
                 return _moveNextCommand;
             }
         }
 
-        bool CanMoveToNextPage
+        public bool IsNextButtonVisible
         {
-            get { return this.CurrentPage != null && this.CurrentPage.IsValid(); }
+            get { return this.CurrentPage != null && this.CurrentPage.IsNextEnabled(); }
         }
 
-        bool IsButtonEnabled
+        private void TryToMoveToNextPage()
         {
-            get { return this.CurrentPage != null && this.CurrentPage.CanMoveNext(); }
-        }
-
-        void TryToMoveToNextPage()
-        {
-            if (this.CanMoveToNextPage)
+            if (this.CurrentPageIndex < this.Pages.Count - 1)
             {
-                if (this.CurrentPageIndex < this.Pages.Count - 1)
-                {
-                    //if the current page allows us to move next
-                    if (this.CurrentPage.IsValid())
-                    {
-                        this.CurrentPage = this.Pages[this.CurrentPageIndex + 1];
-                    }
-                }
-                else
-                {
-                    //last page do this
-                    var view = new SaveView(new SaveViewModel(_sharedModel)) {ShowInTaskbar = false};
-                    view.Show();
-                }
-
+                //if the current page allows us to move next
+                this.CurrentPage = this.Pages[this.CurrentPageIndex + 1];
+            }
+            else
+            {
+                //last page do this
+                var view = new SaveView(new SaveViewModel(_sharedModel)) {ShowInTaskbar = false};
+                view.Show();
             }
         }
 
@@ -199,6 +184,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             get { return this.CurrentPageIndex == this.Pages.Count - 1; }
         }
+
         /// <summary>
         /// Returns a read-only collection of all page ViewModels.
         /// </summary>
@@ -218,7 +204,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         /// </summary>
         public event EventHandler RequestClose;
 
-        void CreatePages()
+        private void CreatePages()
         {
             _sharedModel = new ZuneWizardModel();
 
@@ -231,11 +217,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _pages = new ReadOnlyCollection<ZuneWizardPageViewModelBase>(pages);
         }
 
-        int CurrentPageIndex
+        private int CurrentPageIndex
         {
             get
             {
-
                 if (this.CurrentPage == null)
                 {
                     Debug.Fail("Why is the current page null?");
@@ -246,7 +231,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        void OnRequestClose()
+        private void OnRequestClose()
         {
             EventHandler handler = this.RequestClose;
             if (handler != null)
@@ -254,7 +239,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         }
 
 
-        void OnPropertyChanged(string propertyName)
+        private void OnPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = this.PropertyChanged;
             if (handler != null)

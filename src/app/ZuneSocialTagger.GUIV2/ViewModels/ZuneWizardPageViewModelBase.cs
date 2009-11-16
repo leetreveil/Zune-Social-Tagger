@@ -41,18 +41,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         }
 
         /// <summary>
-        /// Returns true if the user has filled in this page properly
-        /// and the wizard should allow the user to progress to the 
-        /// next page in the workflow.
-        /// </summary>
-        internal abstract bool IsValid();
-
-        /// <summary>
         /// Returns true if the user can move next, is different to IsValid because this 
         /// is just called when it trys to move next and does not disable the next button
         /// </summary>
         /// <returns></returns>
-        internal abstract bool CanMoveNext();
+        internal abstract bool IsNextEnabled();
 
 
         protected virtual void OnPropertyChanged(string propertyName)

@@ -42,12 +42,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         }
 
-        internal override bool IsValid()
-        {
-            return true;
-        }
-
-        internal override bool CanMoveNext()
+        internal override bool IsNextEnabled()
         {
             return true;
         }

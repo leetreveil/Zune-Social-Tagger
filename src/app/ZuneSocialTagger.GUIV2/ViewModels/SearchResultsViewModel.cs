@@ -138,12 +138,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        internal override bool IsValid()
-        {
-            return true;
-        }
 
-        internal override bool CanMoveNext()
+        internal override bool IsNextEnabled()
         {
             //TODO: fix bug where the view is not refreshing fast enough to the changes of these properties
             return this.SearchBarViewModel.CanSearch && !this.IsLoading;
