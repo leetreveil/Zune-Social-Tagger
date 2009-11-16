@@ -12,6 +12,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public AsyncObservableCollection<AlbumSearchResult> SearchResults { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler StartedSearching;
+        public event EventHandler FirstItemsFound;
+        private int _searchPageCount;
 
         public SearchBarViewModel()
         {
@@ -19,6 +21,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             AlbumSearch.SearchForAsyncCompleted += (() =>
                                                         {
                                                             this.IsSearching = false;
+                                                            _searchPageCount = 0;
                                                         });
         }
 
@@ -97,6 +100,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 {
                     foreach (var result in results)
                         this.SearchResults.Add(result);
+
+                    _searchPageCount++;
+
+                    if (_searchPageCount == 1)
+                        InvokeFirstItemsFound();
                 });
             }
             catch (PageDownloaderException ex)
@@ -116,6 +124,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             EventHandler searching = StartedSearching;
             if (searching != null) searching(this, new EventArgs());
+        }
+
+        private void InvokeFirstItemsFound()
+        {
+            EventHandler handler = FirstItemsFound;
+            if (handler != null) handler(this, new EventArgs());
         }
     }
 }

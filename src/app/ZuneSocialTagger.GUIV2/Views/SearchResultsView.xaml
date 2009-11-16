@@ -35,8 +35,8 @@
             <views:WebsiteAlbumMetaDataView DataContext="{Binding AlbumDetailsFromFile}"  VerticalAlignment="Top"/>
 			<views:SearchBar DataContext="{Binding SearchBarViewModel}" VerticalAlignment="Top" Grid.Column="1" />
 			<TextBlock Grid.Row="1" Text="{Binding Albums.Count, Converter={StaticResource AlbumCountToStringConverter}}" VerticalAlignment="Bottom" FontSize="13.333"/>
-            <TextBlock Width="60" x:Name="tbLoading" Visibility="{Binding Path=IsLoading,Converter = {StaticResource BoolToVisConverter}}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" FontSize="13.333" Foreground="#FF8A8D90" HorizontalAlignment="Right" />
-			<ListView SelectedIndex="0" Style="{DynamicResource ListBoxStyle1}" IsSynchronizedWithCurrentItem="True" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="2" ItemsSource="{Binding Albums}" Margin="0,0,36,0" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U" ItemContainerStyle="{DynamicResource SelectedItemHighlight}" SelectionChanged="ListView_SelectionChanged">
+            <TextBlock Width="60" x:Name="tbLoading" Visibility="{Binding Path=IsLoading, Converter = {StaticResource BoolToVisConverter}}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" FontSize="13.333" Foreground="#FF8A8D90" HorizontalAlignment="Right" />
+			<ListView x:Name="lvAlbums" SelectedIndex="0" Style="{DynamicResource ListBoxStyle1}" IsSynchronizedWithCurrentItem="True" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="2" ItemsSource="{Binding Albums}" Margin="0,0,36,0" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U" ItemContainerStyle="{DynamicResource SelectedItemHighlight}" SelectionChanged="ListView_SelectionChanged">
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<StackPanel Margin="0,5,5,5">

@@ -4,7 +4,6 @@ using System.Linq;
 using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.Core.ZuneWebsiteScraper;
 using ZuneSocialTagger.GUIV2.Models;
-using System.Threading;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -25,10 +24,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         void SearchBarViewModel_StartedSearching(object sender, EventArgs e)
         {
             if (base.IsCurrentPage)
-            {
                 this.SearchResultsDetailsViewModel = null;
-                //this.Albums.Clear();
-            }
         }
 
         public ObservableCollection<AlbumSearchResult> Albums
@@ -149,7 +145,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         internal override bool CanMoveNext()
         {
-            return true;
+            //TODO: fix bug where the view is not refreshing fast enough to the changes of these properties
+            return this.SearchBarViewModel.CanSearch && !this.IsLoading;
         }
     }
 }

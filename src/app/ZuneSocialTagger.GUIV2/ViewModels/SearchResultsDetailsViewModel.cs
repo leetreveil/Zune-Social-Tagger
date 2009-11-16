@@ -25,6 +25,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
+
+
         private void InvokePropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler changed = PropertyChanged;

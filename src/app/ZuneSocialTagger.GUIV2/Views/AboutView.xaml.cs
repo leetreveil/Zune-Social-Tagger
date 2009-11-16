@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Reflection;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -21,6 +22,8 @@ namespace ZuneSocialTagger.GUIV2.Views
         public AboutView()
         {
             InitializeComponent();
+
+            this.DataContext = this;
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -39,5 +42,7 @@ namespace ZuneSocialTagger.GUIV2.Views
             e.Handled = true;
             this.Close();
         }
+
+        public string Version { get { return String.Format("Version {0}",Assembly.GetExecutingAssembly().GetName().Version); } }
     }
 }
