@@ -6,12 +6,16 @@ using System.Text;
 
 namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
 {
-    public static class ZuneTagContainerFactory
+    public static class ZuneTagContainerTestHelpers
     {
         /// <summary>
         /// 3ed50a00-0600-11db-89ca-0019b92a3933
         /// </summary>
         public static Guid SomeGuid = new Guid("3ed50a00-0600-11db-89ca-0019b92a3933");
+        public static string SomeArtist = "Editors";
+        public static string SomeAlbum = "In This Light And On This Evening";
+        public static string SomeTitle = "The Boxer";
+        public static string SomeYear = "2009";
 
         /// <summary>
         /// ZuneAlbumArtistMediaID: 3ed50a00-0600-11db-89ca-0019b92a3933
@@ -48,11 +52,6 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
             return new ZuneTagContainer(container);
         }
 
-        public static string SomeArtist = "Editors";
-        public static string SomeAlbum = "In This Light And On This Evening";
-        public static string SomeTitle = "The Boxer";
-        public static string SomeYear = "2009";
-
         /// <summary>
         /// Contains: Artist = "Editors", Album= "In This Light And On This Evening", Title = "The Boxer", Year = "2009"
         /// </summary>
@@ -67,6 +66,11 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
             container.Add(new TextFrame("TYER", SomeYear, Encoding.UTF8));
 
             return new ZuneTagContainer(container);
+        }
+
+        public static ZuneTagContainer CreateContainerWithNoMetaData()
+        {
+            return new ZuneTagContainer(ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23));
         }
     }
 }

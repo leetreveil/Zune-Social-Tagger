@@ -50,7 +50,7 @@
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                            <TextBlock Width="23" Text="{Binding Number}" VerticalAlignment="Center" FontSize="18"/>
+                                            <TextBlock Width="23" Text="{Binding Index}" VerticalAlignment="Center" FontSize="18"/>
                                             <TextBlock Text="{Binding SongTitle}" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                         </StackPanel>
 

@@ -1,8 +1,5 @@
-using ID3Tag.HighLevel;
 using NUnit.Framework;
 using ZuneSocialTagger.Core.ID3Tagger;
-using System.Linq;
-using ID3Tag.HighLevel.ID3Frame;
 
 
 namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
@@ -19,6 +16,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
 
             Assert.That(zuneTagContainer, Is.Not.Null);
         }
+
     }
 
     [TestFixture]
@@ -49,22 +47,5 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
 
             Assert.That(zuneTagContainer, Is.Not.Null);
         }
-    }
-
-    public class WhenProvidedWithAFileWithAnID3V23TagWithAlbumArtworkPresent
-    {
-        private const string FilePath = "SampleData/id3v2.3withartwork.mp3";
-
-        [Test]
-        public void Then_it_should_contain_the_pictureframe()
-        {
-            ZuneTagContainer zuneTagContainer = ZuneTagContainerFactory.GetContainer(FilePath);
-
-            var pictureFrame = zuneTagContainer.OfType<PictureFrame>().First();
-
-            Assert.That(pictureFrame.Type,Is.EqualTo(FrameType.Picture));
-            Assert.That(pictureFrame.PictureData.Length,Is.GreaterThan(0));
-        }
-
     }
 }
