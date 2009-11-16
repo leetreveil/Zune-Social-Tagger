@@ -16,12 +16,9 @@
         
 		<Grid Grid.Row="1" VerticalAlignment="Top" Height="30">
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="0.5*"/>
-			<ColumnDefinition Width="10"/>
-			<ColumnDefinition Width="0.5*"/>
+			<ColumnDefinition/>
 		</Grid.ColumnDefinitions>
-				<Button Command="{Binding FromFolderCommand}" HorizontalAlignment="Right" Width="80">From Folder</Button>
-				<Button Command="{Binding FromFilesCommand}" HorizontalAlignment="Left" Width="80" Grid.Column="2">Single Files</Button>
+				<Button Command="{Binding FromFilesCommand}" HorizontalAlignment="Center" Grid.Column="2">Select Audio Files</Button>
 		</Grid>
         
         <TextBlock HorizontalAlignment="Center" Height="30" Text="Select the album you want linking to the zune social" />

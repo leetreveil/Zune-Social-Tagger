@@ -15,7 +15,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     public class SelectAudioFilesViewModel : ZuneWizardPageViewModelBase
     {
         private readonly ZuneWizardModel _model;
-        private RelayCommand _fromFolderCommand;
         private RelayCommand _fromFilesCommand;
 
         public SelectAudioFilesViewModel(ZuneWizardModel model)
@@ -33,17 +32,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             return false;
         }
 
-        public ICommand FromFolderCommand
-        {
-            get
-            {
-                if (_fromFolderCommand == null)
-                    _fromFolderCommand = new RelayCommand(SelectFolder);
-
-                return _fromFolderCommand;
-            }
-        }
-
         public ICommand FromFilesCommand
         {
             get
@@ -55,15 +43,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        private void SelectFolder()
+        private void SelectFiles()
         {
-            var fbd = new FolderBrowserDialog {ShowNewFolderButton = false};
+            var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files (*.mp3)|*.mp3" };
 
-            if (fbd.ShowDialog() == DialogResult.OK)
-            {
-                string[] files = Directory.GetFiles(fbd.SelectedPath, "*.mp3");
-                ReadFiles(files);
-            }
+            if (ofd.ShowDialog() == DialogResult.OK)
+                ReadFiles(ofd.FileNames);
         }
 
         private void ReadFiles(IEnumerable<string> files)
@@ -108,14 +93,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             _model.SearchBarViewModel.SearchText = songMetaData.AlbumTitle + " " +
                                                    songMetaData.AlbumArtist;
-        }
-
-        private void SelectFiles()
-        {
-            var ofd = new OpenFileDialog {Multiselect = true, Filter = "Audio files (*.mp3)|*.mp3"};
-
-            if (ofd.ShowDialog() == DialogResult.OK)
-                ReadFiles(ofd.FileNames);
         }
     }
 }

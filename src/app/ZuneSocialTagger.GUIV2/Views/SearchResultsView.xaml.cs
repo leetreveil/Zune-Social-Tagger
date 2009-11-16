@@ -22,7 +22,9 @@ namespace ZuneSocialTagger.GUIV2.Views
         void SearchResultsView_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {
             _viewModel = (SearchResultsViewModel)this.DataContext;
-            _viewModel.SearchBarViewModel.FirstItemsFound += SearchBarViewModel_ItemsFound;
+
+            if (_viewModel != null)
+                _viewModel.SearchBarViewModel.FirstItemsFound += SearchBarViewModel_ItemsFound;
         }
 
         void SearchBarViewModel_ItemsFound(object sender, System.EventArgs e)
