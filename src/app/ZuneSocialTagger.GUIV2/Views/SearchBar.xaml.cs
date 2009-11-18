@@ -18,7 +18,7 @@ namespace ZuneSocialTagger.GUIV2.Views
         private void tbSearch_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             //TODO: do this through databinding
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter || e.Key == Key.Return)
             {
                 var context = (SearchBarViewModel) this.DataContext;
 
