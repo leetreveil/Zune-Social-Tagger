@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
 using ZuneSocialTagger.GUIV2.Commands;
@@ -36,10 +35,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             //set up the handler for overrides (this allows a page to move to the next page on demand without having to click next)
             foreach (var page in Pages)
-                page.MoveNextOverride += page_MoveNextOverride;
+                page.MoveNextOverride += PageMoveNextOverride;
         }
 
-        private void page_MoveNextOverride(object sender, EventArgs e)
+        private void PageMoveNextOverride(object sender, EventArgs e)
         {
             TryToMoveToNextPage();
         }

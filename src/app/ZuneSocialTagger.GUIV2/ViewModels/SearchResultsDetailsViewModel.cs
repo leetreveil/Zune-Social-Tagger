@@ -18,8 +18,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return _selectedAlbumTitle; }
             set
             {
-                _selectedAlbumTitle = value;
-                base.InvokePropertyChanged("SelectedAlbumTitle");
+                if (value != _selectedAlbumTitle)
+                {
+                    _selectedAlbumTitle = value;
+                    base.InvokePropertyChanged("SelectedAlbumTitle");
+                }
             }
         }
     }

@@ -37,8 +37,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return _searchResultsDetailsViewModel; }
             set
             {
-                _searchResultsDetailsViewModel = value;
-                base.InvokePropertyChanged("SearchResultsDetailsViewModel");
+                if (value != _searchResultsDetailsViewModel)
+                {
+                    _searchResultsDetailsViewModel = value;
+                    base.InvokePropertyChanged("SearchResultsDetailsViewModel");
+                }
             }
         }
 
@@ -62,8 +65,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return _isLoading; }
             set
             {
-                _isLoading = value;
-                base.InvokePropertyChanged("IsLoading");
+                if (value != _isLoading)
+                {
+                    _isLoading = value;
+                    base.InvokePropertyChanged("IsLoading");
+                }
             }
         }
 

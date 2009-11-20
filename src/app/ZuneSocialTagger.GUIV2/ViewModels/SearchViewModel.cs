@@ -31,7 +31,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return _model.SearchBarViewModel; }
         }
 
-        public override string NextButtonText
+        internal override string NextButtonText
         {
             get { return "Next"; }
         }

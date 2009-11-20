@@ -6,6 +6,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     class DetailsViewModel : ZuneWizardPageViewModelBase
     {
         private readonly ZuneWizardModel _model;
+        private SongWithNumberAndGuid _selectedSong;
 
         public DetailsViewModel(ZuneWizardModel model)
         {
@@ -27,7 +28,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return _model.AlbumDetailsFromFile; }
         }
 
-        private SongWithNumberAndGuid _selectedSong;
         public SongWithNumberAndGuid SelectedSong
         {
             get
@@ -47,7 +47,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             return true;
         }
 
-        public override string NextButtonText
+        internal override string NextButtonText
         {
             get
             {

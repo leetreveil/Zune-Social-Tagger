@@ -14,12 +14,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             if (mNextoverride != null) mNextoverride(this, new EventArgs());
         }
 
-        public virtual string NextButtonText
+        internal virtual string NextButtonText
         {
             get { return "Next"; }
         }
 
-        public virtual string BackButtonText
+        internal virtual string BackButtonText
         {
             get { return "Back"; }
         }
@@ -29,11 +29,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return _isCurrentPage; }
             set
             {
-                if (value == _isCurrentPage)
-                    return;
-
-                _isCurrentPage = value;
-                base.InvokePropertyChanged("IsCurrentPage");
+                if (value != _isCurrentPage)
+                {
+                    _isCurrentPage = value;
+                    base.InvokePropertyChanged("IsCurrentPage");
+                }
             }
         }
 

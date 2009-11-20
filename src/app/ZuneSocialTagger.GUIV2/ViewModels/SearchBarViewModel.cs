@@ -9,6 +9,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     public class SearchBarViewModel : NotifyPropertyChangedImpl
     {
         private int _searchPageCount;
+        private string _searchText;
+        private bool _isSearching;
+        private bool _canSearch;
+        private RelayCommand<string> _searchCommand;
 
         public AsyncObservableCollection<AlbumSearchResult> SearchResults { get; set; }
         public event EventHandler StartedSearching;
@@ -18,13 +22,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             SearchResults = new AsyncObservableCollection<AlbumSearchResult>();
             AlbumSearch.SearchForAsyncCompleted += (() =>
-                                                        {
-                                                            this.IsSearching = false;
-                                                            _searchPageCount = 0;
-                                                        });
+                {
+                    this.IsSearching = false;
+                    _searchPageCount = 0;
+                });
         }
 
-        private string _searchText;
         public string SearchText
         {
             get { return _searchText; }
@@ -36,32 +39,33 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        private bool _isSearching;
         public bool IsSearching
         {
             get { return _isSearching; }
             set
             {
-                _isSearching = value;
-
-                this.CanSearch = !value;
-
-                base.InvokePropertyChanged("IsSearching");
+                if (value != _isSearching)
+                {
+                    _isSearching = value;
+                    this.CanSearch = !value;
+                    base.InvokePropertyChanged("IsSearching");
+                }
             }
         }
 
-        private bool _canSearch;
         public bool CanSearch
         {
             get { return _canSearch; }
             set
             {
-                _canSearch = value;
-                base.InvokePropertyChanged("CanSearch");
+                if (value != _canSearch)
+                {
+                    _canSearch = value;
+                    base.InvokePropertyChanged("CanSearch");
+                }
             }
         }
 
-        private RelayCommand<string> _searchCommand;
         public ICommand SearchCommand
         {
             get
