@@ -9,6 +9,8 @@ namespace ZuneSocialTagger.IntegrationTests
 
         private static string[] _webpages = new[]
                                                 {
+                                                    "http://social.zune.net/album/Them-Crooked-Vultures/Them-Crooked-Vultures/95dc1002-0100-11db-89ca-0019b92a3933/details"
+                                                    ,
                                                     "http://social.zune.net/album/The-Cribs/Ignore-The-Ignorant/37b9f201-0100-11db-89ca-0019b92a3933/details"
                                                     ,
                                                     "http://social.zune.net/album/Kid-Cudi/Man-On-The-Moon--The-End-Of-Day-(Deluxe-Version)-(Parental-Advisory)/eb54f601-0100-11db-89ca-0019b92a3933/details"

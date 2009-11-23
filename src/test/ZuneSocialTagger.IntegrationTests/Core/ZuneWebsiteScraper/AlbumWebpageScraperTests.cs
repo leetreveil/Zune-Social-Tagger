@@ -90,7 +90,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         {
             var scraper = new AlbumWebpageScraper(_fileData);
 
-            int releaseYear = scraper.ScrapeAlbumReleaseYear();
+            int? releaseYear = scraper.ScrapeAlbumReleaseYear();
 
             Assert.That(releaseYear, Is.EqualTo(2009));
         }

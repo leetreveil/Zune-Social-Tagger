@@ -64,14 +64,16 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
             return this.GetTextFromAlbumHeaderNodeAndClean("div/ul/li/ul/li/h5");
         }
 
-        public int ScrapeAlbumReleaseYear()
+        public int? ScrapeAlbumReleaseYear()
         {
             //the reslease year is extracted from a string like this: Released 2009
             //substring is skipping the first 9 characters
-            return
-                Convert.ToInt32(
-                    this.GetTextFromAlbumHeaderNodeAndClean("div/ul/li[@class='GeneralMetaData ReleaseYear']").Substring
-                        (9));
+            string releaseYear = this.GetTextFromAlbumHeaderNodeAndClean("div/ul/li[@class='GeneralMetaData ReleaseYear']");
+
+            if (String.IsNullOrEmpty(releaseYear))
+                return null;
+
+            return Convert.ToInt32(releaseYear.Substring(9));
         }
 
         public string ScrapeAlbumArtworkUrl()
