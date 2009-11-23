@@ -1,5 +1,5 @@
 using System;
-using ZuneSocialTagger.Core.ZuneWebsiteScraper;
+using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.Core;
 
 namespace ZuneSocialTagger.IntegrationTests

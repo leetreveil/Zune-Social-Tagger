@@ -1,6 +1,6 @@
 using System;
 using System.Windows.Input;
-using ZuneSocialTagger.Core.ZuneWebsiteScraper;
+using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 

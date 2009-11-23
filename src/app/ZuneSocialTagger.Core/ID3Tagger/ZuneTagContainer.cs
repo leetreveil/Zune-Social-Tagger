@@ -35,7 +35,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
         public void Add(MediaIdGuid guid)
         {
-            PrivateFrame newFrame = new PrivateFrame(guid.MediaId, guid.Guid.ToByteArray());
+            PrivateFrame newFrame = new PrivateFrame(guid.MediaId, guid.Guid.Value.ToByteArray());
 
 
             //frame owner is a unique id identifying a private field so we can

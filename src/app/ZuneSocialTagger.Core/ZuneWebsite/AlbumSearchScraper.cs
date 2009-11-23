@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 using System.Diagnostics;
 
-namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
+namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     public class AlbumSearchScraper
     {

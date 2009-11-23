@@ -1,6 +1,7 @@
+using System;
 using HtmlAgilityPack;
 
-namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
+namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     public static class HtmlDocumentExtensionMethods
     {
@@ -13,8 +14,15 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
         /// <returns></returns>
         public static HtmlNode GetNodeByIdAndXpath(this HtmlDocument document, string elementId, string xPath)
         {
-            HtmlNode node = document.GetElementbyId(elementId);
-            return node.SelectSingleNode(xPath);
+            try
+            {
+                HtmlNode node = document.GetElementbyId(elementId);
+                return node.SelectSingleNode(xPath);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

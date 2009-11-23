@@ -1,5 +1,7 @@
 using System;
-using ZuneSocialTagger.Core.ZuneWebsiteScraper;
+using System.Collections.Generic;
+using ZuneSocialTagger.Core.ZuneWebsite;
+using ZuneSocialTagger.Core;
 
 namespace ZuneSocialTagger.IntegrationTests
 {
@@ -42,36 +44,22 @@ namespace ZuneSocialTagger.IntegrationTests
 
 
                 var scraper = new AlbumWebpageScraper(webpageData);
+                AlbumWebpageScrapeResult result = scraper.Scrape();
 
-                Console.WriteLine("ZuneAlbumArtistID: {0}", scraper.ScrapeAlbumArtistID());
-                Console.WriteLine("ZuneAlbumMediaID: {0}", scraper.ScrapeAlbumMediaID());
-                Console.WriteLine("Album Artist: {0}", scraper.ScrapeAlbumArtist());
-                Console.WriteLine("Title: {0}", scraper.ScrapeAlbumTitle());
-                Console.WriteLine("Release Year: {0}", scraper.ScrapeAlbumReleaseYear());
-                Console.WriteLine("Artwork url: {0}", scraper.ScrapeAlbumArtworkUrl());
+                Console.WriteLine("ZuneAlbumArtistID: {0}", result.AlbumArtistID);
+                Console.WriteLine("ZuneAlbumMediaID: {0}", result.AlbumMediaID);
+                Console.WriteLine("Album Artist: {0}", result.AlbumArtist);
+                Console.WriteLine("Title: {0}", result.AlbumTitle);
+                Console.WriteLine("Release Year: {0}", result.AlbumReleaseYear);
+                Console.WriteLine("Artwork url: {0}", result.AlbumArtworkUrl);
+
+                Console.WriteLine("Does this page have the minimum required info: {0}", result.IsValid());
                 Console.WriteLine("");
 
-                foreach (var song in scraper.GetSongTitleAndIDs())
-                {
-                    Console.WriteLine("{0} == {1}", song.Title, song.Guid);
-
-                    ////For The Editors
-                    //TagContainer container = Id3TagManager.ReadV2Tag(
-                    //    "SampleData/Editors - In This Light And On This Evening/onemediaidthatisincorrect.mp3");
-
-                    //ZuneTagContainer zuneContainer = new ZuneTagContainer(container);
-
-                    //MediaIdGuid albumArtist = new MediaIdGuid { Guid = scraper.ScrapeAlbumArtistID(), MediaId = "ZuneAlbumArtistMediaID" };
-                    //MediaIdGuid album = new MediaIdGuid { Guid = scraper.ScrapeAlbumMediaID(), MediaId = "ZuneAlbumMediaID" };
-                    //MediaIdGuid track = new MediaIdGuid { Guid = song.Guid, MediaId = "ZuneMediaID" };
-
-                    //zuneContainer.WriteMediaIdGuidsToContainer(new List<MediaIdGuid>() {albumArtist, album, track});
-                    //zuneContainer.Add(albumArtist);
-                    //zuneContainer.Add(album);
-                    //zuneContainer.Add(track);
-
-                    //Id3TagManager.WriteV2Tag("SampleData/Editors - In This Light And On This Evening/onemediaidthatisincorrect.mp3",container);
-                }
+                //foreach (var song in songAndTitles)
+                //{
+                //    Console.WriteLine("{0} == {1}", song.Title, song.Guid);
+                //}
             }
 
             Console.WriteLine("finished...");

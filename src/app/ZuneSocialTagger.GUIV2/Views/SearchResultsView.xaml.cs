@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
-using ZuneSocialTagger.Core.ZuneWebsiteScraper;
+using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Views
@@ -38,7 +38,8 @@ namespace ZuneSocialTagger.GUIV2.Views
         {
             if (_viewModel != null && e.AddedItems.Count > 0)
             {
-                _viewModel.LoadAlbum((AlbumSearchResult)e.AddedItems[0]);
+                var result = (AlbumSearchResult)e.AddedItems[0];
+                _viewModel.LoadAlbum(result.Url);
             }
         }
     }

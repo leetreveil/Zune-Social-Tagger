@@ -1,4 +1,4 @@
-namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
+namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     public class AlbumSearchResult
     {

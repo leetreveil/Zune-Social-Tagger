@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using ZuneSocialTagger.Core;
 using System;
+using ZuneSocialTagger.Core.ZuneWebsite;
+using System.Collections.Generic;
 
 namespace ZuneSocialTagger.UnitTests.Core
 {
@@ -39,6 +41,66 @@ namespace ZuneSocialTagger.UnitTests.Core
             invalidGuid.ExtractGuid();
         }
 
+
+        #endregion
+
+        #region IEnumerable<SongGuid> Tests
+
+        private readonly SongGuid _validGuid = new SongGuid { Guid = Guid.NewGuid(), Title = "N/A" };
+        private readonly SongGuid _guidWithNullGuid = new SongGuid { Title = "Hello" };
+        private readonly SongGuid _guidWithBlankGuid = new SongGuid { Guid = Guid.Empty };
+        private readonly SongGuid _guidWithBlankTitleAndValidGuid = new SongGuid{Guid = Guid.NewGuid(),Title = String.Empty};
+        private readonly SongGuid _guidWithNullTitleAndValidGuid = new SongGuid { Guid = Guid.NewGuid() };
+
+        [Test]
+        public void Should_return_true_if_all_guids_have_a_title_and_a_non_empty_or_null_guid()
+        {
+            var guids = new List<SongGuid> { _validGuid };
+
+            Assert.That(guids.AreAllValid(), Is.True);
+        }
+
+        [Test]
+        public void Should_return_false_if_any_guids_are_null()
+        {
+            Assert.That(new List<SongGuid> { _guidWithNullGuid }.AreAllValid(), Is.False);
+        }
+
+        [Test]
+        public void Should_return_false_if_any_guids_are_blank_0_s()
+        {
+            Assert.That(new List<SongGuid> { _guidWithBlankGuid }.AreAllValid(), Is.False);
+        }
+
+        [Test]
+        public void Should_return_true_if_all_guids_are_valid()
+        {
+            Assert.That(new List<SongGuid> { _validGuid, _validGuid, _validGuid }.AreAllValid(), Is.True);
+        }
+
+        [Test]
+        public void Should_return_false_if_all_guids_are_valid_apart_from_one()
+        {
+            Assert.That(new List<SongGuid> { _validGuid, _validGuid, _validGuid, _guidWithNullGuid }.AreAllValid(), Is.False);
+        }
+
+        [Test]
+        public void Should_return_false_if_list_is_empty()
+        {
+            Assert.That(new List<SongGuid>().AreAllValid(), Is.False);
+        }
+
+        [Test]
+        public void Should_return_false_if_title_is_blank()
+        {
+            Assert.That(new List<SongGuid>{_guidWithBlankTitleAndValidGuid}.AreAllValid(),Is.False);
+        }
+
+        [Test]
+        public void Should_return_false_if_title_is_null()
+        {
+            Assert.That(new List<SongGuid> { _guidWithNullTitleAndValidGuid }.AreAllValid(), Is.False);
+        }
 
         #endregion
     }

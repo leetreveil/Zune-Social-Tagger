@@ -67,7 +67,6 @@
     <Compile Include="AsyncTesting.cs" />
     <Compile Include="Core\ID3Tagger\ZuneTagContainerFactoryTests.cs" />
     <Compile Include="Core\ID3Tagger\ZuneTagContainerTests.cs" />
-    <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchScraperCombinerTests.cs" />
     <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchScraperTests.cs" />
     <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchTests.cs" />
     <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchUrlGeneratorTests.cs" />
@@ -92,7 +91,7 @@
     <Content Include="SampleData\nonzunewebpage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SampleData\validalbumlistwebpage.xml">
+    <Content Include="SampleData\validalbumwebpage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

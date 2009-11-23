@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using ZuneSocialTagger.Core.ZuneWebsiteScraper;
+using ZuneSocialTagger.Core.ZuneWebsite;
 using System.IO;
 
 namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
@@ -9,7 +9,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
     [TestFixture]
     public class WhenAValidZuneAlbumWebpageIsProvided
     {
-        private const string PathToFile = "SampleData/validalbumlistwebpage.xml";
+        private const string PathToFile = "SampleData/validalbumwebpage.xml";
         private string _fileData;
 
         public WhenAValidZuneAlbumWebpageIsProvided()
@@ -22,7 +22,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         {
             var albumMediaIDScraper = new AlbumWebpageScraper(_fileData);
 
-            var songs = albumMediaIDScraper.GetSongTitleAndIDs();
+            var songs = albumMediaIDScraper.Scrape().SongTitlesAndMediaID;
 
             Assert.That(songs.Count(), Is.GreaterThan(0));
         }
@@ -38,7 +38,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
 
             var albumMediaIDScraper = new AlbumWebpageScraper(_fileData);
 
-            var songs = albumMediaIDScraper.GetSongTitleAndIDs();
+            var songs = albumMediaIDScraper.Scrape().SongTitlesAndMediaID;
 
             Assert.That(songs.First().Guid,Is.EqualTo(expectedOutput.Guid));
             Assert.That(songs.First().Title, Is.EqualTo(expectedOutput.Title));
@@ -51,7 +51,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
 
             var scraper = new AlbumWebpageScraper(_fileData);
 
-            Assert.That(scraper.ScrapeAlbumArtistID(), Is.EqualTo(albumArtistID));
+            Assert.That(scraper.Scrape().AlbumArtistID, Is.EqualTo(albumArtistID));
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
 
             var scraper = new AlbumWebpageScraper(_fileData);
 
-            Assert.That(scraper.ScrapeAlbumMediaID(), Is.EqualTo(zuneAlbumMediaID));
+            Assert.That(scraper.Scrape().AlbumMediaID, Is.EqualTo(zuneAlbumMediaID));
         }
 
 
@@ -70,9 +70,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         {
             var scraper = new AlbumWebpageScraper(_fileData);
 
-            string artist = scraper.ScrapeAlbumArtist();
-
-            Assert.That(artist,Is.EqualTo("The Cribs"));
+            Assert.That(scraper.Scrape().AlbumArtist,Is.EqualTo("The Cribs"));
         }
 
         [Test]
@@ -80,9 +78,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         {
             var scraper = new AlbumWebpageScraper(_fileData);
 
-            string albumTitle = scraper.ScrapeAlbumTitle();
-
-            Assert.That(albumTitle, Is.EqualTo("Ignore The Ignorant"));
+            Assert.That(scraper.Scrape().AlbumTitle, Is.EqualTo("Ignore The Ignorant"));
         }
 
         [Test]
@@ -90,9 +86,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         {
             var scraper = new AlbumWebpageScraper(_fileData);
 
-            int? releaseYear = scraper.ScrapeAlbumReleaseYear();
-
-            Assert.That(releaseYear, Is.EqualTo(2009));
+            Assert.That(scraper.Scrape().AlbumReleaseYear, Is.EqualTo(2009));
         }
 
         [Test]
@@ -103,11 +97,17 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
             string expectedUrl =
                 "http&#58;&#47;&#47;image.catalog.zune.net&#47;v3.0&#47;image&#47;37b9f201-0300-11db-89ca-0019b92a3933&#63;resize&#61;true&#38;width&#61;240&#38;height&#61;240";
 
-            string url = scraper.ScrapeAlbumArtworkUrl();
-
-            Assert.That(url,Is.EqualTo(expectedUrl));
+            Assert.That(scraper.Scrape().AlbumArtworkUrl,Is.EqualTo(expectedUrl));
         }
 
+        [Test]
+        public void Then_it_should_validate()
+        {
+            var scraper = new AlbumWebpageScraper(_fileData);
+
+            Assert.That(scraper.Scrape().IsValid(),Is.True);
+
+        }
 
     }
 
@@ -126,10 +126,9 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
         }
 
         [Test]
-        [ExpectedException(typeof(WebpageParseException))]
-        public void Then_it_should_throw_a_PageDownloaderException()
+        public void Then_it_should_not_be_valid()
         {
-            new AlbumWebpageScraper(_fileData);
+            Assert.That(new AlbumWebpageScraper(_fileData).Scrape().IsValid(),Is.False);
         }
     }
 }

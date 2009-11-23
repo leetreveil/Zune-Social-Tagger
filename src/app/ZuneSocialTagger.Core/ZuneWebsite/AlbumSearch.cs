@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Linq;
 
-namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
+namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     public class AlbumSearch
     {
@@ -55,9 +54,12 @@ namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
 
             var scraper = new AlbumSearchScraper(firstAlbumPage);
 
-            var combiner = new AlbumSearchScraperCombiner();
+            return GetPageCount(scraper.ScrapeAlbumCountAcrossAllPages());
+        }
 
-            return combiner.GetPageCount(scraper.ScrapeAlbumCountAcrossAllPages());
+        private static int GetPageCount(int numberOfAlbumsInTotal)
+        {
+            return (int)Math.Ceiling((double)numberOfAlbumsInTotal / 20);
         }
 
         public static event Action SearchForAsyncCompleted;

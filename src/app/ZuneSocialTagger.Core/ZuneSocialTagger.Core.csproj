@@ -56,17 +56,17 @@
     <Compile Include="ID3Tagger\ZuneTagContainer.cs" />
     <Compile Include="ID3Tagger\ZuneTagContainerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ZuneWebsiteScraper\AlbumSearchResult.cs" />
-    <Compile Include="ZuneWebsiteScraper\HtmlDocumentExtensionMethods.cs" />
-    <Compile Include="ZuneWebsiteScraper\SongGuid.cs" />
-    <Compile Include="ZuneWebsiteScraper\WebpageParseException.cs" />
-    <Compile Include="ZuneWebsiteScraper\AlbumWebpageScraper.cs" />
-    <Compile Include="ZuneWebsiteScraper\PageDownloader.cs" />
-    <Compile Include="ZuneWebsiteScraper\PageDownloaderException.cs" />
-    <Compile Include="ZuneWebsiteScraper\AlbumSearch.cs" />
-    <Compile Include="ZuneWebsiteScraper\AlbumSearchScraper.cs" />
-    <Compile Include="ZuneWebsiteScraper\AlbumSearchScraperCombiner.cs" />
-    <Compile Include="ZuneWebsiteScraper\AlbumSearchUrlGenerator.cs" />
+    <Compile Include="ZuneWebsite\AlbumSearchResult.cs" />
+    <Compile Include="ZuneWebsite\AlbumWebpageScrapeResult.cs" />
+    <Compile Include="ZuneWebsite\HtmlDocumentExtensionMethods.cs" />
+    <Compile Include="ZuneWebsite\SongGuid.cs" />
+    <Compile Include="ZuneWebsite\WebpageParseException.cs" />
+    <Compile Include="ZuneWebsite\AlbumWebpageScraper.cs" />
+    <Compile Include="ZuneWebsite\PageDownloader.cs" />
+    <Compile Include="ZuneWebsite\PageDownloaderException.cs" />
+    <Compile Include="ZuneWebsite\AlbumSearch.cs" />
+    <Compile Include="ZuneWebsite\AlbumSearchScraper.cs" />
+    <Compile Include="ZuneWebsite\AlbumSearchUrlGenerator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

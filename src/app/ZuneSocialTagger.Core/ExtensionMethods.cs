@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.Core
 {
@@ -30,6 +32,21 @@ namespace ZuneSocialTagger.Core
                 return new Guid(regex.Match(str).Groups[1].Value);
 
             throw new FormatException("could not extract a guid from string");
+        }
+
+        /// <summary>
+        /// Verify's that a list of song guids are valid and returns false if any are invalid
+        /// </summary>
+        /// <param name="songGuids"></param>
+        /// <returns></returns>
+        public static bool AreAllValid(this IEnumerable<SongGuid> songGuids)
+        {
+            //empty list then its invalid
+            if (songGuids.Count() == 0)
+                return false;
+
+            //if any guids are not valid
+            return !songGuids.Any(guid => !guid.IsValid());
         }
 
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)

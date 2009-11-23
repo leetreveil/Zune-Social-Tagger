@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ZuneSocialTagger.Core.ID3Tagger;
-using ZuneSocialTagger.Core.ZuneWebsiteScraper;
+using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
@@ -11,7 +12,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         private readonly ZuneWizardModel _model;
         private bool _isLoading;
-        private AlbumSearchResult _lastLoaded;
+        private string _lastLoaded;
         private SearchResultsDetailsViewModel _searchResultsDetailsViewModel;
 
         public SearchResultsViewModel(ZuneWizardModel model)
@@ -73,45 +74,53 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        public void LoadAlbum(AlbumSearchResult albumArtistAndTitleWithUrl)
+        public void LoadAlbum(string url)
         {
-            if (_lastLoaded != albumArtistAndTitleWithUrl)
+            if (_lastLoaded != url)
             {
                 this.IsLoading = true;
-                PageDownloader.DownloadAsync(albumArtistAndTitleWithUrl.Url, ScrapedPage);
+                PageDownloader.DownloadAsync(url, ScrapedPage);
             }
 
-            _lastLoaded = albumArtistAndTitleWithUrl;
+            _lastLoaded = url;
         }
 
         private void ScrapedPage(string pageData)
         {
             var scraper = new AlbumWebpageScraper(pageData);
 
-            _model.AlbumDetailsFromWebsite = new WebsiteAlbumMetaDataViewModel
-                 {
-                     Title = scraper.ScrapeAlbumTitle(),
-                     Artist = scraper.ScrapeAlbumArtist(),
-                     ArtworkUrl = scraper.ScrapeAlbumArtworkUrl(),
-                     Year = scraper.ScrapeAlbumReleaseYear().ToString(),
-                     SongCount = scraper.GetSongTitleAndIDs().Count().ToString()
-                 };
+            AlbumWebpageScrapeResult scrapeResult = scraper.Scrape();
 
+            if (scrapeResult.IsValid())
+            {
+                _model.AlbumDetailsFromWebsite = new WebsiteAlbumMetaDataViewModel
+                                                     {
+                                                         Title = scrapeResult.AlbumTitle,
+                                                         Artist = scrapeResult.AlbumArtist,
+                                                         ArtworkUrl = scrapeResult.AlbumArtworkUrl,
+                                                         Year = scrapeResult.AlbumReleaseYear.ToString(),
+                                                         SongCount =
+                                                             scrapeResult.SongTitlesAndMediaID.Count().ToString()
+                                                     };
 
-            AddSelectedSongs(scraper);
-            AddRowInfo(scraper);
+                AddSelectedSongs(scrapeResult.SongTitlesAndMediaID, scrapeResult.AlbumTitle);
+
+                AddRowInfo(scrapeResult);
+            }
+            else
+                this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel{SelectedAlbumTitle = "Sorry could not get album details"};
 
             this.IsLoading = false;
         }
 
-        private void AddSelectedSongs(AlbumWebpageScraper scraper)
+        private void AddSelectedSongs(IEnumerable<SongGuid> songGuids, string albumTitle )
         {
             var searchResults = new SearchResultsDetailsViewModel();
 
-            searchResults.SelectedAlbumTitle = scraper.ScrapeAlbumTitle();
+            searchResults.SelectedAlbumTitle = albumTitle;
        
             int counter = 0;
-            foreach (var song in scraper.GetSongTitleAndIDs())
+            foreach (var song in songGuids)
             {
                 counter++;
                 searchResults.SelectedAlbumSongs.Add(new SongWithNumberAndGuid
@@ -123,7 +132,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.SearchResultsDetailsViewModel = searchResults;
         }
 
-        private void AddRowInfo(AlbumWebpageScraper scraper)
+        private void AddRowInfo(AlbumWebpageScrapeResult scrapeResult)
         {
             foreach (var row in _model.Rows)
             {
@@ -131,12 +140,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                 var albumArtistGuid = new MediaIdGuid
                                           {
-                                              Guid = scraper.ScrapeAlbumArtistID(),
+                                              Guid = scrapeResult.AlbumArtistID,
                                               MediaId = MediaIds.ZuneAlbumArtistMediaID
                                           };
 
                 var albumMediaGuid = new MediaIdGuid
-                                         {Guid = scraper.ScrapeAlbumMediaID(), MediaId = MediaIds.ZuneAlbumMediaID};
+                                         {Guid = scrapeResult.AlbumMediaID, MediaId = MediaIds.ZuneAlbumMediaID};
 
 
                 row.TagContainer.Add(albumArtistGuid);
@@ -147,7 +156,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         internal override bool IsNextEnabled()
         {
-            //TODO: fix bug where the view is not refreshing fast enough to the changes of these properties
             return true;
         }
     }

@@ -1,6 +1,6 @@
 using System;
 
-namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
+namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     public static class AlbumSearchUrlGenerator
     {

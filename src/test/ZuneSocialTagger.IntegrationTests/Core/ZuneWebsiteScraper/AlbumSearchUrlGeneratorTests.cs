@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using ZuneSocialTagger.Core.ZuneWebsiteScraper;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
 {

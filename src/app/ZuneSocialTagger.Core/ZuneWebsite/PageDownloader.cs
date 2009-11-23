@@ -6,7 +6,7 @@ using System.Threading;
 using System.Web;
 using System.Diagnostics;
 
-namespace ZuneSocialTagger.Core.ZuneWebsiteScraper
+namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     public class PageDownloader
     {
