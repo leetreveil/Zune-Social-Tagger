@@ -103,5 +103,19 @@ namespace ZuneSocialTagger.UnitTests.Core
         }
 
         #endregion
+
+        #region UrlTests
+
+        [TestCase("http://image.catalog.zune.net/v3.0/image/7510d300-0300-11db-89ca-0019b92a3933?resize=true&width=240&height=240",Result = "http://image.catalog.zune.net/v3.0/image/7510d300-0300-11db-89ca-0019b92a3933?resize=false&width=480&height=480")]
+        [TestCase("http://image.catalog.zune.net/v3.0/image/7510d300-0300-11db-89ca-0019b92a3933?resize=false&width=240&height=240", Result = "http://image.catalog.zune.net/v3.0/image/7510d300-0300-11db-89ca-0019b92a3933?resize=false&width=480&height=480")]
+        [TestCase("http://image.catalog.zune.net/v3.0/image/7510d300-0300-11db-89ca-0019b92a3933?resize=true&width=75&height=75", Result = "http://image.catalog.zune.net/v3.0/image/7510d300-0300-11db-89ca-0019b92a3933?resize=false&width=480&height=480")]
+        public string Should_be_able_to_convert_a_standard_zune_artwork_url_to_its_non_resised_version(string input)
+        {
+            return input.ConvertToNonResizedImageUrl();
+        }
+
+
+        #endregion
+
     }
 }

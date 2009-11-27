@@ -35,6 +35,16 @@ namespace ZuneSocialTagger.Core
         }
 
         /// <summary>
+        /// Converts image urls to their full, non resized version, this makes sure that the image downloader gets the maximum image size available(upto 480)
+        /// </summary>
+        /// <param name="input">Like: http://image.catalog.zune.net/v3.0/image/7510d300-0300-11db-89ca-0019b92a3933?resize=true&width=240&height=240</param>
+        /// <returns></returns>
+        public static string ConvertToNonResizedImageUrl(this string input)
+        {
+           return String.Concat(input.Remove(input.LastIndexOf('?') + 1), "resize=false&width=480&height=480");
+        }
+
+        /// <summary>
         /// Verify's that a list of song guids are valid and returns false if any are invalid
         /// </summary>
         /// <param name="songGuids"></param>
