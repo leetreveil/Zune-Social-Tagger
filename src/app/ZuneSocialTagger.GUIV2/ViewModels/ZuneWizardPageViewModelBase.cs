@@ -1,12 +1,15 @@
 using System;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public abstract class ZuneWizardPageViewModelBase : NotifyPropertyChangedImpl
+    public abstract class ZuneWizardPageViewModelBase : ViewModelBase
     {
         bool _isCurrentPage;
 
         public event EventHandler MoveNextOverride;
+
 
         protected void OnMoveNextOverride()
         {

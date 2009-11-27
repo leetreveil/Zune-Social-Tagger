@@ -5,7 +5,7 @@
     <Grid x:Name="LayoutRoot" Height="84">
         <StackPanel Orientation="Horizontal">
         <Border BorderBrush="White" BorderThickness="1" >
-			<Image Source="{Binding ArtworkUrl}" Stretch="Fill" Height="84" Width="84"/>
+			<Image x:Name="artwork" Source="{Binding ArtworkUrl}" Stretch="Fill" Height="84" Width="84"/>
 		</Border>
             <Border VerticalAlignment="Top">
                 <StackPanel x:Name="AlbumDetails" Margin="10,0,0,0">

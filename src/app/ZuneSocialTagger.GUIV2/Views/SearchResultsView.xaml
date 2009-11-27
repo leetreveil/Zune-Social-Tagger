@@ -32,7 +32,7 @@
 				<RowDefinition MaxHeight="300"/>
 			</Grid.RowDefinitions>
 			
-            <views:WebsiteAlbumMetaDataView DataContext="{Binding AlbumDetailsFromFile}"  VerticalAlignment="Top"/>
+            <views:WebsiteAlbumMetaDataView x:Name="websiteMetaData" DataContext="{Binding AlbumDetailsFromFile}"  VerticalAlignment="Top"/>
 			<views:SearchBar DataContext="{Binding SearchBarViewModel}" VerticalAlignment="Top" Grid.Column="1" />
 			<TextBlock Grid.Row="1" Text="{Binding Albums.Count, Converter={StaticResource AlbumCountToStringConverter}}" VerticalAlignment="Bottom" FontSize="13.333"/>
             <TextBlock Width="60" x:Name="tbLoading" Visibility="{Binding Path=IsLoading, Converter = {StaticResource BoolToVisConverter}}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" FontSize="13.333" Foreground="#FF8A8D90" HorizontalAlignment="Right" />

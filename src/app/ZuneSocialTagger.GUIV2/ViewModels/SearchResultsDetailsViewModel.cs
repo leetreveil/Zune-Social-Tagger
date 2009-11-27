@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
@@ -6,11 +7,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         private string _selectedAlbumTitle;
 
-        public AsyncObservableCollection<SongWithNumberAndGuid> SelectedAlbumSongs { get; set; }
+        public ObservableCollection<SongWithNumberAndGuid> SelectedAlbumSongs { get; set; }
 
         public SearchResultsDetailsViewModel()
         {
-            this.SelectedAlbumSongs = new AsyncObservableCollection<SongWithNumberAndGuid>();
+            this.SelectedAlbumSongs = new ObservableCollection<SongWithNumberAndGuid>();
         }
 
         public string SelectedAlbumTitle

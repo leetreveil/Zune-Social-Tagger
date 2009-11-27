@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
+using System.Windows.Media.Imaging;
 using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
+
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -22,7 +25,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.SearchBarViewModel.StartedSearching += SearchBarViewModel_StartedSearching;
         }
 
-        void SearchBarViewModel_StartedSearching(object sender, EventArgs e)
+        private void SearchBarViewModel_StartedSearching(object sender, EventArgs e)
         {
             if (base.IsCurrentPage)
                 this.SearchResultsDetailsViewModel = null;
@@ -91,42 +94,56 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             AlbumWebpageScrapeResult scrapeResult = scraper.Scrape();
 
-            if (scrapeResult.IsValid())
-            {
-                _model.AlbumDetailsFromWebsite = new WebsiteAlbumMetaDataViewModel
-                                                     {
-                                                         Title = scrapeResult.AlbumTitle,
-                                                         Artist = scrapeResult.AlbumArtist,
-                                                         ArtworkUrl = scrapeResult.AlbumArtworkUrl,
-                                                         Year = scrapeResult.AlbumReleaseYear.ToString(),
-                                                         SongCount =
-                                                             scrapeResult.SongTitlesAndMediaID.Count().ToString()
-                                                     };
-
-                AddSelectedSongs(scrapeResult.SongTitlesAndMediaID, scrapeResult.AlbumTitle);
-
-                AddRowInfo(scrapeResult);
-            }
-            else
-                this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel{SelectedAlbumTitle = "Sorry could not get album details"};
+                //do updating of controls on bound ui objects on UI thread
+                base.UIDispatcher.Invoke(new Action(() =>
+                    {
+                        if (scrapeResult.IsValid())
+                        {
+                            UpdateAlbumMetaDataViewModel(scrapeResult);
+                            AddSelectedSongs(scrapeResult.SongTitlesAndMediaID, scrapeResult.AlbumTitle);
+                            AddRowInfo(scrapeResult);
+                        }
+                        else
+                        {
+                            this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel
+                                {SelectedAlbumTitle = "Sorry could not get album details"};
+                        }
+                    }));
 
             this.IsLoading = false;
         }
 
-        private void AddSelectedSongs(IEnumerable<SongGuid> songGuids, string albumTitle )
+        private void UpdateAlbumMetaDataViewModel(AlbumWebpageScrapeResult scrapeResult)
+        {
+            _model.AlbumDetailsFromWebsite = new WebsiteAlbumMetaDataViewModel
+             {
+                 Title = scrapeResult.AlbumTitle,
+                 Artist = scrapeResult.AlbumArtist,
+                 ArtworkUrl = new BitmapImage(new Uri(scrapeResult.AlbumArtworkUrl)),
+                 Year = scrapeResult.AlbumReleaseYear.ToString(),
+                 SongCount = scrapeResult.SongTitlesAndMediaID.Count().ToString()
+             };
+
+            _model.AlbumDetailsFromWebsite.ArtworkUrl.DownloadCompleted +=
+                ((sender, args) => Clipboard.SetImage(_model.AlbumDetailsFromWebsite.ArtworkUrl));
+        }
+
+        private void AddSelectedSongs(IEnumerable<SongGuid> songGuids, string albumTitle)
         {
             var searchResults = new SearchResultsDetailsViewModel();
 
             searchResults.SelectedAlbumTitle = albumTitle;
-       
+
             int counter = 0;
             foreach (var song in songGuids)
             {
                 counter++;
                 searchResults.SelectedAlbumSongs.Add(new SongWithNumberAndGuid
-                                           {Number = counter.ToString(), 
-                                            Title = song.Title, 
-                                            Guid = song.Guid});
+                                                         {
+                                                             Number = counter.ToString(),
+                                                             Title = song.Title,
+                                                             Guid = song.Guid
+                                                         });
             }
 
             this.SearchResultsDetailsViewModel = searchResults;

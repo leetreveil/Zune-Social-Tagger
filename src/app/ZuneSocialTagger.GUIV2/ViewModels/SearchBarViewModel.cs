@@ -1,12 +1,12 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Commands;
-using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SearchBarViewModel : NotifyPropertyChangedImpl
+    public class SearchBarViewModel : ViewModelBase
     {
         private int _searchPageCount;
         private string _searchText;
@@ -14,13 +14,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private bool _canSearch;
         private RelayCommand<string> _searchCommand;
 
-        public AsyncObservableCollection<AlbumSearchResult> SearchResults { get; set; }
+        public ObservableCollection<AlbumSearchResult> SearchResults { get; set; }
         public event EventHandler StartedSearching;
         public event EventHandler FirstItemsFound;
 
         public SearchBarViewModel()
         {
-            SearchResults = new AsyncObservableCollection<AlbumSearchResult>();
+            SearchResults = new ObservableCollection<AlbumSearchResult>();
+
             AlbumSearch.SearchForAsyncCompleted += (() =>
                 {
                     this.IsSearching = false;
@@ -97,8 +98,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 AlbumSearch.SearchForAsync(searchString, results =>
                 {
-                    foreach (var result in results)
-                        this.SearchResults.Add(result);
+
+                    base.UIDispatcher.Invoke(new Action(() =>
+                        {
+                            foreach (var result in results)
+                                this.SearchResults.Add(result);
+                        }));
+
 
                     _searchPageCount++;
 

@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Windows;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.Core;
+using System.Windows.Media.Imaging;
+using System.Net;
 
 namespace ZuneSocialTagger.IntegrationTests
 {
@@ -30,6 +34,7 @@ namespace ZuneSocialTagger.IntegrationTests
 
         #endregion
 
+        [STAThread]
         public static void Main()
         {
             Console.WriteLine("downloading {0} zune album webpages...", _webpages.Length);
@@ -55,6 +60,7 @@ namespace ZuneSocialTagger.IntegrationTests
 
                 Console.WriteLine("Does this page have the minimum required info: {0}", result.IsValid());
                 Console.WriteLine("");
+
 
                 //foreach (var song in songAndTitles)
                 //{

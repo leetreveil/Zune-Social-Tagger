@@ -46,6 +46,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -80,7 +81,6 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\AlbumCountToStringConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
-    <Compile Include="Models\AsyncObservableCollection.cs" />
     <Compile Include="Models\DetailRow.cs" />
     <Compile Include="Models\SongWithNumberAndGuid.cs" />
     <Compile Include="Models\ZuneNetAlbumMetaData.cs" />
@@ -88,6 +88,7 @@
     <Compile Include="ErrorMessageBox.cs" />
     <Compile Include="NotifyPropertyChangedImpl.cs" />
     <Compile Include="ViewModels\SearchResultsDetailsViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\ErrorMessageBoxView.xaml.cs">
       <DependentUpon>ErrorMessageBoxView.xaml</DependentUpon>
     </Compile>
