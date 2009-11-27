@@ -22,24 +22,15 @@ namespace ZuneSocialTagger.GUIV2.Views
         void SearchResultsView_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {
             _viewModel = (SearchResultsViewModel)this.DataContext;
-
-            if (_viewModel != null)
-                _viewModel.SearchBarViewModel.FirstItemsFound += SearchBarViewModel_ItemsFound;
         }
-
-        void SearchBarViewModel_ItemsFound(object sender, System.EventArgs e)
-        {
-            Console.WriteLine("found!");
-            this.lvAlbums.Dispatcher.Invoke(new Action(() => this.lvAlbums.SelectedIndex = 0));
-        }
-
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_viewModel != null && e.AddedItems.Count > 0)
             {
                 var result = (AlbumSearchResult)e.AddedItems[0];
-                _viewModel.LoadAlbum(result.Url);
+
+                _viewModel.LoadAlbum(String.Concat("http://catalog.zune.net/v3.0/en-US/music/album/",result.Guid.ToString()));
             }
         }
     }

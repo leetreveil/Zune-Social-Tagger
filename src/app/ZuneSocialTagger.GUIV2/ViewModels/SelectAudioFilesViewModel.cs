@@ -52,10 +52,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             try
             {
                 foreach (var filePath in files)
-                    _model.Rows.Add(new DetailRow(ZuneTagContainerFactory.GetContainer(filePath), filePath));
+                {
+                    ZuneTagContainer container = ZuneTagContainerFactory.GetContainer(filePath);
+                    _model.Rows.Add(new DetailRow(filePath,container));
+                }
 
-
-                SetModelDetailsFromFirstAudioFile(files.Count(), _model.Rows.First().TagContainer.ReadMetaData());
+                SetAlbumDetailsFromFile(_model.Rows.Count, _model.Rows.First().MetaData);
 
                 base.OnMoveNextOverride();
             }
@@ -66,7 +68,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        private void SetModelDetailsFromFirstAudioFile(int songCount, MetaData songMetaData)
+        private void SetAlbumDetailsFromFile(int songCount, MetaData songMetaData)
         {
             _model.AlbumDetailsFromFile = new WebsiteAlbumMetaDataViewModel
                                               {
@@ -79,7 +81,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             //add info so search bar displays what the album artist and album title from 
             //the album that has been selected
-
             _model.SearchBarViewModel.SearchText = songMetaData.AlbumTitle + " " +
                                                    songMetaData.AlbumArtist;
         }

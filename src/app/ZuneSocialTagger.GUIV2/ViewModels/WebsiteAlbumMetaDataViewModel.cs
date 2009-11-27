@@ -1,12 +1,9 @@
-﻿using System;
-using System.Windows.Media.Imaging;
-
-namespace ZuneSocialTagger.GUIV2.ViewModels
+﻿namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class WebsiteAlbumMetaDataViewModel
     {
         private string _songCount;
-        private BitmapImage _artworkUrl;
+        private string _artworkUrl;
 
         public string Year { get; set; }
         public string Title { get; set; }
@@ -19,9 +16,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             set { _songCount = value; }
         }
 
-        public BitmapImage ArtworkUrl
+        public string ArtworkUrl
         {
-            get { return _artworkUrl ?? new BitmapImage(new Uri(@"../Assets/blankartwork.png",UriKind.Relative)); }
+            get { return _artworkUrl ?? @"../Assets/blankartwork.png"; }
             set { _artworkUrl = value; }
         }
     }

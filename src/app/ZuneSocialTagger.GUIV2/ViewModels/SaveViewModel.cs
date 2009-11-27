@@ -1,9 +1,12 @@
 using System;
 using System.Windows.Input;
 using ID3Tag;
+using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Views;
+using System.Threading;
+using ID3Tag.HighLevel;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -34,11 +37,17 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         /// </summary>
         public void Save()
         {
+            Mouse.OverrideCursor = Cursors.Wait;
+
             foreach (var row in _model.Rows)
             {
                 try
                 {
-                    Id3TagManager.WriteV2Tag(row.FilePath, row.TagContainer.GetContainer());
+                    row.Container.Add(new MediaIdGuid(MediaIds.ZuneAlbumMediaID,row.AlbumDetails.AlbumMediaID));
+                    row.Container.Add(new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID, row.SelectedSong.ArtistMediaID));
+                    row.Container.Add(new MediaIdGuid(MediaIds.ZuneMediaID, row.SelectedSong.MediaID));
+
+                    Id3TagManager.WriteV2Tag(row.FilePath, row.Container.GetContainer());
                 }
                 catch (Exception ex)
                 {
@@ -47,6 +56,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 }
             }
 
+            Mouse.OverrideCursor = null;
             var successView = new SuccessView(new SuccessViewModel(_model)) {ShowInTaskbar = false, Topmost = true};
             successView.Show();
         }

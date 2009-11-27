@@ -1,5 +1,5 @@
 using System.Collections.ObjectModel;
-using ZuneSocialTagger.GUIV2.Models;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -7,11 +7,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         private string _selectedAlbumTitle;
 
-        public ObservableCollection<SongWithNumberAndGuid> SelectedAlbumSongs { get; set; }
+        public ObservableCollection<Track> SelectedAlbumSongs { get; set; }
 
         public SearchResultsDetailsViewModel()
         {
-            this.SelectedAlbumSongs = new ObservableCollection<SongWithNumberAndGuid>();
+            this.SelectedAlbumSongs = new ObservableCollection<Track>();
         }
 
         public string SelectedAlbumTitle

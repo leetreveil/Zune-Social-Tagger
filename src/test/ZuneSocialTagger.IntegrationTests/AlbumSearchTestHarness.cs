@@ -13,8 +13,6 @@ namespace ZuneSocialTagger.IntegrationTests
                 Console.WriteLine("Search for artist:");
                 string artist = Console.ReadLine();
 
-
-                AlbumSearch.SearchForAsyncCompleted += delegate { Console.WriteLine("Search FINISHED."); };
                 AlbumSearch.SearchForAsync(artist,
                                            result =>
                                            result.ForEach(

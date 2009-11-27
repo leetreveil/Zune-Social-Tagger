@@ -1,58 +1,41 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System;
 using ZuneSocialTagger.Core.ID3Tagger;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
     /// <summary>
     /// Every row in the DetailsView has this information.
-    /// </summary>s
+    /// </summary>
     public class DetailRow
     {
-        private SongWithNumberAndGuid _selectedSong;
-        private ObservableCollection<SongWithNumberAndGuid> _songsFromWebsite;
+        private ObservableCollection<Track> _songsFromWebsite;
 
-        public string Index { get; set; }
-        public string SongTitle { get; set; }
-        public string FilePath { get; set; }
-        public ZuneTagContainer TagContainer { get; set; }
+        public MetaData MetaData { get; set; }
+        public string FilePath { get; private set; }
+        public ZuneTagContainer Container { get; set; }
+        public Track SelectedSong { get; set; }
+        public Album AlbumDetails { get; set; }
 
-        public DetailRow(ZuneTagContainer container,string filePath)
+        public DetailRow(string filePath, ZuneTagContainer container)
         {
             this.FilePath = filePath;
-            this.TagContainer = container;
-            Init();
-        }
-
-        private void Init()
-        {
-            MetaData metaData = this.TagContainer.ReadMetaData();
-
-            this.SongTitle = metaData.SongTitle;
-            this.Index = metaData.Index;      
-        }
-
-        public SongWithNumberAndGuid SelectedSong
-        {
-            get { return _selectedSong; }
-            set
-            {
-                _selectedSong = value;
-                AddSelectedSongToContainer();
-            }
+            Container = container;
+            MetaData = container.ReadMetaData();
         }
 
         /// <summary>
         /// when this is first set we try to match the songs from the zune website to whats in the songs metadata
         /// </summary>
-        public ObservableCollection<SongWithNumberAndGuid> SongsFromWebsite
+        public ObservableCollection<Track> SongsFromWebsite
         {
             get { return _songsFromWebsite; }
             set
             {
                 _songsFromWebsite = value;
+
                 //update selected song
                 SelectedSong = MatchThisSongToAvailableSongs();
             }
@@ -64,22 +47,21 @@ namespace ZuneSocialTagger.GUIV2.Models
         private void AddSelectedSongToContainer()
         {
             //VERY IMPORTANT WE DO NOT WRITE BLANK GUIDS
-            if (SelectedSong.Guid != Guid.Empty)
-                this.TagContainer.Add(new MediaIdGuid {Guid = this.SelectedSong.Guid, MediaId = MediaIds.ZuneMediaID});
+            //if (SelectedSong.MediaID != Guid.Empty)
+            //    this.TagContainer.Add(new MediaIdGuid {Guid = this.SelectedSong.MediaID, MediaId = MediaIds.ZuneMediaID});
         }
-
 
         /// <summary>
         /// Matches song titles
         /// </summary>
         /// <returns></returns>
-        private SongWithNumberAndGuid MatchThisSongToAvailableSongs()
+        private Track MatchThisSongToAvailableSongs()
         {
             //this matches album songs to zune website songs in the details view
-            IEnumerable<SongWithNumberAndGuid> matchedSongs =
-                this.SongsFromWebsite.Where(song => song.Title.ToLower() == this.SongTitle.ToLower());
+            IEnumerable<Track> matchedSongs =
+                this.SongsFromWebsite.Where(song => song.Title.ToLower() == this.MetaData.SongTitle.ToLower());
 
-            return matchedSongs.Count() > 0 ? matchedSongs.First() : new SongWithNumberAndGuid();
+            return matchedSongs.Count() > 0 ? matchedSongs.First() : new Track();
         }
     }
 }

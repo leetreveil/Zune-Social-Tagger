@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
+using System.Threading;
 
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
@@ -15,7 +16,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         private readonly ZuneWizardModel _model;
         private bool _isLoading;
-        private string _lastLoaded;
         private SearchResultsDetailsViewModel _searchResultsDetailsViewModel;
 
         public SearchResultsViewModel(ZuneWizardModel model)
@@ -79,97 +79,62 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void LoadAlbum(string url)
         {
-            if (_lastLoaded != url)
-            {
-                this.IsLoading = true;
-                PageDownloader.DownloadAsync(url, ScrapedPage);
-            }
+            this.IsLoading = true;
 
-            _lastLoaded = url;
+            ThreadPool.QueueUserWorkItem(_ =>
+             {
+                 var reader = new AlbumDocumentReader(url);
+
+                 Album album = reader.Read();
+                 //do updating of controls on bound ui objects on UI thread
+                     base.UIDispatcher.Invoke(new Action(() =>
+                     {
+                         if (album.IsValid)
+                         {
+                             UpdateAlbumMetaDataViewModel(album);
+                             AddSelectedSongs(album);
+                         }
+                         else
+                         {
+                             this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel
+                             {
+                                 SelectedAlbumTitle = "Sorry could not get album details"
+                             };
+                         }
+
+                   }));
+                     this.IsLoading = false;
+
+             });
+
+
         }
 
-        private void ScrapedPage(string pageData)
-        {
-            var scraper = new AlbumWebpageScraper(pageData);
-
-            AlbumWebpageScrapeResult scrapeResult = scraper.Scrape();
-
-                //do updating of controls on bound ui objects on UI thread
-                base.UIDispatcher.Invoke(new Action(() =>
-                    {
-                        if (scrapeResult.IsValid())
-                        {
-                            UpdateAlbumMetaDataViewModel(scrapeResult);
-                            AddSelectedSongs(scrapeResult.SongTitlesAndMediaID, scrapeResult.AlbumTitle);
-                            AddRowInfo(scrapeResult);
-                        }
-                        else
-                        {
-                            this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel
-                                {SelectedAlbumTitle = "Sorry could not get album details"};
-                        }
-                    }));
-
-            this.IsLoading = false;
-        }
-
-        private void UpdateAlbumMetaDataViewModel(AlbumWebpageScrapeResult scrapeResult)
+        private void UpdateAlbumMetaDataViewModel(Album scrapeResult)
         {
             _model.AlbumDetailsFromWebsite = new WebsiteAlbumMetaDataViewModel
-             {
-                 Title = scrapeResult.AlbumTitle,
-                 Artist = scrapeResult.AlbumArtist,
-                 ArtworkUrl = new BitmapImage(new Uri(scrapeResult.AlbumArtworkUrl)),
-                 Year = scrapeResult.AlbumReleaseYear.ToString(),
-                 SongCount = scrapeResult.SongTitlesAndMediaID.Count().ToString()
-             };
-
-            _model.AlbumDetailsFromWebsite.ArtworkUrl.DownloadCompleted +=
-                ((sender, args) => Clipboard.SetImage(_model.AlbumDetailsFromWebsite.ArtworkUrl));
+                                                 {
+                                                     Title = scrapeResult.AlbumTitle,
+                                                     Artist = scrapeResult.AlbumArtist,
+                                                     ArtworkUrl = scrapeResult.AlbumArtworkUrl,
+                                                     Year = scrapeResult.AlbumReleaseYear.ToString(),
+                                                     SongCount = scrapeResult.Tracks.Count().ToString()
+                                                 };
         }
 
-        private void AddSelectedSongs(IEnumerable<SongGuid> songGuids, string albumTitle)
+        private void AddSelectedSongs(Album album)
         {
-            var searchResults = new SearchResultsDetailsViewModel();
+            this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel { SelectedAlbumTitle = album.AlbumTitle };
 
-            searchResults.SelectedAlbumTitle = albumTitle;
+            foreach (var track in album.Tracks)
+                this.SearchResultsDetailsViewModel.SelectedAlbumSongs.Add(track);
 
-            int counter = 0;
-            foreach (var song in songGuids)
-            {
-                counter++;
-                searchResults.SelectedAlbumSongs.Add(new SongWithNumberAndGuid
-                                                         {
-                                                             Number = counter.ToString(),
-                                                             Title = song.Title,
-                                                             Guid = song.Guid
-                                                         });
-            }
-
-            this.SearchResultsDetailsViewModel = searchResults;
-        }
-
-        private void AddRowInfo(AlbumWebpageScrapeResult scrapeResult)
-        {
             foreach (var row in _model.Rows)
             {
                 row.SongsFromWebsite = this.SearchResultsDetailsViewModel.SelectedAlbumSongs;
-
-                var albumArtistGuid = new MediaIdGuid
-                                          {
-                                              Guid = scrapeResult.AlbumArtistID,
-                                              MediaId = MediaIds.ZuneAlbumArtistMediaID
-                                          };
-
-                var albumMediaGuid = new MediaIdGuid
-                                         {Guid = scrapeResult.AlbumMediaID, MediaId = MediaIds.ZuneAlbumMediaID};
-
-
-                row.TagContainer.Add(albumArtistGuid);
-                row.TagContainer.Add(albumMediaGuid);
+                row.AlbumDetails = album;
             }
         }
-
 
         internal override bool IsNextEnabled()
         {

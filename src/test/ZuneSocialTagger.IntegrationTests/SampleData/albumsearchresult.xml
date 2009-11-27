@@ -1,105 +1,1002 @@
-﻿<div id="ajaxErr" style="display:none"></div>
-<div class="SearchHeader" isDark="false" bname="AlbumSearchBlock" count="38" fragPageUrl="" >
-  <span class="SeeAll">
-    <a style="cursor:pointer; display:none; "  >SEE ALL</a>
-  </span>
-  <h2>albums</h2>
-  <span class="SearchSubResult">38 results</span>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Pendulum/In-Silico/7510d300-0100-11db-89ca-0019b92a3933/details">In Silico</a>
-  <a class="Artist" href="/artist/Pendulum"> - Pendulum</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Pendulum/Jungle-Sound-Gold/c2a90c00-0400-11db-89ca-0019b92a3933/details">Jungle Sound Gold</a>
-  <a class="Artist" href="/artist/Pendulum"> - Pendulum</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Insane-Clown-Posse/Pendulum-CD---Graphic-Novel/8e240900-0400-11db-89ca-0019b92a3933/details">Pendulum CD &#43; Graphic Novel</a>
-  <a class="Artist" href="/artist/Insane-Clown-Posse"> - Insane Clown Posse</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Pendulum/Live-at-Brixton-Academy/febc1800-0400-11db-89ca-0019b92a3933/details">Live at Brixton Academy</a>
-  <a class="Artist" href="/artist/Pendulum"> - Pendulum</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Pendulum/Granite-(Single)/a19db300-0100-11db-89ca-0019b92a3933/details">Granite &#40;Single&#41;</a>
-  <a class="Artist" href="/artist/Pendulum"> - Pendulum</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Pendulum/Propane-Nightmares-(Single)/0977cd00-0100-11db-89ca-0019b92a3933/details">Propane Nightmares &#40;Single&#41;</a>
-  <a class="Artist" href="/artist/Pendulum"> - Pendulum</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Joi/The-Pendulum-Vibe/cf230300-0400-11db-89ca-0019b92a3933/details">The Pendulum Vibe</a>
-  <a class="Artist" href="/artist/Joi/ae640100-0600-11db-89ca-0019b92a3933"> - Joi</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Pendulum/Hardware-Limited-03/e501e701-0100-11db-89ca-0019b92a3933/details">Hardware Limited 03</a>
-  <a class="Artist" href="/artist/Pendulum"> - Pendulum</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Oren-Ambarchi/In-The-Pendulum's-Embrace/311cb400-0100-11db-89ca-0019b92a3933/details">In The Pendulum&#39;s Embrace</a>
-  <a class="Artist" href="/artist/Oren-Ambarchi/a67c0500-0600-11db-89ca-0019b92a3933"> - Oren Ambarchi</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Various-Artists/Mosaic-Select--Pendulum/15721800-0400-11db-89ca-0019b92a3933/details">Mosaic Select&#58; Pendulum</a>
-  <a class="Artist" href="/artist/Various-Artists"> - Various Artists</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/10%2c000-Watts/Pendulum-(10%2c000-Watts-Vs.-Dust-N-Haze)/75d4c301-0100-11db-89ca-0019b92a3933/details">Pendulum &#40;10,000 Watts Vs. Dust N Haze&#41;</a>
-  <a class="Artist" href="/artist/10,000-Watts/2f4a0900-0200-11db-89ca-0019b92a3933"> - 10,000 Watts</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Steve-Reich/Phase-Patterns-Pendulum-Music-Piano-Phase-Four-Organs/d75d0600-0400-11db-89ca-0019b92a3933/details">Phase Patterns&#47;Pendulum Music&#47;Piano Phase&#47;Four Organs</a>
-  <a class="Artist" href="/artist/Steve-Reich/ea1c0000-0600-11db-89ca-0019b92a3933"> - Steve Reich</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Gerard/The-Pendulum/9a730900-0400-11db-89ca-0019b92a3933/details">The Pendulum</a>
-  <a class="Artist" href="/artist/Gerard/68980000-0600-11db-89ca-0019b92a3933"> - Gerard</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/The-Dub-Funk-Association/The-Pendulum-Version/6c320700-0400-11db-89ca-0019b92a3933/details">The Pendulum Version</a>
-  <a class="Artist" href="/artist/The-Dub-Funk-Association/e2410400-0600-11db-89ca-0019b92a3933"> - The Dub Funk Association</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Pendulum-Floors/Kicking-Good-Time/b5630800-0400-11db-89ca-0019b92a3933/details">Kicking Good Time</a>
-  <a class="Artist" href="/artist/Pendulum-Floors/f9c50700-0600-11db-89ca-0019b92a3933"> - Pendulum Floors</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Oren-Ambarchi/In-the-Pendulums'-Embrace-(3-Track-Maxi-Single)/5169b500-0100-11db-89ca-0019b92a3933/details">In the Pendulums&#39; Embrace &#40;3-Track Maxi-Single&#41;</a>
-  <a class="Artist" href="/artist/Oren-Ambarchi/a67c0500-0600-11db-89ca-0019b92a3933"> - Oren Ambarchi</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Oren-Ambarchi/In-The-Pendulum's-Embrace/e1a6b301-0100-11db-89ca-0019b92a3933/details">In The Pendulum&#39;s Embrace</a>
-  <a class="Artist" href="/artist/Oren-Ambarchi/a67c0500-0600-11db-89ca-0019b92a3933"> - Oren Ambarchi</a>
-</div>
-<div class="AlbumList">
-  <a href="http://social.zune.net/album/Mary-Anne-Czapla/Pendulum...Swinging-Back-to-Life/17131400-0400-11db-89ca-0019b92a3933/details">Pendulum...Swinging Back to Life</a>
-  <a class="Artist" href="/artist/Mary-Anne-Czapla/ae9b0f00-0600-11db-89ca-0019b92a3933"> - Mary Anne Czapla</a>
-</div>
-<div class="RowLine"></div>
-<ul class="PagerWrapper FloatR">
-  <li class="GeneralMetaData Bold">
-    21
-    -
-    38
-    &#47;
-    38
-  </li>
-  <li>
-    <input type="image" class="XSImage" src="&#47;xweb&#47;lx&#47;pic&#47;btn_pg_left_on.jpg" onclick="ajaxLoader('_searchAlbums','&#47;frag&#47;AlbumSearchBlock&#47;&#63;PageIndex&#61;1&#38;IsFullListView&#61;true&#38;keyword&#61;pendulum&#38;PageSize&#61;20&#38;blockName&#61;AlbumSearchBlock&#38;id&#61;_searchAlbums&#38;');return false;"
-
-        onmouseover="pagerButtonImageSwap(this, '/xweb/lx/pic/btn_pg_left_on.jpg')" onmouseout="pagerButtonImageSwap(this, '/xweb/lx/pic/btn_pg_left_on.jpg')"
-
-        class="ZSmallPagerLeft" />
-  </li>
-  <li>
-    <input type="image" class="XSImage PagerButtonDisabled" src="&#47;xweb&#47;lx&#47;pic&#47;btn_pg_right_off.jpg" onclick="ajaxLoader('_searchAlbums','');return false;"
-
-        onmouseover="pagerButtonImageSwap(this, '/xweb/lx/pic/btn_pg_right_off.jpg')" onmouseout="pagerButtonImageSwap(this, '/xweb/lx/pic/btn_pg_right_off.jpg')"
-
-        class="ZSmallPagerRight" />
-  </li>
-</ul>
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<a:feed xmlns:a="http://www.w3.org/2005/Atom" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns="http://schemas.zune.net/catalog/music/2007/10">
+  <a:link rel="self" type="application/atom+xml" href="/v3.0/en-US/music/album?q=pendulum" />
+  <os:startIndex>1</os:startIndex>
+  <os:totalResults>38</os:totalResults>
+  <os:itemsPerPage>38</os:itemsPerPage>
+  <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+  <a:title type="text">List Of Items</a:title>
+  <a:id>tag:catalog.zune.net,2009-11-27:/music/album</a:id>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:abecf900-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <label>Fantasy Records</label>
+    <releaseDate>1970-12-01T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:abecf900-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>1069675.011896</playRank>
+    <playCount>29201</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:910f0000-0600-11db-89ca-0019b92a3933</id>
+      <name>Creedence Clearwater Revival</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>rock</id>
+      <title>Rock</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>16379051:MP3_DOWNLOAD_UENC_320kb_070</providerCode>
+        <offerId>urn:uuid:abecf900-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>530</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:c14c4e00-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <label>Warp Records</label>
+    <releaseDate>2003-05-06T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:c14c4e00-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>37526.584932</playRank>
+    <playCount>1177</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:b04a0300-0600-11db-89ca-0019b92a3933</id>
+      <name>Broadcast</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>electronicDance</id>
+      <title>Electronic / Dance</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>5131457:MP3_DOWNLOAD_UENC_320kb_070</providerCode>
+        <offerId>urn:uuid:c14c4e00-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>460</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:e97b0300-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <releaseDate>1995-10-17T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:38afe94a-7787-dc11-883e-0019b9ef2915</id>
+    </image>
+    <playRank>21151.526495</playRank>
+    <playCount>921</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:f2340000-0600-11db-89ca-0019b92a3933</id>
+      <name>Lowen &amp; Navarro</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:41d48a00-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <label>ECM</label>
+    <releaseDate>1993-01-01T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:41d48a00-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>3946.08202</playRank>
+    <playCount>370</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:701e0000-0600-11db-89ca-0019b92a3933</id>
+      <name>Eberhard Weber</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>jazz</id>
+      <title>Jazz</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>9098305:MP3_DOWNLOAD_UENC_320kb_070</providerCode>
+        <offerId>urn:uuid:41d48a00-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>730</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:8b0b0702-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <label>Hypoetical Productions</label>
+    <releaseDate>2008-01-29T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:8b0b0702-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>1280</playRank>
+    <playCount>2</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:b2331100-0600-11db-89ca-0019b92a3933</id>
+      <name>Hypoetical</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>hipHop</id>
+      <title>Hip Hop</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>34016139:MP3_DOWNLOAD_UENC_320kb_070</providerCode>
+        <offerId>urn:uuid:8b0b0702-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>800</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:dea50f00-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <releaseDate>2006-02-17T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:a4d40666-0eaa-dc11-883e-0019b9ef2915</id>
+    </image>
+    <playRank>693.229581</playRank>
+    <playCount>43</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:7b400700-0600-11db-89ca-0019b92a3933</id>
+      <name>Aidan Baker</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>more</id>
+      <title>More</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:61b81300-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <releaseDate>2007-11-18T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:28d90666-0eaa-dc11-883e-0019b9ef2915</id>
+    </image>
+    <playRank>636.000025</playRank>
+    <playCount>37</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:95710d00-0600-11db-89ca-0019b92a3933</id>
+      <name>Little Bushman</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>rock</id>
+      <title>Rock</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:8d230f01-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <label>Discover Dark</label>
+    <releaseDate>2008-01-01T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:8d230f01-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>468.695301</playRank>
+    <playCount>126</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:78e00b00-0600-11db-89ca-0019b92a3933</id>
+      <name>John O'Callaghan</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>electronicDance</id>
+      <title>Electronic / Dance</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>17769357:MP3_DOWNLOAD_UENC_320kb_070</providerCode>
+        <offerId>urn:uuid:8d230f01-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>160</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:b1a42801-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <label>Sugar Rush - Sol Records</label>
+    <releaseDate>2007-03-23T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:b1a42801-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>384.064489</playRank>
+    <playCount>5</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:45df0f00-0600-11db-89ca-0019b92a3933</id>
+      <name>Tara Simmons</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>electronicDance</id>
+      <title>Electronic / Dance</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>19440817:MP3_DOWNLOAD_UENC_320kb_070</providerCode>
+        <offerId>urn:uuid:b1a42801-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>530</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:9e920600-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <releaseDate>1999-09-14T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:826e0d4b-7787-dc11-883e-0019b9ef2915</id>
+    </image>
+    <playRank>32.030548</playRank>
+    <playCount>392</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:76bc0500-0600-11db-89ca-0019b92a3933</id>
+      <name>Kevin Keller</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>electronicDance</id>
+      <title>Electronic / Dance</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:afc6f000-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <label>ItsAboutMusic.com</label>
+    <releaseDate>2003-05-06T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:afc6f000-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>0.034456</playRank>
+    <playCount>41</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:a00a0000-0600-11db-89ca-0019b92a3933</id>
+      <name>One Alternative</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>more</id>
+      <title>More</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>15779503:MP3_DOWNLOAD_UENC_320kb_070</providerCode>
+        <offerId>urn:uuid:afc6f000-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>800</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:52540200-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <releaseDate>1965-01-01T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:27f7214c-7787-dc11-883e-0019b9ef2915</id>
+    </image>
+    <playRank>0.025635</playRank>
+    <playCount>2</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:a2fe0100-0600-11db-89ca-0019b92a3933</id>
+      <name>Mike Taylor</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>jazz</id>
+      <title>Jazz</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:a5996301-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <label>Jazzgroove Records</label>
+    <releaseDate>2008-07-15T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:a5996301-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>6E-06</playRank>
+    <playCount>8</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:10800800-0600-11db-89ca-0019b92a3933</id>
+      <name>Gerard Masters</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>jazz</id>
+      <title>Jazz</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>23304613:MP3_DOWNLOAD_UENC_320kb_070</providerCode>
+        <offerId>urn:uuid:a5996301-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>530</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:8b1b1002-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <label>WingBone Records</label>
+    <releaseDate>2008-02-12T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:8b1b1002-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>0</playRank>
+    <playCount>0</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:69480700-0600-11db-89ca-0019b92a3933</id>
+      <name>Kevin So</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>rock</id>
+      <title>Rock</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>34610059:MP3_DOWNLOAD_UENC_320kb_070</providerCode>
+        <offerId>urn:uuid:8b1b1002-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>800</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:229a0900-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <releaseDate>1999-01-01T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:713f824b-7787-dc11-883e-0019b9ef2915</id>
+    </image>
+    <playRank>0</playRank>
+    <playCount>0</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:6357088c-778c-11dc-9403-0019b9b20868</id>
+      <name>Various Artists</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>jazz</id>
+      <title>Jazz</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:d7451100-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <releaseDate>2007-03-13T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:671c6e97-54dc-dd11-8a23-0019b9ef2915</id>
+    </image>
+    <playRank>0</playRank>
+    <playCount>0</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:5d540e00-0600-11db-89ca-0019b92a3933</id>
+      <name>Jonni Lightfoot</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>rock</id>
+      <title>Rock</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:ad471100-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <releaseDate>2006-07-11T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:9c4a6297-54dc-dd11-8a23-0019b9ef2915</id>
+    </image>
+    <playRank>0</playRank>
+    <playCount>0</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:f1550e00-0600-11db-89ca-0019b92a3933</id>
+      <name>Judge Alan Glasser</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>bluesFolk</id>
+      <title>Blues / Folk</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:56481100-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <releaseDate>2005-12-21T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:5df84797-54dc-dd11-8a23-0019b9ef2915</id>
+    </image>
+    <playRank>0</playRank>
+    <playCount>0</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:6c560e00-0600-11db-89ca-0019b92a3933</id>
+      <name>Julie Ann Layne</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>bluesFolk</id>
+      <title>Blues / Folk</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:b0221500-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <releaseDate>2008-01-01T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:7b487597-54dc-dd11-8a23-0019b9ef2915</id>
+    </image>
+    <playRank>0</playRank>
+    <playCount>0</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:29ce0900-0600-11db-89ca-0019b92a3933</id>
+      <name>Tatsuya Ishii</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>electronicDance</id>
+      <title>Electronic / Dance</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum</a:title>
+    <a:id>urn:uuid:5a261500-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <releaseDate>2008-01-01T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:a8497597-54dc-dd11-8a23-0019b9ef2915</id>
+    </image>
+    <playRank>0</playRank>
+    <playCount>0</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:76211000-0600-11db-89ca-0019b92a3933</id>
+      <name>Tatuya Ishii</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>world</id>
+      <title>World</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">In Silico</a:title>
+    <a:id>urn:uuid:7510d300-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>In Silico</sortTitle>
+    <label>WM UK</label>
+    <releaseDate>2008-05-13T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:7510d300-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>14875312.753062</playRank>
+    <playCount>724187</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:95cb0200-0600-11db-89ca-0019b92a3933</id>
+      <name>Pendulum</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>electronicDance</id>
+      <title>Electronic / Dance</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>13832309:MP3_DOWNLOAD_UENC_256kb_075</providerCode>
+        <offerId>urn:uuid:7510d300-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>800</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Jungle Sound Gold</a:title>
+    <a:id>urn:uuid:c2a90c00-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Jungle Sound Gold</sortTitle>
+    <releaseDate>2006-03-28T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:93afe14b-7787-dc11-883e-0019b9ef2915</id>
+    </image>
+    <playRank>957419.93297</playRank>
+    <playCount>50674</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:95cb0200-0600-11db-89ca-0019b92a3933</id>
+      <name>Pendulum</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>electronicDance</id>
+      <title>Electronic / Dance</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum CD + Graphic Novel</a:title>
+    <a:id>urn:uuid:8e240900-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum CD + Graphic Novel</sortTitle>
+    <releaseDate>2002-08-20T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:c05f894b-7787-dc11-883e-0019b9ef2915</id>
+    </image>
+    <playRank>594371.718803</playRank>
+    <playCount>26460</playCount>
+    <isExplicit>True</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:f1870200-0600-11db-89ca-0019b92a3933</id>
+      <name>Insane Clown Posse</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>rock</id>
+      <title>Rock</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Live at Brixton Academy</a:title>
+    <a:id>urn:uuid:febc1800-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Live at Brixton Academy</sortTitle>
+    <releaseDate>2009-01-01T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:c96119da-2274-de11-8552-001ec9fd5b5c</id>
+    </image>
+    <playRank>287446.835789</playRank>
+    <playCount>2521</playCount>
+    <isExplicit>True</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:95cb0200-0600-11db-89ca-0019b92a3933</id>
+      <name>Pendulum</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>electronicDance</id>
+      <title>Electronic / Dance</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Propane Nightmares (Single)</a:title>
+    <a:id>urn:uuid:0977cd00-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Propane Nightmares (Single)</sortTitle>
+    <label>Atlantic Records</label>
+    <releaseDate>2008-04-15T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:0977cd00-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>235795.308851</playRank>
+    <playCount>15224</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:95cb0200-0600-11db-89ca-0019b92a3933</id>
+      <name>Pendulum</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>electronicDance</id>
+      <title>Electronic / Dance</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Granite (Single)</a:title>
+    <a:id>urn:uuid:a19db300-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Granite (Single)</sortTitle>
+    <label>Atlantic Records</label>
+    <releaseDate>2007-11-26T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:a19db300-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>199588.420984</playRank>
+    <playCount>13613</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:95cb0200-0600-11db-89ca-0019b92a3933</id>
+      <name>Pendulum</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>electronicDance</id>
+      <title>Electronic / Dance</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Hardware Limited 03</a:title>
+    <a:id>urn:uuid:e501e701-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Hardware Limited 03</sortTitle>
+    <label>RENEGADE HARDWARE</label>
+    <releaseDate>2006-05-01T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:e501e701-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>16971.435803</playRank>
+    <playCount>106</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:95cb0200-0600-11db-89ca-0019b92a3933</id>
+      <name>Pendulum</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>electronicDance</id>
+      <title>Electronic / Dance</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>31916517:MP3_DOWNLOAD_UENC_320kb_070</providerCode>
+        <offerId>urn:uuid:e501e701-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>730</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">In The Pendulum's Embrace</a:title>
+    <a:id>urn:uuid:311cb400-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>In The Pendulum's Embrace</sortTitle>
+    <label>Touch</label>
+    <releaseDate>2007-09-17T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:311cb400-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>7984.375828</playRank>
+    <playCount>402</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:a67c0500-0600-11db-89ca-0019b92a3933</id>
+      <name>Oren Ambarchi</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>more</id>
+      <title>More</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>11803697:MP3_DOWNLOAD_UENC_320kb_070</providerCode>
+        <offerId>urn:uuid:311cb400-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>240</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">The Pendulum Vibe</a:title>
+    <a:id>urn:uuid:cf230300-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum Vibe</sortTitle>
+    <releaseDate>1994-01-01T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:c750fa4a-7787-dc11-883e-0019b9ef2915</id>
+    </image>
+    <playRank>6604.821075</playRank>
+    <playCount>865</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:ae640100-0600-11db-89ca-0019b92a3933</id>
+      <name>Joi</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>reggaeDancehall</id>
+      <title>Reggae / Dancehall</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Phase Patterns/Pendulum Music/Piano Phase/Four Organs</a:title>
+    <a:id>urn:uuid:d75d0600-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Phase Patterns/Pendulum Music/Piano Phase/Four Organs</sortTitle>
+    <releaseDate>1999-05-11T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:7a6fee4a-7787-dc11-883e-0019b9ef2915</id>
+    </image>
+    <playRank>931.093233</playRank>
+    <playCount>102</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:ea1c0000-0600-11db-89ca-0019b92a3933</id>
+      <name>Steve Reich</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>more</id>
+      <title>More</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum (10,000 Watts Vs. Dust N Haze)</a:title>
+    <a:id>urn:uuid:75d4c301-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum (10,000 Watts Vs. Dust N Haze)</sortTitle>
+    <label>Klientele</label>
+    <releaseDate>2009-05-26T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:75d4c301-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>432.025635</playRank>
+    <playCount>8</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:2f4a0900-0200-11db-89ca-0019b92a3933</id>
+      <name>10,000 Watts</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>electronicDance</id>
+      <title>Electronic / Dance</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>29611125:MP3_DOWNLOAD_UENC_320kb_070</providerCode>
+        <offerId>urn:uuid:75d4c301-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>390</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">The Pendulum</a:title>
+    <a:id>urn:uuid:9a730900-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum</sortTitle>
+    <releaseDate>2001-01-01T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:1831294c-7787-dc11-883e-0019b9ef2915</id>
+    </image>
+    <playRank>2.5E-05</playRank>
+    <playCount>1</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:68980000-0600-11db-89ca-0019b92a3933</id>
+      <name>Gerard</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>rock</id>
+      <title>Rock</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">The Pendulum Version</a:title>
+    <a:id>urn:uuid:6c320700-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum Version</sortTitle>
+    <releaseDate>1999-11-09T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:415c574b-7787-dc11-883e-0019b9ef2915</id>
+    </image>
+    <playRank>0</playRank>
+    <playCount>0</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:e2410400-0600-11db-89ca-0019b92a3933</id>
+      <name>The Dub Funk Association</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>electronicDance</id>
+      <title>Electronic / Dance</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Kicking Good Time</a:title>
+    <a:id>urn:uuid:b5630800-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Kicking Good Time</sortTitle>
+    <releaseDate>1997-03-27T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:1733824b-7787-dc11-883e-0019b9ef2915</id>
+    </image>
+    <playRank>0</playRank>
+    <playCount>0</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:f9c50700-0600-11db-89ca-0019b92a3933</id>
+      <name>Pendulum Floors</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>rock</id>
+      <title>Rock</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">Pendulum...Swinging Back to Life</a:title>
+    <a:id>urn:uuid:17131400-0400-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Pendulum...Swinging Back to Life</sortTitle>
+    <releaseDate>2007-01-01T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:ac084897-54dc-dd11-8a23-0019b9ef2915</id>
+    </image>
+    <playRank>0</playRank>
+    <playCount>0</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>False</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:ae9b0f00-0600-11db-89ca-0019b92a3933</id>
+      <name>Mary Anne Czapla</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>rock</id>
+      <title>Rock</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">The Pendulum</a:title>
+    <a:id>urn:uuid:e9870f02-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>The Pendulum</sortTitle>
+    <label>Ben Rothbard</label>
+    <releaseDate>2007-07-19T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:e9870f02-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>0</playRank>
+    <playCount>0</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:c7230e00-0600-11db-89ca-0019b92a3933</id>
+      <name>Ben Rothbard</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>bluesFolk</id>
+      <title>Blues / Folk</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>34572265:MP3_DOWNLOAD_UENC_320kb_070</providerCode>
+        <offerId>urn:uuid:e9870f02-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>800</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">In the Pendulums' Embrace (3-Track Maxi-Single)</a:title>
+    <a:id>urn:uuid:5169b500-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>In the Pendulums' Embrace (3-Track Maxi-Single)</sortTitle>
+    <label>Caroline Third Party</label>
+    <releaseDate>2007-09-17T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:5169b500-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>0</playRank>
+    <playCount>0</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:a67c0500-0600-11db-89ca-0019b92a3933</id>
+      <name>Oren Ambarchi</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>rock</id>
+      <title>Rock</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T16:55:49.6532168Z</a:updated>
+    <a:title type="text">In The Pendulum's Embrace</a:title>
+    <a:id>urn:uuid:e1a6b301-0100-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>In The Pendulum's Embrace</sortTitle>
+    <label>Red Distribution</label>
+    <releaseDate>2007-09-17T00:00:00Z</releaseDate>
+    <image>
+      <id>urn:uuid:e1a6b301-0300-11db-89ca-0019b92a3933</id>
+    </image>
+    <playRank>0</playRank>
+    <playCount>0</playCount>
+    <isExplicit>False</isExplicit>
+    <isActionable>True</isActionable>
+    <primaryArtist>
+      <id>urn:uuid:a67c0500-0600-11db-89ca-0019b92a3933</id>
+      <name>Oren Ambarchi</name>
+    </primaryArtist>
+    <primaryGenre>
+      <id>rock</id>
+      <title>Rock</title>
+    </primaryGenre>
+    <rights>
+      <right>
+        <providerCode>28550881:MP3_DOWNLOAD_UENC_256kb_075</providerCode>
+        <offerId>urn:uuid:e1a6b301-2102-11db-89ca-0019b92a3933</offerId>
+        <pointsPrice>730</pointsPrice>
+        <licenseRight>AlbumPurchase</licenseRight>
+        <audioEncoding>MP3</audioEncoding>
+      </right>
+    </rights>
+  </a:entry>
+  <a:author>
+    <a:name>Microsoft Corporation</a:name>
+  </a:author>
+</a:feed>

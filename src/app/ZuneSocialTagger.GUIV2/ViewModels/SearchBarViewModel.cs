@@ -8,7 +8,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SearchBarViewModel : ViewModelBase
     {
-        private int _searchPageCount;
         private string _searchText;
         private bool _isSearching;
         private bool _canSearch;
@@ -16,17 +15,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public ObservableCollection<AlbumSearchResult> SearchResults { get; set; }
         public event EventHandler StartedSearching;
-        public event EventHandler FirstItemsFound;
 
         public SearchBarViewModel()
         {
             SearchResults = new ObservableCollection<AlbumSearchResult>();
-
-            AlbumSearch.SearchForAsyncCompleted += (() =>
-                {
-                    this.IsSearching = false;
-                    _searchPageCount = 0;
-                });
         }
 
         public string SearchText
@@ -94,41 +86,24 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.SearchResults.Clear();
             this.IsSearching = true;
 
-            try
+            AlbumSearch.SearchForAsync(searchString, results =>
             {
-                AlbumSearch.SearchForAsync(searchString, results =>
-                {
 
-                    base.UIDispatcher.Invoke(new Action(() =>
-                        {
-                            foreach (var result in results)
-                                this.SearchResults.Add(result);
-                        }));
+                base.UIDispatcher.Invoke(new Action(() =>
+                    {
+                        foreach (var result in results)
+                            this.SearchResults.Add(result);
+                    }));
 
 
-                    _searchPageCount++;
-
-                    if (_searchPageCount == 1)
-                        InvokeFirstItemsFound();
-                });
-            }
-            catch (PageDownloaderException ex)
-            {
-                Console.WriteLine("error downloading the album info");
-            }
-
+                this.IsSearching = false;
+            });
         }
 
         private void InvokeStartedSearching()
         {
             EventHandler searching = StartedSearching;
             if (searching != null) searching(this, new EventArgs());
-        }
-
-        private void InvokeFirstItemsFound()
-        {
-            EventHandler handler = FirstItemsFound;
-            if (handler != null) handler(this, new EventArgs());
         }
     }
 }

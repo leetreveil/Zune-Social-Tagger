@@ -28,14 +28,15 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             //and we only want private frames
             return from frame in _container.OfType<PrivateFrame>()
                    where MediaIds.Ids.Contains(frame.Owner)
-                   select new MediaIdGuid {MediaId = frame.Owner, Guid = new Guid(frame.Data)};
+                   select new MediaIdGuid(frame.Owner, new Guid(frame.Data));
+
 
             //TODO: could refactor this class to filter the TagContainer because ReadMediaIds And Add are both working on private frames
         }
 
-        public void Add(MediaIdGuid guid)
+        public void Add(MediaIdGuid mediaIDGuid)
         {
-            PrivateFrame newFrame = new PrivateFrame(guid.MediaId, guid.Guid.Value.ToByteArray());
+            PrivateFrame newFrame = new PrivateFrame(mediaIDGuid.MediaId, mediaIDGuid.Guid.ToByteArray());
 
 
             //frame owner is a unique id identifying a private field so we can

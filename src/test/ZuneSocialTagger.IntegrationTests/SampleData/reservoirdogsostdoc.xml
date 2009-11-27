@@ -1,0 +1,650 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<a:feed xmlns:a="http://www.w3.org/2005/Atom" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns="http://schemas.zune.net/catalog/music/2007/10">
+  <a:link rel="zune://album/review" type="application/atom+xml" href="/v3.0/en-US/music/album/13ce0100-0400-11db-89ca-0019b92a3933/review" />
+  <a:link rel="self" type="application/atom+xml" href="/v3.0/en-US/music/album/13ce0100-0400-11db-89ca-0019b92a3933" />
+  <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+  <a:title type="text">Reservoir Dogs</a:title>
+  <a:id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</a:id>
+  <sortTitle>Reservoir Dogs</sortTitle>
+  <releaseDate>1992-01-01T00:00:00Z</releaseDate>
+  <image>
+    <id>urn:uuid:9f3c6f4b-7787-dc11-883e-0019b9ef2915</id>
+  </image>
+  <playRank>4182683.282897</playRank>
+  <playCount>75158</playCount>
+  <favoriteCount>93</favoriteCount>
+  <sendCount>20</sendCount>
+  <isExplicit>True</isExplicit>
+  <isActionable>False</isActionable>
+  <startDate>2007-01-01T00:00:00Z</startDate>
+  <primaryArtist>
+    <id>urn:uuid:6357088d-778c-11dc-9403-0019b9b20868</id>
+    <name>Movie Soundtracks</name>
+  </primaryArtist>
+  <contributingArtists>
+    <artist>
+      <id>urn:uuid:2c670100-0600-11db-89ca-0019b92a3933</id>
+      <name>Jay Joyce</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:fd000000-0600-11db-89ca-0019b92a3933</id>
+      <name>Steven Wright</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:a8130000-0600-11db-89ca-0019b92a3933</id>
+      <name>Harry Nilsson</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:f8150000-0600-11db-89ca-0019b92a3933</id>
+      <name>Joe Tex</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:27300000-0600-11db-89ca-0019b92a3933</id>
+      <name>Bedlam</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:403e0000-0600-11db-89ca-0019b92a3933</id>
+      <name>Blue Swede</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:03510000-0600-11db-89ca-0019b92a3933</id>
+      <name>Stealers Wheel</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:1a5e0000-0600-11db-89ca-0019b92a3933</id>
+      <name>George Baker</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:2c670100-0600-11db-89ca-0019b92a3933</id>
+      <name>Jay Joyce</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:a2090300-0600-11db-89ca-0019b92a3933</id>
+      <name>George Baker Selection</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:ad920300-0600-11db-89ca-0019b92a3933</id>
+      <name>Steve Buscemi</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:9add0400-0600-11db-89ca-0019b92a3933</id>
+      <name>Quentin Tarantino</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:4a350700-0600-11db-89ca-0019b92a3933</id>
+      <name>Tim Roth</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:d53f0700-0600-11db-89ca-0019b92a3933</id>
+      <name>Harvey Keitel</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:d63f0700-0600-11db-89ca-0019b92a3933</id>
+      <name>Sandy Rogers</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:d83f0700-0600-11db-89ca-0019b92a3933</id>
+      <name>Eddie Bunker</name>
+    </artist>
+    <artist>
+      <id>urn:uuid:d93f0700-0600-11db-89ca-0019b92a3933</id>
+      <name>Lawrence Tierney</name>
+    </artist>
+  </contributingArtists>
+  <primaryGenre>
+    <id>pop</id>
+    <title>Pop</title>
+  </primaryGenre>
+  <relatedGenres>
+    <genre>
+      <id>rock</id>
+      <title>Rock</title>
+      <isRoot>True</isRoot>
+    </genre>
+    <genre>
+      <id>pop</id>
+      <title>Pop</title>
+      <isRoot>True</isRoot>
+    </genre>
+    <genre>
+      <id>soundtracks</id>
+      <title>Soundtracks</title>
+      <isRoot>True</isRoot>
+    </genre>
+    <genre>
+      <id>indieModernRock</id>
+      <title>Indie / Modern Rock</title>
+      <isRoot>False</isRoot>
+      <parentId>rock</parentId>
+    </genre>
+    <genre>
+      <id>rockAndRoll</id>
+      <title>Rock &amp; Roll</title>
+      <isRoot>False</isRoot>
+      <parentId>rock</parentId>
+    </genre>
+    <genre>
+      <id>contempoPop</id>
+      <title>Contemporary Pop</title>
+      <isRoot>False</isRoot>
+      <parentId>pop</parentId>
+    </genre>
+    <genre>
+      <id>retroPopLounge</id>
+      <title>Retrospective Pop &amp; Lounge</title>
+      <isRoot>False</isRoot>
+      <parentId>pop</parentId>
+    </genre>
+  </relatedGenres>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">And Now Little Green Bag... (Dialogue)</a:title>
+    <a:id>urn:uuid:9ea52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>And Now Little Green Bag... (Dialogue)</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT0S</length>
+    <playRank>61410.688973</playRank>
+    <playCount>4368</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>1</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:fd000000-0600-11db-89ca-0019b92a3933</id>
+      <name>Steven Wright</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:9add0400-0600-11db-89ca-0019b92a3933</id>
+        <name>Quentin Tarantino</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">Little Green Bag</a:title>
+    <a:id>urn:uuid:9fa52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Little Green Bag</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT3M15S</length>
+    <playRank>356116.604598</playRank>
+    <playCount>20824</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>2</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:a2090300-0600-11db-89ca-0019b92a3933</id>
+      <name>George Baker Selection</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:4a0f0200-0600-11db-89ca-0019b92a3933</id>
+        <name>Jan Visser</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">Rock Flock of Five (Dialogue)</a:title>
+    <a:id>urn:uuid:a0a52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Rock Flock of Five (Dialogue)</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT0S</length>
+    <playRank>57926.935272</playRank>
+    <playCount>3920</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>3</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:fd000000-0600-11db-89ca-0019b92a3933</id>
+      <name>Steven Wright</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:9add0400-0600-11db-89ca-0019b92a3933</id>
+        <name>Quentin Tarantino</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">Hooked on a Feeling</a:title>
+    <a:id>urn:uuid:a1a52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Hooked on a Feeling</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT2M53S</length>
+    <playRank>430837.332233</playRank>
+    <playCount>22408</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>4</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:403e0000-0600-11db-89ca-0019b92a3933</id>
+      <name>Blue Swede</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:be9a0000-0600-11db-89ca-0019b92a3933</id>
+        <name>Mark James</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">Bohemiath (Dialogue)</a:title>
+    <a:id>urn:uuid:a2a52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Bohemiath (Dialogue)</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT0S</length>
+    <playRank>77931.636719</playRank>
+    <playCount>6683</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>5</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:fd000000-0600-11db-89ca-0019b92a3933</id>
+      <name>Steven Wright</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:9add0400-0600-11db-89ca-0019b92a3933</id>
+        <name>Quentin Tarantino</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">I Gotcha</a:title>
+    <a:id>urn:uuid:a3a52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>I Gotcha</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT2M27S</length>
+    <playRank>360595.075528</playRank>
+    <playCount>15817</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>6</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:f8150000-0600-11db-89ca-0019b92a3933</id>
+      <name>Joe Tex</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:f8150000-0600-11db-89ca-0019b92a3933</id>
+        <name>Joe Tex</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">Magic Carpet Ride</a:title>
+    <a:id>urn:uuid:a4a52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Magic Carpet Ride</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT5M11S</length>
+    <playRank>133366.642789</playRank>
+    <playCount>2265</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>7</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:27300000-0600-11db-89ca-0019b92a3933</id>
+      <name>Bedlam</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:47340000-0600-11db-89ca-0019b92a3933</id>
+        <name>John Kay</name>
+      </artist>
+      <artist>
+        <id>urn:uuid:1ce70200-0600-11db-89ca-0019b92a3933</id>
+        <name>Rushton Moreve</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">Madonna Speech (Dialogue)</a:title>
+    <a:id>urn:uuid:a5a52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Madonna Speech (Dialogue)</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT0S</length>
+    <playRank>95809.647713</playRank>
+    <playCount>5584</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>8</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:ad920300-0600-11db-89ca-0019b92a3933</id>
+      <name>Steve Buscemi</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:9add0400-0600-11db-89ca-0019b92a3933</id>
+        <name>Quentin Tarantino</name>
+      </artist>
+      <artist>
+        <id>urn:uuid:9add0400-0600-11db-89ca-0019b92a3933</id>
+        <name>Quentin Tarantino</name>
+      </artist>
+      <artist>
+        <id>urn:uuid:d53f0700-0600-11db-89ca-0019b92a3933</id>
+        <name>Harvey Keitel</name>
+      </artist>
+      <artist>
+        <id>urn:uuid:d83f0700-0600-11db-89ca-0019b92a3933</id>
+        <name>Eddie Bunker</name>
+      </artist>
+      <artist>
+        <id>urn:uuid:d93f0700-0600-11db-89ca-0019b92a3933</id>
+        <name>Lawrence Tierney</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">Fool for Love</a:title>
+    <a:id>urn:uuid:a6a52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Fool for Love</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT3M25S</length>
+    <playRank>144544.795409</playRank>
+    <playCount>7759</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>9</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:d63f0700-0600-11db-89ca-0019b92a3933</id>
+      <name>Sandy Rogers</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:d63f0700-0600-11db-89ca-0019b92a3933</id>
+        <name>Sandy Rogers</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">Super Sounds (Dialogue)</a:title>
+    <a:id>urn:uuid:a7a52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Super Sounds (Dialogue)</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT0S</length>
+    <playRank>61157.30232</playRank>
+    <playCount>3617</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>10</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:fd000000-0600-11db-89ca-0019b92a3933</id>
+      <name>Steven Wright</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:9add0400-0600-11db-89ca-0019b92a3933</id>
+        <name>Quentin Tarantino</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">Stuck in the Middle With You</a:title>
+    <a:id>urn:uuid:a8a52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Stuck in the Middle With You</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT3M23S</length>
+    <playRank>1859085.140174</playRank>
+    <playCount>26716</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>11</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:03510000-0600-11db-89ca-0019b92a3933</id>
+      <name>Stealers Wheel</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:5f140000-0600-11db-89ca-0019b92a3933</id>
+        <name>Gerry Rafferty</name>
+      </artist>
+      <artist>
+        <id>urn:uuid:68430000-0600-11db-89ca-0019b92a3933</id>
+        <name>Joe Egan</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">Harvest Moon</a:title>
+    <a:id>urn:uuid:a9a52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Harvest Moon</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT2M38S</length>
+    <playRank>141864.572098</playRank>
+    <playCount>8113</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>12</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:27300000-0600-11db-89ca-0019b92a3933</id>
+      <name>Bedlam</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:2c670100-0600-11db-89ca-0019b92a3933</id>
+        <name>Jay Joyce</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">Let's Get a Taco (Dialogue)</a:title>
+    <a:id>urn:uuid:aaa52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Let's Get a Taco (Dialogue)</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT1M2S</length>
+    <playRank>89737.038134</playRank>
+    <playCount>5773</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>13</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:4a350700-0600-11db-89ca-0019b92a3933</id>
+      <name>Tim Roth</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:9add0400-0600-11db-89ca-0019b92a3933</id>
+        <name>Quentin Tarantino</name>
+      </artist>
+      <artist>
+        <id>urn:uuid:d53f0700-0600-11db-89ca-0019b92a3933</id>
+        <name>Harvey Keitel</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">Keep on Truckin' (Dialogue)</a:title>
+    <a:id>urn:uuid:aba52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Keep on Truckin' (Dialogue)</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT0S</length>
+    <playRank>52711.494933</playRank>
+    <playCount>2815</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>14</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:fd000000-0600-11db-89ca-0019b92a3933</id>
+      <name>Steven Wright</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:9add0400-0600-11db-89ca-0019b92a3933</id>
+        <name>Quentin Tarantino</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">Coconut</a:title>
+    <a:id>urn:uuid:aca52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Coconut</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT3M50S</length>
+    <playRank>205248.049082</playRank>
+    <playCount>12136</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>15</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:a8130000-0600-11db-89ca-0019b92a3933</id>
+      <name>Harry Nilsson</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:a8130000-0600-11db-89ca-0019b92a3933</id>
+        <name>Harry Nilsson</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:entry>
+    <a:updated>2009-11-27T19:17:48.7007288Z</a:updated>
+    <a:title type="text">Home of Rock (Dialogue)</a:title>
+    <a:id>urn:uuid:ada52600-0500-11db-89ca-0019b92a3933</a:id>
+    <sortTitle>Home of Rock (Dialogue)</sortTitle>
+    <album>
+      <id>urn:uuid:13ce0100-0400-11db-89ca-0019b92a3933</id>
+      <title>Reservoir Dogs</title>
+    </album>
+    <length>PT0S</length>
+    <playRank>54340.330648</playRank>
+    <playCount>3334</playCount>
+    <isExplicit>False</isExplicit>
+    <trackNumber>16</trackNumber>
+    <discNumber>1</discNumber>
+    <primaryArtist>
+      <id>urn:uuid:fd000000-0600-11db-89ca-0019b92a3933</id>
+      <name>Steven Wright</name>
+    </primaryArtist>
+    <contributingArtists>
+      <artist>
+        <id>urn:uuid:9add0400-0600-11db-89ca-0019b92a3933</id>
+        <name>Quentin Tarantino</name>
+      </artist>
+    </contributingArtists>
+    <primaryGenre>
+      <id>pop</id>
+      <title>Pop</title>
+    </primaryGenre>
+  </a:entry>
+  <a:author>
+    <a:name>Microsoft Corporation</a:name>
+  </a:author>
+</a:feed>

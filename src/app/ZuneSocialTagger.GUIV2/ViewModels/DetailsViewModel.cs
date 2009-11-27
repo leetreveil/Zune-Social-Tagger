@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
@@ -6,7 +7,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     class DetailsViewModel : ZuneWizardPageViewModelBase
     {
         private readonly ZuneWizardModel _model;
-        private SongWithNumberAndGuid _selectedSong;
 
         public DetailsViewModel(ZuneWizardModel model)
         {
@@ -26,20 +26,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
         {
             get { return _model.AlbumDetailsFromFile; }
-        }
-
-        public SongWithNumberAndGuid SelectedSong
-        {
-            get
-            {
-                return _selectedSong;
-            }
-            set
-            {
-                _selectedSong = value;
-                base.InvokePropertyChanged("SelectedSong");
-            }
-
         }
 
         internal override bool IsNextEnabled()

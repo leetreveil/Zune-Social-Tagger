@@ -1,73 +1,52 @@
 using System;
 using System.Collections.Generic;
+using System.ServiceModel.Syndication;
+using System.Xml;
+using System.Xml.Linq;
+using System.Linq;
 using System.Threading;
 
 namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     public class AlbumSearch
     {
-        public static IEnumerable<AlbumSearchResult> SearchFor(string artist)
+        public static void SearchForAsync(string searchString, Action<IEnumerable<AlbumSearchResult>> callback)
         {
-            return GetAlbumFromPages(artist, GetPageCount(artist));
+            ThreadPool.QueueUserWorkItem(_ => callback(SearchFor(searchString)));
         }
 
-        public static void SearchForAsync(string artist,Action<IEnumerable<AlbumSearchResult>> callback)
+        public static IEnumerable<AlbumSearchResult> SearchFor(string searchString)
         {
-            ThreadPool.QueueUserWorkItem(state => GetAlbumFromPagesCallbackWithCompletedEvent(artist, GetPageCount(artist), callback));
+            string searchUrl = String.Format("http://catalog.zune.net/v3.0/en-US/music/album?q={0}", searchString);
+
+            XmlReader reader = XmlReader.Create(searchUrl);
+
+            return ReadFromXmlDocument(reader);
         }
 
-        private static IEnumerable<AlbumSearchResult> GetAlbumFromPages(string artist, int pageCount)
+        public static IList<AlbumSearchResult> ReadFromXmlDocument(XmlReader reader)
         {
-            var listOAlbums = new List<AlbumSearchResult>();
+            var tempList = new List<AlbumSearchResult>();
 
-            GetAlbumFromPagesCallback(artist,pageCount, listOAlbums.AddRange);
+            SyndicationFeed feed = SyndicationFeed.Load(reader);
 
-            return listOAlbums;
-        }
+            if (feed != null)
+            {
+                foreach (var item in feed.Items)
+                {
+                    //Console.WriteLine(item.Title.Text);
 
-        private static void GetAlbumFromPagesCallback(string artist,int pageCount, Action<IEnumerable<AlbumSearchResult>> callback)
-        {
-            for (int i = 0; i < pageCount; i++)
-                callback(GetPage(i, artist));
-        }
+                    XElement artistElement = item.ElementExtensions.ReadElementExtensions<XElement>("primaryArtist", "http://schemas.zune.net/catalog/music/2007/10").First();
 
-        private static void GetAlbumFromPagesCallbackWithCompletedEvent(string artist, int pageCount, Action<IEnumerable<AlbumSearchResult>> callback)
-        {
-            GetAlbumFromPagesCallback(artist, pageCount, callback);
-            InvokeSearchForAsyncCompleted();
-        }
+                    //XElement idElement = artistElement.Elements().Where(x => x.Name.LocalName == "id").First();
+                    XElement artistTitleElement = artistElement.Elements().Where(x => x.Name.LocalName == "name").First();
 
-        private static IEnumerable<AlbumSearchResult> GetPage(int pageIndex, string artist)
-        {
-            string page = AlbumSearchUrlGenerator.CreateUrl(artist, pageIndex + 1);
+                    tempList.Add(new AlbumSearchResult { Title = item.Title.Text, Guid = item.Id.ExtractGuidFromUrnUuid(),Artist = artistTitleElement.Value});
+                    //yield return new AlbumSearchResult{Title = item.Title.Text,Guid = ExtractGuidFromUrnUuid(item.Id)};
+                }
+            }
 
-            var newPageScraper = new AlbumSearchScraper(PageDownloader.Download(page));
-
-            return newPageScraper.ScrapeAlbums();
-        }
-
-        private static int GetPageCount(string artist)
-        {
-            string url = AlbumSearchUrlGenerator.CreateUrl(artist);
-
-            string firstAlbumPage = PageDownloader.Download(url);
-
-            var scraper = new AlbumSearchScraper(firstAlbumPage);
-
-            return GetPageCount(scraper.ScrapeAlbumCountAcrossAllPages());
-        }
-
-        private static int GetPageCount(int numberOfAlbumsInTotal)
-        {
-            return (int)Math.Ceiling((double)numberOfAlbumsInTotal / 20);
-        }
-
-        public static event Action SearchForAsyncCompleted;
-
-        private static void InvokeSearchForAsyncCompleted()
-        {
-            Action completed = SearchForAsyncCompleted;
-            if (completed != null) completed();
+            return tempList;
         }
     }
 }

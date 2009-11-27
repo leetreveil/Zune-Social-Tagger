@@ -73,13 +73,12 @@
     <Compile Include="AsyncTesting.cs" />
     <Compile Include="Core\ID3Tagger\ZuneTagContainerFactoryTests.cs" />
     <Compile Include="Core\ID3Tagger\ZuneTagContainerTests.cs" />
-    <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchScraperTests.cs" />
-    <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchTests.cs" />
-    <Compile Include="Core\ZuneWebsiteScraper\AlbumSearchUrlGeneratorTests.cs" />
+    <Compile Include="Core\ZuneWebsite\AlbumSearchTests.cs" />
+    <Compile Include="Core\ZuneWebsite\AlbumSearchUrlGeneratorTests.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Core\ZuneWebsiteScraper\AlbumWebpageScraperTests.cs" />
+    <Compile Include="Core\ZuneWebsite\AlbumDocumentReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\ZuneWebsiteScraper\PageDownloaderTests.cs" />
+    <Compile Include="Core\ZuneWebsite\PageDownloaderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SampleData\albumsearchresult.xml">
@@ -95,6 +94,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SampleData\nonzunewebpage.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleData\reservoirdogsostdoc.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SampleData\validalbumwebpage.xml">

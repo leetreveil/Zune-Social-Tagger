@@ -19,19 +19,13 @@ namespace ZuneSocialTagger.Core
         }
 
         /// <summary>
-        /// Extracts guids from strings which may or may not have other data in, example string : FanClub00710a00-0600-11db-89ca-0019b92a3933
+        /// urn:uuid:c14c4e00-0300-11db-89ca-0019b92a3933
         /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public static Guid ExtractGuid(this string str)
+        /// <param name="urn"></param>
+        /// <returns>c14c4e00-0300-11db-89ca-0019b92a3933</returns>
+        public static Guid ExtractGuidFromUrnUuid(this string urn)
         {
-            Regex regex = new Regex(".*?([A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12})",
-                                    RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
-            if (regex.IsMatch(str) && regex.Match(str).Success)
-                return new Guid(regex.Match(str).Groups[1].Value);
-
-            throw new FormatException("could not extract a guid from string");
+            return new Guid(urn.Substring(urn.LastIndexOf(':') + 1));
         }
 
         /// <summary>
@@ -49,10 +43,10 @@ namespace ZuneSocialTagger.Core
         /// </summary>
         /// <param name="songGuids"></param>
         /// <returns></returns>
-        public static bool AreAllValid(this IEnumerable<SongGuid> songGuids)
+        public static bool AreAllValid(this IEnumerable<Track> songGuids)
         {
             //empty list then its invalid
-            if (songGuids.Count() == 0)
+            if (songGuids == null || songGuids.Count() == 0)
                 return false;
 
             //if any guids are not valid

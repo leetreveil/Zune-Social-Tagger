@@ -60,9 +60,9 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ZuneTagContainerTestHelpers.CreateContainerWithThreeZuneTags();
 
-            var mediaIDGuid = new MediaIdGuid { Guid = ZuneTagContainerTestHelpers.SomeGuid, MediaId = MediaIds.ZuneMediaID };
+            var mediaIdGuid = new MediaIdGuid(MediaIds.ZuneMediaID,ZuneTagContainerTestHelpers.SomeGuid);
 
-            container.Add(mediaIDGuid);
+            container.Add(mediaIdGuid);
 
             //we know that there are 3 items in the container so there should be no more
             Assert.That(container.Count(), Is.EqualTo(3));
@@ -89,7 +89,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ZuneTagContainerTestHelpers.CreateEmptyContainer();
 
-            var mediaIdGuid = new MediaIdGuid { Guid = ZuneTagContainerTestHelpers.SomeGuid, MediaId = MediaIds.ZuneMediaID };
+            var mediaIdGuid = new MediaIdGuid(MediaIds.ZuneMediaID, ZuneTagContainerTestHelpers.SomeGuid);
 
             container.Add(mediaIdGuid);
 
@@ -108,11 +108,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ZuneTagContainerTestHelpers.CreateContainerWithZuneAlbumartistMediaIDWithRandomGuid();
 
-            var albumArtistMediaIdGuid = new MediaIdGuid
-                                             {
-                                                 Guid = ZuneTagContainerTestHelpers.SomeGuid,
-                                                 MediaId = MediaIds.ZuneAlbumArtistMediaID
-                                             };
+            var albumArtistMediaIdGuid = new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID, ZuneTagContainerTestHelpers.SomeGuid);
 
             container.Add(albumArtistMediaIdGuid);
 
