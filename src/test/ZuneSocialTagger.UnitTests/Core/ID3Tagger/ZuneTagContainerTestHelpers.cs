@@ -53,7 +53,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         }
 
         /// <summary>
-        /// Contains: Artist = "Editors", Album= "In This Light And On This Evening", Title = "The Boxer", Year = "2009"
+        /// Contains: AlbumArtist = "Various Artists", Artist = "Editors", Album= "In This Light And On This Evening", Title = "The Boxer", Year = "2009"
         /// </summary>
         /// <returns></returns>
         public static ZuneTagContainer CreateContainerWithSomeStandardMetaData()
@@ -62,6 +62,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
 
             container.Add(new TextFrame("TALB", SomeAlbum, Encoding.UTF8));
             container.Add(new TextFrame("TPE1", SomeArtist, Encoding.UTF8));
+            container.Add(new TextFrame("TPE2", "Various Artists", Encoding.UTF8));
             container.Add(new TextFrame("TIT2", SomeTitle, Encoding.UTF8));
             container.Add(new TextFrame("TYER", SomeYear, Encoding.UTF8));
 

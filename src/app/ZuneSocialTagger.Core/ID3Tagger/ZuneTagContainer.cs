@@ -59,7 +59,8 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
             return new MetaData
                        {
-                           AlbumArtist = GetValue(allTextFrames, "TPE1"),
+                           AlbumArtist = GetValue(allTextFrames, "TPE2"),
+                           ContributingArtist = GetValue(allTextFrames, "TPE1"),
                            AlbumTitle = GetValue(allTextFrames, "TALB"),
                            SongTitle = GetValue(allTextFrames, "TIT2"),
                            Year = GetValue(allTextFrames, "TYER"),

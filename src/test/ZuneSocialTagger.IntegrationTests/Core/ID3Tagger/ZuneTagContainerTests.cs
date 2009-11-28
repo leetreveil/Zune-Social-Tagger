@@ -28,6 +28,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
             MetaData data = zuneTagContainer.ReadMetaData();
 
             Assert.That(data.AlbumArtist, Is.EqualTo("Subkulture"));
+            Assert.That(data.ContributingArtist, Is.EqualTo("Subkulture"));
             Assert.That(data.AlbumTitle, Is.EqualTo("Erasus"));
             Assert.That(data.SongTitle, Is.EqualTo("Erasus"));
             Assert.That(data.Year, Is.EqualTo("2007"));

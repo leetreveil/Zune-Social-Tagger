@@ -129,8 +129,19 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
 
             MetaData metaData = container.ReadMetaData();
 
-            Assert.That(metaData.AlbumArtist, Is.EqualTo(ZuneTagContainerTestHelpers.SomeArtist));
+            Assert.That(metaData.AlbumArtist, Is.EqualTo("Various Artists"));
         }
+
+        [Test]
+        public void Then_it_should_be_able_to_get_the_contributing_artist()
+        {
+            var container = ZuneTagContainerTestHelpers.CreateContainerWithSomeStandardMetaData();
+
+            MetaData metaData = container.ReadMetaData();
+
+            Assert.That(metaData.ContributingArtist, Is.EqualTo(ZuneTagContainerTestHelpers.SomeArtist));
+        }
+
 
         [Test]
         public void Then_it_should_be_able_to_get_the_album_title()
