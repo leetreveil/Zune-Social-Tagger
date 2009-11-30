@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
@@ -14,6 +15,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
 
         public AlbumDocumentReader(string url) : this(XmlReader.Create(url))
         {
+
         }
 
         public AlbumDocumentReader(XmlReader reader)
@@ -87,20 +89,22 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
 
         private string GetAlbumArtist(SyndicationFeed feed)
         {
-            XElement primaryArtistElement =
+            Collection<XElement> primaryArtistElements =
                 feed.ElementExtensions.ReadElementExtensions<XElement>("primaryArtist",
-                                   "http://schemas.zune.net/catalog/music/2007/10").First();
+                                                                       "http://schemas.zune.net/catalog/music/2007/10");
 
-            return primaryArtistElement.Elements().Last().Value;
+
+            return primaryArtistElements.Count > 0 ? primaryArtistElements.First().Elements().Last().Value : String.Empty;
         }
 
-        private int GetReleaseYear(SyndicationFeed feed)
+        private int? GetReleaseYear(SyndicationFeed feed)
         {
-            XElement releaseDateElement =
+            //TODO: what if the element does not exist?
+            Collection<XElement> releaseDateElements =
                 feed.ElementExtensions.ReadElementExtensions<XElement>("releaseDate",
-                                                                       "http://schemas.zune.net/catalog/music/2007/10").First();
+                                                                       "http://schemas.zune.net/catalog/music/2007/10");
 
-            return DateTime.Parse(releaseDateElement.Value).Year;
+            return releaseDateElements.Count > 0 ? (int?) DateTime.Parse(releaseDateElements.First().Value).Year : null;
         }
 
         private string GetArtworkUrl(SyndicationFeed feed)

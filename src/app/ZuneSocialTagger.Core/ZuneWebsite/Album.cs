@@ -9,7 +9,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         public IEnumerable<Track> Tracks { get; set; }
         public string AlbumArtist { get; set; }
         public string AlbumTitle { get; set; }
-        public int AlbumReleaseYear { get; set; }
+        public int? AlbumReleaseYear { get; set; }
         public string AlbumArtworkUrl { get; set; }
 
         public bool IsValid

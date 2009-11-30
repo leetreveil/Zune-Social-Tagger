@@ -96,6 +96,9 @@
     <Content Include="SampleData\nonzunewebpage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SampleData\missingdata.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SampleData\reservoirdogsostdoc.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

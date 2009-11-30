@@ -111,4 +111,31 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         }
 
     }
+
+    [TestFixture]
+    public class WhenAnAlbumDetailsFileIsLoadedWithMissingData
+    {
+        private string _pathToDoc = "SampleData/missingdata.xml";
+
+        [Test]
+        public void Then_it_should_return_null_or_empty_and_not_fail_when_reading_release_year()
+        {
+            var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
+
+            Album album = docReader.Read();
+           
+            Assert.That(album.AlbumReleaseYear,Is.Null);
+        }
+
+        [Test]
+        public void Then_it_should_return_null_or_empty_and_not_fail_when_reading_album_artist()
+        {
+            var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
+
+            Album album = docReader.Read();
+
+            Assert.That(album.AlbumArtist, Is.Null);
+        }
+
+    }
 }

@@ -54,9 +54,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 foreach (var filePath in files)
                 {
                     ZuneTagContainer container = ZuneTagContainerFactory.GetContainer(filePath);
-                    _model.Rows.Add(new DetailRow(filePath,container));
+
+                    _model.Rows.Add(new DetailRow(filePath, container));
                 }
 
+                SortTracks();
+
+                //takes the first track read from the model and updates the metadata view
                 SetAlbumDetailsFromFile(_model.Rows.Count, _model.Rows.First().MetaData);
 
                 base.OnMoveNextOverride();
@@ -65,6 +69,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 Console.WriteLine(id3TagException);
                 ErrorMessageBox.Show("Error reading album " + Environment.NewLine + id3TagException.Message);
+            }
+        }
+
+        private void SortTracks()
+        {
+            bool doAllTracksHaveAnIndex = _model.Rows.All(x => IsNumeric(x.MetaData.Index));
+
+            if (doAllTracksHaveAnIndex)
+            {
+                var sortedRows = _model.Rows.OrderBy(sel => int.Parse(sel.MetaData.Index)).ToList();
+
+                if (sortedRows.Count() > 0)
+                    _model.Rows.Clear();
+
+                foreach (var row in sortedRows)
+                    _model.Rows.Add(row);
             }
         }
 
@@ -84,5 +104,20 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _model.SearchBarViewModel.SearchText = songMetaData.AlbumTitle + " " +
                                                    songMetaData.AlbumArtist;
         }
+
+        public static bool IsNumeric(object value)
+        {
+            try
+            {
+                int i = Convert.ToInt32(value.ToString());
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
+
+
     }
 }

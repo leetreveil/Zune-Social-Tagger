@@ -83,28 +83,33 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             ThreadPool.QueueUserWorkItem(_ =>
              {
-                 var reader = new AlbumDocumentReader(url);
+                 try
+                 {
+                     var reader = new AlbumDocumentReader(url);
 
-                 Album album = reader.Read();
-                 //do updating of controls on bound ui objects on UI thread
+                     Album album = reader.Read();
+
+                     //do updating of controls on bound ui objects on UI thread
                      base.UIDispatcher.Invoke(new Action(() =>
-                     {
-                         if (album.IsValid)
                          {
-                             UpdateAlbumMetaDataViewModel(album);
-                             AddSelectedSongs(album);
-                         }
-                         else
-                         {
-                             this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel
+                             if (album.IsValid)
                              {
-                                 SelectedAlbumTitle = "Sorry could not get album details"
-                             };
-                         }
+                                 UpdateAlbumMetaDataViewModel(album);
+                                 AddSelectedSongs(album);
+                             }
+                             else
+                             {
+                                 this.SearchResultsDetailsViewModel.SelectedAlbumTitle =
+                                     "Sorry could not get album details";
+                             }}));
 
-                   }));
                      this.IsLoading = false;
-
+                 }
+                 catch (Exception)
+                 {
+                     this.SearchResultsDetailsViewModel.SelectedAlbumTitle =
+                            "Sorry could not get album details";
+                 }
              });
 
 
