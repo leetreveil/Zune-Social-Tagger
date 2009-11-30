@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using System.Xml;
 
-namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
+namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
 {
     [TestFixture]
     public class WhenSearchingForTheArtistPendulumInADocument
@@ -37,6 +37,23 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
             Assert.That(firstResult.Guid, Is.EqualTo(new Guid("abecf900-0100-11db-89ca-0019b92a3933")));
             Assert.That(firstResult.Artist, Is.EqualTo("Creedence Clearwater Revival"));
             Assert.That(firstResult.Title, Is.EqualTo("Pendulum"));
+        }
+
+        [Test]
+        public void Then_it_should_be_able_to_get_the_url_to_the_image_for_the_album()
+        {
+            AlbumSearchResult result = AlbumSearch.ReadFromXmlDocument(XmlReader.Create(_file)).First();
+
+            Assert.That(result.ArtworkUrl, Is.EqualTo(
+                                               "http://image.catalog.zune.net/v3.0/image/abecf900-0300-11db-89ca-0019b92a3933?width=100&height=100"));
+        }
+
+        [Test]
+        public void Then_it_should_be_able_to_get_the_release_year()
+        {
+            AlbumSearchResult result = AlbumSearch.ReadFromXmlDocument(XmlReader.Create(_file)).First();
+
+            Assert.That(result.ReleaseYear, Is.EqualTo(1970));
         }
     }
 }

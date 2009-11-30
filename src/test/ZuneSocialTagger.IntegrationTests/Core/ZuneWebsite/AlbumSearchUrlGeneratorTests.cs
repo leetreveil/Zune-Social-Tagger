@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using ZuneSocialTagger.Core.ZuneWebsite;
 
-namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
+namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
 {
     [TestFixture]
     public class WhenProvidedWithAnArtistToSearchForAndAPageNumber
@@ -35,8 +35,8 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
             string result = AlbumSearchUrlGenerator.CreateUrl("Pendulum");
 
             Assert.That(result,
-            Is.EqualTo(
-                "http://social.zune.net/frag/AlbumSearchBlock/?PageIndex=1&IsFullListView=true&keyword=Pendulum&PageSize=&blockName=AlbumSearchBlock&id=_searchAlbums&"));
+                        Is.EqualTo(
+                            "http://social.zune.net/frag/AlbumSearchBlock/?PageIndex=1&IsFullListView=true&keyword=Pendulum&PageSize=&blockName=AlbumSearchBlock&id=_searchAlbums&"));
         }
 
     }

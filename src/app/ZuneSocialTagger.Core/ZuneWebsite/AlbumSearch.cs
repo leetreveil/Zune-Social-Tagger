@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Xml.Linq;
@@ -34,19 +35,45 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             {
                 foreach (var item in feed.Items)
                 {
-                    //Console.WriteLine(item.Title.Text);
-
                     XElement artistElement = item.ElementExtensions.ReadElementExtensions<XElement>("primaryArtist", "http://schemas.zune.net/catalog/music/2007/10").First();
 
-                    //XElement idElement = artistElement.Elements().Where(x => x.Name.LocalName == "id").First();
                     XElement artistTitleElement = artistElement.Elements().Where(x => x.Name.LocalName == "name").First();
 
-                    tempList.Add(new AlbumSearchResult { Title = item.Title.Text, Guid = item.Id.ExtractGuidFromUrnUuid(),Artist = artistTitleElement.Value});
-                    //yield return new AlbumSearchResult{Title = item.Title.Text,Guid = ExtractGuidFromUrnUuid(item.Id)};
+                    Guid imageGuid =
+                        item.ElementExtensions.ReadElementExtensions<XElement>("image","http://schemas.zune.net/catalog/music/2007/10")
+                            .First().Value.ExtractGuidFromUrnUuid();
+
+
+                    string imagePath = String.Format("http://image.catalog.zune.net/v3.0/image/{0}?width=100&height=100", imageGuid);
+                
+
+                    tempList.Add(new AlbumSearchResult { Title = item.Title.Text, 
+                                                         Guid = item.Id.ExtractGuidFromUrnUuid(),
+                                                         Artist = artistTitleElement.Value,
+                                                         ArtworkUrl = imagePath,
+                                                         ReleaseYear = GetReleaseYear(item) 
+                                                        });
                 }
             }
 
             return tempList;
+        }
+
+        private static int? GetReleaseYear(SyndicationItem feed)
+        {
+            //TODO: refactor this class and AlbumDocumentReader into one single class.
+            XElement releaseDateElement = GetElement(feed, "releaseDate");
+
+            return releaseDateElement != null ? DateTime.Parse(releaseDateElement.Value).Year : (int?)null;
+        }
+
+        private static XElement GetElement(SyndicationItem feed, string elementName)
+        {
+            Collection<XElement> elements =
+                feed.ElementExtensions.ReadElementExtensions<XElement>(elementName,
+                                                           "http://schemas.zune.net/catalog/music/2007/10");
+
+            return elements.Count > 0 ? elements.First() : null;
         }
     }
 }

@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using ZuneSocialTagger.Core.ZuneWebsite;
 
-namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsiteScraper
+namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
 {
     [TestFixture]
     public class WhenAValidUrlIsProvided
