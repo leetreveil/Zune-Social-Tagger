@@ -8,7 +8,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         public Guid MediaID { get; set; }
         public string Title { get; set; }
         public string Artist { get; set; }
-        public int Number { get; set; }
+        public int? Number { get; set; }
 
         public bool IsValid()
         {

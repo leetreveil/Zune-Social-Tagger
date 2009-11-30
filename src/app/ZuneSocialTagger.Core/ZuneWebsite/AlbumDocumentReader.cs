@@ -62,61 +62,64 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
 
         private string GetArtistFromTrack(SyndicationItem item)
         {
-            XElement primaryArtistElement =
-                item.ElementExtensions.ReadElementExtensions<XElement>("primaryArtist",
-                                                           "http://schemas.zune.net/catalog/music/2007/10").First();
+            XElement primaryArtistElement = GetElement(item, "primaryArtist");
 
-            return primaryArtistElement.Elements().Last().Value;
+
+            return primaryArtistElement != null ? primaryArtistElement.Elements().Last().Value : null;
         }
 
         private Guid GetArtistMediaIDFromTrack(SyndicationItem item)
         {
-            XElement primaryArtistElement =
-                item.ElementExtensions.ReadElementExtensions<XElement>("primaryArtist",
-                                               "http://schemas.zune.net/catalog/music/2007/10").First();
+            XElement primaryArtistElement = GetElement(item, "primaryArtist");
 
-            return primaryArtistElement.Elements().First().Value.ExtractGuidFromUrnUuid();
+            return primaryArtistElement != null ?  primaryArtistElement.Elements().First().Value.ExtractGuidFromUrnUuid() : new Guid();
         }
 
-        private int GetTrackNumberFromTrack(SyndicationItem item)
+        private int? GetTrackNumberFromTrack(SyndicationItem item)
         {
-            XElement trackNumberElement =
-                item.ElementExtensions.ReadElementExtensions<XElement>("trackNumber",
-                                   "http://schemas.zune.net/catalog/music/2007/10").First();
+            XElement trackNumberElement = GetElement(item, "trackNumber");
 
-            return int.Parse(trackNumberElement.Value);
+            return trackNumberElement != null ? int.Parse(trackNumberElement.Value) : (int?) null;
         }
 
         private string GetAlbumArtist(SyndicationFeed feed)
         {
-            Collection<XElement> primaryArtistElements =
-                feed.ElementExtensions.ReadElementExtensions<XElement>("primaryArtist",
-                                                                       "http://schemas.zune.net/catalog/music/2007/10");
+            XElement primaryArtistElement = GetElement(feed, "primaryArtist");
 
-
-            return primaryArtistElements.Count > 0 ? primaryArtistElements.First().Elements().Last().Value : String.Empty;
+            return primaryArtistElement != null ? primaryArtistElement.Elements().Last().Value : null;
         }
 
         private int? GetReleaseYear(SyndicationFeed feed)
         {
-            //TODO: what if the element does not exist?
-            Collection<XElement> releaseDateElements =
-                feed.ElementExtensions.ReadElementExtensions<XElement>("releaseDate",
-                                                                       "http://schemas.zune.net/catalog/music/2007/10");
+            XElement releaseDateElement = GetElement(feed, "releaseDate");
 
-            return releaseDateElements.Count > 0 ? (int?) DateTime.Parse(releaseDateElements.First().Value).Year : null;
+            return releaseDateElement != null ? DateTime.Parse(releaseDateElement.Value).Year : (int?) null;
         }
 
         private string GetArtworkUrl(SyndicationFeed feed)
         {
-            XElement imageElement =
-             feed.ElementExtensions.ReadElementExtensions<XElement>("image",
-                                                                   "http://schemas.zune.net/catalog/music/2007/10").First();
+            XElement imageElement = GetElement(feed, "image");
 
-            XElement element = imageElement.Elements().First();
+            return imageElement != null ? String.Format("http://image.catalog.zune.net/v3.0/image/{0}?width=234&height=320",
+                imageElement.Elements().First().Value.ExtractGuidFromUrnUuid()) : null;
+        }
 
-            return String.Format("http://image.catalog.zune.net/v3.0/image/{0}?width=234&height=320",
-                                 element.Value.ExtractGuidFromUrnUuid());
+        private XElement GetElement(SyndicationFeed feed, string elementName)
+        {
+            Collection<XElement> elements =
+                feed.ElementExtensions.ReadElementExtensions<XElement>(elementName,
+                                                           "http://schemas.zune.net/catalog/music/2007/10");
+
+            return elements.Count > 0 ? elements.First() : null;
+        }
+
+        private XElement GetElement(SyndicationItem item, string elementName)
+        {
+            Collection<XElement> elements =
+                item.ElementExtensions.ReadElementExtensions<XElement>(elementName,
+                                                           "http://schemas.zune.net/catalog/music/2007/10");
+
+            return elements.Count > 0 ? elements.First() : null;
         }
     }
 }
