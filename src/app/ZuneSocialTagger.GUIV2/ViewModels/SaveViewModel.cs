@@ -5,6 +5,7 @@ using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Views;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -41,9 +42,25 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 try
                 {
-                    row.Container.Add(new MediaIdGuid(MediaIds.ZuneAlbumMediaID,row.AlbumDetails.AlbumMediaID));
+                    row.Container.Add(new MediaIdGuid(MediaIds.ZuneAlbumMediaID, row.AlbumDetails.AlbumMediaID));
                     row.Container.Add(new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID, row.SelectedSong.ArtistMediaID));
                     row.Container.Add(new MediaIdGuid(MediaIds.ZuneMediaID, row.SelectedSong.MediaID));
+
+
+                    if (Properties.Settings.Default.UpdateAlbumInfo)
+                        if (row.AlbumDetails.HasAllMetaData)
+                            if (row.SelectedSong.HasAllMetaData)
+                            {
+                                var converter = new TrackAndAlbumToMetaDataConverter(row.AlbumDetails, row.SelectedSong);
+
+                                if (converter.CanConvert)
+                                {
+                                    MetaData metaData = converter.Convert();
+
+                                    if (metaData.IsValid)
+                                        row.Container.WriteMetaData(metaData);
+                                }
+                            }
 
                     Id3TagManager.WriteV2Tag(row.FilePath, row.Container.GetContainer());
                 }

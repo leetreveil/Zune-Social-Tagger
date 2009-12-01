@@ -36,12 +36,12 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                        };
         }
 
-        public string ConvertDiscNoToString(int? discNumber)
+        private static string ConvertDiscNoToString(int? discNumber)
         {
             return String.Format("{0}/{0}", discNumber);
         }
 
-        public string CombinePrimaryArtistAndAnyAdditionalArtists(string primaryArtists, IEnumerable<string> additional)
+        private static string CombinePrimaryArtistAndAnyAdditionalArtists(string primaryArtists, IEnumerable<string> additional)
         {
             var joinedList = new List<string> {primaryArtists};
             joinedList.AddRange(additional);

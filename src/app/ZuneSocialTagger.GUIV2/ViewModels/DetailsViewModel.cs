@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using ZuneSocialTagger.GUIV2.Models;
+using System.Windows.Forms;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -37,6 +38,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get
             {
                 return "Save";
+            }
+        }
+
+        public bool UpdateAlbumInfo
+        {
+            get { return Properties.Settings.Default.UpdateAlbumInfo; }
+            set
+            {
+                if (value != UpdateAlbumInfo)
+                {
+                    Properties.Settings.Default.UpdateAlbumInfo = value;
+                    //TODO: move the save to when the application is being shutdown
+                    Properties.Settings.Default.Save();
+                    base.InvokePropertyChanged("UpdateAlbumInfo");
+                }
+
             }
         }
     }

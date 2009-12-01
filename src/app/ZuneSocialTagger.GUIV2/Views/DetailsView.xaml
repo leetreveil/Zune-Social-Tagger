@@ -14,6 +14,7 @@
 			<RowDefinition Height="100"></RowDefinition>
 			<RowDefinition Height="10"></RowDefinition>
 			<RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
 		</Grid.RowDefinitions>
 		            <Border Grid.Row="0">
                     <Grid>
@@ -47,7 +48,7 @@
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                            <TextBlock Width="23" Text="{Binding MetaData.Index}" VerticalAlignment="Center" FontSize="18"/>
+                                            <TextBlock Width="23" Text="{Binding MetaData.TrackNumber}" VerticalAlignment="Center" FontSize="18"/>
                                             <TextBlock Text="{Binding MetaData.SongTitle}" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                         </StackPanel>
 
@@ -55,7 +56,7 @@
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Height="25" Orientation="Horizontal">
-                                                        <TextBlock Width="15" Text="{Binding Number}" VerticalAlignment="Top" FontSize="12" FontWeight="Bold"/>
+                                                        <TextBlock Width="15" Text="{Binding TrackNumber}" VerticalAlignment="Top" FontSize="12" FontWeight="Bold"/>
                                                         <TextBlock Text="{Binding Title}" VerticalAlignment="Top" Margin="10,0,0,0"/>
                                                     </StackPanel>
                                                 </DataTemplate>
@@ -77,6 +78,8 @@
                     </Grid>
 
                 </Border>
+        
+        <CheckBox IsChecked="{Binding UpdateAlbumInfo}" VerticalAlignment="Bottom" Grid.Row="3" Content="Update album information (artist, title, etc)"/>
 	</Grid>
  	
 </UserControl>

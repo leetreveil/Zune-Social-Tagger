@@ -8,7 +8,7 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Margin="3">
-                        <TextBlock Width="23" Text="{Binding Number}" VerticalAlignment="Center" FontSize="18"/>
+                        <TextBlock Width="23" Text="{Binding TrackNumber}" VerticalAlignment="Center" FontSize="18"/>
                         <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontSize="13.333" Margin="10,0,0,0"/>
                     </StackPanel>
                 </DataTemplate>
