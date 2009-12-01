@@ -12,7 +12,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
     {
         public static IEnumerable<Album> SearchFor(string searchString)
         {
-            string searchUrl = String.Format("{0}?q={1}",Urls.Album, searchString);
+            string searchUrl = String.Format("{0}?q={1}", Urls.Album, searchString);
 
             XmlReader reader = XmlReader.Create(searchUrl);
 
@@ -29,28 +29,25 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             {
                 foreach (var item in feed.Items)
                 {
-                    XElement artistElement = item.ElementExtensions.ReadElementExtensions<XElement>("primaryArtist", Urls.Schema).First();
-
-                    XElement artistTitleElement = artistElement.Elements().Where(x => x.Name.LocalName == "name").First();
-
-                    Guid imageGuid =
-                        item.ElementExtensions.ReadElementExtensions<XElement>("image", Urls.Schema)
-                            .First().Value.ExtractGuidFromUrnUuid();
-
-
-                    string imagePath = String.Format("{0}{1}?width=60&height=60",Urls.Image, imageGuid);
-                
-
-                    tempList.Add(new Album { Title = item.Title.Text, 
-                                                         AlbumMediaID = item.Id.ExtractGuidFromUrnUuid(),
-                                                         Artist = artistTitleElement.Value,
-                                                         ArtworkUrl = imagePath,
-                                                         ReleaseYear = GetReleaseYear(item) 
-                                                        });
+                    tempList.Add(new Album
+                         {
+                             Title = item.Title.Text,
+                             AlbumMediaID = item.Id.ExtractGuidFromUrnUuid(),
+                             Artist = GetAlbumArtist(item),
+                             ArtworkUrl = GetArtworkUrl(item),
+                             ReleaseYear = GetReleaseYear(item)
+                         });
                 }
             }
 
             return tempList;
+        }
+
+        private static string GetAlbumArtist(SyndicationItem feed)
+        {
+            XElement primaryArtistElement = GetElement(feed, "primaryArtist");
+
+            return primaryArtistElement != null ? primaryArtistElement.Elements().Last().Value : null;
         }
 
         private static int? GetReleaseYear(SyndicationItem feed)
@@ -58,15 +55,25 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             //TODO: refactor this class and AlbumDocumentReader into one single class.
             XElement releaseDateElement = GetElement(feed, "releaseDate");
 
-            return releaseDateElement != null ? DateTime.Parse(releaseDateElement.Value).Year : (int?)null;
+            return releaseDateElement != null ? DateTime.Parse(releaseDateElement.Value).Year : (int?) null;
         }
 
         private static XElement GetElement(SyndicationItem feed, string elementName)
         {
             Collection<XElement> elements =
-                feed.ElementExtensions.ReadElementExtensions<XElement>(elementName,Urls.Schema);
+                feed.ElementExtensions.ReadElementExtensions<XElement>(elementName, Urls.Schema);
 
             return elements.Count > 0 ? elements.First() : null;
+        }
+
+        private static string GetArtworkUrl(SyndicationItem feed)
+        {
+            XElement imageElement = GetElement(feed, "image");
+
+            return imageElement != null
+                       ? String.Format("{0}{1}?width=60&height=60", Urls.Image,
+                                       imageElement.Elements().First().Value.ExtractGuidFromUrnUuid())
+                       : null;
         }
     }
 }
