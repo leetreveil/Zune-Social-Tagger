@@ -11,11 +11,10 @@ namespace ZuneSocialTagger.IntegrationTests
             while (true)
             {
                 Console.WriteLine("Search for artist:");
+
                 string artist = Console.ReadLine();
 
-                AlbumSearch.SearchForAsync(artist,
-                                           result =>
-                                           result.ForEach(
+                AlbumSearch.SearchForAsync(artist, result => result.ForEach(
                                                x => Console.WriteLine("Artist: {0}, Album: {1}", x.Artist, x.Title)));
             }
         }

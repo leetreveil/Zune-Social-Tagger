@@ -74,14 +74,12 @@
     <Compile Include="Core\ID3Tagger\ZuneTagContainerFactoryTests.cs" />
     <Compile Include="Core\ID3Tagger\ZuneTagContainerTests.cs" />
     <Compile Include="Core\ZuneWebsite\AlbumSearchTests.cs" />
-    <Compile Include="Core\ZuneWebsite\AlbumSearchUrlGeneratorTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Core\ZuneWebsite\AlbumDocumentReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\ZuneWebsite\PageDownloaderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SampleData\albumsearchresult.xml">
+    <Content Include="SampleData\albumsearch.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SampleData\id3v1.1.mp3">
@@ -93,16 +91,10 @@
     <Content Include="SampleData\id3v2.3withartwork.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SampleData\nonzunewebpage.xml">
+    <Content Include="SampleData\albumdetailswithmissingdata.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SampleData\missingdata.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\reservoirdogsostdoc.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\validalbumwebpage.xml">
+    <Content Include="SampleData\albumdetails.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

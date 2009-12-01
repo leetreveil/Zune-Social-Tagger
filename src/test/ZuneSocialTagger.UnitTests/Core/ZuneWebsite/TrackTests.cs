@@ -4,13 +4,11 @@ using System;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using System.Collections.Generic;
 
-namespace ZuneSocialTagger.UnitTests.Core
+namespace ZuneSocialTagger.UnitTests.Core.ZuneWebsite
 {
     [TestFixture]
-    public class ExtensionMethodsTests
+    public class TrackTests
     {
-        #region IEnumerable<Track> Tests
-
         private readonly Track _validGuid = new Track { MediaID = Guid.NewGuid(), Title = "N/A",ArtistMediaID = Guid.NewGuid()};
         private readonly Track _guidWithNullGuid = new Track { Title = "Hello" };
         private readonly Track _guidWithBlankGuid = new Track { MediaID = Guid.Empty };
@@ -66,21 +64,6 @@ namespace ZuneSocialTagger.UnitTests.Core
         {
             Assert.That(new List<Track> { _guidWithNullTitleAndValidGuid }.AreAllValid(), Is.False);
         }
-
-        #endregion
-
-        #region UrlTests
-
-        [TestCase("http://image.catalog.zune.net/v3.0/image/7510d300-0300-11db-89ca-0019b92a3933?resize=true&width=240&height=240",Result = "http://image.catalog.zune.net/v3.0/image/7510d300-0300-11db-89ca-0019b92a3933?resize=false&width=480&height=480")]
-        [TestCase("http://image.catalog.zune.net/v3.0/image/7510d300-0300-11db-89ca-0019b92a3933?resize=false&width=240&height=240", Result = "http://image.catalog.zune.net/v3.0/image/7510d300-0300-11db-89ca-0019b92a3933?resize=false&width=480&height=480")]
-        [TestCase("http://image.catalog.zune.net/v3.0/image/7510d300-0300-11db-89ca-0019b92a3933?resize=true&width=75&height=75", Result = "http://image.catalog.zune.net/v3.0/image/7510d300-0300-11db-89ca-0019b92a3933?resize=false&width=480&height=480")]
-        public string Should_be_able_to_convert_a_standard_zune_artwork_url_to_its_non_resised_version(string input)
-        {
-            return input.ConvertToNonResizedImageUrl();
-        }
-
-
-        #endregion
 
     }
 }

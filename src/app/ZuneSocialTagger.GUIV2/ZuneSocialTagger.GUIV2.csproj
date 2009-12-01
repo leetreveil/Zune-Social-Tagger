@@ -82,8 +82,6 @@
     <Compile Include="Converters\AlbumCountToStringConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Models\DetailRow.cs" />
-    <Compile Include="Models\SongWithNumberAndGuid.cs" />
-    <Compile Include="Models\ZuneNetAlbumMetaData.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
     <Compile Include="ErrorMessageBox.cs" />
     <Compile Include="NotifyPropertyChangedImpl.cs" />

@@ -1,5 +1,6 @@
-using System;
 using System.Windows.Threading;
+
+
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public abstract class ViewModelBase : NotifyPropertyChangedImpl

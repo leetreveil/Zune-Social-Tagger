@@ -60,7 +60,7 @@
 	    <Setter Property="Template" Value="{DynamicResource bleh}"/>
     </Style>
 
-    <Style x:Key="ListBoxStyle1" TargetType="{x:Type ListBox}">
+    <Style x:Key="SearchResultsStyle" TargetType="{x:Type ListBox}">
         <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>

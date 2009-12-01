@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Controls;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.ViewModels;
@@ -28,9 +28,9 @@ namespace ZuneSocialTagger.GUIV2.Views
         {
             if (_viewModel != null && e.AddedItems.Count > 0)
             {
-                var result = (AlbumSearchResult)e.AddedItems[0];
+                var result = (Album)e.AddedItems[0];
 
-                _viewModel.LoadAlbum(String.Concat("http://catalog.zune.net/v3.0/en-US/music/album/",result.Guid.ToString()));
+                _viewModel.LoadAlbum(String.Concat("http://catalog.zune.net/v3.0/en-US/music/album/",result.AlbumMediaID.ToString()));
             }
         }
     }

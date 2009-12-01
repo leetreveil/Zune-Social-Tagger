@@ -39,10 +39,10 @@ namespace ZuneSocialTagger.IntegrationTests
                 Album result = scraper.Read();
 
                 Console.WriteLine("ZuneAlbumMediaID: {0}", result.AlbumMediaID);
-                Console.WriteLine("Album Artist: {0}", result.AlbumArtist);
-                Console.WriteLine("Title: {0}", result.AlbumTitle);
-                Console.WriteLine("Release Year: {0}", result.AlbumReleaseYear);
-                Console.WriteLine("Artwork url: {0}", result.AlbumArtworkUrl);
+                Console.WriteLine("Album Artist: {0}", result.Artist);
+                Console.WriteLine("Title: {0}", result.Title);
+                Console.WriteLine("Release Year: {0}", result.ReleaseYear);
+                Console.WriteLine("Artwork url: {0}", result.ArtworkUrl);
 
                 Console.WriteLine("Does this page have the minimum required info: {0}", result.IsValid);
                 Console.WriteLine("");

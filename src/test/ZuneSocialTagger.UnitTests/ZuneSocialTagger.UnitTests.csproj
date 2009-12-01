@@ -58,7 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\ExtensionMethodsTests.cs" />
+    <Compile Include="Core\ZuneWebsite\TrackTests.cs" />
     <Compile Include="Core\ID3Tagger\ZuneTagContainerTestHelpers.cs" />
     <Compile Include="Core\ID3Tagger\ZuneTagContainerTests.cs" />
     <Compile Include="Core\ZuneWebsite\AlbumTests.cs" />

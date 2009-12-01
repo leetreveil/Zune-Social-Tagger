@@ -13,12 +13,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private bool _canSearch;
         private RelayCommand<string> _searchCommand;
 
-        public ObservableCollection<AlbumSearchResult> SearchResults { get; set; }
+        public ObservableCollection<Album> SearchResults { get; set; }
         public event EventHandler StartedSearching;
 
         public SearchBarViewModel()
         {
-            SearchResults = new ObservableCollection<AlbumSearchResult>();
+            SearchResults = new ObservableCollection<Album>();
         }
 
         public string SearchText

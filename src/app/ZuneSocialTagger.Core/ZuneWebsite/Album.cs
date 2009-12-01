@@ -7,10 +7,10 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
     {
         public Guid AlbumMediaID { get; set; }
         public IEnumerable<Track> Tracks { get; set; }
-        public string AlbumArtist { get; set; }
-        public string AlbumTitle { get; set; }
-        public int? AlbumReleaseYear { get; set; }
-        public string AlbumArtworkUrl { get; set; }
+        public string Artist { get; set; }
+        public string Title { get; set; }
+        public int? ReleaseYear { get; set; }
+        public string ArtworkUrl { get; set; }
 
         public bool IsValid
         {

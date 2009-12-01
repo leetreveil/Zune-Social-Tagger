@@ -27,7 +27,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 this.SearchResultsDetailsViewModel = null;
         }
 
-        public ObservableCollection<AlbumSearchResult> Albums
+        public ObservableCollection<Album> Albums
         {
             get { return this.SearchBarViewModel.SearchResults; }
         }
@@ -115,17 +115,17 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             _model.AlbumDetailsFromWebsite = new WebsiteAlbumMetaDataViewModel
                                                  {
-                                                     Title = scrapeResult.AlbumTitle,
-                                                     Artist = scrapeResult.AlbumArtist,
-                                                     ArtworkUrl = scrapeResult.AlbumArtworkUrl,
-                                                     Year = scrapeResult.AlbumReleaseYear.ToString(),
+                                                     Title = scrapeResult.Title,
+                                                     Artist = scrapeResult.Artist,
+                                                     ArtworkUrl = scrapeResult.ArtworkUrl,
+                                                     Year = scrapeResult.ReleaseYear.ToString(),
                                                      SongCount = scrapeResult.Tracks.Count().ToString()
                                                  };
         }
 
         private void AddSelectedSongs(Album album)
         {
-            this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel { SelectedAlbumTitle = album.AlbumTitle };
+            this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel { SelectedAlbumTitle = album.Title };
 
             foreach (var track in album.Tracks)
                 this.SearchResultsDetailsViewModel.SelectedAlbumSongs.Add(track);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows.Input;
 using ID3Tag;
 using ZuneSocialTagger.Core.ID3Tagger;

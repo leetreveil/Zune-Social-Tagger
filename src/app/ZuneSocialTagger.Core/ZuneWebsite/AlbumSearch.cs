@@ -11,12 +11,12 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     public class AlbumSearch
     {
-        public static void SearchForAsync(string searchString, Action<IEnumerable<AlbumSearchResult>> callback)
+        public static void SearchForAsync(string searchString, Action<IEnumerable<Album>> callback)
         {
             ThreadPool.QueueUserWorkItem(_ => callback(SearchFor(searchString)));
         }
 
-        public static IEnumerable<AlbumSearchResult> SearchFor(string searchString)
+        public static IEnumerable<Album> SearchFor(string searchString)
         {
             string searchUrl = String.Format("http://catalog.zune.net/v3.0/en-US/music/album?q={0}", searchString);
 
@@ -25,9 +25,9 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             return ReadFromXmlDocument(reader);
         }
 
-        public static IList<AlbumSearchResult> ReadFromXmlDocument(XmlReader reader)
+        public static IList<Album> ReadFromXmlDocument(XmlReader reader)
         {
-            var tempList = new List<AlbumSearchResult>();
+            var tempList = new List<Album>();
 
             SyndicationFeed feed = SyndicationFeed.Load(reader);
 
@@ -44,11 +44,11 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                             .First().Value.ExtractGuidFromUrnUuid();
 
 
-                    string imagePath = String.Format("http://image.catalog.zune.net/v3.0/image/{0}?width=100&height=100", imageGuid);
+                    string imagePath = String.Format("http://image.catalog.zune.net/v3.0/image/{0}?width=60&height=60", imageGuid);
                 
 
-                    tempList.Add(new AlbumSearchResult { Title = item.Title.Text, 
-                                                         Guid = item.Id.ExtractGuidFromUrnUuid(),
+                    tempList.Add(new Album { Title = item.Title.Text, 
+                                                         AlbumMediaID = item.Id.ExtractGuidFromUrnUuid(),
                                                          Artist = artistTitleElement.Value,
                                                          ArtworkUrl = imagePath,
                                                          ReleaseYear = GetReleaseYear(item) 

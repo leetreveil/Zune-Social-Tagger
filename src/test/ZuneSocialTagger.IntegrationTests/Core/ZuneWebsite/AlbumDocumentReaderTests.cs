@@ -9,14 +9,14 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
     [TestFixture]
     public class WhenAZuneAlbumDetailsXmlFileIsLoaded
     {
-        private string _pathToDoc = "SampleData/reservoirdogsostdoc.xml";
+        private string _pathToDoc = "SampleData/albumdetails.xml";
 
         [Test]
         public void Then_it_should_be_able_to_get_the_title_of_the_album()
         {
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
-            Assert.That(docReader.Read().AlbumTitle, Is.EqualTo("Reservoir Dogs"));
+            Assert.That(docReader.Read().Title, Is.EqualTo("Reservoir Dogs"));
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         {
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
-            Assert.That(docReader.Read().AlbumArtist, Is.EqualTo("Movie Soundtracks"));
+            Assert.That(docReader.Read().Artist, Is.EqualTo("Movie Soundtracks"));
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         {
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
-            Assert.That(docReader.Read().AlbumReleaseYear, Is.EqualTo(1992));
+            Assert.That(docReader.Read().ReleaseYear, Is.EqualTo(1992));
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         {
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
-            Assert.That(docReader.Read().AlbumArtworkUrl, Is.EqualTo("http://image.catalog.zune.net/v3.0/image/9f3c6f4b-7787-dc11-883e-0019b9ef2915?width=234&height=320"));
+            Assert.That(docReader.Read().ArtworkUrl, Is.EqualTo("http://image.catalog.zune.net/v3.0/image/9f3c6f4b-7787-dc11-883e-0019b9ef2915?width=234&height=320"));
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
     [TestFixture]
     public class WhenAnAlbumDetailsFileIsLoadedWithMissingData
     {
-        private string _pathToDoc = "SampleData/missingdata.xml";
+        private string _pathToDoc = "SampleData/albumdetailswithmissingdata.xml";
 
         [Test]
         public void Then_it_should_return_null_or_empty_and_not_fail_when_reading_release_year()
@@ -124,7 +124,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
 
             Album album = docReader.Read();
            
-            Assert.That(album.AlbumReleaseYear,Is.Null);
+            Assert.That(album.ReleaseYear,Is.Null);
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
 
             Album album = docReader.Read();
 
-            Assert.That(album.AlbumArtist, Is.Null);
+            Assert.That(album.Artist, Is.Null);
         }
 
     }

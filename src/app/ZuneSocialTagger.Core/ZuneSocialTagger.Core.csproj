@@ -58,15 +58,10 @@
     <Compile Include="ID3Tagger\ZuneTagContainer.cs" />
     <Compile Include="ID3Tagger\ZuneTagContainerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ZuneWebsite\AlbumSearchResult.cs" />
     <Compile Include="ZuneWebsite\Album.cs" />
     <Compile Include="ZuneWebsite\Track.cs" />
-    <Compile Include="ZuneWebsite\WebpageParseException.cs" />
     <Compile Include="ZuneWebsite\AlbumDocumentReader.cs" />
-    <Compile Include="ZuneWebsite\PageDownloader.cs" />
-    <Compile Include="ZuneWebsite\PageDownloaderException.cs" />
     <Compile Include="ZuneWebsite\AlbumSearch.cs" />
-    <Compile Include="ZuneWebsite\AlbumSearchUrlGenerator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

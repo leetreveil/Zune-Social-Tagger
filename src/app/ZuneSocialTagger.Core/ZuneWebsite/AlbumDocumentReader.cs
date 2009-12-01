@@ -36,11 +36,11 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
 
             if (feed != null)
             {
-                album.AlbumTitle = feed.Title.Text;
-                album.AlbumArtist = GetAlbumArtist(feed);
+                album.Title = feed.Title.Text;
+                album.Artist = GetAlbumArtist(feed);
                 album.AlbumMediaID = feed.Id.ExtractGuidFromUrnUuid();
-                album.AlbumReleaseYear = GetReleaseYear(feed);
-                album.AlbumArtworkUrl = GetArtworkUrl(feed);
+                album.ReleaseYear = GetReleaseYear(feed);
+                album.ArtworkUrl = GetArtworkUrl(feed);
                 album.Tracks = GetTracks(feed.Items);
             }
 
