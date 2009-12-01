@@ -65,5 +65,20 @@ namespace ZuneSocialTagger.UnitTests.Core.ZuneWebsite
             Assert.That(new List<Track> { _guidWithNullTitleAndValidGuid }.AreAllValid(), Is.False);
         }
 
+        [Test]
+        public void Should_be_able_to_validate_a_track_when_it_has_all_the_neccessary_info()
+        {
+            Track validTrack = new Track(){Artist = "A",DiscNumber = 2009,Genre = "bleh",Title = "ha",TrackNumber = 1};
+
+            Assert.That(validTrack.HasAllMetaData,Is.True);
+        }
+
+        [Test]
+        public void Should_be_able_to_validate_that_a_track_when_it_has_missing_data()
+        {
+            Assert.That(_validGuid.HasAllMetaData,Is.False);
+        }
+
+
     }
 }

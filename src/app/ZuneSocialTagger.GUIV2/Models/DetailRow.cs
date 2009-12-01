@@ -42,16 +42,6 @@ namespace ZuneSocialTagger.GUIV2.Models
         }
 
         /// <summary>
-        /// Updates the container with the new details selected by the user
-        /// </summary>
-        private void AddSelectedSongToContainer()
-        {
-            //VERY IMPORTANT WE DO NOT WRITE BLANK GUIDS
-            //if (SelectedSong.MediaID != Guid.Empty)
-            //    this.TagContainer.Add(new MediaIdGuid {Guid = this.SelectedSong.MediaID, MediaId = MediaIds.ZuneMediaID});
-        }
-
-        /// <summary>
         /// Matches song titles
         /// </summary>
         /// <returns></returns>

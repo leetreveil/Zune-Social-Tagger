@@ -50,7 +50,21 @@ namespace ZuneSocialTagger.UnitTests.Core.ZuneWebsite
             Assert.That(album.IsValid,Is.True);
         }
 
+        [Test]
+        public void Should_be_able_to_validate_the_metadata_if_all_metadata_is_present()
+        {
+            var album = new Album() {Artist = "ha", ReleaseYear = 2009, Title = "ha"};
 
+            Assert.That(album.HasAllMetaData,Is.True);
+        }
 
+        [Test]
+        public void Should_be_able_to_validate_the_metadata_if_any_metadata_is_missing()
+        {
+            var album = new Album() { ReleaseYear = 2009, Title = "ha" };
+
+            Assert.That(album.HasAllMetaData, Is.False);
+         
+        }
     }
 }

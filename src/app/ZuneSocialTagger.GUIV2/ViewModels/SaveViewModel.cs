@@ -5,8 +5,6 @@ using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Views;
-using System.Threading;
-using ID3Tag.HighLevel;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {

@@ -14,6 +14,15 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         public string Genre { get; set; }
         public int? DiscNumber { get; set; }
 
+        public bool HasAllMetaData
+        {
+            get 
+            {
+                return !String.IsNullOrEmpty(Title) && !String.IsNullOrEmpty(Artist) && !String.IsNullOrEmpty(Genre) &&
+                       TrackNumber != null && DiscNumber != null; 
+            }
+        }
+
         public bool IsValid()
         {
             //A songGuid is valid if its guid is not empty and its title is not empty or null

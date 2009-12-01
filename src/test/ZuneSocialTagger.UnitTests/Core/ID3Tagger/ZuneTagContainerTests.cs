@@ -228,7 +228,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         [Test]
         public void Then_it_should_be_able_to_write_all_the_meta_data()
         {
-            MetaData metaData = new MetaData
+            var metaData = new MetaData
                                     {
                                         AlbumArtist = "Various Artists",
                                         AlbumTitle = "Forever",
@@ -261,7 +261,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         [Test]
         public void Then_it_should_update_any_existing_metadata()
         {
-            MetaData metaData = new MetaData
+            var metaData = new MetaData
             {
                 AlbumArtist = "Various Artists",
                 AlbumTitle = "Forever",
