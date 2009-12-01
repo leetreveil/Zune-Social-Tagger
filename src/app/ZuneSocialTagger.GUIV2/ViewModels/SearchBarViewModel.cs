@@ -17,6 +17,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public ObservableCollection<Album> SearchResults { get; set; }
         public event EventHandler StartedSearching;
+        public event EventHandler FinishedSearching;
 
         public SearchBarViewModel()
         {
@@ -97,16 +98,21 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                          foreach (var result in results)
                              this.SearchResults.Add(result);
                      }));
-
-
-                     this.IsSearching = false;
                  });
 
+            this.IsSearching = false;
+            InvokeFinishedSearching();
         }
 
         private void InvokeStartedSearching()
         {
             EventHandler searching = StartedSearching;
+            if (searching != null) searching(this, new EventArgs());
+        }
+
+        private void InvokeFinishedSearching()
+        {
+            EventHandler searching = FinishedSearching;
             if (searching != null) searching(this, new EventArgs());
         }
     }

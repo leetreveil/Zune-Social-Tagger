@@ -15,13 +15,15 @@ namespace ZuneSocialTagger.GUIV2.Views
         public SearchResultsView()
         {
             this.InitializeComponent();
-
             this.DataContextChanged += SearchResultsView_DataContextChanged;
         }
 
         void SearchResultsView_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {
             _viewModel = (SearchResultsViewModel)this.DataContext;
+
+            if (_viewModel != null)
+                _viewModel.SearchBarViewModel.FinishedSearching += delegate { this.lvAlbums.SelectedIndex = 0; };
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
