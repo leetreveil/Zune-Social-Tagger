@@ -97,10 +97,40 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
             Album album = docReader.Read();
-            Assert.That(album.Tracks.First().Number, Is.EqualTo(1));
-            Assert.That(album.Tracks.Last().Number, Is.EqualTo(16));
+            Assert.That(album.Tracks.First().TrackNumber, Is.EqualTo(1));
+            Assert.That(album.Tracks.Last().TrackNumber, Is.EqualTo(16));
         }
 
+        [Test]
+        public void Then_each_track_should_have_two_contributing_artist()
+        {
+            var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
+
+            Album album = docReader.Read();
+
+            Assert.That(album.Tracks.First().ContributingArtists.First(), Is.EqualTo("Quentin Tarantino"));
+            Assert.That(album.Tracks.First().ContributingArtists.Last(), Is.EqualTo("Some Artist"));
+        }
+
+        [Test]
+        public void Then_the_first_track_should_have_a_genre()
+        {
+            var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
+
+            Album album = docReader.Read();
+
+            Assert.That(album.Tracks.First().Genre, Is.EqualTo("Pop"));
+        }
+
+        [Test]
+        public void Then_the_first_track_should_have_a_disc_number()
+        {
+            var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
+
+            Album album = docReader.Read();
+
+            Assert.That(album.Tracks.First().DiscNumber, Is.EqualTo(1));
+        }
 
         [Test]
         public void Then_it_should_be_able_to_validate_itself()
@@ -135,6 +165,16 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
             Album album = docReader.Read();
 
             Assert.That(album.Artist, Is.Null);
+        }
+
+        [Test]
+        public void Then_it_should_return_an_empty_list_when_reading_the_contributing_artists()
+        {
+            var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
+
+            Album album = docReader.Read();
+
+            Assert.That(album.Tracks.First().ContributingArtists,Is.Empty);
         }
 
     }

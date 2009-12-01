@@ -12,7 +12,9 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
     {
         private readonly XmlReader _reader;
 
-        public AlbumDocumentReader(string url) : this(XmlReader.Create(url)) {}
+        public AlbumDocumentReader(string url) : this(XmlReader.Create(url))
+        {
+        }
 
         public AlbumDocumentReader(XmlReader reader)
         {
@@ -42,12 +44,17 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         {
             foreach (var item in items)
             {
-                yield return new Track{Title = item.Title.Text,
-                                       MediaID = item.Id.ExtractGuidFromUrnUuid(),
-                                       Artist = GetArtistFromTrack(item),
-                                       ArtistMediaID = GetArtistMediaIDFromTrack(item),
-                                       Number = GetTrackNumberFromTrack(item)
-                };
+                yield return new Track
+                                 {
+                                     Title = item.Title.Text,
+                                     MediaID = item.Id.ExtractGuidFromUrnUuid(),
+                                     Artist = GetArtistFromTrack(item),
+                                     ArtistMediaID = GetArtistMediaIDFromTrack(item),
+                                     TrackNumber = GetTrackNumberFromTrack(item),
+                                     ContributingArtists = GetContributingArtists(item),
+                                     Genre = GetGenre(item),
+                                     DiscNumber = GetDiscNumber(item)
+                                 };
             }
         }
 
@@ -55,15 +62,32 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         {
             XElement primaryArtistElement = GetElement(item, "primaryArtist");
 
-
             return primaryArtistElement != null ? primaryArtistElement.Elements().Last().Value : null;
+        }
+
+        private IEnumerable<string> GetContributingArtists(SyndicationItem item)
+        {
+            XElement contributingArtistsElement = GetElement(item, "contributingArtists");
+
+            return contributingArtistsElement != null
+                       ? contributingArtistsElement.Elements().Select(x => x.Elements().Last().Value).ToList()
+                       : new List<string>();
+        }
+
+        private string GetGenre(SyndicationItem item)
+        {
+            XElement primaryGenreElement = GetElement(item, "primaryGenre");
+
+            return primaryGenreElement != null ? primaryGenreElement.Elements().Last().Value : null;
         }
 
         private Guid GetArtistMediaIDFromTrack(SyndicationItem item)
         {
             XElement primaryArtistElement = GetElement(item, "primaryArtist");
 
-            return primaryArtistElement != null ?  primaryArtistElement.Elements().First().Value.ExtractGuidFromUrnUuid() : new Guid();
+            return primaryArtistElement != null
+                       ? primaryArtistElement.Elements().First().Value.ExtractGuidFromUrnUuid()
+                       : new Guid();
         }
 
         private int? GetTrackNumberFromTrack(SyndicationItem item)
@@ -71,6 +95,13 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             XElement trackNumberElement = GetElement(item, "trackNumber");
 
             return trackNumberElement != null ? int.Parse(trackNumberElement.Value) : (int?) null;
+        }
+
+        private int? GetDiscNumber(SyndicationItem item)
+        {
+            XElement discNumberElement = GetElement(item, "discNumber");
+
+            return discNumberElement != null ? int.Parse(discNumberElement.Value) : (int?)null;
         }
 
         private string GetAlbumArtist(SyndicationFeed feed)
@@ -91,8 +122,10 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         {
             XElement imageElement = GetElement(feed, "image");
 
-            return imageElement != null ? String.Format("{0}{1}?width=234&height=320",Urls.Image,
-                imageElement.Elements().First().Value.ExtractGuidFromUrnUuid()) : null;
+            return imageElement != null
+                       ? String.Format("{0}{1}?width=234&height=320", Urls.Image,
+                                       imageElement.Elements().First().Value.ExtractGuidFromUrnUuid())
+                       : null;
         }
 
         private XElement GetElement(SyndicationFeed feed, string elementName)
@@ -106,7 +139,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         private XElement GetElement(SyndicationItem item, string elementName)
         {
             Collection<XElement> elements =
-                item.ElementExtensions.ReadElementExtensions<XElement>(elementName,Urls.Schema);
+                item.ElementExtensions.ReadElementExtensions<XElement>(elementName, Urls.Schema);
 
             return elements.Count > 0 ? elements.First() : null;
         }

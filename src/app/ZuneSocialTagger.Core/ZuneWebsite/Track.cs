@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace ZuneSocialTagger.Core.ZuneWebsite
 {
@@ -8,7 +9,10 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         public Guid MediaID { get; set; }
         public string Title { get; set; }
         public string Artist { get; set; }
-        public int? Number { get; set; }
+        public int? TrackNumber { get; set; }
+        public IEnumerable<String> ContributingArtists { get; set; }
+        public string Genre { get; set; }
+        public int? DiscNumber { get; set; }
 
         public bool IsValid()
         {

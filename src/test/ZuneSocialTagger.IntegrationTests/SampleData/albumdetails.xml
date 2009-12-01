@@ -160,6 +160,10 @@
         <id>urn:uuid:9add0400-0600-11db-89ca-0019b92a3933</id>
         <name>Quentin Tarantino</name>
       </artist>
+      <artist>
+        <id>urn:uuid:9add0400-0600-11db-89ca-0019b92a3933</id>
+        <name>Some Artist</name>
+      </artist>
     </contributingArtists>
     <primaryGenre>
       <id>pop</id>
