@@ -41,7 +41,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="SONG TITLES IN THIS ALBUM" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe Caps" FontSize="13.333"/>
                         <TextBlock Grid.Column="1" Text="AVAILABLE SONG TITLES FROM ZUNE.NET" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe Caps" FontSize="13.333"/>
-                        <ListView VerticalAlignment="Top" Background="Transparent" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Rows}" Style="{DynamicResource ListBoxStyle1}">
+                        <ListView VerticalAlignment="Top" Background="Transparent" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Rows}" Style="{DynamicResource ListViewNoStyle}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Height="25" Margin="0,0,0,4" >
