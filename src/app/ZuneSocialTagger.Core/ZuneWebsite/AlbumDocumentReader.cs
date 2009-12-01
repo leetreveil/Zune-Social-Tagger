@@ -91,15 +91,14 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         {
             XElement imageElement = GetElement(feed, "image");
 
-            return imageElement != null ? String.Format("http://image.catalog.zune.net/v3.0/image/{0}?width=234&height=320",
+            return imageElement != null ? String.Format("{0}{1}?width=234&height=320",Urls.Image,
                 imageElement.Elements().First().Value.ExtractGuidFromUrnUuid()) : null;
         }
 
         private XElement GetElement(SyndicationFeed feed, string elementName)
         {
             Collection<XElement> elements =
-                feed.ElementExtensions.ReadElementExtensions<XElement>(elementName,
-                                                           "http://schemas.zune.net/catalog/music/2007/10");
+                feed.ElementExtensions.ReadElementExtensions<XElement>(elementName, Urls.Schema);
 
             return elements.Count > 0 ? elements.First() : null;
         }
@@ -107,8 +106,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         private XElement GetElement(SyndicationItem item, string elementName)
         {
             Collection<XElement> elements =
-                item.ElementExtensions.ReadElementExtensions<XElement>(elementName,
-                                                           "http://schemas.zune.net/catalog/music/2007/10");
+                item.ElementExtensions.ReadElementExtensions<XElement>(elementName,Urls.Schema);
 
             return elements.Count > 0 ? elements.First() : null;
         }

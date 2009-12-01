@@ -12,7 +12,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
     {
         public static IEnumerable<Album> SearchFor(string searchString)
         {
-            string searchUrl = String.Format("http://catalog.zune.net/v3.0/en-US/music/album?q={0}", searchString);
+            string searchUrl = String.Format("{0}?q={1}",Urls.Album, searchString);
 
             XmlReader reader = XmlReader.Create(searchUrl);
 
@@ -29,16 +29,16 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             {
                 foreach (var item in feed.Items)
                 {
-                    XElement artistElement = item.ElementExtensions.ReadElementExtensions<XElement>("primaryArtist", "http://schemas.zune.net/catalog/music/2007/10").First();
+                    XElement artistElement = item.ElementExtensions.ReadElementExtensions<XElement>("primaryArtist", Urls.Schema).First();
 
                     XElement artistTitleElement = artistElement.Elements().Where(x => x.Name.LocalName == "name").First();
 
                     Guid imageGuid =
-                        item.ElementExtensions.ReadElementExtensions<XElement>("image","http://schemas.zune.net/catalog/music/2007/10")
+                        item.ElementExtensions.ReadElementExtensions<XElement>("image", Urls.Schema)
                             .First().Value.ExtractGuidFromUrnUuid();
 
 
-                    string imagePath = String.Format("http://image.catalog.zune.net/v3.0/image/{0}?width=60&height=60", imageGuid);
+                    string imagePath = String.Format("{0}{1}?width=60&height=60",Urls.Image, imageGuid);
                 
 
                     tempList.Add(new Album { Title = item.Title.Text, 
@@ -64,8 +64,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         private static XElement GetElement(SyndicationItem feed, string elementName)
         {
             Collection<XElement> elements =
-                feed.ElementExtensions.ReadElementExtensions<XElement>(elementName,
-                                                           "http://schemas.zune.net/catalog/music/2007/10");
+                feed.ElementExtensions.ReadElementExtensions<XElement>(elementName,Urls.Schema);
 
             return elements.Count > 0 ? elements.First() : null;
         }

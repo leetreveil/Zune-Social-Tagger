@@ -32,7 +32,7 @@ namespace ZuneSocialTagger.GUIV2.Views
             {
                 var result = (Album)e.AddedItems[0];
 
-                _viewModel.LoadAlbum(String.Concat("http://catalog.zune.net/v3.0/en-US/music/album/",result.AlbumMediaID.ToString()));
+                _viewModel.LoadAlbum(String.Concat(Urls.Album,result.AlbumMediaID.ToString()));
             }
         }
     }
