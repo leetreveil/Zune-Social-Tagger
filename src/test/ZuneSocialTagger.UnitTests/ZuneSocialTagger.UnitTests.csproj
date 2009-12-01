@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ID3Tagger\MetaDataTests.cs" />
     <Compile Include="Core\ZuneWebsite\TrackTests.cs" />
     <Compile Include="Core\ID3Tagger\ZuneTagContainerTestHelpers.cs" />
     <Compile Include="Core\ID3Tagger\ZuneTagContainerTests.cs" />

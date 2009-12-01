@@ -1,4 +1,5 @@
 using System.Drawing;
+using System;
 
 namespace ZuneSocialTagger.Core.ID3Tagger
 {
@@ -13,5 +14,20 @@ namespace ZuneSocialTagger.Core.ID3Tagger
         public string ContributingArtist { get; set; }
         public string DiscNumber { get; set; }
         public string Genre { get; set; }
+
+
+        /// <summary>
+        /// A MetaData object is valid if everything is not null or empty apart from the picture, which can be
+        /// </summary>
+        public bool IsValid
+        {
+            get
+            {
+                return !String.IsNullOrEmpty(Year) && !String.IsNullOrEmpty(TrackNumber) &&
+                       !String.IsNullOrEmpty(SongTitle) && !String.IsNullOrEmpty(Genre) &&
+                       !String.IsNullOrEmpty(DiscNumber) && !String.IsNullOrEmpty(ContributingArtist) &&
+                       !String.IsNullOrEmpty(AlbumTitle) && !String.IsNullOrEmpty(AlbumArtist);
+            }
+        }
     }
 }

@@ -286,13 +286,5 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
             Assert.That(zuneTagContainer.ReadMetaData().TrackNumber, Is.EqualTo(metaData.TrackNumber));
             Assert.That(zuneTagContainer.ReadMetaData().Year, Is.EqualTo(metaData.Year));
         }
-
-        [Test]
-        public void If_the_meta_date_does_not_already_exist_then_it_should_add_a_new_one()
-        {
-
-        }
-
-
     }
 }
