@@ -5,7 +5,6 @@ using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Xml.Linq;
-using System.Threading;
 
 namespace ZuneSocialTagger.Core.ZuneWebsite
 {
@@ -13,25 +12,17 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
     {
         private readonly XmlReader _reader;
 
-        public AlbumDocumentReader(string url) : this(XmlReader.Create(url))
-        {
-
-        }
+        public AlbumDocumentReader(string url) : this(XmlReader.Create(url)) {}
 
         public AlbumDocumentReader(XmlReader reader)
         {
             _reader = reader;
         }
 
-        public void ReadAsync(Action<Album> callback)
-        {
-            //TODO: may need to wrap the full class to be async because the xml reader could be taking time too
-            ThreadPool.QueueUserWorkItem(_ => callback(Read()));
-        }
-
         public Album Read()
         {
             var album = new Album();
+
             SyndicationFeed feed = SyndicationFeed.Load(_reader);
 
             if (feed != null)

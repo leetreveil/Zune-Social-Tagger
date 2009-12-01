@@ -30,8 +30,6 @@ namespace ZuneSocialTagger.Core.ID3Tagger
                    where MediaIds.Ids.Contains(frame.Owner)
                    select new MediaIdGuid(frame.Owner, new Guid(frame.Data));
 
-
-            //TODO: could refactor this class to filter the TagContainer because ReadMediaIds And Add are both working on private frames
         }
 
         public void Add(MediaIdGuid mediaIDGuid)

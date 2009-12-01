@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Commands;
+using System.Threading;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -86,18 +88,20 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.SearchResults.Clear();
             this.IsSearching = true;
 
-            AlbumSearch.SearchForAsync(searchString, results =>
-            {
+            ThreadPool.QueueUserWorkItem(_ =>
+                 {
+                     IEnumerable<Album> results = AlbumSearch.SearchFor(searchString);
 
-                base.UIDispatcher.Invoke(new Action(() =>
-                    {
-                        foreach (var result in results)
-                            this.SearchResults.Add(result);
-                    }));
+                     base.UIDispatcher.Invoke(new Action(() =>
+                     {
+                         foreach (var result in results)
+                             this.SearchResults.Add(result);
+                     }));
 
 
-                this.IsSearching = false;
-            });
+                     this.IsSearching = false;
+                 });
+
         }
 
         private void InvokeStartedSearching()

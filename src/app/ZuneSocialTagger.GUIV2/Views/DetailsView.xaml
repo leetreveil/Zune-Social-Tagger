@@ -12,11 +12,9 @@
 	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="100"></RowDefinition>
-			<RowDefinition Height="40"></RowDefinition>
+			<RowDefinition Height="10"></RowDefinition>
 			<RowDefinition Height="*"></RowDefinition>
 		</Grid.RowDefinitions>
-		
-
 		            <Border Grid.Row="0">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -28,7 +26,6 @@
                         <views:WebsiteAlbumMetaDataView DataContext="{Binding AlbumDetailsFromWebsite}" Grid.Column = "1" />
                     </Grid>
                 </Border>
-		<TextBlock Grid.Row="1" VerticalAlignment="Center" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" FontSize="13.333">Match song titles for this album</TextBlock>
 		                <Border Grid.Row="2" >
                     <Grid>
                         <Grid.RowDefinitions>

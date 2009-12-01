@@ -5,17 +5,11 @@ using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
-using System.Threading;
 
 namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     public class AlbumSearch
     {
-        public static void SearchForAsync(string searchString, Action<IEnumerable<Album>> callback)
-        {
-            ThreadPool.QueueUserWorkItem(_ => callback(SearchFor(searchString)));
-        }
-
         public static IEnumerable<Album> SearchFor(string searchString)
         {
             string searchUrl = String.Format("http://catalog.zune.net/v3.0/en-US/music/album?q={0}", searchString);
