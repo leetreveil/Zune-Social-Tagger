@@ -1,19 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Web.UI.WebControls;
 using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using System.Linq;
 using System.IO;
 using Image=System.Drawing.Image;
+using System.Text;
 
 namespace ZuneSocialTagger.Core.ID3Tagger
 {
     /// <summary>
     /// Updates a pre-existing TagContainer with new zune PRIV tags
     /// </summary>
-    public class ZuneTagContainer : IEnumerable<IFrame>
+    public class ZuneTagContainer
     {
         private readonly TagContainer _container;
 
@@ -45,7 +45,8 @@ namespace ZuneSocialTagger.Core.ID3Tagger
                                           select frame).FirstOrDefault();
 
             //if the frame already exists and the data inside is different then remove it
-            _container.Remove(existingFrame);
+            if (existingFrame != null)
+                _container.Remove(existingFrame);
 
             _container.Add(newFrame);
         }
@@ -62,9 +63,41 @@ namespace ZuneSocialTagger.Core.ID3Tagger
                            AlbumTitle = GetValue(allTextFrames, "TALB"),
                            SongTitle = GetValue(allTextFrames, "TIT2"),
                            Year = GetValue(allTextFrames, "TYER"),
-                           Index = GetValue(allTextFrames,"TRCK"),
+                           TrackNumber = GetValue(allTextFrames,"TRCK"),
+                           DiscNumber = GetValue(allTextFrames,"TPOS"),
+                           Genre = GetValue(allTextFrames,"TCON"),
                            Picture = ReadImage()
                        };
+        }
+
+        public void WriteMetaData(MetaData metaData)
+        {
+            foreach (var textFrame in CreateTextFramesFromMetaData(metaData))
+            {
+                TextFrame tempTextFrame = textFrame;
+
+                TextFrame existingFrame = (from frame in _container.OfType<TextFrame>()
+                                           where frame.Descriptor.ID == tempTextFrame.Descriptor.ID
+                                           select frame).FirstOrDefault();
+
+
+                if (existingFrame != null)
+                    _container.Remove(existingFrame);
+
+                _container.Add(textFrame);
+            }
+        }
+
+        public IEnumerable<TextFrame> CreateTextFramesFromMetaData(MetaData metaData)
+        {
+            yield return new TextFrame("TPE2", metaData.AlbumArtist, Encoding.Default);
+            yield return new TextFrame("TPE1", metaData.ContributingArtist, Encoding.Default);
+            yield return new TextFrame("TALB", metaData.AlbumTitle, Encoding.Default);
+            yield return new TextFrame("TPOS", metaData.DiscNumber, Encoding.Default);
+            yield return new TextFrame("TCON", metaData.Genre, Encoding.Default);
+            yield return new TextFrame("TIT2", metaData.SongTitle, Encoding.Default);
+            yield return new TextFrame("TRCK", metaData.TrackNumber, Encoding.Default);
+            yield return new TextFrame("TYER", metaData.Year, Encoding.Default);
         }
 
         public TagContainer GetContainer()
@@ -89,16 +122,6 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             TextFrame result = textFrames.Where(x => x.Descriptor.ID == key).SingleOrDefault();
 
             return result != null ? result.Content : string.Empty;
-        }
-
-        public IEnumerator<IFrame> GetEnumerator()
-        {
-            return this._container.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }

@@ -65,6 +65,9 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
             container.Add(new TextFrame("TPE2", "Various Artists", Encoding.UTF8));
             container.Add(new TextFrame("TIT2", SomeTitle, Encoding.UTF8));
             container.Add(new TextFrame("TYER", SomeYear, Encoding.UTF8));
+            container.Add(new TextFrame("TRCK", "2", Encoding.UTF8));
+            container.Add(new TextFrame("TPOS", "2/2", Encoding.UTF8));
+            container.Add(new TextFrame("TCON", "Pop",Encoding.UTF8));
 
             return new ZuneTagContainer(container);
         }

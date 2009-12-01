@@ -9,7 +9,9 @@ namespace ZuneSocialTagger.Core.ID3Tagger
         public string Year { get; set; }
         public string SongTitle { get; set; }
         public Image Picture { get; set; }
-        public string Index { get; set; }
+        public string TrackNumber { get; set; }
         public string ContributingArtist { get; set; }
+        public string DiscNumber { get; set; }
+        public string Genre { get; set; }
     }
 }

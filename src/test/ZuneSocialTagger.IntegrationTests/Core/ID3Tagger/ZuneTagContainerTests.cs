@@ -32,7 +32,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
             Assert.That(data.AlbumTitle, Is.EqualTo("Erasus"));
             Assert.That(data.SongTitle, Is.EqualTo("Erasus"));
             Assert.That(data.Year, Is.EqualTo("2007"));
-            Assert.That(data.Index, Is.EqualTo("1"));
+            Assert.That(data.TrackNumber, Is.EqualTo("1"));
         }
     }
 }
