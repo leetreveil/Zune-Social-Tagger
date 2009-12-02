@@ -18,7 +18,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         {
             get 
             {
-                return !String.IsNullOrEmpty(Title) && !String.IsNullOrEmpty(Artist) && !String.IsNullOrEmpty(Genre) &&
+                return !String.IsNullOrEmpty(Title) && !String.IsNullOrEmpty(Artist) &&
                        TrackNumber != null && DiscNumber != null; 
             }
         }

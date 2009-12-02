@@ -11,5 +11,16 @@ namespace ZuneSocialTagger.GUIV2.Views
         {
             InitializeComponent();
         }
+
+        private void MenuItem_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
+
+        private void ArtworkImage_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            RightClickMenu.PlacementTarget = this;
+            RightClickMenu.IsOpen = true;
+        }
     }
 }

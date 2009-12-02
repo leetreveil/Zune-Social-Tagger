@@ -97,10 +97,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                      {
                          foreach (var result in results)
                              this.SearchResults.Add(result);
+
+                         this.IsSearching = false;
                      }));
                  });
 
-            this.IsSearching = false;
+
             InvokeFinishedSearching();
         }
 

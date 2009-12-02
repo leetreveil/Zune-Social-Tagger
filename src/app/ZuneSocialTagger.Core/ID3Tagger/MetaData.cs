@@ -24,7 +24,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             get
             {
                 return !String.IsNullOrEmpty(Year) && !String.IsNullOrEmpty(TrackNumber) &&
-                       !String.IsNullOrEmpty(SongTitle) && !String.IsNullOrEmpty(Genre) &&
+                       !String.IsNullOrEmpty(SongTitle) &&
                        !String.IsNullOrEmpty(DiscNumber) && !String.IsNullOrEmpty(ContributingArtist) &&
                        !String.IsNullOrEmpty(AlbumTitle) && !String.IsNullOrEmpty(AlbumArtist);
             }

@@ -2,8 +2,6 @@
 using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Models
-
-
 {
     public class ZuneWizardModel
     {
