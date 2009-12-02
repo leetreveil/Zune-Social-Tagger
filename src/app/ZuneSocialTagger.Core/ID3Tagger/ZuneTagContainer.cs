@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
@@ -88,7 +87,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             }
         }
 
-        public IEnumerable<TextFrame> CreateTextFramesFromMetaData(MetaData metaData)
+        private static IEnumerable<TextFrame> CreateTextFramesFromMetaData(MetaData metaData)
         {
             yield return new TextFrame("TPE2", metaData.AlbumArtist, Encoding.Default);
             yield return new TextFrame("TPE1", metaData.ContributingArtist, Encoding.Default);

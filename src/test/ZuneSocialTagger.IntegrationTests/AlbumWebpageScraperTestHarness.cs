@@ -24,6 +24,8 @@ namespace ZuneSocialTagger.IntegrationTests
                 "http://catalog.zune.net/v3.0/en-US/music/album/4f66ff01-0100-11db-89ca-0019b92a3933"
                 ,
                 "http://catalog.zune.net/v3.0/en-US/music/album/355c0802-0100-11db-89ca-0019b92a3933"
+                ,
+                "http://catalog.zune.net/v3.0/en-US/music/album/fbed1700-0400-11db-89ca-0019b92a3933/"
             };
 
         #endregion
@@ -44,7 +46,8 @@ namespace ZuneSocialTagger.IntegrationTests
                 Console.WriteLine("Release Year: {0}", result.ReleaseYear);
                 Console.WriteLine("Artwork url: {0}", result.ArtworkUrl);
 
-                Console.WriteLine("Does this page have the minimum required info: {0}", result.IsValid);
+                Console.WriteLine("Does this page have the minimum required info to link: {0}", result.IsValid);
+                Console.WriteLine("Does this page have the all the metadata?: {0}", result.HasAllMetaData);
                 Console.WriteLine("");
             }
 
