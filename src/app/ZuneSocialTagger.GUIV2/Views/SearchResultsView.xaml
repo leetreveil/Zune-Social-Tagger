@@ -9,9 +9,8 @@
 	x:Name="UserControl" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U">
 
 	<UserControl.Resources>
-	<ResourceDictionary Source="../Resources.xaml ">
-	</ResourceDictionary>
-	</UserControl.Resources>
+        <ResourceDictionary Source="../Resources.xaml "/>
+    </UserControl.Resources>
 
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded">
@@ -20,22 +19,22 @@
     </UserControl.Triggers>
 
     <Border x:Name="LayoutRoot">
-		<Grid>
+		<Grid Height="300">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition/>
 				<ColumnDefinition/>
 			</Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto" MinHeight="84" />
 				<RowDefinition Height="40"/>
-				<RowDefinition MaxHeight="300"/>
+				<RowDefinition  />
 			</Grid.RowDefinitions>
 			
             <views:WebsiteAlbumMetaDataView x:Name="websiteMetaData" DataContext="{Binding AlbumDetailsFromFile}"  VerticalAlignment="Top"/>
 			<views:SearchBar DataContext="{Binding SearchBarViewModel}" VerticalAlignment="Top" Grid.Column="1" />
 			<TextBlock Grid.Row="1" Text="{Binding Albums.Count, Converter={StaticResource AlbumCountToStringConverter}}" VerticalAlignment="Bottom" FontSize="11" Margin="10,0,0,5"/>
-            <TextBlock Width="60" x:Name="tbLoading" Visibility="{Binding Path=IsLoading, Converter = {StaticResource BoolToVisConverter}}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" FontSize="13.333" Foreground="#FF8A8D90" HorizontalAlignment="Right" />
-			<ListView x:Name="lvAlbums" SelectedIndex="0" Background="Transparent" BorderBrush="Transparent" IsSynchronizedWithCurrentItem="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="2" ItemsSource="{Binding Albums}" Margin="0,0,36,0" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U" ItemContainerStyle="{DynamicResource SelectedItemHighlight}" SelectionChanged="ListView_SelectionChanged">
+            <TextBlock Grid.Row="1" Width="60" x:Name="tbLoading" Visibility="{Binding Path=IsLoading, Converter = {StaticResource BoolToVisConverter}}"  Grid.Column="1" VerticalAlignment="Bottom" FontSize="13.333" Foreground="#FF8A8D90" HorizontalAlignment="Right" />
+			<ListView Grid.Row="2" x:Name="lvAlbums" SelectedIndex="0" Background="Transparent" BorderBrush="Transparent" IsSynchronizedWithCurrentItem="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Albums}" Margin="0,0,36,0" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U" ItemContainerStyle="{DynamicResource SelectedItemHighlight}" SelectionChanged="ListView_SelectionChanged">
 				<ListView.ItemTemplate>
 					<DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="10">
