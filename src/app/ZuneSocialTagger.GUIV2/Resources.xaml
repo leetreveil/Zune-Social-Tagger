@@ -86,6 +86,30 @@
             </Setter.Value>
         </Setter>
     </Style>
+	
+	        	<Style x:Key="MinimizeButton" TargetType="{x:Type Button}">
+        		<Setter Property="Template">
+        			<Setter.Value>
+        				<ControlTemplate TargetType="{x:Type Button}">
+        					<Grid>
+        						<Rectangle x:Name="rect" Fill="#A2ABAA"/>
+        						<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+        					</Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True"/>
+                        <Trigger Property="IsDefaulted" Value="True"/>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="rect" Property="Fill" Value="#7F8685" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="rect" Property="Fill" Value="#717776"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False"/>
+                    </ControlTemplate.Triggers>
+        				</ControlTemplate>
+        			</Setter.Value>
+        		</Setter>
+        	</Style>
 
 
     <Style x:Key="SelectedItemHighlight" TargetType="{x:Type ListViewItem}">
