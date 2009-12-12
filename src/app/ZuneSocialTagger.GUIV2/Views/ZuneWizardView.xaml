@@ -34,8 +34,6 @@
                  </DataTrigger>
             </Style.Triggers>
         </Style>
-        
-        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
     </UserControl.Resources>
 
     <Grid>
@@ -71,12 +69,6 @@
             Command="{Binding Path=MoveNextCommand}"
             Style="{StaticResource moveNextButtonStyle}" 
             Content="{Binding NextButtonText}"
-            />
-            <Button
-            Grid.Column="3"
-            Grid.Row="0"
-            Command="{Binding Path=CancelCommand}"
-            Content="Close"
             />
         </StackPanel>
     </Grid>

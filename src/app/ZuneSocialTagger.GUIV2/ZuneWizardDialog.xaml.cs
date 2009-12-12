@@ -18,19 +18,18 @@ namespace ZuneSocialTagger.GUIV2
             InitializeComponent();
 
             _zuneWizardViewModel = new ZuneWizardViewModel();
-            _zuneWizardViewModel.RequestClose += _zuneWizardViewModel_RequestClose;
             base.DataContext = _zuneWizardViewModel;   
 
-        }
-
-        void _zuneWizardViewModel_RequestClose(object sender, EventArgs e)
-        {
-            Application.Current.Shutdown();
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

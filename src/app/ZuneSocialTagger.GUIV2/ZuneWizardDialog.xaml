@@ -6,13 +6,38 @@
     Title="Zune Social Tagger" 
     WindowStartupLocation="CenterScreen" 
     Style="{DynamicResource DefaultWindowStyle}" 
-    MouseLeftButtonDown="Window_MouseLeftButtonDown"
-        Icon="Assets/zuneicondark.ico">
+    MouseLeftButtonDown="Window_MouseLeftButtonDown" Icon="Assets/zuneicondark.ico">
     
     <Window.Resources>
         <ResourceDictionary Source="Resources.xaml" />
     </Window.Resources>
     
-    <views:ZuneWizardView/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <Border Width="109" Height="6" HorizontalAlignment="Left">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#F89C38" Offset="0"/>
+                        <GradientStop Color="#EC1293" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+        </StackPanel>
+        
+        <Button Width="10" Height="10" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="1" Style="{StaticResource CloseButton}" Click="Button_Click" />
+        
+        <views:ZuneWizardView Grid.Row="1" Grid.ColumnSpan="2"/>
+    </Grid>
+
     
 </Window>

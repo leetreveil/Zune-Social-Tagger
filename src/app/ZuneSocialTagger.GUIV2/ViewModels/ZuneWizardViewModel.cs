@@ -11,7 +11,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class ZuneWizardViewModel : NotifyPropertyChangedImpl
     {
-        private RelayCommand _cancelCommand;
         private ZuneWizardPageViewModelBase _currentPage;
         private RelayCommand _moveNextCommand;
         private RelayCommand _movePreviousCommand;
@@ -41,21 +40,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private void PageMoveNextOverride(object sender, EventArgs e)
         {
             TryToMoveToNextPage();
-        }
-
-        /// <summary>
-        /// Returns the command which, when executed, cancels the order 
-        /// and causes the Wizard to be removed from the user interface.
-        /// </summary>
-        public ICommand CancelCommand
-        {
-            get
-            {
-                if (_cancelCommand == null)
-                    _cancelCommand = new RelayCommand(() => this.CloseWizard());
-
-                return _cancelCommand;
-            }
         }
 
         public ICommand AboutCommand
@@ -196,11 +180,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        /// <summary>
-        /// Raised when the wizard should be removed from the UI.
-        /// </summary>
-        public event EventHandler RequestClose;
-
         private void CreatePages()
         {
             _sharedModel = new ZuneWizardModel();
@@ -226,18 +205,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                 return this.Pages.IndexOf(this.CurrentPage);
             }
-        }
-
-        private void OnRequestClose()
-        {
-            EventHandler handler = this.RequestClose;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
-
-        private void CloseWizard()
-        {
-            this.OnRequestClose();
         }
     }
 }

@@ -36,17 +36,7 @@
                     						<GradientStop Color="#FFF0F0F0" Offset="1"/>
                						 	</LinearGradientBrush>
             					</Grid.Background>
-								<StackPanel Margin="20,8,8,8">
-                					<Border Width="109" Height="8" HorizontalAlignment="Left">
-					                    <Border.Background>
-					                        <LinearGradientBrush>
-					                            <GradientStop Color="#F89C38" Offset="0"/>
-					                            <GradientStop Color="#EC1293" Offset="1"/>
-					                        </LinearGradientBrush>
-					                    </Border.Background>
-               						 </Border>
-									 
-    							</StackPanel>
+
     								<ContentPresenter Margin="20,20,20,20"/>
 							</Grid>
 						</Border>
@@ -54,7 +44,49 @@
     			</Setter.Value>
     		</Setter>
     	</Style>
-		
+
+    <Style x:Key="CloseButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+
+                            <Path x:Name="xPath" Stretch="Fill" Stroke="#A2ABAA" StrokeThickness="2">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathGeometry.Figures>
+                                        <PathFigure StartPoint="0,0">
+                                            <LineSegment Point="25,25"/>
+                                        </PathFigure>
+                                        <PathFigure StartPoint="0,25">
+                                            <LineSegment Point="25,0"/>
+                                        </PathFigure>
+                                    </PathGeometry.Figures>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+
+
+
+
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True"/>
+                        <Trigger Property="IsDefaulted" Value="True"/>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="xPath" Property="Stroke" Value="#7F8685" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="xPath" Property="Stroke" Value="#717776"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False"/>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 
     <Style x:Key="SelectedItemHighlight" TargetType="{x:Type ListViewItem}">
         <Setter Property="Template">
