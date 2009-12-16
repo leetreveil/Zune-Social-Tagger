@@ -18,8 +18,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
         public ZuneTagContainer(TagContainer container)
         {
-            _container = container;
-        }
+            _container = container;        }
 
         public IEnumerable<MediaIdGuid> ReadMediaIds()
         {

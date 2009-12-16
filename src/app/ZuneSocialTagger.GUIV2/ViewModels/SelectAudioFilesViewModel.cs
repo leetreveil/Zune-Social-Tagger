@@ -80,26 +80,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                                                   SongCount = songCount.ToString(),
                                               };
 
+            //fall back to contributing artists if album artist is not available
+            if (String.IsNullOrEmpty(songMetaData.AlbumArtist))
+                _model.AlbumDetailsFromFile.Artist = songMetaData.ContributingArtist;
 
-            //add info so search bar displays what the album artist and album title from 
+
+            //add info so search bar displays the album artist and album title from 
             //the album that has been selected
             _model.SearchBarViewModel.SearchText = songMetaData.AlbumTitle + " " +
                                                    songMetaData.AlbumArtist;
         }
-
-        public static bool IsNumeric(object value)
-        {
-            try
-            {
-                int i = Convert.ToInt32(value.ToString());
-                return true;
-            }
-            catch (FormatException)
-            {
-                return false;
-            }
-        }
-
-
     }
 }
