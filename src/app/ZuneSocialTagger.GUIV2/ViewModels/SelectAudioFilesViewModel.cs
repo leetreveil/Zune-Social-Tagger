@@ -4,12 +4,10 @@ using System.Collections.ObjectModel;
 using System.Windows.Forms;
 using System.Windows.Input;
 using ZuneSocialTagger.Core;
-using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
 using ID3Tag;
-using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {

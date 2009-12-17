@@ -15,7 +15,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
         public override bool Equals(object obj)
         {
-            MediaIdGuid newGuid = (MediaIdGuid) obj;
+            var newGuid = (MediaIdGuid) obj;
 
             return this.Guid == newGuid.Guid;
         }

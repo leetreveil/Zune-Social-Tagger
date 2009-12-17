@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using ID3Tag.HighLevel.ID3Frame;
 using NUnit.Framework;
+using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ID3Tagger;
-using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
 {

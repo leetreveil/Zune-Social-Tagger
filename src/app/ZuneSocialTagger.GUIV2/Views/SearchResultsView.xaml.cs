@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Controls;
+using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.ViewModels;
 

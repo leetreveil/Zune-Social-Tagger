@@ -1,8 +1,8 @@
 using NUnit.Framework;
-using ZuneSocialTagger.Core.ID3Tagger;
+using ZuneSocialTagger.Core;
 
 
-namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
+namespace ZuneSocialTagger.IntegrationTests.Core
 {
     [TestFixture]
     public class WhenProvidedWithAFileWithAnID3Tag

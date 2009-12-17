@@ -1,8 +1,7 @@
 using System.Drawing;
 using System.Linq;
 using NUnit.Framework;
-using ZuneSocialTagger.Core.ID3Tagger;
-using ZuneSocialTagger.Core.ZuneWebsite;
+using ZuneSocialTagger.Core;
 
 namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
 {

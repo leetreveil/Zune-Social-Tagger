@@ -1,5 +1,5 @@
 using System.Collections.ObjectModel;
-using ZuneSocialTagger.Core.ZuneWebsite;
+using ZuneSocialTagger.Core;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {

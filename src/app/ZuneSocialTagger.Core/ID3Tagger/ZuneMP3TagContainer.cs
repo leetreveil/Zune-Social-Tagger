@@ -4,7 +4,6 @@ using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using System.Linq;
 using System.IO;
-using ZuneSocialTagger.Core.ZuneWebsite;
 using Image=System.Drawing.Image;
 using System.Text;
 

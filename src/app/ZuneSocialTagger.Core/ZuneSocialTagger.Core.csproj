@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ASFTag.Net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\asftag.net\ASFTag.Net.dll</HintPath>
+    </Reference>
     <Reference Include="ID3Tag.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=59639b700fcbf7ba, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\id3tag.net\ID3Tag.Net.dll</HintPath>
@@ -64,12 +68,6 @@
     <Compile Include="ZuneWebsite\AlbumDocumentReader.cs" />
     <Compile Include="ZuneWebsite\AlbumSearch.cs" />
     <Compile Include="ZuneWebsite\Urls.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ASFTag.Net\ASFTag.Net.csproj">
-      <Project>{8156E872-46DD-494C-8FE8-1D4A99F6DE86}</Project>
-      <Name>ASFTag.Net</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

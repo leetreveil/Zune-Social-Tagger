@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ASFTag.Net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\asftag.net\ASFTag.Net.dll</HintPath>
+    </Reference>
     <Reference Include="ID3Tag.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=59639b700fcbf7ba, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\id3tag.net\ID3Tag.Net.dll</HintPath>
@@ -39,12 +43,6 @@
     <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\nunit\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="PresentationFramework">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -62,15 +60,10 @@
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="WMFSDKWrapper, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\WMFSDKWrapper\WMFSDKWrapper.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlbumWebpageScraperTestHarness.cs" />
     <Compile Include="AlbumSearchTestHarness.cs" />
-    <Compile Include="ASFTag.Net\ASFTagManagerTests.cs" />
     <Compile Include="Core\ID3Tagger\ZuneTagContainerFactoryTests.cs" />
     <Compile Include="Core\ID3Tagger\ZuneMP3TagContainerTests.cs" />
     <Compile Include="Core\WMATagger\ZuneWMATagContainerTests.cs" />
@@ -100,10 +93,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\app\ASFTag.Net\ASFTag.Net.csproj">
-      <Project>{8156E872-46DD-494C-8FE8-1D4A99F6DE86}</Project>
-      <Name>ASFTag.Net</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\app\ZuneSocialTagger.Core\ZuneSocialTagger.Core.csproj">
       <Project>{C5F5D93F-50BC-4BE1-9594-5D3D3CB5BCE6}</Project>
       <Name>ZuneSocialTagger.Core</Name>

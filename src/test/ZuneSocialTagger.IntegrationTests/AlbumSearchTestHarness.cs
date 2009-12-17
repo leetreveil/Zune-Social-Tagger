@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.IntegrationTests

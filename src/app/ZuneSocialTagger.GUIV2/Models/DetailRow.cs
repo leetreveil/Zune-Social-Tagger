@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ID3Tagger;
-using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {

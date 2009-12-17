@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Commands;
 using System.Threading;

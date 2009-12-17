@@ -4,8 +4,8 @@ using NUnit.Framework;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ID3Tagger;
 using System.Linq;
-using ZuneSocialTagger.Core.ZuneWebsite;
 using ASFTag.Net;
+
 using ZuneSocialTagger.Core.WMATagger;
 
 namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger

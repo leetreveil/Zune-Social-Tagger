@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using ZuneSocialTagger.Core.ID3Tagger;
-using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.Core
 {

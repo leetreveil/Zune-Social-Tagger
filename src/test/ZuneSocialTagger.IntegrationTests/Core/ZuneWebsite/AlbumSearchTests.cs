@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using System.Linq;
 using System.Collections.Generic;
+using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using System.Xml;
 
