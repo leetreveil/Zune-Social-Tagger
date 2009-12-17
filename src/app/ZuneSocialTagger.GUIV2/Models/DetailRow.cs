@@ -18,7 +18,7 @@ namespace ZuneSocialTagger.GUIV2.Models
         public string FilePath { get; private set; }
         public IZuneTagContainer Container { get; set; }
         public Track SelectedSong { get; set; }
-        public Album AlbumDetails { get; set; }
+        public IEnumerable<Track> Tracks { get; set; }
 
         public DetailRow(string filePath, IZuneTagContainer container)
         {

@@ -50,12 +50,12 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             return primaryArtistElement != null ? primaryArtistElement.Elements().Last().Value : null;
         }
 
-        private static int? GetReleaseYear(SyndicationItem feed)
+        private static string GetReleaseYear(SyndicationItem feed)
         {
             //TODO: refactor this class and AlbumDocumentReader into one single class.
             XElement releaseDateElement = GetElement(feed, "releaseDate");
 
-            return releaseDateElement != null ? DateTime.Parse(releaseDateElement.Value).Year : (int?) null;
+            return releaseDateElement != null ? DateTime.Parse(releaseDateElement.Value).Year.ToString() :  null;
         }
 
         private static XElement GetElement(SyndicationItem feed, string elementName)

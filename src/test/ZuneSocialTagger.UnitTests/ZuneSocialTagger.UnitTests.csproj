@@ -56,7 +56,6 @@
   <ItemGroup>
     <Compile Include="Core\ID3Tagger\ZuneMP3TagContainerTestHelpers.cs" />
     <Compile Include="Core\ID3Tagger\ZuneMP3TagContainerTests.cs" />
-    <Compile Include="Core\ZuneWebsite\AlbumTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

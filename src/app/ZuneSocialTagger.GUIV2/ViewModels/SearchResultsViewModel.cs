@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ZuneSocialTagger.Core.ZuneWebsite;
@@ -83,21 +84,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                  {
                      var reader = new AlbumDocumentReader(url);
 
-                     Album album = reader.Read();
+                     IEnumerable<Track> tracks = reader.Read();
 
                      //do updating of controls on bound ui objects on UI thread
                      base.UIDispatcher.Invoke(new Action(() =>
-                         {
-                             if (album.IsValid)
-                             {
-                                 UpdateAlbumMetaDataViewModel(album);
-                                 AddSelectedSongs(album);
-                             }
-                             else
-                             {
-                                 this.SearchResultsDetailsViewModel.SelectedAlbumTitle =
-                                     "Sorry could not get album details";
-                             }}));
+                                                             {
+
+                                                                 UpdateAlbumMetaDataViewModel(tracks);
+                                                                 AddSelectedSongs(tracks);
+                                                             }));
+
 
                      this.IsLoading = false;
                  }
@@ -111,29 +107,31 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         }
 
-        private void UpdateAlbumMetaDataViewModel(Album scrapeResult)
+        private void UpdateAlbumMetaDataViewModel(IEnumerable<Track> tracks)
         {
+            Track firstTrack = tracks.First();
+
             _model.AlbumDetailsFromWebsite = new WebsiteAlbumMetaDataViewModel
                                                  {
-                                                     Title = scrapeResult.Title,
-                                                     Artist = scrapeResult.Artist,
-                                                     ArtworkUrl = scrapeResult.ArtworkUrl,
-                                                     Year = scrapeResult.ReleaseYear.ToString(),
-                                                     SongCount = scrapeResult.Tracks.Count().ToString()
+                                                     Title = firstTrack.Title,
+                                                     Artist = firstTrack.AlbumArtist,
+                                                     ArtworkUrl = firstTrack.ArtworkUrl,
+                                                     Year = firstTrack.Year,
+                                                     SongCount = tracks.Count().ToString()
                                                  };
         }
 
-        private void AddSelectedSongs(Album album)
+        private void AddSelectedSongs(IEnumerable<Track> tracks)
         {
-            this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel { SelectedAlbumTitle = album.Title };
+            this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel { SelectedAlbumTitle = tracks.First().AlbumName };
 
-            foreach (var track in album.Tracks)
+            foreach (var track in tracks)
                 this.SearchResultsDetailsViewModel.SelectedAlbumSongs.Add(track);
 
             foreach (var row in _model.Rows)
             {
                 row.SongsFromWebsite = this.SearchResultsDetailsViewModel.SelectedAlbumSongs;
-                row.AlbumDetails = album;
+                row.Tracks = tracks;
             }
         }
 

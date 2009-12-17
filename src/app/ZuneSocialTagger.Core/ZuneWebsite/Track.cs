@@ -5,6 +5,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     public class Track
     {
+        public Guid AlbumMediaID { get; set; }
         public Guid ArtistMediaID { get; set; }
         public Guid MediaID { get; set; }
         public string Title { get; set; }
@@ -15,6 +16,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         public string DiscNumber { get; set; }
         public string AlbumName { get; set; }
         public string Year { get; set; }
+        public string ArtworkUrl { get; set; }
 
 
         public bool IsValid
@@ -22,7 +24,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             get
             {
                 //A songGuid is valid if its guid is not empty and its title is not empty or null
-                return MediaID != Guid.Empty && ArtistMediaID != Guid.Empty;
+                return MediaID != Guid.Empty && ArtistMediaID != Guid.Empty && AlbumMediaID != Guid.Empty;
             }
         }
     }

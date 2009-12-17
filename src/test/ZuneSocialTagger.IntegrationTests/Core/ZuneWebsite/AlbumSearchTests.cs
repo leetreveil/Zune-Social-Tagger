@@ -53,7 +53,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         {
             Album result = AlbumSearch.ReadFromXmlDocument(XmlReader.Create(_file)).First();
 
-            Assert.That(result.ReleaseYear, Is.EqualTo(1970));
+            Assert.That(result.ReleaseYear, Is.EqualTo("1970"));
         }
     }
 }

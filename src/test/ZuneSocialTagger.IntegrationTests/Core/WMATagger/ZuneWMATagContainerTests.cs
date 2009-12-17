@@ -4,6 +4,7 @@ using NUnit.Framework;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ID3Tagger;
 using System.Linq;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
 {
@@ -36,7 +37,11 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
         [Test]
         public void Then_it_should_be_able_to_read_the_tracks_meta_data()
         {
+            IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(_path);
 
+            Track metaData = container.ReadMetaData();
+
+   
         }
 
     }

@@ -45,11 +45,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     var container = (ZuneMP3TagContainer) row.Container;
 
                     if (Properties.Settings.Default.UpdateAlbumInfo)
-                            if (row.SelectedSong.IsValid && row.AlbumDetails.IsValid)
+                            if (row.SelectedSong.IsValid)
                             {
-                                container.Add(new MediaIdGuid(MediaIds.ZuneAlbumMediaID, row.AlbumDetails.AlbumMediaID));
+                                container.Add(new MediaIdGuid(MediaIds.ZuneAlbumMediaID, row.SelectedSong.AlbumMediaID));
                                 container.Add(new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID, row.SelectedSong.ArtistMediaID));
                                 container.Add(new MediaIdGuid(MediaIds.ZuneMediaID, row.SelectedSong.MediaID));
+
                                 container.WriteMetaData(row.SelectedSong);
                             }
                             else
@@ -61,7 +62,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                     //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
                 }
-                catch (Exception ex)
+                catch
                 {
                     //TODO: better error handling
                     Console.WriteLine("error saving {0}", row.FilePath);
