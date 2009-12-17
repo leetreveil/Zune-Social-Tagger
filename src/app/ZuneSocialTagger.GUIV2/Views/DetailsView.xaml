@@ -52,12 +52,12 @@
                                             <TextBlock ToolTip="{Binding MetaData.Title}" Text="{Binding MetaData.Title}" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                         </StackPanel>
 
-                                        <ComboBox ItemsSource="{Binding SongsFromWebsite}" ToolTip="{Binding RelativeSource={RelativeSource Self},Path=SelectedItem.Title}"  SelectedItem="{Binding SelectedSong}" IsReadOnly="True" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="280" VerticalAlignment="Center">
+                                        <ComboBox ItemsSource="{Binding SongsFromWebsite}" ToolTip="{Binding RelativeSource={RelativeSource Self},Path=SelectedItem.MetaData.Title}"  SelectedItem="{Binding SelectedSong}" IsReadOnly="True" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="280" VerticalAlignment="Center">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Height="25" Orientation="Horizontal">
-                                                        <TextBlock Width="15" Text="{Binding TrackNumber}" VerticalAlignment="Top" FontSize="12" FontWeight="Bold"/>
-                                                        <TextBlock Text="{Binding Title}" VerticalAlignment="Top" Margin="10,0,0,0"/>
+                                                        <TextBlock Width="15" Text="{Binding MetaData.TrackNumber}" VerticalAlignment="Top" FontSize="12" FontWeight="Bold"/>
+                                                        <TextBlock Text="{Binding MetaData.Title}" VerticalAlignment="Top" Margin="10,0,0,0"/>
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>

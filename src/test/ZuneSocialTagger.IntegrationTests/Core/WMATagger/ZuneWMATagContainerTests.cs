@@ -13,6 +13,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
     [TestFixture]
     public class WhenAWMAFileIsLoadedWithPreExistingZuneData
     {
+        //we need to copy over the file instead of relying on the build to update it
         private string _path = "SampleData/asfheadercomplete.wma";
 
         [Test]
@@ -120,6 +121,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
         [Test]
         public void Then_it_should_be_able_to_add_all_3_ids()
         {
+            Assert.Fail("not implemented");
         }
 
     }

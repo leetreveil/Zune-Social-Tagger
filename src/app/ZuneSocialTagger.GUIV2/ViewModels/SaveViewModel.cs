@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using ID3Tag;
 using ZuneSocialTagger.Core.ID3Tagger;
+using ZuneSocialTagger.Core.WMATagger;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Views;
@@ -42,7 +43,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 try
                 {
-                    var container = (ZuneMP3TagContainer) row.Container;
+                    var container = row.Container;
 
                     if (Properties.Settings.Default.UpdateAlbumInfo)
                             if (row.SelectedSong.IsValid)
@@ -58,7 +59,24 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                                 //TODO: do unlinked on successview :(
                             }
 
-                    Id3TagManager.WriteV2Tag(row.FilePath, container.GetContainer());
+
+                    if (row.Container is ZuneMP3TagContainer)
+                    {
+                        Console.WriteLine("mp3s....");
+
+                        var mp3Container = (ZuneMP3TagContainer) row.Container;
+
+                        Id3TagManager.WriteV2Tag(row.FilePath, mp3Container.GetContainer());
+                    }
+                    else if (row.Container is ZuneWMATagContainer)
+                    {
+                        Console.WriteLine("wmas...");
+
+                        var wmaContainer = (ZuneWMATagContainer)row.Container;
+
+                        ASFTag.Net.ASFTagManager.WriteTag(row.FilePath,wmaContainer.GetContainer());
+                    }
+
 
                     //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
                 }

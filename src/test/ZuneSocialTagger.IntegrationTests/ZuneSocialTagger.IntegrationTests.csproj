@@ -64,7 +64,7 @@
   <ItemGroup>
     <Compile Include="AlbumWebpageScraperTestHarness.cs" />
     <Compile Include="AlbumSearchTestHarness.cs" />
-    <Compile Include="Core\ID3Tagger\ZuneTagContainerFactoryTests.cs" />
+    <Compile Include="Core\ZuneTagContainerFactoryTests.cs" />
     <Compile Include="Core\ID3Tagger\ZuneMP3TagContainerTests.cs" />
     <Compile Include="Core\WMATagger\ZuneWMATagContainerTests.cs" />
     <Compile Include="Core\ZuneWebsite\AlbumSearchTests.cs" />
