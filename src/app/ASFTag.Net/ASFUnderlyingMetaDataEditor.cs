@@ -106,58 +106,26 @@ namespace ASFTag.Net
 
             try
             {
-                ushort langIdx = 0;
-                ushort[] nullIdx = null;
-                ushort attribCount = 0;
-                _headerInfo.GetAttributeIndices(0, attribute.Name, ref langIdx, nullIdx, ref attribCount);
-                ushort[] attribIndices = new ushort[attribCount];
-                _headerInfo.GetAttributeIndices(0, attribute.Name, ref langIdx, attribIndices, ref attribCount);
+                ushort[] attribIndices = GetAttributeIndicies(attribute);
 
-                byte[] pbAttribValue;
-                int nAttribValueLen;
+                //attribute does not exist so we should add a new one
+                if (attribIndices.Length == 0) 
+                    AddAttribute(attribute);
 
-                if (!TranslateAttrib(attribute, out pbAttribValue, out nAttribValueLen))
-                    return false;
+                //attribute does exist so we should update it
+                else if (attribIndices.Length > 0 && attribIndices.Length < 2)
+                    ModifyAttribute(attribute, attribIndices[0]);
 
-
-                if (attribCount == 0) //attribute does not exist so we should add a new one
+                //we have one name with multiple values
+                else if (attribIndices.Length > 1) 
                 {
-                    ushort newattribIndex;
-
-                    _headerInfo.AddAttribute(0, attribute.Name, out newattribIndex, attribute.Type, 0, pbAttribValue,
-                                             (uint) nAttribValueLen);
-                }
-                else if (attribIndices.Length > 0 && attribIndices.Length < 2) //attribute does exist so we should update it
-                {
-                    _headerInfo.ModifyAttribute(0, attribIndices[0], attribute.Type, 0, pbAttribValue,
-                                                (uint) nAttribValueLen);
-                }
-                else if(attribIndices.Length > 1)//we have one name with multiple values
-                {
-                    for (int i = attribIndices.Length -1; i >= 0; i--)
-                    {
-                        ushort index = attribIndices[i];
-                        _headerInfo.DeleteAttribute(0, index);
-                    }
-
+                    //just bin them all then re-add, easier than going through and modifying each
+                    DeleteAttributes(attribIndices);
 
                     string[] values = attribute.Value.Split(';');
 
                     foreach (var value in values)
-                    {
-                        byte[] newAttribValue;
-                        int newAttribLen;
-
-                        if (!TranslateAttrib(new Attribute(attribute.Name,value,attribute.Type),out newAttribValue, out newAttribLen))
-                        {
-                            break;
-                        }
-
-                        ushort newattribIndex;
-
-                        _headerInfo.AddAttribute(0, attribute.Name, out newattribIndex, attribute.Type, 0, newAttribValue,
-                         (uint)newAttribLen);
-                    }
+                        AddAttribute(new Attribute(attribute.Name, value, attribute.Type));
                 }
             }
             catch
@@ -168,19 +136,64 @@ namespace ASFTag.Net
             return ok;
         }
 
+        private ushort[] GetAttributeIndicies(Attribute attribute)
+        {
+            ushort langIdx = 0;
+            ushort[] nullIdx = null;
+            ushort attribCount = 0;
+            _headerInfo.GetAttributeIndices(0, attribute.Name, ref langIdx, nullIdx, ref attribCount);
+            var attribIndices = new ushort[attribCount];
+            _headerInfo.GetAttributeIndices(0, attribute.Name, ref langIdx, attribIndices, ref attribCount);
+            return attribIndices;
+        }
+
+        private void ModifyAttribute(Attribute attribute, ushort attributeIndex)
+        {
+            byte[] newAttribValue;
+            int newAttribLen;
+
+            if (!TranslateAttrib(attribute.Value, attribute.Type, out newAttribValue, out newAttribLen))
+                return;
+
+            _headerInfo.ModifyAttribute(0, attributeIndex, attribute.Type, 0, newAttribValue,
+                                        (uint)newAttribLen);
+        }
+
+        private void AddAttribute(Attribute attribute)
+        {
+            byte[] newAttribValue;
+            int newAttribLen;
+
+            if (!TranslateAttrib(attribute.Value, attribute.Type, out newAttribValue, out newAttribLen))
+                return;
+
+            ushort newattribIndex;
+
+            _headerInfo.AddAttribute(0, attribute.Name, out newattribIndex, attribute.Type, 0, newAttribValue,
+                                     (uint)newAttribLen);
+        }
+
+        private void DeleteAttributes(ushort[] attribIndices)
+        {
+            for (int i = attribIndices.Length - 1; i >= 0; i--)
+            {
+                ushort index = attribIndices[i];
+                _headerInfo.DeleteAttribute(0, index);
+            }
+        }
         //------------------------------------------------------------------------------
         // Name: TranslateAttrib()
         // Desc: Converts attributes to byte arrays.
         //------------------------------------------------------------------------------
-        private static bool TranslateAttrib(Attribute attribute, out byte[] pbValue,
+        private static bool TranslateAttrib(string value, WMT_ATTR_DATATYPE type, out byte[] pbValue,
                                             out int nValueLength)
         {
-            switch (attribute.Type)
+            switch (type)
             {
                 case WMT_ATTR_DATATYPE.WMT_TYPE_DWORD:
 
                     nValueLength = 4;
-                    uint[] pdwAttribValue = new uint[1] { Convert.ToUInt32(attribute.Value) };
+                    uint[] pdwAttribValue = new uint[1] { Convert.ToUInt32(value) };
 
                     pbValue = new Byte[nValueLength];
                     Buffer.BlockCopy(pdwAttribValue, 0, pbValue, 0, nValueLength);
@@ -190,7 +203,7 @@ namespace ASFTag.Net
                 case WMT_ATTR_DATATYPE.WMT_TYPE_WORD:
 
                     nValueLength = 2;
-                    ushort[] pwAttribValue = new ushort[1] { Convert.ToUInt16(attribute.Value) };
+                    ushort[] pwAttribValue = new ushort[1] { Convert.ToUInt16(value) };
 
                     pbValue = new Byte[nValueLength];
                     Buffer.BlockCopy(pwAttribValue, 0, pbValue, 0, nValueLength);
@@ -200,7 +213,7 @@ namespace ASFTag.Net
                 case WMT_ATTR_DATATYPE.WMT_TYPE_QWORD:
 
                     nValueLength = 8;
-                    ulong[] pqwAttribValue = new ulong[1] { Convert.ToUInt64(attribute.Value) };
+                    ulong[] pqwAttribValue = new ulong[1] { Convert.ToUInt64(value) };
 
                     pbValue = new Byte[nValueLength];
                     Buffer.BlockCopy(pqwAttribValue, 0, pbValue, 0, nValueLength);
@@ -209,10 +222,10 @@ namespace ASFTag.Net
 
                 case WMT_ATTR_DATATYPE.WMT_TYPE_STRING:
 
-                    nValueLength = (ushort)((attribute.Value.Length + 1) * 2);
+                    nValueLength = (ushort)((value.Length + 1) * 2);
                     pbValue = new Byte[nValueLength];
 
-                    Buffer.BlockCopy(attribute.Value.ToCharArray(), 0, pbValue, 0, attribute.Value.Length * 2);
+                    Buffer.BlockCopy(value.ToCharArray(), 0, pbValue, 0, value.Length * 2);
                     pbValue[nValueLength - 2] = 0;
                     pbValue[nValueLength - 1] = 0;
 
@@ -221,7 +234,7 @@ namespace ASFTag.Net
                 case WMT_ATTR_DATATYPE.WMT_TYPE_BOOL:
 
                     nValueLength = 4;
-                    pdwAttribValue = new uint[1] { Convert.ToUInt32(attribute.Value) };
+                    pdwAttribValue = new uint[1] { Convert.ToUInt32(value) };
                     if (pdwAttribValue[0] != 0)
                     {
                         pdwAttribValue[0] = 1;
@@ -235,7 +248,7 @@ namespace ASFTag.Net
                 case WMT_ATTR_DATATYPE.WMT_TYPE_GUID:
 
                     nValueLength = 16;
-                    byte[] guidBytes = new Guid(attribute.Value).ToByteArray();
+                    byte[] guidBytes = new Guid(value).ToByteArray();
 
                     pbValue = new byte[16];
                     Buffer.BlockCopy(guidBytes, 0, pbValue, 0, pbValue.Length);
