@@ -109,21 +109,21 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void UpdateAlbumMetaDataViewModel(IEnumerable<Track> tracks)
         {
-            Track firstTrack = tracks.First();
+            MetaData firstTracksMetaData = tracks.First().MetaData;
 
             _model.AlbumDetailsFromWebsite = new WebsiteAlbumMetaDataViewModel
                                                  {
-                                                     Title = firstTrack.Title,
-                                                     Artist = firstTrack.AlbumArtist,
-                                                     ArtworkUrl = firstTrack.ArtworkUrl,
-                                                     Year = firstTrack.Year,
+                                                     Title = firstTracksMetaData.Title,
+                                                     Artist = firstTracksMetaData.AlbumArtist,
+                                                     ArtworkUrl = tracks.First().ArtworkUrl,
+                                                     Year = firstTracksMetaData.Year,
                                                      SongCount = tracks.Count().ToString()
                                                  };
         }
 
         private void AddSelectedSongs(IEnumerable<Track> tracks)
         {
-            this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel { SelectedAlbumTitle = tracks.First().AlbumName };
+            this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel { SelectedAlbumTitle = tracks.First().MetaData.AlbumName };
 
             foreach (var track in tracks)
                 this.SearchResultsDetailsViewModel.SelectedAlbumSongs.Add(track);

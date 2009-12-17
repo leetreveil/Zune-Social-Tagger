@@ -108,8 +108,18 @@ namespace ASFTag.Net
             {
                 ushort[] attribIndices = GetAttributeIndicies(attribute);
 
+                if (attribute.Name == "Author")
+                {
+                    //just bin them all then re-add, easier than going through and modifying each
+                    DeleteAttributes(attribIndices);
+
+                    string[] values = attribute.Value.Split('/');
+
+                   foreach (var value in values)
+                        AddAttribute(new Attribute(attribute.Name, value, attribute.Type));
+                }
                 //attribute does not exist so we should add a new one
-                if (attribIndices.Length == 0) 
+                else if (attribIndices.Length == 0) 
                     AddAttribute(attribute);
 
                 //attribute does exist so we should update it
@@ -122,7 +132,7 @@ namespace ASFTag.Net
                     //just bin them all then re-add, easier than going through and modifying each
                     DeleteAttributes(attribIndices);
 
-                    string[] values = attribute.Value.Split(';');
+                    string[] values = attribute.Value.Split('/');
 
                     foreach (var value in values)
                         AddAttribute(new Attribute(attribute.Name, value, attribute.Type));

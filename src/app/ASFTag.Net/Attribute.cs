@@ -1,3 +1,5 @@
+using System;
+
 namespace ASFTag.Net
 {
     public class Attribute

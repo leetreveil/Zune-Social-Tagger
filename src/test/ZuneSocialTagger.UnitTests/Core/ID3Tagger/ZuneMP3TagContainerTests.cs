@@ -64,7 +64,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
 
             var mediaIdGuid = new MediaIdGuid(MediaIds.ZuneMediaID, ZuneMP3TagContainerTestHelpers.SomeGuid);
 
-            container.Add(mediaIdGuid);
+            container.AddZuneMediaId(mediaIdGuid);
 
             //we know that there are 3 items in the container so there should be no more
             Assert.That(container.GetContainer().Count, Is.EqualTo(3));
@@ -92,7 +92,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
 
             var mediaIdGuid = new MediaIdGuid(MediaIds.ZuneMediaID, ZuneMP3TagContainerTestHelpers.SomeGuid);
 
-            container.Add(mediaIdGuid);
+            container.AddZuneMediaId(mediaIdGuid);
 
             var track = container.GetContainer().OfType<PrivateFrame>().Where(x => x.Owner == MediaIds.ZuneMediaID).First();
 
@@ -112,7 +112,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
             var albumArtistMediaIdGuid = new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID,
                                                          ZuneMP3TagContainerTestHelpers.SomeGuid);
 
-            container.Add(albumArtistMediaIdGuid);
+            container.AddZuneMediaId(albumArtistMediaIdGuid);
 
             var artist = container.GetContainer().OfType<PrivateFrame>().Where(x => x.Owner == MediaIds.ZuneAlbumArtistMediaID).First();
 
@@ -129,7 +129,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateContainerWithSomeStandardMetaData();
 
-            Track metaData = container.ReadMetaData();
+            MetaData metaData = container.ReadMetaData();
 
             Assert.That(metaData.AlbumArtist, Is.EqualTo("Various Artists"));
         }
@@ -139,7 +139,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateContainerWithSomeStandardMetaData();
 
-            Track metaData = container.ReadMetaData();
+            MetaData metaData = container.ReadMetaData();
 
             Assert.That(metaData.ContributingArtists.First(), Is.EqualTo(ZuneMP3TagContainerTestHelpers.SomeArtist));
         }
@@ -150,7 +150,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateContainerWithSomeStandardMetaData();
 
-            Track metaData = container.ReadMetaData();
+            MetaData metaData = container.ReadMetaData();
 
             Assert.That(metaData.AlbumName, Is.EqualTo(ZuneMP3TagContainerTestHelpers.SomeAlbum));
         }
@@ -160,7 +160,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateContainerWithSomeStandardMetaData();
 
-            Track metaData = container.ReadMetaData();
+            MetaData metaData = container.ReadMetaData();
 
             Assert.That(metaData.Title, Is.EqualTo(ZuneMP3TagContainerTestHelpers.SomeTitle));
         }
@@ -182,7 +182,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
 
             var metaData = container.ReadMetaData();
 
-            Assert.That(metaData.TrackNumber, Is.EqualTo(2));
+            Assert.That(metaData.TrackNumber, Is.EqualTo("2"));
         }
 
         [Test]
@@ -214,10 +214,10 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             ZuneMP3TagContainer zuneMp3TagContainer = ZuneMP3TagContainerTestHelpers.CreateContainerWithNoMetaData();
 
-            Track data = zuneMp3TagContainer.ReadMetaData();
+            MetaData data = zuneMp3TagContainer.ReadMetaData();
 
             Assert.That(data.Year, Is.EqualTo(""));
-            Assert.That(data.TrackNumber, Is.EqualTo(0));
+            Assert.That(data.TrackNumber, Is.EqualTo(""));
         }
     }
 
@@ -228,7 +228,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         [Test]
         public void Then_it_should_be_able_to_write_all_the_meta_data()
         {
-            var metaData = new Track
+            var metaData = new MetaData
                                {
                                         AlbumArtist = "Various Artists",
                                         AlbumName = "Forever",
@@ -236,13 +236,13 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
                                         DiscNumber = "1/1",
                                         Genre = "Pop",
                                         Title = "Wallet",
-                                        TrackNumber = 2,
+                                        TrackNumber = "2",
                                         Year = "2009"
                                  };
 
             ZuneMP3TagContainer zuneMp3TagContainer = ZuneMP3TagContainerTestHelpers.CreateContainerWithNoMetaData();
 
-            zuneMp3TagContainer.WriteMetaData(metaData);
+            zuneMp3TagContainer.AddMetaData(metaData);
 
             Assert.That(zuneMp3TagContainer.ReadMetaData().AlbumArtist, Is.EqualTo(metaData.AlbumArtist));
             Assert.That(zuneMp3TagContainer.ReadMetaData().ContributingArtists, Is.EqualTo(metaData.ContributingArtists));
@@ -261,7 +261,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         [Test]
         public void Then_it_should_update_any_existing_metadata()
         {
-            var metaData = new Track()
+            var metaData = new MetaData()
             {
                 AlbumArtist = "Various Artists",
                 AlbumName = "Forever",
@@ -269,13 +269,13 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
                 DiscNumber = "1/1",
                 Genre = "Pop",
                 Title = "Wallet",
-                TrackNumber = 2,
+                TrackNumber = "2",
                 Year = "2009"
             };
 
             ZuneMP3TagContainer zuneMp3TagContainer = ZuneMP3TagContainerTestHelpers.CreateContainerWithSomeStandardMetaData();
 
-            zuneMp3TagContainer.WriteMetaData(metaData);
+            zuneMp3TagContainer.AddMetaData(metaData);
 
             Assert.That(zuneMp3TagContainer.ReadMetaData().AlbumArtist, Is.EqualTo(metaData.AlbumArtist));
             Assert.That(zuneMp3TagContainer.ReadMetaData().ContributingArtists, Is.EqualTo(metaData.ContributingArtists));

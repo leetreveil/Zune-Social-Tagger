@@ -32,7 +32,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
         }
 
-        public void Add(MediaIdGuid mediaIDGuid)
+        public void AddZuneMediaId(MediaIdGuid mediaIDGuid)
         {
             PrivateFrame newFrame = new PrivateFrame(mediaIDGuid.MediaId, mediaIDGuid.Guid.ToByteArray());
 
@@ -51,12 +51,12 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             _container.Add(newFrame);
         }
 
-        public Track ReadMetaData()
+        public MetaData ReadMetaData()
         {
             IEnumerable<TextFrame> allTextFrames = from frame in _container.OfType<TextFrame>()
                                                    select frame;
 
-            var track =  new Track()
+            return  new MetaData()
                        {
                            AlbumArtist = GetValue(allTextFrames, "TPE2"),
                            ContributingArtists = GetValue(allTextFrames, "TPE1").Split('/'),
@@ -65,21 +65,13 @@ namespace ZuneSocialTagger.Core.ID3Tagger
                            Year = GetValue(allTextFrames, "TYER"),
                            DiscNumber = GetValue(allTextFrames,"TPOS"),
                            Genre = GetValue(allTextFrames,"TCON"),
+                           TrackNumber = GetValue(allTextFrames,"TRCK")
                        };
 
-
-            
-
-            int result;
-            int.TryParse(GetValue(allTextFrames, "TRCK"), out result);
-
-            track.TrackNumber = result;
-
-            return track;
         }
 
 
-        public void WriteMetaData(Track metaData)
+        public void AddMetaData(MetaData metaData)
         {
             foreach (var textFrame in CreateTextFramesFromMetaData(metaData))
             {
@@ -97,21 +89,17 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             }
         }
 
-        private static IEnumerable<TextFrame> CreateTextFramesFromMetaData(Track metaData)
+        private static IEnumerable<TextFrame> CreateTextFramesFromMetaData(MetaData metaData)
         {
-            string contribArtists = String.Empty;
+            var contribArtists = string.Join("/", metaData.ContributingArtists.ToArray());
 
-            contribArtists = string.Join("/", metaData.ContributingArtists.ToArray());
-
-
-            //TODO: need to write all the contrib artists to file
             yield return new TextFrame("TPE2", metaData.AlbumArtist, Encoding.Default);
             yield return new TextFrame("TPE1", contribArtists, Encoding.Default);
             yield return new TextFrame("TALB", metaData.AlbumName, Encoding.Default);
-            yield return new TextFrame("TPOS", metaData.DiscNumber.ToString(), Encoding.Default);
+            yield return new TextFrame("TPOS", metaData.DiscNumber, Encoding.Default);
             yield return new TextFrame("TCON", metaData.Genre, Encoding.Default);
             yield return new TextFrame("TIT2", metaData.Title, Encoding.Default);
-            yield return new TextFrame("TRCK", metaData.TrackNumber.ToString(), Encoding.Default);
+            yield return new TextFrame("TRCK", metaData.TrackNumber, Encoding.Default);
             yield return new TextFrame("TYER", metaData.Year, Encoding.Default);
         }
 

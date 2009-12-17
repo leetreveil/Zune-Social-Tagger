@@ -47,11 +47,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     if (Properties.Settings.Default.UpdateAlbumInfo)
                             if (row.SelectedSong.IsValid)
                             {
-                                container.Add(new MediaIdGuid(MediaIds.ZuneAlbumMediaID, row.SelectedSong.AlbumMediaID));
-                                container.Add(new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID, row.SelectedSong.ArtistMediaID));
-                                container.Add(new MediaIdGuid(MediaIds.ZuneMediaID, row.SelectedSong.MediaID));
+                                container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneAlbumMediaID, row.SelectedSong.AlbumMediaID));
+                                container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID, row.SelectedSong.ArtistMediaID));
+                                container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneMediaID, row.SelectedSong.MediaID));
 
-                                container.WriteMetaData(row.SelectedSong);
+                                container.AddMetaData(row.SelectedSong.MetaData);
                             }
                             else
                             {

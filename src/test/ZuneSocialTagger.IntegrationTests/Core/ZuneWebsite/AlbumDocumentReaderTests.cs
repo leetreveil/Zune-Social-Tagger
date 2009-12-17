@@ -16,7 +16,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         {
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
-            Assert.That(docReader.Read().First().AlbumName, Is.EqualTo("Reservoir Dogs"));
+            Assert.That(docReader.Read().First().MetaData.AlbumName, Is.EqualTo("Reservoir Dogs"));
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         {
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
-            Assert.That(docReader.Read().First().AlbumArtist, Is.EqualTo("Movie Soundtracks"));
+            Assert.That(docReader.Read().First().MetaData.AlbumArtist, Is.EqualTo("Movie Soundtracks"));
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         {
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
-            Assert.That(docReader.Read().First().Year, Is.EqualTo("1992"));
+            Assert.That(docReader.Read().First().MetaData.Year, Is.EqualTo("1992"));
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         {
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
-            Assert.That(docReader.Read().First().Title, Is.EqualTo("And Now Little Green Bag... (Dialogue)"));
+            Assert.That(docReader.Read().First().MetaData.Title, Is.EqualTo("And Now Little Green Bag... (Dialogue)"));
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         {
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
-            Assert.That(docReader.Read().First().AlbumArtist, Is.EqualTo("Movie Soundtracks"));
+            Assert.That(docReader.Read().First().MetaData.AlbumArtist, Is.EqualTo("Movie Soundtracks"));
         }
 
         [Test]
@@ -98,8 +98,8 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
             var album = docReader.Read();
-            Assert.That(album.First().TrackNumber, Is.EqualTo(1));
-            Assert.That(album.Last().TrackNumber, Is.EqualTo(16));
+            Assert.That(album.First().MetaData.TrackNumber, Is.EqualTo("1"));
+            Assert.That(album.Last().MetaData.TrackNumber, Is.EqualTo("16"));
         }
 
         [Test]
@@ -109,9 +109,9 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
 
             Track firstTrack = docReader.Read().First();
 
-            Assert.That(firstTrack.ContributingArtists.ElementAt(0), Is.EqualTo("Steven Wright"));
-            Assert.That(firstTrack.ContributingArtists.ElementAt(1), Is.EqualTo("Quentin Tarantino"));
-            Assert.That(firstTrack.ContributingArtists.ElementAt(2), Is.EqualTo("Some Artist"));
+            Assert.That(firstTrack.MetaData.ContributingArtists.ElementAt(0), Is.EqualTo("Steven Wright"));
+            Assert.That(firstTrack.MetaData.ContributingArtists.ElementAt(1), Is.EqualTo("Quentin Tarantino"));
+            Assert.That(firstTrack.MetaData.ContributingArtists.ElementAt(2), Is.EqualTo("Some Artist"));
         }
 
         [Test]
@@ -121,7 +121,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
 
             var album = docReader.Read();
 
-            Assert.That(album.First().Genre, Is.EqualTo("Pop"));
+            Assert.That(album.First().MetaData.Genre, Is.EqualTo("Pop"));
         }
 
         [Test]
@@ -131,7 +131,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
 
             var album = docReader.Read();
 
-            Assert.That(album.First().DiscNumber, Is.EqualTo("1"));
+            Assert.That(album.First().MetaData.DiscNumber, Is.EqualTo("1"));
         }
     }
 
@@ -145,7 +145,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         {
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
-            Assert.That(docReader.Read().First().Year,Is.Null);
+            Assert.That(docReader.Read().First().MetaData.Year,Is.Null);
         }
 
         [Test]
@@ -153,7 +153,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         {
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
-            Assert.That(docReader.Read().First().AlbumArtist, Is.Null);
+            Assert.That(docReader.Read().First().MetaData.AlbumArtist, Is.Null);
         }
 
         [Test]
@@ -162,7 +162,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
 
-            Assert.That(docReader.Read().First().ContributingArtists.First(),Is.EqualTo("Randall Hall"));
+            Assert.That(docReader.Read().First().MetaData.ContributingArtists.First(),Is.EqualTo("Randall Hall"));
         }
 
     }

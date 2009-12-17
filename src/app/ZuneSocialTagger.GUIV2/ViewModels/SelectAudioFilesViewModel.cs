@@ -72,7 +72,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        private void SetAlbumDetailsFromFile(int songCount, Track songMetaData)
+        private void SetAlbumDetailsFromFile(int songCount, MetaData songMetaData)
         {
             _model.AlbumDetailsFromFile = new WebsiteAlbumMetaDataViewModel
                                               {

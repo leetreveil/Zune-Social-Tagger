@@ -42,9 +42,9 @@ namespace ZuneSocialTagger.IntegrationTests
                 var result = scraper.Read().First();
 
                 Console.WriteLine("ZuneAlbumMediaID: {0}", result.AlbumMediaID);
-                Console.WriteLine("Album Artist: {0}", result.AlbumArtist);
-                Console.WriteLine("Title: {0}", result.Title);
-                Console.WriteLine("Release Year: {0}", result.Year);
+                Console.WriteLine("Album Artist: {0}", result.MetaData.AlbumArtist);
+                Console.WriteLine("Title: {0}", result.MetaData.Title);
+                Console.WriteLine("Release Year: {0}", result.MetaData.Year);
                 Console.WriteLine("Artwork url: {0}", result.ArtworkUrl);
 
                 //Console.WriteLine("Does this page have the minimum required info to link: {0}", result.IsValid);

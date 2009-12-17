@@ -33,20 +33,27 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             foreach (var item in feed.Items)
             {
                 yield return new Track
-                                 {
-                                     Title = item.Title.Text,
-                                     MediaID = item.Id.ExtractGuidFromUrnUuid(),
-                                     AlbumArtist = GetAlbumArtist(feed),
-                                     ArtistMediaID = GetArtistMediaIDFromTrack(item),
-                                     TrackNumber = GetTrackNumberFromTrack(item),
-                                     ContributingArtists = new List<string> { GetArtistFromTrack(item) }.Concat(GetContributingArtists(item)),
-                                     Genre = GetGenre(item),
-                                     DiscNumber = GetDiscNumber(item),
-                                     AlbumName = feed.Title.Text,
-                                     Year = GetReleaseYear(feed),
-                                     AlbumMediaID = GetAlbumMediaIDFromTrack(item),
-                                     ArtworkUrl = GetArtworkUrl(feed)
-                                 };
+                     {
+                         
+                         MediaID = item.Id.ExtractGuidFromUrnUuid(),
+
+                         ArtistMediaID = GetArtistMediaIDFromTrack(item),
+
+                         AlbumMediaID = GetAlbumMediaIDFromTrack(item),
+                         ArtworkUrl = GetArtworkUrl(feed),
+                         MetaData = new MetaData
+                             {
+                                 TrackNumber = GetTrackNumberFromTrack(item),
+                                 ContributingArtists = new List<string> { GetArtistFromTrack(item) }
+                                                        .Concat(GetContributingArtists(item)),
+                                 Genre = GetGenre(item),
+                                 DiscNumber = GetDiscNumber(item),
+                                 AlbumName = feed.Title.Text,
+                                 Year = GetReleaseYear(feed),
+                                 AlbumArtist = GetAlbumArtist(feed),
+                                 Title = item.Title.Text
+                             }
+                     };
 
                 
             }
@@ -96,11 +103,11 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                        : new Guid();
         }
 
-        private int? GetTrackNumberFromTrack(SyndicationItem item)
+        private string GetTrackNumberFromTrack(SyndicationItem item)
         {
             XElement trackNumberElement = GetElement(item, "trackNumber");
 
-            return trackNumberElement != null ? int.Parse(trackNumberElement.Value) : (int?) null;
+            return trackNumberElement != null ? trackNumberElement.Value : null;
         }
 
         private string GetDiscNumber(SyndicationItem item)

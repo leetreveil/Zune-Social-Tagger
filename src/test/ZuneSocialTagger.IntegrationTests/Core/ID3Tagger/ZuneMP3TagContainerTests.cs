@@ -16,14 +16,14 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
         {
             var zuneMp3TagContainer = ZuneTagContainerFactory.GetContainer(FilePath);
 
-            Track data = zuneMp3TagContainer.ReadMetaData();
+            MetaData data = zuneMp3TagContainer.ReadMetaData();
 
             Assert.That(data.AlbumArtist, Is.EqualTo("Subkulture"));
             Assert.That(data.ContributingArtists.First(), Is.EqualTo("Subkulture"));
             Assert.That(data.AlbumName, Is.EqualTo("Erasus"));
             Assert.That(data.Title, Is.EqualTo("Erasus"));
             Assert.That(data.Year, Is.EqualTo("2007"));
-            Assert.That(data.TrackNumber, Is.EqualTo(1));
+            Assert.That(data.TrackNumber, Is.EqualTo("1"));
         }
     }
 }

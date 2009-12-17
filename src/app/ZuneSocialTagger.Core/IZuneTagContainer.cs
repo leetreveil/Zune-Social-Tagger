@@ -7,8 +7,8 @@ namespace ZuneSocialTagger.Core
     public interface IZuneTagContainer
     {
         IEnumerable<MediaIdGuid> ReadMediaIds();
-        void Add(MediaIdGuid mediaIDGuid);
-        Track ReadMetaData();
-        void WriteMetaData(Track metaData);
+        void AddZuneMediaId(MediaIdGuid mediaIDGuid);
+        MetaData ReadMetaData();
+        void AddMetaData(MetaData metaData);
     }
 }
