@@ -49,7 +49,7 @@
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Orientation="Horizontal" Grid.Column="0">
                                             <TextBlock Width="23" Text="{Binding MetaData.TrackNumber}" VerticalAlignment="Center" FontSize="18"/>
-                                            <TextBlock ToolTip="{Binding MetaData.SongTitle}" Text="{Binding MetaData.SongTitle}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                            <TextBlock ToolTip="{Binding MetaData.Title}" Text="{Binding MetaData.Title}" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                         </StackPanel>
 
                                         <ComboBox ItemsSource="{Binding SongsFromWebsite}" ToolTip="{Binding RelativeSource={RelativeSource Self},Path=SelectedItem.Title}"  SelectedItem="{Binding SelectedSong}" IsReadOnly="True" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="280" VerticalAlignment="Center">

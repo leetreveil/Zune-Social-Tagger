@@ -14,7 +14,7 @@ namespace ZuneSocialTagger.GUIV2.Models
     {
         private ObservableCollection<Track> _songsFromWebsite;
 
-        public MetaData MetaData { get; set; }
+        public Track MetaData { get; set; }
         public string FilePath { get; private set; }
         public IZuneTagContainer Container { get; set; }
         public Track SelectedSong { get; set; }
@@ -50,7 +50,7 @@ namespace ZuneSocialTagger.GUIV2.Models
         {
             //this matches album songs to zune website songs in the details view
             IEnumerable<Track> matchedSongs =
-                this.SongsFromWebsite.Where(song => song.Title.ToLower() == this.MetaData.SongTitle.ToLower());
+                this.SongsFromWebsite.Where(song => song.Title.ToLower() == this.MetaData.Title.ToLower());
 
             return matchedSongs.Count() > 0 ? matchedSongs.First() : new Track();
         }

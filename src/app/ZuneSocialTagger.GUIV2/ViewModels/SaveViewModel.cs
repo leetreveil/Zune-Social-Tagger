@@ -44,27 +44,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 {
                     var container = (ZuneMP3TagContainer) row.Container;
 
-                    container.Add(new MediaIdGuid(MediaIds.ZuneAlbumMediaID, row.AlbumDetails.AlbumMediaID));
-                    container.Add(new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID, row.SelectedSong.ArtistMediaID));
-                    container.Add(new MediaIdGuid(MediaIds.ZuneMediaID, row.SelectedSong.MediaID));
-
-
                     if (Properties.Settings.Default.UpdateAlbumInfo)
-                        if (row.AlbumDetails.HasAllMetaData)
-                            if (row.SelectedSong.HasAllMetaData)
+                            if (row.SelectedSong.IsValid && row.AlbumDetails.IsValid)
                             {
-                                var converter = new TrackAndAlbumToMetaDataConverter(row.AlbumDetails, row.SelectedSong);
-
-                                if (converter.CanConvert)
-                                {
-                                    MetaData metaData = converter.Convert();
-
-                                    if (metaData.IsValid)
-                                        container.WriteMetaData(metaData);
-                                }
+                                container.Add(new MediaIdGuid(MediaIds.ZuneAlbumMediaID, row.AlbumDetails.AlbumMediaID));
+                                container.Add(new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID, row.SelectedSong.ArtistMediaID));
+                                container.Add(new MediaIdGuid(MediaIds.ZuneMediaID, row.SelectedSong.MediaID));
+                                container.WriteMetaData(row.SelectedSong);
+                            }
+                            else
+                            {
+                                //TODO: do unlinked on successview :(
                             }
 
                     Id3TagManager.WriteV2Tag(row.FilePath, container.GetContainer());
+
+                    //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
                 }
                 catch (Exception ex)
                 {

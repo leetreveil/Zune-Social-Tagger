@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.Core
 {
@@ -15,21 +13,6 @@ namespace ZuneSocialTagger.Core
         public static Guid ExtractGuidFromUrnUuid(this string urn)
         {
             return new Guid(urn.Substring(urn.LastIndexOf(':') + 1));
-        }
-
-        /// <summary>
-        /// Verify's that a list of song guids are valid and returns false if any are invalid
-        /// </summary>
-        /// <param name="songGuids"></param>
-        /// <returns></returns>
-        public static bool AreAllValid(this IEnumerable<Track> songGuids)
-        {
-            //empty list then its invalid
-            if (songGuids == null || songGuids.Count() == 0)
-                return false;
-
-            //if any guids are not valid
-            return !songGuids.Any(guid => !guid.IsValid());
         }
 
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)

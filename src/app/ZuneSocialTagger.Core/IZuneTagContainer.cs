@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ZuneSocialTagger.Core.ID3Tagger;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.Core
 {
@@ -7,7 +8,7 @@ namespace ZuneSocialTagger.Core
     {
         IEnumerable<MediaIdGuid> ReadMediaIds();
         void Add(MediaIdGuid mediaIDGuid);
-        MetaData ReadMetaData();
-        void WriteMetaData(MetaData metaData);
+        Track ReadMetaData();
+        void WriteMetaData(Track metaData);
     }
 }

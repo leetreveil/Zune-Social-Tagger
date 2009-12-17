@@ -47,7 +47,6 @@ namespace ZuneSocialTagger.IntegrationTests
                 Console.WriteLine("Artwork url: {0}", result.ArtworkUrl);
 
                 Console.WriteLine("Does this page have the minimum required info to link: {0}", result.IsValid);
-                Console.WriteLine("Does this page have the all the metadata?: {0}", result.HasAllMetaData);
                 Console.WriteLine("");
             }
 

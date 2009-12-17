@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ASFTag.Net;
 using ZuneSocialTagger.Core.ID3Tagger;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.Core.WMATagger
 {
@@ -27,12 +28,12 @@ namespace ZuneSocialTagger.Core.WMATagger
             throw new NotImplementedException();
         }
 
-        public MetaData ReadMetaData()
+        public Track ReadMetaData()
         {
             throw new NotImplementedException();
         }
 
-        public void WriteMetaData(MetaData metaData)
+        public void WriteMetaData(Track metaData)
         {
             throw new NotImplementedException();
         }

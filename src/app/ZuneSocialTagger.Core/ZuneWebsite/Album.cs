@@ -14,12 +14,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
 
         public bool IsValid
         {
-            get { return AlbumMediaID != Guid.Empty && Tracks.AreAllValid(); }
-        }
-
-        public bool HasAllMetaData
-        {
-            get { return !String.IsNullOrEmpty(Artist) && !String.IsNullOrEmpty(Title) && ReleaseYear != null; }
+            get { return AlbumMediaID != Guid.Empty; }
         }
     }
 }

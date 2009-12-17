@@ -9,6 +9,7 @@ using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
 using ID3Tag;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -57,7 +58,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(filePath);
 
                     _model.Rows.Add(new DetailRow(filePath, container));
-                    _model.Rows.Add(new DetailRow(filePath,container));
                 }
 
                 //takes the first track read from the model and updates the metadata view
@@ -72,25 +72,25 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        private void SetAlbumDetailsFromFile(int songCount, MetaData songMetaData)
+        private void SetAlbumDetailsFromFile(int songCount, Track songMetaData)
         {
             _model.AlbumDetailsFromFile = new WebsiteAlbumMetaDataViewModel
                                               {
                                                   Artist = songMetaData.AlbumArtist,
-                                                  Title = songMetaData.AlbumTitle,
+                                                  Title = songMetaData.AlbumName,
                                                   Year = songMetaData.Year,
                                                   SongCount = songCount.ToString(),
                                               };
 
             //fall back to contributing artists if album artist is not available
             if (String.IsNullOrEmpty(songMetaData.AlbumArtist))
-                _model.AlbumDetailsFromFile.Artist = songMetaData.ContributingArtist;
+                _model.AlbumDetailsFromFile.Artist = songMetaData.ContributingArtists.First();
 
 
             //add info so search bar displays the album artist and album title from 
             //the album that has been selected
-            _model.SearchBarViewModel.SearchText = songMetaData.AlbumTitle + " " +
-                                                   songMetaData.AlbumArtist;
+            _model.SearchBarViewModel.SearchText = songMetaData.AlbumName + " " +
+                                                   _model.AlbumDetailsFromFile.Artist;
         }
     }
 }

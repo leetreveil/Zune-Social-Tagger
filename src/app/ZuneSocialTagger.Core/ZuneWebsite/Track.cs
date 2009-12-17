@@ -8,27 +8,22 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         public Guid ArtistMediaID { get; set; }
         public Guid MediaID { get; set; }
         public string Title { get; set; }
-        public string Artist { get; set; }
+        public string AlbumArtist { get; set; }
         public int? TrackNumber { get; set; }
         public IEnumerable<String> ContributingArtists { get; set; }
         public string Genre { get; set; }
-        public int? DiscNumber { get; set; }
+        public string DiscNumber { get; set; }
+        public string AlbumName { get; set; }
+        public string Year { get; set; }
 
-        public bool HasAllMetaData
+
+        public bool IsValid
         {
-            get 
+            get
             {
-                return !String.IsNullOrEmpty(Title) && !String.IsNullOrEmpty(Artist) &&
-                       TrackNumber != null && DiscNumber != null; 
+                //A songGuid is valid if its guid is not empty and its title is not empty or null
+                return MediaID != Guid.Empty && ArtistMediaID != Guid.Empty;
             }
-        }
-
-        public bool IsValid()
-        {
-            //A songGuid is valid if its guid is not empty and its title is not empty or null
-            return MediaID != Guid.Empty && 
-                   ArtistMediaID != Guid.Empty && 
-                   !String.IsNullOrEmpty(Title);
         }
     }
 }

@@ -34,13 +34,13 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                 album.AlbumMediaID = feed.Id.ExtractGuidFromUrnUuid();
                 album.ReleaseYear = GetReleaseYear(feed);
                 album.ArtworkUrl = GetArtworkUrl(feed);
-                album.Tracks = GetTracks(feed.Items);
+                album.Tracks = GetTracks(feed.Items,album);
             }
 
             return album;
         }
 
-        private IEnumerable<Track> GetTracks(IEnumerable<SyndicationItem> items)
+        private IEnumerable<Track> GetTracks(IEnumerable<SyndicationItem> items, Album album)
         {
             foreach (var item in items)
             {
@@ -48,16 +48,25 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                                  {
                                      Title = item.Title.Text,
                                      MediaID = item.Id.ExtractGuidFromUrnUuid(),
-                                     Artist = GetArtistFromTrack(item),
+                                     AlbumArtist = album.Artist,
                                      ArtistMediaID = GetArtistMediaIDFromTrack(item),
                                      TrackNumber = GetTrackNumberFromTrack(item),
-                                     ContributingArtists = GetContributingArtists(item),
+                                     ContributingArtists = new List<string> { GetArtistFromTrack(item) }.Concat(GetContributingArtists(item)),
                                      Genre = GetGenre(item),
-                                     DiscNumber = GetDiscNumber(item)
+                                     DiscNumber = GetDiscNumber(item),
+                                     AlbumName = album.Title,
+                                     Year = album.ReleaseYear.ToString()
                                  };
+
+                
             }
         }
 
+        /// <summary>
+        /// This is the primaryArtist for the track, different to the albumArtist
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         private string GetArtistFromTrack(SyndicationItem item)
         {
             XElement primaryArtistElement = GetElement(item, "primaryArtist");
@@ -97,11 +106,11 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             return trackNumberElement != null ? int.Parse(trackNumberElement.Value) : (int?) null;
         }
 
-        private int? GetDiscNumber(SyndicationItem item)
+        private string GetDiscNumber(SyndicationItem item)
         {
             XElement discNumberElement = GetElement(item, "discNumber");
 
-            return discNumberElement != null ? int.Parse(discNumberElement.Value) : (int?)null;
+            return discNumberElement != null ? discNumberElement.Value : null;
         }
 
         private string GetAlbumArtist(SyndicationFeed feed)

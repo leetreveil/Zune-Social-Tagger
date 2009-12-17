@@ -56,7 +56,6 @@
     <Compile Include="IZuneTagContainer.cs" />
     <Compile Include="ID3Tagger\MediaIdGuid.cs" />
     <Compile Include="ID3Tagger\MediaIds.cs" />
-    <Compile Include="ID3Tagger\MetaData.cs" />
     <Compile Include="ID3Tagger\ZuneMP3TagContainer.cs" />
     <Compile Include="ID3Tagger\ZuneTagContainerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,7 +63,6 @@
     <Compile Include="ZuneWebsite\Track.cs" />
     <Compile Include="ZuneWebsite\AlbumDocumentReader.cs" />
     <Compile Include="ZuneWebsite\AlbumSearch.cs" />
-    <Compile Include="ZuneWebsite\TrackAndAlbumToMetaDataConverter.cs" />
     <Compile Include="ZuneWebsite\Urls.cs" />
   </ItemGroup>
   <ItemGroup>

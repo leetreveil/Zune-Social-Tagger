@@ -80,7 +80,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         {
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
-            Assert.That(docReader.Read().Tracks.First().Artist, Is.EqualTo("Steven Wright"));
+            Assert.That(docReader.Read().Tracks.First().AlbumArtist, Is.EqualTo("Movie Soundtracks"));
         }
 
         [Test]
@@ -102,14 +102,15 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         }
 
         [Test]
-        public void Then_each_track_should_have_two_contributing_artist()
+        public void Then_each_track_should_have_three_contributing_artists()
         {
             var docReader = new AlbumDocumentReader(XmlReader.Create(_pathToDoc));
 
             Album album = docReader.Read();
 
-            Assert.That(album.Tracks.First().ContributingArtists.First(), Is.EqualTo("Quentin Tarantino"));
-            Assert.That(album.Tracks.First().ContributingArtists.Last(), Is.EqualTo("Some Artist"));
+            Assert.That(album.Tracks.First().ContributingArtists.ElementAt(0), Is.EqualTo("Steven Wright"));
+            Assert.That(album.Tracks.First().ContributingArtists.ElementAt(1), Is.EqualTo("Quentin Tarantino"));
+            Assert.That(album.Tracks.First().ContributingArtists.ElementAt(2), Is.EqualTo("Some Artist"));
         }
 
         [Test]
@@ -129,7 +130,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
 
             Album album = docReader.Read();
 
-            Assert.That(album.Tracks.First().DiscNumber, Is.EqualTo(1));
+            Assert.That(album.Tracks.First().DiscNumber, Is.EqualTo("1"));
         }
 
         [Test]
