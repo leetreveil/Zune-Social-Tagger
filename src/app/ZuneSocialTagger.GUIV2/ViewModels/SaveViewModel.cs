@@ -42,9 +42,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 try
                 {
-                    row.Container.Add(new MediaIdGuid(MediaIds.ZuneAlbumMediaID, row.AlbumDetails.AlbumMediaID));
-                    row.Container.Add(new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID, row.SelectedSong.ArtistMediaID));
-                    row.Container.Add(new MediaIdGuid(MediaIds.ZuneMediaID, row.SelectedSong.MediaID));
+                    var container = (ZuneMP3TagContainer) row.Container;
+
+                    container.Add(new MediaIdGuid(MediaIds.ZuneAlbumMediaID, row.AlbumDetails.AlbumMediaID));
+                    container.Add(new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID, row.SelectedSong.ArtistMediaID));
+                    container.Add(new MediaIdGuid(MediaIds.ZuneMediaID, row.SelectedSong.MediaID));
 
 
                     if (Properties.Settings.Default.UpdateAlbumInfo)
@@ -58,11 +60,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                                     MetaData metaData = converter.Convert();
 
                                     if (metaData.IsValid)
-                                        row.Container.WriteMetaData(metaData);
+                                        container.WriteMetaData(metaData);
                                 }
                             }
 
-                    Id3TagManager.WriteV2Tag(row.FilePath, row.Container.GetContainer());
+                    Id3TagManager.WriteV2Tag(row.FilePath, container.GetContainer());
                 }
                 catch (Exception ex)
                 {

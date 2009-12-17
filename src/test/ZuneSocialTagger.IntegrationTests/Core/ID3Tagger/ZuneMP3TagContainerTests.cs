@@ -12,7 +12,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
         [Test]
         public void Then_it_should_be_able_to_load_the_picture_as_a_bitmap()
         {
-            ZuneTagContainer container = ZuneTagContainerFactory.GetContainer(FilePath);
+            var container = ZuneTagContainerFactory.GetContainer(FilePath);
 
             MetaData data = container.ReadMetaData();
 
@@ -23,9 +23,9 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
         [Test]
         public void Then_it_should_be_able_to_read_the_tracks_metadata()
         {
-            ZuneTagContainer zuneTagContainer = ZuneTagContainerFactory.GetContainer(FilePath);
+            var zuneMp3TagContainer = ZuneTagContainerFactory.GetContainer(FilePath);
 
-            MetaData data = zuneTagContainer.ReadMetaData();
+            MetaData data = zuneMp3TagContainer.ReadMetaData();
 
             Assert.That(data.AlbumArtist, Is.EqualTo("Subkulture"));
             Assert.That(data.ContributingArtist, Is.EqualTo("Subkulture"));

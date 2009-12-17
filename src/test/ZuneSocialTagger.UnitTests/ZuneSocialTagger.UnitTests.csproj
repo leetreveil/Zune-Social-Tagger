@@ -57,8 +57,8 @@
     <Compile Include="Core\ID3Tagger\MetaDataTests.cs" />
     <Compile Include="Core\ZuneWebsite\TrackAndAlbumToMetaDataConverterTests.cs" />
     <Compile Include="Core\ZuneWebsite\TrackTests.cs" />
-    <Compile Include="Core\ID3Tagger\ZuneTagContainerTestHelpers.cs" />
-    <Compile Include="Core\ID3Tagger\ZuneTagContainerTests.cs" />
+    <Compile Include="Core\ID3Tagger\ZuneMP3TagContainerTestHelpers.cs" />
+    <Compile Include="Core\ID3Tagger\ZuneMP3TagContainerTests.cs" />
     <Compile Include="Core\ZuneWebsite\AlbumTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

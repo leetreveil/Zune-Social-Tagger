@@ -12,13 +12,14 @@ namespace ZuneSocialTagger.Core.ID3Tagger
     /// <summary>
     /// Updates a pre-existing TagContainer with new zune PRIV tags
     /// </summary>
-    public class ZuneTagContainer
+    public class ZuneMP3TagContainer : IZuneTagContainer
     {
         private readonly TagContainer _container;
 
-        public ZuneTagContainer(TagContainer container)
+        public ZuneMP3TagContainer(TagContainer container)
         {
-            _container = container;        }
+            _container = container;        
+        }
 
         public IEnumerable<MediaIdGuid> ReadMediaIds()
         {
@@ -64,7 +65,6 @@ namespace ZuneSocialTagger.Core.ID3Tagger
                            TrackNumber = GetValue(allTextFrames,"TRCK"),
                            DiscNumber = GetValue(allTextFrames,"TPOS"),
                            Genre = GetValue(allTextFrames,"TCON"),
-                           Picture = ReadImage()
                        };
         }
 
@@ -103,17 +103,17 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             return this._container;
         }
 
-        private Image ReadImage()
-        {
-            var pictureFrame = _container.OfType<PictureFrame>().Select(frame => frame).FirstOrDefault();
+        //private Image ReadImage()
+        //{
+        //    var pictureFrame = _container.OfType<PictureFrame>().Select(frame => frame).FirstOrDefault();
 
-            if (pictureFrame != null)
-                return pictureFrame.Type == FrameType.Picture
-                           ? Image.FromStream(new MemoryStream(pictureFrame.PictureData))
-                           : null;
+        //    if (pictureFrame != null)
+        //        return pictureFrame.Type == FrameType.Picture
+        //                   ? Image.FromStream(new MemoryStream(pictureFrame.PictureData))
+        //                   : null;
 
-            return null;
-        }
+        //    return null;
+        //}
 
         private static string GetValue(IEnumerable<TextFrame> textFrames, string key)
         {

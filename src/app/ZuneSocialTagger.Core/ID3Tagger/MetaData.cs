@@ -17,7 +17,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
 
         /// <summary>
-        /// A MetaData object is valid if everything is not null or empty apart from the picture, which can be
+        /// A MetaData object is valid if everything is not null or empty apart from the picture && genre && contributing artist, which can be
         /// </summary>
         public bool IsValid
         {
@@ -25,7 +25,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             {
                 return !String.IsNullOrEmpty(Year) && !String.IsNullOrEmpty(TrackNumber) &&
                        !String.IsNullOrEmpty(SongTitle) &&
-                       !String.IsNullOrEmpty(DiscNumber) && !String.IsNullOrEmpty(ContributingArtist) &&
+                       !String.IsNullOrEmpty(DiscNumber) &&
                        !String.IsNullOrEmpty(AlbumTitle) && !String.IsNullOrEmpty(AlbumArtist);
             }
         }

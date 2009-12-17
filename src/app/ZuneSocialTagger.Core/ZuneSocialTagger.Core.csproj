@@ -52,10 +52,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="WMATagger\ZuneWMATagContainer.cs" />
+    <Compile Include="IZuneTagContainer.cs" />
     <Compile Include="ID3Tagger\MediaIdGuid.cs" />
     <Compile Include="ID3Tagger\MediaIds.cs" />
     <Compile Include="ID3Tagger\MetaData.cs" />
-    <Compile Include="ID3Tagger\ZuneTagContainer.cs" />
+    <Compile Include="ID3Tagger\ZuneMP3TagContainer.cs" />
     <Compile Include="ID3Tagger\ZuneTagContainerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZuneWebsite\Album.cs" />
@@ -64,6 +66,12 @@
     <Compile Include="ZuneWebsite\AlbumSearch.cs" />
     <Compile Include="ZuneWebsite\TrackAndAlbumToMetaDataConverter.cs" />
     <Compile Include="ZuneWebsite\Urls.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ASFTag.Net\ASFTag.Net.csproj">
+      <Project>{8156E872-46DD-494C-8FE8-1D4A99F6DE86}</Project>
+      <Name>ASFTag.Net</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

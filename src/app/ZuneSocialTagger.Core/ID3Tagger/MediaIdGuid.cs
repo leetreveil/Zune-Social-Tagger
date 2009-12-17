@@ -12,5 +12,18 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             MediaId = mediaID;
             Guid = guid;
         }
+
+        public override bool Equals(object obj)
+        {
+            MediaIdGuid newGuid = (MediaIdGuid) obj;
+
+            return this.Guid == newGuid.Guid;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Guid.GetHashCode();
+        }
+
     }
 }

@@ -12,9 +12,9 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
         [Test]
         public void Then_it_should_load_a_Zune_Tag_Container_for_that_file()
         {
-            ZuneTagContainer zuneTagContainer = ZuneTagContainerFactory.GetContainer(FilePath);
+            var zuneMp3TagContainer = ZuneTagContainerFactory.GetContainer(FilePath);
 
-            Assert.That(zuneTagContainer, Is.Not.Null);
+            Assert.That(zuneMp3TagContainer, Is.Not.Null);
         }
 
     }
@@ -44,9 +44,9 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
         [ExpectedException(typeof (ID3Tag.ID3TagException), ExpectedMessage = "This major revision is not supported!")]
         public void Then_it_should_get_an_empty_container_at_the_id_3_version_we_require()
         {
-            ZuneTagContainer zuneTagContainer = ZuneTagContainerFactory.GetContainer(FilePath);
+            var zuneMp3TagContainer = ZuneTagContainerFactory.GetContainer(FilePath);
 
-            Assert.That(zuneTagContainer, Is.Not.Null);
+            Assert.That(zuneMp3TagContainer, Is.Not.Null);
         }
     }
 }

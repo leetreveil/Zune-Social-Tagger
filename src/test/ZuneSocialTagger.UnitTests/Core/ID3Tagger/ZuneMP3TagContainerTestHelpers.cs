@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
 {
-    public static class ZuneTagContainerTestHelpers
+    public static class ZuneMP3TagContainerTestHelpers
     {
         /// <summary>
         /// 3ed50a00-0600-11db-89ca-0019b92a3933
@@ -22,7 +22,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         /// ZuneAlbumMediaID: 4f66ff01-0100-11db-89ca-0019b92a3933
         /// ZuneMediaID: 5366ff01-0100-11db-89ca-0019b92a3933
         /// </summary>
-        public static ZuneTagContainer CreateContainerWithThreeZuneTags()
+        public static ZuneMP3TagContainer CreateContainerWithThreeZuneTags()
         {
             var container = ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
 
@@ -30,33 +30,33 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
             container.Add(new PrivateFrame(MediaIds.ZuneAlbumMediaID, SomeGuid.ToByteArray()));
             container.Add(new PrivateFrame(MediaIds.ZuneMediaID, SomeGuid.ToByteArray()));
 
-            return new ZuneTagContainer(container);
+            return new ZuneMP3TagContainer(container);
         }
 
-        public static ZuneTagContainer CreateEmptyContainer()
+        public static ZuneMP3TagContainer CreateEmptyContainer()
         {
-            return new ZuneTagContainer(ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23));
+            return new ZuneMP3TagContainer(ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23));
         }
 
         /// <summary>
         /// Note: this contains an random guid to test for incorrectness
         /// </summary>
         /// <returns></returns>
-        public static ZuneTagContainer CreateContainerWithZuneAlbumartistMediaIDWithRandomGuid()
+        public static ZuneMP3TagContainer CreateContainerWithZuneAlbumartistMediaIDWithRandomGuid()
         {
             var container = ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
 
             container.Add(new PrivateFrame(MediaIds.ZuneAlbumArtistMediaID,
                                            Guid.NewGuid().ToByteArray()));
 
-            return new ZuneTagContainer(container);
+            return new ZuneMP3TagContainer(container);
         }
 
         /// <summary>
         /// Contains: AlbumArtist = "Various Artists", Artist = "Editors", Album= "In This Light And On This Evening", Title = "The Boxer", Year = "2009"
         /// </summary>
         /// <returns></returns>
-        public static ZuneTagContainer CreateContainerWithSomeStandardMetaData()
+        public static ZuneMP3TagContainer CreateContainerWithSomeStandardMetaData()
         {
             var container = ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
 
@@ -69,12 +69,12 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
             container.Add(new TextFrame("TPOS", "2/2", Encoding.UTF8));
             container.Add(new TextFrame("TCON", "Pop",Encoding.UTF8));
 
-            return new ZuneTagContainer(container);
+            return new ZuneMP3TagContainer(container);
         }
 
-        public static ZuneTagContainer CreateContainerWithNoMetaData()
+        public static ZuneMP3TagContainer CreateContainerWithNoMetaData()
         {
-            return new ZuneTagContainer(ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23));
+            return new ZuneMP3TagContainer(ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23));
         }
     }
 }

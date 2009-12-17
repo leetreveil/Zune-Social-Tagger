@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.Core.ZuneWebsite;
 
@@ -15,11 +16,11 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public MetaData MetaData { get; set; }
         public string FilePath { get; private set; }
-        public ZuneTagContainer Container { get; set; }
+        public IZuneTagContainer Container { get; set; }
         public Track SelectedSong { get; set; }
         public Album AlbumDetails { get; set; }
 
-        public DetailRow(string filePath, ZuneTagContainer container)
+        public DetailRow(string filePath, IZuneTagContainer container)
         {
             this.FilePath = filePath;
             Container = container;

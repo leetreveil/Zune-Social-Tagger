@@ -72,7 +72,8 @@
     <Compile Include="AlbumSearchTestHarness.cs" />
     <Compile Include="ASFTag.Net\ASFTagManagerTests.cs" />
     <Compile Include="Core\ID3Tagger\ZuneTagContainerFactoryTests.cs" />
-    <Compile Include="Core\ID3Tagger\ZuneTagContainerTests.cs" />
+    <Compile Include="Core\ID3Tagger\ZuneMP3TagContainerTests.cs" />
+    <Compile Include="Core\WMATagger\ZuneWMATagContainerTests.cs" />
     <Compile Include="Core\ZuneWebsite\AlbumSearchTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Core\ZuneWebsite\AlbumDocumentReaderTests.cs" />

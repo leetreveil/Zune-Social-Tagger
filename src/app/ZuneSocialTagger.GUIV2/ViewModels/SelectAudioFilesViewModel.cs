@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
 using System.Windows.Input;
+using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
@@ -53,9 +54,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 foreach (var filePath in files)
                 {
-                    ZuneTagContainer container = ZuneTagContainerFactory.GetContainer(filePath);
+                    IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(filePath);
 
                     _model.Rows.Add(new DetailRow(filePath, container));
+                    _model.Rows.Add(new DetailRow(filePath,container));
                 }
 
                 //takes the first track read from the model and updates the metadata view
