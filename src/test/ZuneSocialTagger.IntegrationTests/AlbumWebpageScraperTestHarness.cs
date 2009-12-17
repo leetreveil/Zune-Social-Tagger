@@ -39,15 +39,18 @@ namespace ZuneSocialTagger.IntegrationTests
             foreach (var url in _webpages)
             {
                 var scraper = new AlbumDocumentReader(url);
-                var result = scraper.Read().First();
+                var result = scraper.Read();
 
-                Console.WriteLine("ZuneAlbumMediaID: {0}", result.AlbumMediaID);
-                Console.WriteLine("Album Artist: {0}", result.MetaData.AlbumArtist);
-                Console.WriteLine("Title: {0}", result.MetaData.Title);
-                Console.WriteLine("Release Year: {0}", result.MetaData.Year);
-                Console.WriteLine("Artwork url: {0}", result.ArtworkUrl);
+                Console.WriteLine("ZuneAlbumMediaID: {0}", result.First().AlbumMediaID);
+                Console.WriteLine("Album Artist: {0}", result.First().MetaData.AlbumArtist);
+                Console.WriteLine("Title: {0}", result.First().MetaData.AlbumName);
+                Console.WriteLine("Release Year: {0}", result.First().MetaData.Year);
+                Console.WriteLine("Artwork url: {0}", result.First().ArtworkUrl);
 
-                //Console.WriteLine("Does this page have the minimum required info to link: {0}", result.IsValid);
+                foreach (var track in result)
+                    if (track.IsValid == false)
+                        Console.WriteLine("bad song :(");
+
                 Console.WriteLine("");
             }
 

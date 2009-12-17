@@ -6,7 +6,6 @@ using ZuneSocialTagger.Core.WMATagger;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Views;
-using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -54,24 +53,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                                 container.AddMetaData(row.SelectedSong.MetaData);
                             }
-                            else
-                            {
-                                //TODO: do unlinked on successview :(
-                            }
 
 
                     if (row.Container is ZuneMP3TagContainer)
                     {
-                        Console.WriteLine("mp3s....");
-
                         var mp3Container = (ZuneMP3TagContainer) row.Container;
 
                         Id3TagManager.WriteV2Tag(row.FilePath, mp3Container.GetContainer());
                     }
                     else if (row.Container is ZuneWMATagContainer)
                     {
-                        Console.WriteLine("wmas...");
-
                         var wmaContainer = (ZuneWMATagContainer)row.Container;
 
                         ASFTag.Net.ASFTagManager.WriteTag(row.FilePath,wmaContainer.GetContainer());

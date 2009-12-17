@@ -34,7 +34,7 @@
             </Border>
         </StackPanel>
         
-        <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+        <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">  
             <Button Margin="0,0,9,0" Style="{DynamicResource MinimizeButton}" VerticalAlignment="Bottom" Width="10" Height="2" Click="Minimize_Click"/>
             <Button ToolTip="Close" Width="10" Height="10" VerticalAlignment="Bottom" Grid.Column="1" Style="{StaticResource CloseButton}" Click="Close_Click" />
         </StackPanel>
