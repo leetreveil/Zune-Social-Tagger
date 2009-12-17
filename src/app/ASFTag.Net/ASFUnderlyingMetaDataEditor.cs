@@ -106,10 +106,6 @@ namespace ASFTag.Net
 
             try
             {
-                //null terminate the attribute name if it isn't already
-                //if (!attribute.Name.EndsWith("\0"))
-                //    attribute.Name += (char)0;
-
                 ushort langIdx = 0;
                 ushort[] nullIdx = null;
                 ushort attribCount = 0;
@@ -131,10 +127,37 @@ namespace ASFTag.Net
                     _headerInfo.AddAttribute(0, attribute.Name, out newattribIndex, attribute.Type, 0, pbAttribValue,
                                              (uint) nAttribValueLen);
                 }
-                else if (attribIndices.Length > 0) //attribute does exist so we should update it
+                else if (attribIndices.Length > 0 && attribIndices.Length < 2) //attribute does exist so we should update it
                 {
                     _headerInfo.ModifyAttribute(0, attribIndices[0], attribute.Type, 0, pbAttribValue,
                                                 (uint) nAttribValueLen);
+                }
+                else if(attribIndices.Length > 1)//we have one name with multiple values
+                {
+                    for (int i = attribIndices.Length -1; i >= 0; i--)
+                    {
+                        ushort index = attribIndices[i];
+                        _headerInfo.DeleteAttribute(0, index);
+                    }
+
+
+                    string[] values = attribute.Value.Split(';');
+
+                    foreach (var value in values)
+                    {
+                        byte[] newAttribValue;
+                        int newAttribLen;
+
+                        if (!TranslateAttrib(new Attribute(attribute.Name,value,attribute.Type),out newAttribValue, out newAttribLen))
+                        {
+                            break;
+                        }
+
+                        ushort newattribIndex;
+
+                        _headerInfo.AddAttribute(0, attribute.Name, out newattribIndex, attribute.Type, 0, newAttribValue,
+                         (uint)newAttribLen);
+                    }
                 }
             }
             catch

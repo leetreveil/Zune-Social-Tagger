@@ -141,6 +141,30 @@ namespace ZuneSocialTagger.IntegrationTests.ASFTag.Net
            Assert.That(newwordAttrib.Value, Is.EqualTo(newwordAttrib.Value));
         }
 
+        [Test]
+        public void Should_be_able_to_add_a_string_which_is_split_over_3_different_attributes()
+        {
+            //there is already 3 author fields in the file, this should update them all
+            TagContainer container = ASFTagFactory.CreateASFTagContainer();
+
+            //this should output 3 new attributes
+            var contributingArtists = new Attribute("Author", "Andy C;Armin Van Burren;U2",
+                                                    WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
+
+            container.Add(contributingArtists);
+
+            ASFTagManager.WriteTag(_file,container);
+
+            TagContainer updatedContainer = ASFTagManager.ReadTag(_file);
+
+            Attribute first = updatedContainer.Where(x => x.Value == "Andy C").First();
+            Attribute second = updatedContainer.Where(x => x.Value == "Armin Van Burren").First();
+            Attribute third = updatedContainer.Where(x => x.Value == "U2").First();
+
+            Assert.That(first.Name,Is.EqualTo("Author"));
+            Assert.That(second.Name, Is.EqualTo("Author"));
+            Assert.That(third.Name, Is.EqualTo("Author"));
+        }
 
         [Test]
         public void Should_not_do_anything_if_the_container_is_empty()
