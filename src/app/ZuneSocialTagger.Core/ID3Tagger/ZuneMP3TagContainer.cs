@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using System.Linq;
-using System.IO;
-using Image=System.Drawing.Image;
 using System.Text;
 
 namespace ZuneSocialTagger.Core.ID3Tagger

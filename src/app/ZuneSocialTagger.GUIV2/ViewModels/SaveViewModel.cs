@@ -42,7 +42,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 try
                 {
-                    var container = row.Container;
+                   var container = row.Container;
 
                     if (Properties.Settings.Default.UpdateAlbumInfo)
                             if (row.SelectedSong.IsValid)
@@ -55,20 +55,20 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                             }
 
 
-                    if (row.Container is ZuneMP3TagContainer)
+                    if (container is ZuneMP3TagContainer)
                     {
                         var mp3Container = (ZuneMP3TagContainer) row.Container;
 
                         Id3TagManager.WriteV2Tag(row.FilePath, mp3Container.GetContainer());
                     }
-                    else if (row.Container is ZuneWMATagContainer)
+                    else if (container is ZuneWMATagContainer)
                     {
                         var wmaContainer = (ZuneWMATagContainer)row.Container;
 
                         ASFTag.Net.ASFTagManager.WriteTag(row.FilePath,wmaContainer.GetContainer());
                     }
 
-
+                    //TODO: refactor this if / else if to use an interface
                     //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
                 }
                 catch
@@ -79,6 +79,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
 
             Mouse.OverrideCursor = null;
+
+            //TODO: put showintaskbar + topmost into view
             var successView = new SuccessView(new SuccessViewModel(_model)) {ShowInTaskbar = false, Topmost = true};
             successView.Show();
         }

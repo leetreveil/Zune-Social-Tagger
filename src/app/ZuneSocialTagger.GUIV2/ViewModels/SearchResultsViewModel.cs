@@ -114,7 +114,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             _model.AlbumDetailsFromWebsite = new WebsiteAlbumMetaDataViewModel
                                                  {
-                                                     Title = firstTracksMetaData.Title,
+                                                     Title = firstTracksMetaData.AlbumName,
                                                      Artist = firstTracksMetaData.AlbumArtist,
                                                      ArtworkUrl = tracks.First().ArtworkUrl,
                                                      Year = firstTracksMetaData.Year,
