@@ -4,10 +4,29 @@
     {
         private string _songCount;
         private string _artworkUrl;
+        private string _artist;
+        private string _title;
+        private string _year;
 
-        public string Year { get; set; }
-        public string Title { get; set; }
-        public string Artist { get; set; }
+
+        public string Year
+        {
+            get { return string.IsNullOrEmpty(_year) ? "Unknown Year" : _year; }
+            set { _year = value; }
+        }
+
+        public string Title
+        {
+            get { return string.IsNullOrEmpty(_title) ? "Unknown Title" : _title; }
+            set { _title = value; }
+        }
+
+
+        public string Artist
+        {
+            get { return string.IsNullOrEmpty(_artist) ? "Unknown Artist" : _artist; }
+            set { _artist = value; }
+        }
 
 
         public string SongCount

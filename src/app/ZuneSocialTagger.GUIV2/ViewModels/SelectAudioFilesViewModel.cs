@@ -82,7 +82,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             //fall back to contributing artists if album artist is not available
             if (String.IsNullOrEmpty(songMetaData.AlbumArtist))
-                _model.AlbumDetailsFromFile.Artist = songMetaData.ContributingArtists.First();
+                _model.AlbumDetailsFromFile.Artist = songMetaData.ContributingArtists.FirstOrDefault();
 
 
             //add info so search bar displays the album artist and album title from 

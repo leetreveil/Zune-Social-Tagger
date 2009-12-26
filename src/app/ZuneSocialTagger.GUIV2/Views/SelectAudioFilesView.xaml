@@ -12,14 +12,12 @@
 		<Grid.RowDefinitions>
             <RowDefinition />
 			<RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
 		</Grid.RowDefinitions>
 
 
         
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Height="30" Text="Choose the album you want linking to the zune social" />
         <Button Command="{Binding FromFilesCommand}" HorizontalAlignment="Center" Grid.Row="1" Content="Select Audio Files"/>
-        <TextBlock Foreground="Red" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Row="2" Text="Warning: this program is provided as-is, I take no responsibily for damage to data. Backup your audio files first!" />
 
     </Grid>
 </UserControl>

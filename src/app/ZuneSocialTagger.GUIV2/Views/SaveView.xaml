@@ -16,9 +16,20 @@
             <RowDefinition Height="70"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        <!--HEADER-->
-        <TextBlock  FontSize="26.667" Text="CONFIRM CHANGES"/>
+
+        <StackPanel Grid.Row="0">
+            <Border Width="109" Height="6" HorizontalAlignment="Left">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#F89C38" Offset="0"/>
+                        <GradientStop Color="#EC1293" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <!--HEADER-->
+            <TextBlock FontSize="26.667" Text="CONFIRM CHANGES"/>
+        </StackPanel>
+
         <TextBlock HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Text="Are you sure you want to update the audio files selected?" FontSize="15" />
         <StackPanel HorizontalAlignment="Center" Height="25" Grid.Row="2" Orientation="Horizontal">
             <Button Command="{Binding SaveCommand}"  Width="60" Margin="0,0,10,0" Content="Yes" Click="Button_Click" />

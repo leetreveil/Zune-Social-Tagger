@@ -37,8 +37,10 @@
                						 	</LinearGradientBrush>
             					</Grid.Background>
 
-    								<ContentPresenter Margin="20,20,20,20"/>
-							</Grid>
+        
+
+                                <ContentPresenter Margin="20,20,20,20"/>
+                        </Grid>
 						</Border>
     				</ControlTemplate>
     			</Setter.Value>
