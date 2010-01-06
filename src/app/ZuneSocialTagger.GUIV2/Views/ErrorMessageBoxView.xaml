@@ -1,6 +1,7 @@
 ﻿<Window x:Class="ZuneSocialTagger.GUIV2.Views.ErrorMessageBoxView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2"
     Title="ErrorMessageBoxView" 
     Style="{DynamicResource DefaultWindowStyle}"  
     WindowStartupLocation="CenterScreen"
@@ -17,12 +18,18 @@
             <RowDefinition/>
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
+        
         <!--HEADER-->
-        <TextBlock FontSize="26.667" Text="ERROR"/>
+        <StackPanel Grid.Row="0">
+            <local:ZuneHeaderGradient/>
+            <TextBlock  FontSize="26.667" Text="ERROR"/>
+        </StackPanel>
+        
         <StackPanel Margin="20,0,0,0" Width="350" HorizontalAlignment="Left" Grid.Row="1" Orientation="Horizontal">
             <Image Width="50" Height="50" Source="../Assets/error.png"/>
             <TextBlock Margin="10,0,0,0" Width="300" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding ErrorMessage}" FontSize="16"/>
         </StackPanel>
+        
         <Button Width="60" Grid.Row="2" HorizontalAlignment="Right" Content="OK" Click="Button_Click" />
     </Grid>
 </Window>

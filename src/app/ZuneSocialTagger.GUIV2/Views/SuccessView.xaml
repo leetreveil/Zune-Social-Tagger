@@ -5,7 +5,8 @@
     Style="{DynamicResource DefaultWindowStyle}"  
     WindowStartupLocation="CenterScreen"
     FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U"
-    xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views" 
+    xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views"
+    xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2"
     MouseLeftButtonDown="Window_MouseLeftButtonDown"
     ShowInTaskbar="False"
     Topmost="True"
@@ -23,17 +24,9 @@
         </Grid.RowDefinitions>
 
 
+        <!--HEADER-->
         <StackPanel Grid.Row="0">
-            <Border Width="109" Height="6" HorizontalAlignment="Left">
-                <Border.Background>
-                    <LinearGradientBrush>
-                        <GradientStop Color="#F89C38" Offset="0"/>
-                        <GradientStop Color="#EC1293" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-            </Border>
-
-            <!--HEADER-->
+            <local:ZuneHeaderGradient/>
             <TextBlock  FontSize="26.667" Text="SUCCESS"/>
         </StackPanel>
 
