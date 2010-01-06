@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
+using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Views;
@@ -122,10 +123,45 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
             else
             {
-                //last page do this
-                var view = new SaveView(new SaveViewModel(_sharedModel)) {ShowInTaskbar = false};
-                view.Show();
+                //when we try to move to the next page and we are on the last one
+                //we want to run the save process
+                Save();
             }
+        }
+
+        private void Save()
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+
+            foreach (var row in _sharedModel.Rows)
+            {
+                try
+                {
+                   var container = row.Container;
+
+                    if (Properties.Settings.Default.UpdateAlbumInfo)
+                            if (row.SelectedSong.HasAllMediaIDs)
+                            {
+                                container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneAlbumMediaID, row.SelectedSong.AlbumMediaID));
+                                container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID, row.SelectedSong.ArtistMediaID));
+                                container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneMediaID, row.SelectedSong.MediaID));
+                                container.AddMetaData(row.SelectedSong.MetaData);
+
+                                container.WriteToFile(row.FilePath);
+                            }
+
+                    //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
+                }
+                catch
+                {
+                    //TODO: better error handling
+                    Console.WriteLine("error saving {0}", row.FilePath);
+                }
+            }
+
+            Mouse.OverrideCursor = null;
+
+            new SuccessView(new SuccessViewModel(_sharedModel)).Show();
         }
 
         /// <summary>

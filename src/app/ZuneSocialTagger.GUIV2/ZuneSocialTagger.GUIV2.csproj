@@ -90,7 +90,6 @@
       <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\DetailsViewModel.cs" />
-    <Compile Include="ViewModels\SaveViewModel.cs" />
     <Compile Include="ViewModels\SearchBarViewModel.cs" />
     <Compile Include="ViewModels\SearchResultsViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
@@ -117,9 +116,6 @@
     </Compile>
     <Compile Include="Views\DetailsView.xaml.cs">
       <DependentUpon>DetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SaveView.xaml.cs">
-      <DependentUpon>SaveView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SearchResultsDetailView.xaml.cs">
       <DependentUpon>SearchResultsDetailView.xaml</DependentUpon>
@@ -230,10 +226,6 @@
     <Page Include="Views\DetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\SaveView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SearchResultsDetailView.xaml">
       <SubType>Designer</SubType>
