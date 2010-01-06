@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
-using ID3Tag;
 using ZuneSocialTagger.Core.ID3Tagger;
-using ZuneSocialTagger.Core.WMATagger;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Views;
@@ -45,30 +43,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                    var container = row.Container;
 
                     if (Properties.Settings.Default.UpdateAlbumInfo)
-                            if (row.SelectedSong.IsValid)
+                            if (row.SelectedSong.HasAllMediaIDs)
                             {
                                 container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneAlbumMediaID, row.SelectedSong.AlbumMediaID));
                                 container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID, row.SelectedSong.ArtistMediaID));
                                 container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneMediaID, row.SelectedSong.MediaID));
-
                                 container.AddMetaData(row.SelectedSong.MetaData);
+
+                                container.WriteToFile(row.FilePath);
                             }
 
-
-                    if (container is ZuneMP3TagContainer)
-                    {
-                        var mp3Container = (ZuneMP3TagContainer) row.Container;
-
-                        Id3TagManager.WriteV2Tag(row.FilePath, mp3Container.GetContainer());
-                    }
-                    else if (container is ZuneWMATagContainer)
-                    {
-                        var wmaContainer = (ZuneWMATagContainer)row.Container;
-
-                        ASFTag.Net.ASFTagManager.WriteTag(row.FilePath,wmaContainer.GetContainer());
-                    }
-
-                    //TODO: refactor this if / else if to use an interface
                     //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
                 }
                 catch

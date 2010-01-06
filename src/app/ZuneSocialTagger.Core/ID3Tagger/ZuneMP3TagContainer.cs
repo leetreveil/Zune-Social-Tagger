@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ID3Tag;
 using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using System.Linq;
@@ -84,6 +85,11 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
                 _container.Add(textFrame);
             }
+        }
+
+        public void WriteToFile(string filePath)
+        {
+            Id3TagManager.WriteV2Tag(filePath,_container);
         }
 
         private static IEnumerable<TextFrame> CreateTextFramesFromMetaData(MetaData metaData)

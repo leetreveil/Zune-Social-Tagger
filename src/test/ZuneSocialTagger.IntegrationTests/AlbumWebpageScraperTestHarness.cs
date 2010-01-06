@@ -48,7 +48,7 @@ namespace ZuneSocialTagger.IntegrationTests
                 Console.WriteLine("Artwork url: {0}", result.First().ArtworkUrl);
 
                 foreach (var track in result)
-                    if (track.IsValid == false)
+                    if (track.HasAllMediaIDs == false)
                         Console.WriteLine("bad song :(");
 
                 Console.WriteLine("");

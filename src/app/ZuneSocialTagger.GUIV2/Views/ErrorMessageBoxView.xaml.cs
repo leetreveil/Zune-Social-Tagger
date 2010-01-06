@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -19,10 +9,6 @@ namespace ZuneSocialTagger.GUIV2.Views
     public partial class ErrorMessageBoxView : Window
     {
         private readonly string _errorMessage;
-        public string ErrorMessage
-        {
-            get { return _errorMessage; }
-        }
 
         public ErrorMessageBoxView(string errorMessage)
         {
@@ -30,6 +16,11 @@ namespace ZuneSocialTagger.GUIV2.Views
 
             _errorMessage = errorMessage;
             this.DataContext = this;
+        }
+
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

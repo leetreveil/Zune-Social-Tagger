@@ -7,7 +7,6 @@ using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
-using ID3Tag;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -55,6 +54,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 {
                     IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(filePath);
 
+                    //for each song in the album add the container to the models row list
                     _model.Rows.Add(new DetailRow(filePath, container));
                 }
 
@@ -63,9 +63,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                 base.OnMoveNextOverride();
             }
-            catch (ID3TagException id3TagException)
+            catch (Exception id3TagException)
             {
-                Console.WriteLine(id3TagException);
                 ErrorMessageBox.Show("Error reading album " + Environment.NewLine + id3TagException.Message);
             }
         }

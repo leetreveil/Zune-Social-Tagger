@@ -40,7 +40,6 @@ namespace ZuneSocialTagger.GUIV2.Views
         {
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
-            this.Close();
         }
 
         public string Version { get { return String.Format("Version {0}",Assembly.GetExecutingAssembly().GetName().Version); } }

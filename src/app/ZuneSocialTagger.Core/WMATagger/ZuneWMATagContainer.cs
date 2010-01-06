@@ -50,6 +50,11 @@ namespace ZuneSocialTagger.Core.WMATagger
                 _container.Add(attribute);
         }
 
+        public void WriteToFile(string filePath)
+        {
+            ASFTagManager.WriteTag(filePath,_container);
+        }
+
         private static IEnumerable<Attribute> CreateTextFramesFromMetaData(MetaData metaData)
         {
             yield return new Attribute("WM/AlbumArtist", metaData.AlbumArtist,WMT_ATTR_DATATYPE.WMT_TYPE_STRING);

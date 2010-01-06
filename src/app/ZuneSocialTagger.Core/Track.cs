@@ -10,7 +10,7 @@ namespace ZuneSocialTagger.Core
         public string ArtworkUrl { get; set; }
         public MetaData MetaData { get; set; }
 
-        public bool IsValid
+        public bool HasAllMediaIDs
         {
             get
             {

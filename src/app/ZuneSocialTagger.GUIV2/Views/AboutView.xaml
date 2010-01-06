@@ -11,25 +11,36 @@
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition/>
-			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto" MinHeight="83" />
 			<RowDefinition/>
 		</Grid.RowDefinitions>
-		<!--HEADER-->
-		<TextBlock  FontSize="26.667" Text="ABOUT"/>
+
         
-		<StackPanel Grid.Row="1" >
+        <!--HEADER-->
+        <StackPanel Grid.Row="0">
+            <Border Width="109" Height="6" HorizontalAlignment="Left">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#F89C38" Offset="0"/>
+                        <GradientStop Color="#EC1293" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <TextBlock  FontSize="26.667" Text="ABOUT"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" >
 			<TextBlock Text="Zune Social Tagger" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe Caps" FontSize="21.333"/>
 			<TextBlock Text="{Binding Version}"/>
 			<TextBlock Text="Developed by: Lee Treveil"/>
 			<TextBlock Text="leetreveil@gmail.com"/>
-            <TextBlock Text="">
+            <TextBlock Height="14.4">
                 <Hyperlink NavigateUri="http://github.com/leetreveil/Zune-Social-Tagger" RequestNavigate="Hyperlink_RequestNavigate">
                     http://github.com/leetreveil/Zune-Social-Tagger
-                </Hyperlink>
-            </TextBlock>
-		</StackPanel>
+                </Hyperlink></TextBlock>
+        </StackPanel>
 
 		<TextBlock Grid.Row="3" VerticalAlignment="Bottom" Text="© 2009 Lee Treveil"/>
 		<Button Height="25" Width="50" Content="Close"  Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click" />
-	</Grid>
+    </Grid>
 </Window>
