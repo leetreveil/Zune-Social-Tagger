@@ -1,10 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Windows;
-using ID3Tag.HighLevel;
-using System.Diagnostics;
-using ID3Tag;
-using ZuneSocialTagger.Core.ID3Tagger;
 
 namespace ZuneSocialTagger.IntegrationTests
 {

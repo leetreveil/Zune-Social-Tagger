@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace ZuneSocialTagger.Core
@@ -12,6 +11,6 @@ namespace ZuneSocialTagger.Core
         public string Title { get; set; }
         public string AlbumArtist { get; set; }
         public string TrackNumber { get; set; }
-        public IEnumerable<String> ContributingArtists { get; set; }
+        public IEnumerable<string> ContributingArtists { get; set; }
     }
 }

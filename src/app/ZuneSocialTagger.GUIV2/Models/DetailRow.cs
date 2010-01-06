@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ZuneSocialTagger.Core;
-using ZuneSocialTagger.Core.ID3Tagger;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {

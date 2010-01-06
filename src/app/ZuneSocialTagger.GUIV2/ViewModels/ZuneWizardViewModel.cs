@@ -221,6 +221,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _sharedModel = new ZuneWizardModel();
 
             var pages = new List<ZuneWizardPageViewModelBase>();
+
             pages.Add(new SelectAudioFilesViewModel(_sharedModel));
             pages.Add(new SearchViewModel(_sharedModel));
             pages.Add(new SearchResultsViewModel(_sharedModel));

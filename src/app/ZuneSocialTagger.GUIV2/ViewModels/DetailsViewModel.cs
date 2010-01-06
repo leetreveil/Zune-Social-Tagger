@@ -1,7 +1,5 @@
 using System.Collections.ObjectModel;
 using ZuneSocialTagger.GUIV2.Models;
-using System.Windows.Forms;
-using System.Linq;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
