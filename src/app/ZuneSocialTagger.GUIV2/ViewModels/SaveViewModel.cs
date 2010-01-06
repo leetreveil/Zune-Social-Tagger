@@ -12,7 +12,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private readonly ZuneWizardModel _model;
         private RelayCommand _saveCommand;
 
-
         public SaveViewModel(ZuneWizardModel model)
         {
             _model = model;
@@ -64,9 +63,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             Mouse.OverrideCursor = null;
 
-            //TODO: put showintaskbar + topmost into view
-            var successView = new SuccessView(new SuccessViewModel(_model)) {ShowInTaskbar = false, Topmost = true};
-            successView.Show();
+            new SuccessView(new SuccessViewModel(_model)).Show();
         }
     }
 }

@@ -7,6 +7,8 @@
     FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U"
     xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views" 
     MouseLeftButtonDown="Window_MouseLeftButtonDown"
+    ShowInTaskbar="False"
+    Topmost="True"
     Width="600" Height="200">
 
     <Window.Resources>
