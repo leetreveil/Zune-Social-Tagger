@@ -6,18 +6,25 @@ using Attribute=ASFTag.Net.Attribute;
 
 namespace ZuneSocialTagger.Core.WMATagger
 {
-    public class ZuneWMATagContainer : TagContainer, IZuneTagContainer
+    public class ZuneWMATagContainer : IZuneTagContainer
     {
+        private readonly TagContainer _container;
+
+        public ZuneWMATagContainer(TagContainer container)
+        {
+            _container = container;
+        }
+
         public IEnumerable<MediaIdGuid> ReadMediaIds()
         {
-            return from tag in this
+            return from tag in _container
                    where MediaIds.Ids.Contains(tag.Name)
                    select new MediaIdGuid(tag.Name, new Guid(tag.Value));
         }
 
         public void AddZuneMediaId(MediaIdGuid mediaIDGuid)
         {
-            this.Add(new Attribute(mediaIDGuid.Name,mediaIDGuid.Guid.ToString(),WMT_ATTR_DATATYPE.WMT_TYPE_GUID));
+            _container.Add(new Attribute(mediaIDGuid.Name, mediaIDGuid.Guid.ToString(), WMT_ATTR_DATATYPE.WMT_TYPE_GUID));
         }
 
         public MetaData ReadMetaData()
@@ -39,20 +46,20 @@ namespace ZuneSocialTagger.Core.WMATagger
         {
             IEnumerable<Attribute> attributes = CreateTextFramesFromMetaData(metaData);
             foreach (var attribute in attributes)
-                this.Add(attribute);
+                _container.Add(attribute);
         }
 
         public void WriteToFile(string filePath)
         {
-            ASFTagManager.WriteTag(filePath,this);
+            ASFTagManager.WriteTag(filePath, _container);
         }
 
         public void RemoveMediaId(string name)
         {
-            Attribute toBeRemoved = this.Where(x => x.Name == name).FirstOrDefault();
+            Attribute toBeRemoved = _container.Where(x => x.Name == name).FirstOrDefault();
 
             if (toBeRemoved != null)
-                this.Remove(toBeRemoved);
+                _container.Remove(toBeRemoved);
         }
 
         private static IEnumerable<Attribute> CreateTextFramesFromMetaData(MetaData metaData)
@@ -71,12 +78,12 @@ namespace ZuneSocialTagger.Core.WMATagger
 
         private IEnumerable<string> GetValues(string key)
         {
-            return this.Where(x => x.Name == key).Select(x=> x.Value);
+            return _container.Where(x => x.Name == key).Select(x => x.Value);
         }
 
         private string GetValue(string key)
         {
-            Attribute result = this.Where(x => x.Name == key).SingleOrDefault();
+            Attribute result = _container.Where(x => x.Name == key).SingleOrDefault();
 
             return result != null ? result.Value : string.Empty;
         }

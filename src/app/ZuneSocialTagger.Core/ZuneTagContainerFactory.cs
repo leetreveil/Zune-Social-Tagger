@@ -24,15 +24,7 @@ namespace ZuneSocialTagger.Core
             }
 
             if (extension == ".wma")
-            {
-                var container = new ZuneWMATagContainer();
-
-                TagContainer fileContainer = ASFTagManager.ReadTag(path);
-
-                container.AddRange(fileContainer);
-
-                return container;
-            }
+                return new ZuneWMATagContainer(ASFTagManager.ReadTag(path));
 
             return null;
         }

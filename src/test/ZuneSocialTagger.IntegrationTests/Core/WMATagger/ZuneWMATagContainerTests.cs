@@ -56,7 +56,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
         [Test]
         public void Then_it_should_be_able_to_update_the_zune_guids()
         {
-            var container = new ZuneWMATagContainer();
+            var container = ZuneWMATagContainerTestsHelpers.CreateEmptyContainer();
 
             Guid aGuid = Guid.NewGuid();
             container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID,aGuid));
@@ -77,7 +77,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
         [Test]
         public void Then_it_should_be_able_to_update_all_the_meta_data()
         {
-            var container = new ZuneWMATagContainer();
+            var container = ZuneWMATagContainerTestsHelpers.CreateEmptyContainer();
 
             var metaData = new MetaData
                 {
