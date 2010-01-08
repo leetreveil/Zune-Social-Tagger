@@ -1,4 +1,4 @@
-namespace ZuneSocialTagger.Core.ID3Tagger
+namespace ZuneSocialTagger.Core
 {
     public static class MediaIds
     {

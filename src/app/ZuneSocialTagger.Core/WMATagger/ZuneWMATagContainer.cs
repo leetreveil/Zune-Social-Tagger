@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ASFTag.Net;
-using ZuneSocialTagger.Core.ID3Tagger;
 using Attribute=ASFTag.Net.Attribute;
 
 namespace ZuneSocialTagger.Core.WMATagger

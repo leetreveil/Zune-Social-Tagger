@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using ZuneSocialTagger.Core;
-using ZuneSocialTagger.Core.ID3Tagger;
 using System.Linq;
 using ASFTag.Net;
 

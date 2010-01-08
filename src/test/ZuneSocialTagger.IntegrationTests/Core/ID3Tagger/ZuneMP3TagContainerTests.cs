@@ -1,11 +1,13 @@
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using ZuneSocialTagger.Core;
+using ZuneSocialTagger.Core.ID3Tagger;
 
 namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
 {
     [TestFixture]
-    public class WhenATagContainerIsLoaded
+    public class WhenATagContainerIsLoadedWithMediaIdsPresent
     {
         private const string FilePath = "SampleData/id3v2.3withartwork.mp3";
 
@@ -23,5 +25,20 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
             Assert.That(data.Year, Is.EqualTo("2007"));
             Assert.That(data.TrackNumber, Is.EqualTo("1"));
         }
+
+        [Test]
+        public void Then_it_should_be_able_to_remove_all_the_media_ids()
+        {
+            var zuneMp3TagContainer = (ZuneMP3TagContainer) ZuneTagContainerFactory.GetContainer(FilePath);
+
+            zuneMp3TagContainer.RemoveMediaId(MediaIds.ZuneAlbumArtistMediaID);
+            zuneMp3TagContainer.RemoveMediaId(MediaIds.ZuneMediaID);
+            zuneMp3TagContainer.RemoveMediaId(MediaIds.ZuneAlbumMediaID);
+
+            IEnumerable<MediaIdGuid> ids = zuneMp3TagContainer.ReadMediaIds();
+
+            Assert.That(ids,Is.Empty);
+        }
+
     }
 }

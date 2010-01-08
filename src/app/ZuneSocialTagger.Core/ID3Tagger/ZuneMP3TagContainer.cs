@@ -49,12 +49,23 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             _container.Add(newFrame);
         }
 
+        public void RemoveMediaId(string mediaId)
+        {
+            PrivateFrame existingFrame = (from frame in _container.OfType<PrivateFrame>()
+                                          where frame.Owner == mediaId
+                                          select frame).FirstOrDefault();
+
+
+            if (existingFrame != null)
+                _container.Remove(existingFrame);
+        }
+
         public MetaData ReadMetaData()
         {
             IEnumerable<TextFrame> allTextFrames = from frame in _container.OfType<TextFrame>()
                                                    select frame;
 
-            return  new MetaData()
+            return  new MetaData
                        {
                            AlbumArtist = GetValue(allTextFrames, "TPE2"),
                            ContributingArtists = GetValue(allTextFrames, "TPE1").Split('/'),

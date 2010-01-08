@@ -55,8 +55,8 @@
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="WMATagger\ZuneWMATagContainer.cs" />
     <Compile Include="IZuneTagContainer.cs" />
-    <Compile Include="ID3Tagger\MediaIdGuid.cs" />
-    <Compile Include="ID3Tagger\MediaIds.cs" />
+    <Compile Include="MediaIdGuid.cs" />
+    <Compile Include="MediaIds.cs" />
     <Compile Include="ID3Tagger\ZuneMP3TagContainer.cs" />
     <Compile Include="ZuneTagContainerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

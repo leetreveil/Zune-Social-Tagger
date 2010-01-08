@@ -69,6 +69,17 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
             //we know that there are 3 items in the container so there should be no more
             Assert.That(container.GetContainer().Count, Is.EqualTo(3));
         }
+
+        [Test]
+        public void Then_it_should_be_able_to_remove_a_media_id_guid()
+        {
+            ZuneMP3TagContainer container = ZuneMP3TagContainerTestHelpers.CreateContainerWithThreeZuneTags();
+
+            container.RemoveMediaId(MediaIds.ZuneMediaID);
+
+            Assert.That(container.GetContainer().Count, Is.EqualTo(2));
+        }
+
     }
 
 
@@ -99,22 +110,32 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
             Assert.That(track.Owner, Is.EqualTo("ZuneMediaID"));
             Assert.That(new Guid(track.Data), Is.EqualTo(ZuneMP3TagContainerTestHelpers.SomeGuid));
         }
+
+        [Test]
+        public void Then_it_should_not_do_anything_when_trying_to_remove_a_frame()
+        {
+            var container = ZuneMP3TagContainerTestHelpers.CreateEmptyContainer();
+
+            container.RemoveMediaId(MediaIds.ZuneMediaID);
+        }
+
     }
 
     [TestFixture]
-    public class WhenATagContainerIsLoadedWithOnlyOneMediaIdButItIsIncorrect
+    public class WhenATagContainerIsLoadedWithOnlyOneMediaIdButItsValueIsIncorrect
     {
         [Test]
         public void Then_it_should_be_able_to_update_the_media_id_with_the_correct_guid()
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateContainerWithZuneAlbumartistMediaIDWithRandomGuid();
 
+            //this guid does not equal the ZuneAlbumArtisMediaID Guid in the container
             var albumArtistMediaIdGuid = new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID,
                                                          ZuneMP3TagContainerTestHelpers.SomeGuid);
 
             container.AddZuneMediaId(albumArtistMediaIdGuid);
 
-            var artist = container.GetContainer().OfType<PrivateFrame>().Where(x => x.Owner == MediaIds.ZuneAlbumArtistMediaID).First();
+            PrivateFrame artist = container.GetContainer().OfType<PrivateFrame>().Where(x => x.Owner == MediaIds.ZuneAlbumArtistMediaID).First();
 
             Assert.That(new Guid(artist.Data), Is.EqualTo(albumArtistMediaIdGuid.Guid));
             Assert.That(container.GetContainer().Count(), Is.EqualTo(1));

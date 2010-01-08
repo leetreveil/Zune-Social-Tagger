@@ -1,6 +1,6 @@
 using System;
 
-namespace ZuneSocialTagger.Core.ID3Tagger
+namespace ZuneSocialTagger.Core
 {
     public class MediaIdGuid
     {

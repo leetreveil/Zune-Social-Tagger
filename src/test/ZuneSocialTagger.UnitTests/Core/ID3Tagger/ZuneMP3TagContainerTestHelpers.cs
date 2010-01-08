@@ -1,6 +1,7 @@
 using System;
 using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
+using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ID3Tagger;
 using System.Text;
 

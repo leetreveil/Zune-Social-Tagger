@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using ZuneSocialTagger.Core.ID3Tagger;
 
 namespace ZuneSocialTagger.Core
 {
