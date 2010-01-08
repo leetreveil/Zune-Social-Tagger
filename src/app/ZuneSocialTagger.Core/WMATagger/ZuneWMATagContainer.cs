@@ -6,39 +6,32 @@ using Attribute=ASFTag.Net.Attribute;
 
 namespace ZuneSocialTagger.Core.WMATagger
 {
-    public class ZuneWMATagContainer : IZuneTagContainer
+    public class ZuneWMATagContainer : TagContainer, IZuneTagContainer
     {
-        private readonly TagContainer _container;
-
-        public ZuneWMATagContainer(TagContainer container)
-        {
-            _container = container;
-        }
-
         public IEnumerable<MediaIdGuid> ReadMediaIds()
         {
-            return from tag in _container
+            return from tag in this
                    where MediaIds.Ids.Contains(tag.Name)
                    select new MediaIdGuid(tag.Name, new Guid(tag.Value));
         }
 
         public void AddZuneMediaId(MediaIdGuid mediaIDGuid)
         {
-            _container.Add(new Attribute(mediaIDGuid.MediaId,mediaIDGuid.Guid.ToString(),WMT_ATTR_DATATYPE.WMT_TYPE_GUID));
+            this.Add(new Attribute(mediaIDGuid.Name,mediaIDGuid.Guid.ToString(),WMT_ATTR_DATATYPE.WMT_TYPE_GUID));
         }
 
         public MetaData ReadMetaData()
         {
             return new MetaData
                    {
-                       AlbumArtist = GetValue(_container, "WM/AlbumArtist"),
-                       AlbumName = GetValue(_container, "WM/AlbumTitle"),
-                       ContributingArtists = GetValues(_container, "Author"),
-                       DiscNumber = GetValue(_container, "WM/PartOfSet"),
-                       Genre = GetValue(_container, "WM/Genre"),
-                       Title = GetValue(_container, "Title"),
-                       TrackNumber = GetValue(_container, "WM/TrackNumber"),
-                       Year = GetValue(_container, "WM/Year")
+                       AlbumArtist = GetValue("WM/AlbumArtist"),
+                       AlbumName = GetValue("WM/AlbumTitle"),
+                       ContributingArtists = GetValues("Author"),
+                       DiscNumber = GetValue("WM/PartOfSet"),
+                       Genre = GetValue("WM/Genre"),
+                       Title = GetValue("Title"),
+                       TrackNumber = GetValue("WM/TrackNumber"),
+                       Year = GetValue("WM/Year")
                    };
         }
 
@@ -46,12 +39,20 @@ namespace ZuneSocialTagger.Core.WMATagger
         {
             IEnumerable<Attribute> attributes = CreateTextFramesFromMetaData(metaData);
             foreach (var attribute in attributes)
-                _container.Add(attribute);
+                this.Add(attribute);
         }
 
         public void WriteToFile(string filePath)
         {
-            ASFTagManager.WriteTag(filePath,_container);
+            ASFTagManager.WriteTag(filePath,this);
+        }
+
+        public void RemoveMediaId(string name)
+        {
+            Attribute toBeRemoved = this.Where(x => x.Name == name).FirstOrDefault();
+
+            if (toBeRemoved != null)
+                this.Remove(toBeRemoved);
         }
 
         private static IEnumerable<Attribute> CreateTextFramesFromMetaData(MetaData metaData)
@@ -64,25 +65,18 @@ namespace ZuneSocialTagger.Core.WMATagger
             yield return new Attribute("WM/TrackNumber", metaData.TrackNumber, WMT_ATTR_DATATYPE.WMT_TYPE_DWORD);
             yield return new Attribute("WM/Year", metaData.Year, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
 
-            var contribArtists = string.Join("/", metaData.ContributingArtists.ToArray());
-
-            yield return new Attribute("Author", contribArtists, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
-
+            foreach (var contributingArtist in metaData.ContributingArtists)
+                yield return new Attribute("Author", contributingArtist, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
         }
 
-        public TagContainer GetContainer()
+        private IEnumerable<string> GetValues(string key)
         {
-            return _container;
+            return this.Where(x => x.Name == key).Select(x=> x.Value);
         }
 
-        private static IEnumerable<string> GetValues(IEnumerable<Attribute> attributes,string key)
+        private string GetValue(string key)
         {
-            return attributes.Where(x => x.Name == key).Select(x=> x.Value);
-        }
-
-        private static string GetValue(IEnumerable<Attribute> attributes, string key)
-        {
-            Attribute result = attributes.Where(x => x.Name == key).SingleOrDefault();
+            Attribute result = this.Where(x => x.Name == key).SingleOrDefault();
 
             return result != null ? result.Value : string.Empty;
         }

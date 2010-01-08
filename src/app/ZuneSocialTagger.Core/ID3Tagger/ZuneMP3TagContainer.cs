@@ -17,7 +17,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
         public ZuneMP3TagContainer(TagContainer container)
         {
-            _container = container;        
+            _container = container;
         }
 
         public IEnumerable<MediaIdGuid> ReadMediaIds()
@@ -32,7 +32,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
         public void AddZuneMediaId(MediaIdGuid mediaIDGuid)
         {
-            PrivateFrame newFrame = new PrivateFrame(mediaIDGuid.MediaId, mediaIDGuid.Guid.ToByteArray());
+            PrivateFrame newFrame = new PrivateFrame(mediaIDGuid.Name, mediaIDGuid.Guid.ToByteArray());
 
 
             //frame owner is a unique id identifying a private field so we can
@@ -49,10 +49,10 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             _container.Add(newFrame);
         }
 
-        public void RemoveMediaId(string mediaId)
+        public void RemoveMediaId(string name)
         {
             PrivateFrame existingFrame = (from frame in _container.OfType<PrivateFrame>()
-                                          where frame.Owner == mediaId
+                                          where frame.Owner == name
                                           select frame).FirstOrDefault();
 
 
@@ -62,19 +62,16 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
         public MetaData ReadMetaData()
         {
-            IEnumerable<TextFrame> allTextFrames = from frame in _container.OfType<TextFrame>()
-                                                   select frame;
-
             return  new MetaData
                        {
-                           AlbumArtist = GetValue(allTextFrames, "TPE2"),
-                           ContributingArtists = GetValue(allTextFrames, "TPE1").Split('/'),
-                           AlbumName = GetValue(allTextFrames, "TALB"),
-                           Title = GetValue(allTextFrames, "TIT2"),
-                           Year = GetValue(allTextFrames, "TYER"),
-                           DiscNumber = GetValue(allTextFrames,"TPOS"),
-                           Genre = GetValue(allTextFrames,"TCON"),
-                           TrackNumber = GetValue(allTextFrames,"TRCK")
+                           AlbumArtist = GetValue("TPE2"),
+                           ContributingArtists = GetValue("TPE1").Split('/'),
+                           AlbumName = GetValue("TALB"),
+                           Title = GetValue("TIT2"),
+                           Year = GetValue("TYER"),
+                           DiscNumber = GetValue("TPOS"),
+                           Genre = GetValue("TCON"),
+                           TrackNumber = GetValue("TRCK")
                        };
 
         }
@@ -100,7 +97,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
         public void WriteToFile(string filePath)
         {
-            Id3TagManager.WriteV2Tag(filePath,_container);
+            Id3TagManager.WriteV2Tag(filePath, _container);
         }
 
         private static IEnumerable<TextFrame> CreateTextFramesFromMetaData(MetaData metaData)
@@ -117,26 +114,13 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             yield return new TextFrame("TYER", metaData.Year, Encoding.Default);
         }
 
-        public TagContainer GetContainer()
+ 
+        private string GetValue(string key)
         {
-            return this._container;
-        }
+            IEnumerable<TextFrame> allTextFrames = from frame in _container.OfType<TextFrame>()
+                                                   select frame;
 
-        //private Image ReadImage()
-        //{
-        //    var pictureFrame = _container.OfType<PictureFrame>().Select(frame => frame).FirstOrDefault();
-
-        //    if (pictureFrame != null)
-        //        return pictureFrame.Type == FrameType.Picture
-        //                   ? Image.FromStream(new MemoryStream(pictureFrame.PictureData))
-        //                   : null;
-
-        //    return null;
-        //}
-
-        private static string GetValue(IEnumerable<TextFrame> textFrames, string key)
-        {
-            TextFrame result = textFrames.Where(x => x.Descriptor.ID == key).SingleOrDefault();
+            TextFrame result = allTextFrames.Where(x => x.Descriptor.ID == key).SingleOrDefault();
 
             return result != null ? result.Content : string.Empty;
         }

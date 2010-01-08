@@ -35,7 +35,9 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
             zuneMp3TagContainer.RemoveMediaId(MediaIds.ZuneMediaID);
             zuneMp3TagContainer.RemoveMediaId(MediaIds.ZuneAlbumMediaID);
 
-            IEnumerable<MediaIdGuid> ids = zuneMp3TagContainer.ReadMediaIds();
+            zuneMp3TagContainer.WriteToFile(FilePath);
+ 
+            IEnumerable<MediaIdGuid> ids = ZuneTagContainerFactory.GetContainer(FilePath).ReadMediaIds();
 
             Assert.That(ids,Is.Empty);
         }

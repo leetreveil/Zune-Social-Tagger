@@ -9,5 +9,6 @@ namespace ZuneSocialTagger.Core
         MetaData ReadMetaData();
         void AddMetaData(MetaData metaData);
         void WriteToFile(string filePath);
+        void RemoveMediaId(string name);
     }
 }
