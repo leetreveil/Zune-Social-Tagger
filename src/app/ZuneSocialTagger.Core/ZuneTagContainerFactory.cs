@@ -1,4 +1,4 @@
-using ASFTag.Net;
+using ASFTag;
 using ID3Tag;
 using System.IO;
 using ZuneSocialTagger.Core.ID3Tagger;

@@ -6,7 +6,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
     {
         public static ZuneWMATagContainer CreateEmptyContainer()
         {
-            return new ZuneWMATagContainer(ASFTag.Net.ASFTagFactory.CreateASFTagContainer());
+            return new ZuneWMATagContainer(ASFTag.ASFTagFactory.CreateASFTagContainer());
         }
     }
 }

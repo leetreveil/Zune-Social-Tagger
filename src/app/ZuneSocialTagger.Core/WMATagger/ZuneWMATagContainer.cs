@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ASFTag.Net;
-using Attribute=ASFTag.Net.Attribute;
+using ASFTag;
+using Attribute=ASFTag.Attribute;
 
 namespace ZuneSocialTagger.Core.WMATagger
 {
