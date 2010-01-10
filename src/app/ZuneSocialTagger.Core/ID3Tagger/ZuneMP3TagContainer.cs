@@ -20,20 +20,21 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             _container = container;
         }
 
-        public IEnumerable<MediaIdGuid> ReadMediaIds()
+        public IEnumerable<ZuneAttribute> ReadZuneAttributes()
         {
             //OfType instead of cast because the container could contain other types other than private frames 
             //and we only want private frames
+
+            //select all available zune attributes from the mp3 file
             return from frame in _container.OfType<PrivateFrame>()
-                   where MediaIds.Ids.Contains(frame.Owner)
-                   select new MediaIdGuid(frame.Owner, new Guid(frame.Data));
+                   where ZuneAttributes.Ids.Contains(frame.Owner)
+                   select new ZuneAttribute(frame.Owner, new Guid(frame.Data));
 
         }
 
-        public void AddZuneMediaId(MediaIdGuid mediaIDGuid)
+        public void AddZuneAttribute(ZuneAttribute zuneAttribute)
         {
-            PrivateFrame newFrame = new PrivateFrame(mediaIDGuid.Name, mediaIDGuid.Guid.ToByteArray());
-
+            var newFrame = new PrivateFrame(zuneAttribute.Name, zuneAttribute.Guid.ToByteArray());
 
             //frame owner is a unique id identifying a private field so we can
             //be sure that there's only one
@@ -49,7 +50,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             _container.Add(newFrame);
         }
 
-        public void RemoveMediaId(string name)
+        public void RemoveZuneAttribute(string name)
         {
             PrivateFrame existingFrame = (from frame in _container.OfType<PrivateFrame>()
                                           where frame.Owner == name
@@ -62,18 +63,17 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
         public MetaData ReadMetaData()
         {
-            return  new MetaData
-                       {
-                           AlbumArtist = GetValue("TPE2"),
-                           ContributingArtists = GetValue("TPE1").Split('/'),
-                           AlbumName = GetValue("TALB"),
-                           Title = GetValue("TIT2"),
-                           Year = GetValue("TYER"),
-                           DiscNumber = GetValue("TPOS"),
-                           Genre = GetValue("TCON"),
-                           TrackNumber = GetValue("TRCK")
-                       };
-
+            return new MetaData
+               {
+                   AlbumArtist = GetValue(ID3Frames.AlbumArtist),
+                   ContributingArtists = GetValue(ID3Frames.ContributingArtists).Split('/'),
+                   AlbumName = GetValue(ID3Frames.AlbumName),
+                   Title = GetValue(ID3Frames.Title),
+                   Year = GetValue(ID3Frames.Year),
+                   DiscNumber = GetValue(ID3Frames.DiscNumber),
+                   Genre = GetValue(ID3Frames.Genre),
+                   TrackNumber = GetValue(ID3Frames.TrackNumber)
+               };
         }
 
 
@@ -104,14 +104,14 @@ namespace ZuneSocialTagger.Core.ID3Tagger
         {
             var contribArtists = string.Join("/", metaData.ContributingArtists.ToArray());
 
-            yield return new TextFrame("TPE2", metaData.AlbumArtist, Encoding.Default);
-            yield return new TextFrame("TPE1", contribArtists, Encoding.Default);
-            yield return new TextFrame("TALB", metaData.AlbumName, Encoding.Default);
-            yield return new TextFrame("TPOS", metaData.DiscNumber, Encoding.Default);
-            yield return new TextFrame("TCON", metaData.Genre, Encoding.Default);
-            yield return new TextFrame("TIT2", metaData.Title, Encoding.Default);
-            yield return new TextFrame("TRCK", metaData.TrackNumber, Encoding.Default);
-            yield return new TextFrame("TYER", metaData.Year, Encoding.Default);
+            yield return new TextFrame(ID3Frames.AlbumArtist, metaData.AlbumArtist, Encoding.Default);
+            yield return new TextFrame(ID3Frames.ContributingArtists, contribArtists, Encoding.Default);
+            yield return new TextFrame(ID3Frames.AlbumName, metaData.AlbumName, Encoding.Default);
+            yield return new TextFrame(ID3Frames.DiscNumber, metaData.DiscNumber, Encoding.Default);
+            yield return new TextFrame(ID3Frames.Genre, metaData.Genre, Encoding.Default);
+            yield return new TextFrame(ID3Frames.Title, metaData.Title, Encoding.Default);
+            yield return new TextFrame(ID3Frames.TrackNumber, metaData.TrackNumber, Encoding.Default);
+            yield return new TextFrame(ID3Frames.Year, metaData.Year, Encoding.Default);
         }
 
  

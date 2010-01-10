@@ -18,15 +18,15 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
         {
             IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(_path);
 
-            IEnumerable<MediaIdGuid> ids = container.ReadMediaIds().ToList();
+            IEnumerable<ZuneAttribute> ids = container.ReadZuneAttributes().ToList();
 
             Assert.That(ids.Count(),Is.EqualTo(3));
 
-            var mediaID = new MediaIdGuid(MediaIds.ZuneMediaID, new Guid("29c29901-0100-11db-89ca-0019b92a3933"));
-            var albumArtistMediaID = new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID,
+            var mediaID = new ZuneAttribute(ZuneAttributes.Track, new Guid("29c29901-0100-11db-89ca-0019b92a3933"));
+            var albumArtistMediaID = new ZuneAttribute(ZuneAttributes.Artist,
                                                      new Guid("760f0800-0600-11db-89ca-0019b92a3933"));
 
-            var albumMediaID = new MediaIdGuid(MediaIds.ZuneAlbumMediaID,
+            var albumMediaID = new ZuneAttribute(ZuneAttributes.Album,
                                                new Guid("25c29901-0100-11db-89ca-0019b92a3933"));
 
             Assert.That(ids.Contains(mediaID));
@@ -57,19 +57,19 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
             var container = ZuneWMATagContainerTestsHelpers.CreateEmptyContainer();
 
             Guid aGuid = Guid.NewGuid();
-            container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID,aGuid));
-            container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneAlbumMediaID, aGuid));
-            container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneMediaID, aGuid));
+            container.AddZuneAttribute(new ZuneAttribute(ZuneAttributes.Artist,aGuid));
+            container.AddZuneAttribute(new ZuneAttribute(ZuneAttributes.Album, aGuid));
+            container.AddZuneAttribute(new ZuneAttribute(ZuneAttributes.Track, aGuid));
 
             container.WriteToFile(_path);
 
             var newContainer = ZuneTagContainerFactory.GetContainer(_path);
 
-            var mediaIds = newContainer.ReadMediaIds();
+            var mediaIds = newContainer.ReadZuneAttributes();
 
-            Assert.That(mediaIds.Where(x=> x.Name == MediaIds.ZuneAlbumArtistMediaID).First().Guid,Is.EqualTo(aGuid));
-            Assert.That(mediaIds.Where(x => x.Name == MediaIds.ZuneAlbumMediaID).First().Guid, Is.EqualTo(aGuid));
-            Assert.That(mediaIds.Where(x => x.Name == MediaIds.ZuneMediaID).First().Guid, Is.EqualTo(aGuid));
+            Assert.That(mediaIds.Where(x => x.Name == ZuneAttributes.Artist).First().Guid, Is.EqualTo(aGuid));
+            Assert.That(mediaIds.Where(x => x.Name == ZuneAttributes.Album).First().Guid, Is.EqualTo(aGuid));
+            Assert.That(mediaIds.Where(x => x.Name == ZuneAttributes.Track).First().Guid, Is.EqualTo(aGuid));
         }
 
         [Test]
@@ -114,15 +114,15 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
         {
             var container = (ZuneWMATagContainer) ZuneTagContainerFactory.GetContainer(_path);
 
-            container.RemoveMediaId(MediaIds.ZuneAlbumArtistMediaID);
-            container.RemoveMediaId(MediaIds.ZuneAlbumMediaID);
-            container.RemoveMediaId(MediaIds.ZuneMediaID);
+            container.RemoveZuneAttribute(ZuneAttributes.Artist);
+            container.RemoveZuneAttribute(ZuneAttributes.Album);
+            container.RemoveZuneAttribute(ZuneAttributes.Track);
 
             container.WriteToFile(_path);
 
             IZuneTagContainer tagContainer = ZuneTagContainerFactory.GetContainer(_path);
 
-            Assert.That(tagContainer.ReadMediaIds(),Is.Empty);
+            Assert.That(tagContainer.ReadZuneAttributes(),Is.Empty);
         }
 
 

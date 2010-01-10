@@ -16,7 +16,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateContainerWithThreeZuneTags();
 
-            IEnumerable<MediaIdGuid> ids = container.ReadMediaIds();
+            IEnumerable<ZuneAttribute> ids = container.ReadZuneAttributes();
 
             Assert.That(ids.Count(), Is.EqualTo(3));
         }
@@ -26,10 +26,10 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateContainerWithThreeZuneTags();
 
-            MediaIdGuid result =
-                container.ReadMediaIds().Where(x => x.Name == MediaIds.ZuneAlbumArtistMediaID).First();
+            ZuneAttribute result =
+                container.ReadZuneAttributes().Where(x => x.Name == "ZuneAlbumArtistMediaID").First();
 
-            Assert.That(result.Name, Is.EqualTo(MediaIds.ZuneAlbumArtistMediaID));
+            Assert.That(result.Name, Is.EqualTo("ZuneAlbumArtistMediaID"));
             Assert.That(result.Guid, Is.EqualTo(ZuneMP3TagContainerTestHelpers.SomeGuid));
         }
 
@@ -37,9 +37,9 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         public void Then_it_should_be_able_to_read_the_ZuneAlbumMediaId()
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateContainerWithThreeZuneTags();
-            string mediaId = MediaIds.ZuneAlbumArtistMediaID;
+            string mediaId = "ZuneAlbumArtistMediaID";
 
-            MediaIdGuid result = container.ReadMediaIds().Where(x => x.Name == mediaId).First();
+            ZuneAttribute result = container.ReadZuneAttributes().Where(x => x.Name == mediaId).First();
 
             Assert.That(result.Name, Is.EqualTo(mediaId));
             Assert.That(result.Guid, Is.EqualTo(ZuneMP3TagContainerTestHelpers.SomeGuid));
@@ -49,9 +49,9 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         public void Then_it_should_be_able_to_read_the_ZuneAlbumAMediaId()
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateContainerWithThreeZuneTags();
-            string mediaId = MediaIds.ZuneMediaID;
+            string mediaId = ZuneAttributes.Track;
 
-            MediaIdGuid result = container.ReadMediaIds().Where(x => x.Name == mediaId).First();
+            ZuneAttribute result = container.ReadZuneAttributes().Where(x => x.Name == mediaId).First();
 
             Assert.That(result.Name, Is.EqualTo(mediaId));
             Assert.That(result.Guid, Is.EqualTo(ZuneMP3TagContainerTestHelpers.SomeGuid));
@@ -62,11 +62,11 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             ZuneMP3TagContainer container = ZuneMP3TagContainerTestHelpers.CreateContainerWithThreeZuneTags();
 
-            var mediaIdGuid = new MediaIdGuid(MediaIds.ZuneMediaID, ZuneMP3TagContainerTestHelpers.SomeGuid);
+            var mediaIdGuid = new ZuneAttribute(ZuneAttributes.Track, ZuneMP3TagContainerTestHelpers.SomeGuid);
 
-            container.AddZuneMediaId(mediaIdGuid);
+            container.AddZuneAttribute(mediaIdGuid);
 
-            var mediaIds = container.ReadMediaIds();
+            var mediaIds = container.ReadZuneAttributes();
 
             //we know that there are 3 items in the container so there should be no more
             Assert.That(mediaIds.Count(), Is.EqualTo(3));
@@ -77,9 +77,9 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             ZuneMP3TagContainer container = ZuneMP3TagContainerTestHelpers.CreateContainerWithThreeZuneTags();
 
-            container.RemoveMediaId(MediaIds.ZuneMediaID);
+            container.RemoveZuneAttribute(ZuneAttributes.Track);
 
-            var mediaIds = container.ReadMediaIds();
+            var mediaIds = container.ReadZuneAttributes();
 
             Assert.That(mediaIds.Count(), Is.EqualTo(2));
         }
@@ -95,7 +95,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateEmptyContainer();
 
-            IEnumerable<MediaIdGuid> ids = container.ReadMediaIds();
+            IEnumerable<ZuneAttribute> ids = container.ReadZuneAttributes();
 
             Assert.That(ids.Count(), Is.EqualTo(0));
         }
@@ -105,11 +105,11 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateEmptyContainer();
 
-            var mediaIdGuid = new MediaIdGuid(MediaIds.ZuneMediaID, ZuneMP3TagContainerTestHelpers.SomeGuid);
+            var mediaIdGuid = new ZuneAttribute(ZuneAttributes.Track, ZuneMP3TagContainerTestHelpers.SomeGuid);
 
-            container.AddZuneMediaId(mediaIdGuid);
+            container.AddZuneAttribute(mediaIdGuid);
 
-            var track = container.ReadMediaIds().Where(x=> x.Name == MediaIds.ZuneMediaID).First();
+            var track = container.ReadZuneAttributes().Where(x=> x.Name == ZuneAttributes.Track).First();
 
             Assert.That(track.Guid, Is.EqualTo(ZuneMP3TagContainerTestHelpers.SomeGuid));
         }
@@ -119,7 +119,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateEmptyContainer();
 
-            container.RemoveMediaId(MediaIds.ZuneMediaID);
+            container.RemoveZuneAttribute(ZuneAttributes.Track);
         }
 
     }
@@ -133,13 +133,13 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
             var container = ZuneMP3TagContainerTestHelpers.CreateContainerWithZuneAlbumartistMediaIDWithRandomGuid();
 
             //this guid does not equal the ZuneAlbumArtisMediaID Guid in the container
-            var albumArtistMediaIdGuid = new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID,
+            var albumArtistMediaIdGuid = new ZuneAttribute("ZuneAlbumArtistMediaID",
                                                          ZuneMP3TagContainerTestHelpers.SomeGuid);
 
-            container.AddZuneMediaId(albumArtistMediaIdGuid);
+            container.AddZuneAttribute(albumArtistMediaIdGuid);
 
 
-            var artist = container.ReadMediaIds().Where(x => x.Name == MediaIds.ZuneAlbumArtistMediaID).First();
+            var artist = container.ReadZuneAttributes().Where(x => x.Name == "ZuneAlbumArtistMediaID").First();
 
             Assert.That(artist.Guid, Is.EqualTo(albumArtistMediaIdGuid.Guid));
         }

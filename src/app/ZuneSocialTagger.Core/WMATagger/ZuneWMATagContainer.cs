@@ -15,30 +15,30 @@ namespace ZuneSocialTagger.Core.WMATagger
             _container = container;
         }
 
-        public IEnumerable<MediaIdGuid> ReadMediaIds()
+        public IEnumerable<ZuneAttribute> ReadZuneAttributes()
         {
             return from tag in _container
-                   where MediaIds.Ids.Contains(tag.Name)
-                   select new MediaIdGuid(tag.Name, new Guid(tag.Value));
+                   where ZuneAttributes.Ids.Contains(tag.Name)
+                   select new ZuneAttribute(tag.Name, new Guid(tag.Value));
         }
 
-        public void AddZuneMediaId(MediaIdGuid mediaIDGuid)
+        public void AddZuneAttribute(ZuneAttribute zuneAttribute)
         {
-            _container.Add(new Attribute(mediaIDGuid.Name, mediaIDGuid.Guid.ToString(), WMT_ATTR_DATATYPE.WMT_TYPE_GUID));
+            _container.Add(new Attribute(zuneAttribute.Name, zuneAttribute.Guid.ToString(), WMT_ATTR_DATATYPE.WMT_TYPE_GUID));
         }
 
         public MetaData ReadMetaData()
         {
             return new MetaData
                    {
-                       AlbumArtist = GetValue("WM/AlbumArtist"),
-                       AlbumName = GetValue("WM/AlbumTitle"),
-                       ContributingArtists = GetValues("Author"),
-                       DiscNumber = GetValue("WM/PartOfSet"),
-                       Genre = GetValue("WM/Genre"),
-                       Title = GetValue("Title"),
-                       TrackNumber = GetValue("WM/TrackNumber"),
-                       Year = GetValue("WM/Year")
+                       AlbumArtist = GetValue(ASFAttributes.AlbumArtist),
+                       AlbumName = GetValue(ASFAttributes.AlbumName),
+                       ContributingArtists = GetValues(ASFAttributes.ContributingArtists),
+                       DiscNumber = GetValue(ASFAttributes.DiscNumber),
+                       Genre = GetValue(ASFAttributes.Genre),
+                       Title = GetValue(ASFAttributes.Title),
+                       TrackNumber = GetValue(ASFAttributes.TrackNumber),
+                       Year = GetValue(ASFAttributes.Year)
                    };
         }
 
@@ -54,26 +54,26 @@ namespace ZuneSocialTagger.Core.WMATagger
             ASFTagManager.WriteTag(filePath, _container);
         }
 
-        public void RemoveMediaId(string name)
+        public void RemoveZuneAttribute(string name)
         {
-            Attribute toBeRemoved = _container.Where(x => x.Name == name).FirstOrDefault();
+            Attribute zuneAttrib = _container.Where(x => x.Name == name).FirstOrDefault();
 
-            if (toBeRemoved != null)
-                _container.Remove(toBeRemoved);
+            if (zuneAttrib != null)
+                _container.Remove(zuneAttrib);
         }
 
         private static IEnumerable<Attribute> CreateTextFramesFromMetaData(MetaData metaData)
         {
-            yield return new Attribute("WM/AlbumArtist", metaData.AlbumArtist,WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
-            yield return new Attribute("WM/AlbumTitle", metaData.AlbumName,WMT_ATTR_DATATYPE.WMT_TYPE_STRING );
-            yield return new Attribute("WM/PartOfSet", metaData.DiscNumber, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
-            yield return new Attribute("WM/Genre", metaData.Genre, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
-            yield return new Attribute("Title", metaData.Title, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
-            yield return new Attribute("WM/TrackNumber", metaData.TrackNumber, WMT_ATTR_DATATYPE.WMT_TYPE_DWORD);
-            yield return new Attribute("WM/Year", metaData.Year, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
+            yield return new Attribute(ASFAttributes.AlbumArtist, metaData.AlbumArtist,WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
+            yield return new Attribute(ASFAttributes.AlbumName, metaData.AlbumName,WMT_ATTR_DATATYPE.WMT_TYPE_STRING );
+            yield return new Attribute(ASFAttributes.DiscNumber, metaData.DiscNumber, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
+            yield return new Attribute(ASFAttributes.Genre, metaData.Genre, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
+            yield return new Attribute(ASFAttributes.Title, metaData.Title, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
+            yield return new Attribute(ASFAttributes.TrackNumber, metaData.TrackNumber, WMT_ATTR_DATATYPE.WMT_TYPE_DWORD);
+            yield return new Attribute(ASFAttributes.Year, metaData.Year, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
 
             foreach (var contributingArtist in metaData.ContributingArtists)
-                yield return new Attribute("Author", contributingArtist, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
+                yield return new Attribute(ASFAttributes.ContributingArtists, contributingArtist, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
         }
 
         private IEnumerable<string> GetValues(string key)

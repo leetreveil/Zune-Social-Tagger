@@ -142,9 +142,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     if (Properties.Settings.Default.UpdateAlbumInfo)
                             if (row.SelectedSong.HasAllMediaIDs)
                             {
-                                container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneAlbumMediaID, row.SelectedSong.AlbumMediaID));
-                                container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneAlbumArtistMediaID, row.SelectedSong.ArtistMediaID));
-                                container.AddZuneMediaId(new MediaIdGuid(MediaIds.ZuneMediaID, row.SelectedSong.MediaID));
+                                container.AddZuneAttribute(new ZuneAttribute(ZuneAttributes.Album, row.SelectedSong.AlbumMediaID));
+                                container.AddZuneAttribute(new ZuneAttribute(ZuneAttributes.Artist, row.SelectedSong.ArtistMediaID));
+                                container.AddZuneAttribute(new ZuneAttribute(ZuneAttributes.Track, row.SelectedSong.MediaID));
                                 container.AddMetaData(row.SelectedSong.MetaData);
 
                                 container.WriteToFile(row.FilePath);

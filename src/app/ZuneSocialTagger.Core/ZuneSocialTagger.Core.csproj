@@ -53,10 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="ID3Tagger\ID3Frames.cs" />
+    <Compile Include="WMATagger\ASFAttributes.cs" />
     <Compile Include="WMATagger\ZuneWMATagContainer.cs" />
     <Compile Include="IZuneTagContainer.cs" />
-    <Compile Include="MediaIdGuid.cs" />
-    <Compile Include="MediaIds.cs" />
+    <Compile Include="ZuneAttribute.cs" />
+    <Compile Include="ZuneAttributes.cs" />
     <Compile Include="ID3Tagger\ZuneMP3TagContainer.cs" />
     <Compile Include="ZuneTagContainerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

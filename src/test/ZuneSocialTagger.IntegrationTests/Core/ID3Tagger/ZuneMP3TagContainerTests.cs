@@ -31,13 +31,13 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
         {
             var zuneMp3TagContainer = (ZuneMP3TagContainer) ZuneTagContainerFactory.GetContainer(FilePath);
 
-            zuneMp3TagContainer.RemoveMediaId(MediaIds.ZuneAlbumArtistMediaID);
-            zuneMp3TagContainer.RemoveMediaId(MediaIds.ZuneMediaID);
-            zuneMp3TagContainer.RemoveMediaId(MediaIds.ZuneAlbumMediaID);
+            zuneMp3TagContainer.RemoveZuneAttribute(ZuneAttributes.Artist);
+            zuneMp3TagContainer.RemoveZuneAttribute(ZuneAttributes.Track);
+            zuneMp3TagContainer.RemoveZuneAttribute(ZuneAttributes.Album);
 
             zuneMp3TagContainer.WriteToFile(FilePath);
  
-            IEnumerable<MediaIdGuid> ids = ZuneTagContainerFactory.GetContainer(FilePath).ReadMediaIds();
+            IEnumerable<ZuneAttribute> ids = ZuneTagContainerFactory.GetContainer(FilePath).ReadZuneAttributes();
 
             Assert.That(ids,Is.Empty);
         }

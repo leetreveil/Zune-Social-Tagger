@@ -27,9 +27,9 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
 
-            container.Add(new PrivateFrame(MediaIds.ZuneAlbumArtistMediaID, SomeGuid.ToByteArray()));
-            container.Add(new PrivateFrame(MediaIds.ZuneAlbumMediaID, SomeGuid.ToByteArray()));
-            container.Add(new PrivateFrame(MediaIds.ZuneMediaID, SomeGuid.ToByteArray()));
+            container.Add(new PrivateFrame(ZuneAttributes.Artist, SomeGuid.ToByteArray()));
+            container.Add(new PrivateFrame(ZuneAttributes.Album, SomeGuid.ToByteArray()));
+            container.Add(new PrivateFrame(ZuneAttributes.Track, SomeGuid.ToByteArray()));
 
             return new ZuneMP3TagContainer(container);
         }
@@ -47,7 +47,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
 
-            container.Add(new PrivateFrame(MediaIds.ZuneAlbumArtistMediaID,
+            container.Add(new PrivateFrame("ZuneAlbumArtistMediaID",
                                            Guid.NewGuid().ToByteArray()));
 
             return new ZuneMP3TagContainer(container);

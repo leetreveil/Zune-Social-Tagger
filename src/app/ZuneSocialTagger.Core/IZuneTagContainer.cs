@@ -4,11 +4,11 @@ namespace ZuneSocialTagger.Core
 {
     public interface IZuneTagContainer
     {
-        IEnumerable<MediaIdGuid> ReadMediaIds();
-        void AddZuneMediaId(MediaIdGuid mediaIDGuid);
+        IEnumerable<ZuneAttribute> ReadZuneAttributes();
+        void AddZuneAttribute(ZuneAttribute zuneAttribute);
         MetaData ReadMetaData();
         void AddMetaData(MetaData metaData);
         void WriteToFile(string filePath);
-        void RemoveMediaId(string name);
+        void RemoveZuneAttribute(string name);
     }
 }

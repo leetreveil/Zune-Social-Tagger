@@ -2,12 +2,15 @@ using System;
 
 namespace ZuneSocialTagger.Core
 {
-    public class MediaIdGuid
+    /// <summary>
+    /// A zune attribute, Name = ZuneAlbumArtistId, Guid = 3ed50a00-0600-11db-89ca-0019b92a3933
+    /// </summary>
+    public class ZuneAttribute
     {
         public string Name { get; set; }
         public Guid Guid { get; set; }
 
-        public MediaIdGuid(string mediaID, Guid guid)
+        public ZuneAttribute(string mediaID, Guid guid)
         {
             Name = mediaID;
             Guid = guid;
@@ -15,7 +18,7 @@ namespace ZuneSocialTagger.Core
 
         public override bool Equals(object obj)
         {
-            var newGuid = (MediaIdGuid) obj;
+            var newGuid = (ZuneAttribute) obj;
 
             return this.Guid == newGuid.Guid;
         }
@@ -24,6 +27,5 @@ namespace ZuneSocialTagger.Core
         {
             return this.Guid.GetHashCode();
         }
-
     }
 }
