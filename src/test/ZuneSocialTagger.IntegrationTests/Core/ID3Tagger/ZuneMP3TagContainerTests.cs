@@ -31,9 +31,9 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
         {
             var zuneMp3TagContainer = (ZuneMP3TagContainer) ZuneTagContainerFactory.GetContainer(FilePath);
 
-            zuneMp3TagContainer.RemoveZuneAttribute(ZuneAttributes.Artist);
-            zuneMp3TagContainer.RemoveZuneAttribute(ZuneAttributes.Track);
-            zuneMp3TagContainer.RemoveZuneAttribute(ZuneAttributes.Album);
+            zuneMp3TagContainer.RemoveZuneAttribute(ZuneIds.Artist);
+            zuneMp3TagContainer.RemoveZuneAttribute(ZuneIds.Track);
+            zuneMp3TagContainer.RemoveZuneAttribute(ZuneIds.Album);
 
             zuneMp3TagContainer.WriteToFile(FilePath);
  

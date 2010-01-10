@@ -27,53 +27,36 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
             //select all available zune attributes from the mp3 file
             return from frame in _container.OfType<PrivateFrame>()
-                   where ZuneAttributes.Ids.Contains(frame.Owner)
+                   where ZuneIds.GetAll.Contains(frame.Owner)
                    select new ZuneAttribute(frame.Owner, new Guid(frame.Data));
-
         }
 
         public void AddZuneAttribute(ZuneAttribute zuneAttribute)
         {
-            var newFrame = new PrivateFrame(zuneAttribute.Name, zuneAttribute.Guid.ToByteArray());
+            RemoveZuneAttribute(zuneAttribute.Name);
 
-            //frame owner is a unique id identifying a private field so we can
-            //be sure that there's only one
-            PrivateFrame existingFrame = (from frame in _container.OfType<PrivateFrame>()
-                                          where frame.Owner == newFrame.Owner
-                                          where frame.Data != newFrame.Data
-                                          select frame).FirstOrDefault();
-
-            //if the frame already exists and the data inside is different then remove it
-            if (existingFrame != null)
-                _container.Remove(existingFrame);
-
-            _container.Add(newFrame);
+            _container.Add(new PrivateFrame(zuneAttribute.Name,zuneAttribute.Guid.ToByteArray()));
         }
 
         public void RemoveZuneAttribute(string name)
         {
-            PrivateFrame existingFrame = (from frame in _container.OfType<PrivateFrame>()
-                                          where frame.Owner == name
-                                          select frame).FirstOrDefault();
-
-
-            if (existingFrame != null)
-                _container.Remove(existingFrame);
+            _container.OfType<PrivateFrame>().Where(frame => frame.Owner == name).ToList().ForEach(
+                privFrame => _container.Remove(privFrame));
         }
 
         public MetaData ReadMetaData()
         {
             return new MetaData
-               {
-                   AlbumArtist = GetValue(ID3Frames.AlbumArtist),
-                   ContributingArtists = GetValue(ID3Frames.ContributingArtists).Split('/'),
-                   AlbumName = GetValue(ID3Frames.AlbumName),
-                   Title = GetValue(ID3Frames.Title),
-                   Year = GetValue(ID3Frames.Year),
-                   DiscNumber = GetValue(ID3Frames.DiscNumber),
-                   Genre = GetValue(ID3Frames.Genre),
-                   TrackNumber = GetValue(ID3Frames.TrackNumber)
-               };
+                       {
+                           AlbumArtist = GetValue(ID3Frames.AlbumArtist),
+                           ContributingArtists = GetValue(ID3Frames.ContributingArtists).Split('/'),
+                           AlbumName = GetValue(ID3Frames.AlbumName),
+                           Title = GetValue(ID3Frames.Title),
+                           Year = GetValue(ID3Frames.Year),
+                           DiscNumber = GetValue(ID3Frames.DiscNumber),
+                           Genre = GetValue(ID3Frames.Genre),
+                           TrackNumber = GetValue(ID3Frames.TrackNumber)
+                       };
         }
 
 
@@ -114,7 +97,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             yield return new TextFrame(ID3Frames.Year, metaData.Year, Encoding.Default);
         }
 
- 
+
         private string GetValue(string key)
         {
             IEnumerable<TextFrame> allTextFrames = from frame in _container.OfType<TextFrame>()

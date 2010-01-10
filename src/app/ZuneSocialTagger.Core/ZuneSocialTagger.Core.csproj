@@ -58,7 +58,7 @@
     <Compile Include="WMATagger\ZuneWMATagContainer.cs" />
     <Compile Include="IZuneTagContainer.cs" />
     <Compile Include="ZuneAttribute.cs" />
-    <Compile Include="ZuneAttributes.cs" />
+    <Compile Include="ZuneIds.cs" />
     <Compile Include="ID3Tagger\ZuneMP3TagContainer.cs" />
     <Compile Include="ZuneTagContainerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

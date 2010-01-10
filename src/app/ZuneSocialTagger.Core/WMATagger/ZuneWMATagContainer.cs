@@ -18,12 +18,14 @@ namespace ZuneSocialTagger.Core.WMATagger
         public IEnumerable<ZuneAttribute> ReadZuneAttributes()
         {
             return from tag in _container
-                   where ZuneAttributes.Ids.Contains(tag.Name)
+                   where ZuneIds.GetAll.Contains(tag.Name)
                    select new ZuneAttribute(tag.Name, new Guid(tag.Value));
         }
 
         public void AddZuneAttribute(ZuneAttribute zuneAttribute)
         {
+            RemoveZuneAttribute(zuneAttribute.Name);
+
             _container.Add(new Attribute(zuneAttribute.Name, zuneAttribute.Guid.ToString(), WMT_ATTR_DATATYPE.WMT_TYPE_GUID));
         }
 
@@ -56,10 +58,8 @@ namespace ZuneSocialTagger.Core.WMATagger
 
         public void RemoveZuneAttribute(string name)
         {
-            Attribute zuneAttrib = _container.Where(x => x.Name == name).FirstOrDefault();
-
-            if (zuneAttrib != null)
-                _container.Remove(zuneAttrib);
+            //we are removing all from the list just incase there are repeating attributes
+            _container.Where(x => x.Name == name).ToList().ForEach(attrib => _container.Remove(attrib));
         }
 
         private static IEnumerable<Attribute> CreateTextFramesFromMetaData(MetaData metaData)

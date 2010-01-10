@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using ID3Tag.HighLevel.ID3Frame;
 using NUnit.Framework;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ID3Tagger;
@@ -27,9 +25,9 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
             var container = ZuneMP3TagContainerTestHelpers.CreateContainerWithThreeZuneTags();
 
             ZuneAttribute result =
-                container.ReadZuneAttributes().Where(x => x.Name == "ZuneAlbumArtistMediaID").First();
+                container.ReadZuneAttributes().Where(x => x.Name == ZuneIds.Artist).First();
 
-            Assert.That(result.Name, Is.EqualTo("ZuneAlbumArtistMediaID"));
+            Assert.That(result.Name, Is.EqualTo(ZuneIds.Artist));
             Assert.That(result.Guid, Is.EqualTo(ZuneMP3TagContainerTestHelpers.SomeGuid));
         }
 
@@ -37,7 +35,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         public void Then_it_should_be_able_to_read_the_ZuneAlbumMediaId()
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateContainerWithThreeZuneTags();
-            string mediaId = "ZuneAlbumArtistMediaID";
+            string mediaId = ZuneIds.Artist;
 
             ZuneAttribute result = container.ReadZuneAttributes().Where(x => x.Name == mediaId).First();
 
@@ -49,7 +47,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         public void Then_it_should_be_able_to_read_the_ZuneAlbumAMediaId()
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateContainerWithThreeZuneTags();
-            string mediaId = ZuneAttributes.Track;
+            string mediaId = ZuneIds.Track;
 
             ZuneAttribute result = container.ReadZuneAttributes().Where(x => x.Name == mediaId).First();
 
@@ -62,7 +60,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             ZuneMP3TagContainer container = ZuneMP3TagContainerTestHelpers.CreateContainerWithThreeZuneTags();
 
-            var mediaIdGuid = new ZuneAttribute(ZuneAttributes.Track, ZuneMP3TagContainerTestHelpers.SomeGuid);
+            var mediaIdGuid = new ZuneAttribute(ZuneIds.Track, ZuneMP3TagContainerTestHelpers.SomeGuid);
 
             container.AddZuneAttribute(mediaIdGuid);
 
@@ -77,13 +75,25 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             ZuneMP3TagContainer container = ZuneMP3TagContainerTestHelpers.CreateContainerWithThreeZuneTags();
 
-            container.RemoveZuneAttribute(ZuneAttributes.Track);
+            container.RemoveZuneAttribute(ZuneIds.Track);
 
             var mediaIds = container.ReadZuneAttributes();
 
             Assert.That(mediaIds.Count(), Is.EqualTo(2));
         }
 
+        [Test]
+        public void Then_it_should_be_able_to_remove_zune_attribute_when_there_are_more_than_one()
+        {
+            ZuneMP3TagContainer container =
+                ZuneMP3TagContainerTestHelpers.CreateContainerWithThreeZuneTagsAndOneRepeating();
+
+            container.RemoveZuneAttribute(ZuneIds.Track);
+            container.RemoveZuneAttribute(ZuneIds.Artist);
+            container.RemoveZuneAttribute(ZuneIds.Album);
+
+            Assert.That(container.ReadZuneAttributes(),Is.Empty);
+        }
     }
 
 
@@ -105,11 +115,11 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateEmptyContainer();
 
-            var mediaIdGuid = new ZuneAttribute(ZuneAttributes.Track, ZuneMP3TagContainerTestHelpers.SomeGuid);
+            var mediaIdGuid = new ZuneAttribute(ZuneIds.Track, ZuneMP3TagContainerTestHelpers.SomeGuid);
 
             container.AddZuneAttribute(mediaIdGuid);
 
-            var track = container.ReadZuneAttributes().Where(x=> x.Name == ZuneAttributes.Track).First();
+            var track = container.ReadZuneAttributes().Where(x=> x.Name == ZuneIds.Track).First();
 
             Assert.That(track.Guid, Is.EqualTo(ZuneMP3TagContainerTestHelpers.SomeGuid));
         }
@@ -119,7 +129,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ZuneMP3TagContainerTestHelpers.CreateEmptyContainer();
 
-            container.RemoveZuneAttribute(ZuneAttributes.Track);
+            container.RemoveZuneAttribute(ZuneIds.Track);
         }
 
     }
@@ -133,13 +143,13 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
             var container = ZuneMP3TagContainerTestHelpers.CreateContainerWithZuneAlbumartistMediaIDWithRandomGuid();
 
             //this guid does not equal the ZuneAlbumArtisMediaID Guid in the container
-            var albumArtistMediaIdGuid = new ZuneAttribute("ZuneAlbumArtistMediaID",
+            var albumArtistMediaIdGuid = new ZuneAttribute(ZuneIds.Artist,
                                                          ZuneMP3TagContainerTestHelpers.SomeGuid);
 
             container.AddZuneAttribute(albumArtistMediaIdGuid);
 
 
-            var artist = container.ReadZuneAttributes().Where(x => x.Name == "ZuneAlbumArtistMediaID").First();
+            var artist = container.ReadZuneAttributes().Where(x => x.Name == ZuneIds.Artist).First();
 
             Assert.That(artist.Guid, Is.EqualTo(albumArtistMediaIdGuid.Guid));
         }
@@ -285,7 +295,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         [Test]
         public void Then_it_should_update_any_existing_metadata()
         {
-            var metaData = new MetaData()
+            var metaData = new MetaData
             {
                 AlbumArtist = "Various Artists",
                 AlbumName = "Forever",

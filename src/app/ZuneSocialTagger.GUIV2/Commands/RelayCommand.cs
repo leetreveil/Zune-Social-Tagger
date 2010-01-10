@@ -4,6 +4,7 @@ using System.Windows.Input;
 
 namespace ZuneSocialTagger.GUIV2.Commands
 {
+    [DebuggerStepThrough]
     /// <summary>
     /// A command whose sole purpose is to 
     /// relay its functionality to other
@@ -73,6 +74,7 @@ namespace ZuneSocialTagger.GUIV2.Commands
         #endregion // ICommand Members
     }
 
+    [DebuggerStepThrough]
     /// <summary>
     /// A command whose sole purpose is to 
     /// relay its functionality to other

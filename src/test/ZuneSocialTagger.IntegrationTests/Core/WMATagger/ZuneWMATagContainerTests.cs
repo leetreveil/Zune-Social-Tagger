@@ -22,11 +22,11 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
 
             Assert.That(ids.Count(),Is.EqualTo(3));
 
-            var mediaID = new ZuneAttribute(ZuneAttributes.Track, new Guid("29c29901-0100-11db-89ca-0019b92a3933"));
-            var albumArtistMediaID = new ZuneAttribute(ZuneAttributes.Artist,
+            var mediaID = new ZuneAttribute(ZuneIds.Track, new Guid("29c29901-0100-11db-89ca-0019b92a3933"));
+            var albumArtistMediaID = new ZuneAttribute(ZuneIds.Artist,
                                                      new Guid("760f0800-0600-11db-89ca-0019b92a3933"));
 
-            var albumMediaID = new ZuneAttribute(ZuneAttributes.Album,
+            var albumMediaID = new ZuneAttribute(ZuneIds.Album,
                                                new Guid("25c29901-0100-11db-89ca-0019b92a3933"));
 
             Assert.That(ids.Contains(mediaID));
@@ -57,9 +57,9 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
             var container = ZuneWMATagContainerTestsHelpers.CreateEmptyContainer();
 
             Guid aGuid = Guid.NewGuid();
-            container.AddZuneAttribute(new ZuneAttribute(ZuneAttributes.Artist,aGuid));
-            container.AddZuneAttribute(new ZuneAttribute(ZuneAttributes.Album, aGuid));
-            container.AddZuneAttribute(new ZuneAttribute(ZuneAttributes.Track, aGuid));
+            container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist,aGuid));
+            container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, aGuid));
+            container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, aGuid));
 
             container.WriteToFile(_path);
 
@@ -67,10 +67,23 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
 
             var mediaIds = newContainer.ReadZuneAttributes();
 
-            Assert.That(mediaIds.Where(x => x.Name == ZuneAttributes.Artist).First().Guid, Is.EqualTo(aGuid));
-            Assert.That(mediaIds.Where(x => x.Name == ZuneAttributes.Album).First().Guid, Is.EqualTo(aGuid));
-            Assert.That(mediaIds.Where(x => x.Name == ZuneAttributes.Track).First().Guid, Is.EqualTo(aGuid));
+            Assert.That(mediaIds.Where(x => x.Name == ZuneIds.Artist).First().Guid, Is.EqualTo(aGuid));
+            Assert.That(mediaIds.Where(x => x.Name == ZuneIds.Album).First().Guid, Is.EqualTo(aGuid));
+            Assert.That(mediaIds.Where(x => x.Name == ZuneIds.Track).First().Guid, Is.EqualTo(aGuid));
         }
+
+        [Test]
+        public void Then_it_should_be_able_to_update_a_zune_attribute_with_a_new_value_and_not_add_a_new_one()
+        {
+            var container = ZuneTagContainerFactory.GetContainer(_path);
+
+            var oldCount = container.ReadZuneAttributes().Count();
+
+            container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist,Guid.NewGuid()));
+
+            Assert.That(container.ReadZuneAttributes().Count(),Is.EqualTo(oldCount));
+        }
+
 
         [Test]
         public void Then_it_should_be_able_to_update_all_the_meta_data()
@@ -114,9 +127,11 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
         {
             var container = (ZuneWMATagContainer) ZuneTagContainerFactory.GetContainer(_path);
 
-            container.RemoveZuneAttribute(ZuneAttributes.Artist);
-            container.RemoveZuneAttribute(ZuneAttributes.Album);
-            container.RemoveZuneAttribute(ZuneAttributes.Track);
+            container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist,Guid.NewGuid()));
+
+            container.RemoveZuneAttribute(ZuneIds.Artist);
+            container.RemoveZuneAttribute(ZuneIds.Album);
+            container.RemoveZuneAttribute(ZuneIds.Track);
 
             container.WriteToFile(_path);
 

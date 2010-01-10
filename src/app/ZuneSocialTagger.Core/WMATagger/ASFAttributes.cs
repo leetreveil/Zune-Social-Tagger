@@ -1,6 +1,6 @@
 namespace ZuneSocialTagger.Core.WMATagger
 {
-    public class ASFAttributes
+    public static class ASFAttributes
     {
         public static string AlbumArtist = "WM/AlbumArtist";
         public static string ContributingArtists = "Author";

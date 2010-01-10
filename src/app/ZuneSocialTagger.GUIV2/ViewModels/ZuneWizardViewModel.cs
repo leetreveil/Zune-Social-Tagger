@@ -139,13 +139,18 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 {
                    var container = row.Container;
 
-                    if (Properties.Settings.Default.UpdateAlbumInfo)
-                            if (row.SelectedSong.HasAllMediaIDs)
+                    if (row.MetaData.Title == "Calm Waters")
+                        Debugger.Break();
+
+
+                    if (row.SelectedSong.HasAllZuneIds)
                             {
-                                container.AddZuneAttribute(new ZuneAttribute(ZuneAttributes.Album, row.SelectedSong.AlbumMediaID));
-                                container.AddZuneAttribute(new ZuneAttribute(ZuneAttributes.Artist, row.SelectedSong.ArtistMediaID));
-                                container.AddZuneAttribute(new ZuneAttribute(ZuneAttributes.Track, row.SelectedSong.MediaID));
-                                container.AddMetaData(row.SelectedSong.MetaData);
+                                container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, row.SelectedSong.AlbumMediaID));
+                                container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, row.SelectedSong.ArtistMediaID));
+                                container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, row.SelectedSong.MediaID));
+
+                                if (Properties.Settings.Default.UpdateAlbumInfo)
+                                    container.AddMetaData(row.SelectedSong.MetaData);
 
                                 container.WriteToFile(row.FilePath);
                             }

@@ -27,9 +27,26 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         {
             var container = ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
 
-            container.Add(new PrivateFrame(ZuneAttributes.Artist, SomeGuid.ToByteArray()));
-            container.Add(new PrivateFrame(ZuneAttributes.Album, SomeGuid.ToByteArray()));
-            container.Add(new PrivateFrame(ZuneAttributes.Track, SomeGuid.ToByteArray()));
+            container.Add(new PrivateFrame(ZuneIds.Artist, SomeGuid.ToByteArray()));
+            container.Add(new PrivateFrame(ZuneIds.Album, SomeGuid.ToByteArray()));
+            container.Add(new PrivateFrame(ZuneIds.Track, SomeGuid.ToByteArray()));
+
+            return new ZuneMP3TagContainer(container);
+        }
+
+        /// <summary>
+        /// ZuneAlbumArtistMediaID: 3ed50a00-0600-11db-89ca-0019b92a3933
+        /// ZuneAlbumMediaID: 4f66ff01-0100-11db-89ca-0019b92a3933
+        /// ZuneMediaID: 5366ff01-0100-11db-89ca-0019b92a3933
+        /// </summary>
+        public static ZuneMP3TagContainer CreateContainerWithThreeZuneTagsAndOneRepeating()
+        {
+            var container = ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
+
+            container.Add(new PrivateFrame(ZuneIds.Artist, SomeGuid.ToByteArray()));
+            container.Add(new PrivateFrame(ZuneIds.Album, SomeGuid.ToByteArray()));
+            container.Add(new PrivateFrame(ZuneIds.Track, SomeGuid.ToByteArray()));
+            container.Add(new PrivateFrame(ZuneIds.Track, SomeGuid.ToByteArray()));
 
             return new ZuneMP3TagContainer(container);
         }
