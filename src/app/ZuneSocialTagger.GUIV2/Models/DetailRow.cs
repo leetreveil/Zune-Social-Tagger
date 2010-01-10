@@ -20,9 +20,12 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public DetailRow(string filePath, IZuneTagContainer container)
         {
-            this.FilePath = filePath;
+            FilePath = filePath;
             Container = container;
             MetaData = container.ReadMetaData();
+
+            if (MetaData.TrackNumber == string.Empty)
+                MetaData.TrackNumber = "0";
         }
 
         /// <summary>

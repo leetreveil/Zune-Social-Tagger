@@ -48,6 +48,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             _model.Rows = new ObservableCollection<DetailRow>();
 
+
+            //TODO: need to sort by track no after loading
             try
             {
                 foreach (var filePath in files)
@@ -58,6 +60,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     _model.Rows.Add(new DetailRow(filePath, container));
                 }
 
+                //sort the rows by track number
+                var sortedTracks = _model.Rows.OrderBy(SortByTrackNumber()).ToList();
+
+                _model.Rows.Clear();
+
+                foreach (var row in sortedTracks)
+                    _model.Rows.Add(row);
+
                 //takes the first track read from the model and updates the metadata view
                 SetAlbumDetailsFromFile(_model.Rows.Count, _model.Rows.First().MetaData);
 
@@ -67,6 +77,17 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 ErrorMessageBox.Show("Error reading album " + Environment.NewLine + id3TagException.Message);
             }
+        }
+
+        private static Func<DetailRow, int> SortByTrackNumber()
+        {
+            return key =>
+                       {
+                           int result;
+                           Int32.TryParse(key.MetaData.TrackNumber, out result);
+
+                           return result;
+                       };
         }
 
         private void SetAlbumDetailsFromFile(int songCount, MetaData songMetaData)
