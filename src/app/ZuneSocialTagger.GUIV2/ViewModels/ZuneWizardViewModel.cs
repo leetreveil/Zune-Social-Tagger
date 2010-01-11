@@ -137,23 +137,25 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 try
                 {
-                   var container = row.Container;
-
-                    if (row.MetaData.Title == "Calm Waters")
-                        Debugger.Break();
-
+                    var container = row.Container;
 
                     if (row.SelectedSong.HasAllZuneIds)
-                            {
-                                container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, row.SelectedSong.AlbumMediaID));
-                                container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, row.SelectedSong.ArtistMediaID));
-                                container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, row.SelectedSong.MediaID));
+                    {
+                        container.RemoveZuneAttribute("WM/WMContentID");
+                        container.RemoveZuneAttribute("WM/WMCollectionID");
+                        container.RemoveZuneAttribute("WM/WMCollectionGroupID");
+                        container.RemoveZuneAttribute("ZuneCollectionID");
+                        container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
 
-                                if (Properties.Settings.Default.UpdateAlbumInfo)
-                                    container.AddMetaData(row.SelectedSong.MetaData);
+                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, row.SelectedSong.AlbumMediaID));
+                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, row.SelectedSong.ArtistMediaID));
+                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, row.SelectedSong.MediaID));
 
-                                container.WriteToFile(row.FilePath);
-                            }
+                        if (Properties.Settings.Default.UpdateAlbumInfo)
+                            container.AddMetaData(row.SelectedSong.MetaData);
+
+                        container.WriteToFile(row.FilePath);
+                    }
 
                     //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
                 }
