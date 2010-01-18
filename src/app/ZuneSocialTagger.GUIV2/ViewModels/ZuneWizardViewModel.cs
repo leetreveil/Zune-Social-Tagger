@@ -133,6 +133,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             Mouse.OverrideCursor = Cursors.Wait;
 
+
+            var uaeExceptions = new List<UnauthorizedAccessException>();
+
             foreach (var row in _sharedModel.Rows)
             {
                 try
@@ -154,21 +157,26 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                         if (Properties.Settings.Default.UpdateAlbumInfo)
                             container.AddMetaData(row.SelectedSong.MetaData);
 
+                        //TODO: convert TrackNumbers that are imported as 1/1 to just 1 or 1/12 to just 1
                         container.WriteToFile(row.FilePath);
                     }
 
                     //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
                 }
-                catch
+                catch (UnauthorizedAccessException uae)
                 {
+                    uaeExceptions.Add(uae);
                     //TODO: better error handling
-                    Console.WriteLine("error saving {0}", row.FilePath);
                 }
             }
 
-            Mouse.OverrideCursor = null;
+            if (uaeExceptions.Count > 0)
+                //usually occurs when a file is readonly
+                ErrorMessageBox.Show("One or more files could not be written to. Have you checked the files are not marked read-only?");
+            else
+                new SuccessView(new SuccessViewModel(_sharedModel)).Show();
 
-            new SuccessView(new SuccessViewModel(_sharedModel)).Show();
+            Mouse.OverrideCursor = null;
         }
 
         /// <summary>

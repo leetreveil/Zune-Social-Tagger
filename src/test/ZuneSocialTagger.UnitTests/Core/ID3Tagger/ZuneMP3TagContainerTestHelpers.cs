@@ -1,6 +1,7 @@
 using System;
-using ID3Tag.HighLevel;
-using ID3Tag.HighLevel.ID3Frame;
+using Id3Tag;
+using Id3Tag.HighLevel;
+using Id3Tag.HighLevel.Id3Frame;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ID3Tagger;
 using System.Text;
@@ -25,7 +26,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         /// </summary>
         public static ZuneMP3TagContainer CreateContainerWithThreeZuneTags()
         {
-            var container = ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
+            var container = Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
 
             container.Add(new PrivateFrame(ZuneIds.Artist, SomeGuid.ToByteArray()));
             container.Add(new PrivateFrame(ZuneIds.Album, SomeGuid.ToByteArray()));
@@ -41,7 +42,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         /// </summary>
         public static ZuneMP3TagContainer CreateContainerWithThreeZuneTagsAndOneRepeating()
         {
-            var container = ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
+            var container = Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
 
             container.Add(new PrivateFrame(ZuneIds.Artist, SomeGuid.ToByteArray()));
             container.Add(new PrivateFrame(ZuneIds.Album, SomeGuid.ToByteArray()));
@@ -53,7 +54,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
 
         public static ZuneMP3TagContainer CreateEmptyContainer()
         {
-            return new ZuneMP3TagContainer(ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23));
+            return new ZuneMP3TagContainer(Id3TagFactory.CreateId3Tag(TagVersion.Id3V23));
         }
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         /// <returns></returns>
         public static ZuneMP3TagContainer CreateContainerWithZuneAlbumartistMediaIDWithRandomGuid()
         {
-            var container = ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
+            var container = Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
 
             container.Add(new PrivateFrame("ZuneAlbumArtistMediaID",
                                            Guid.NewGuid().ToByteArray()));
@@ -76,7 +77,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
         /// <returns></returns>
         public static ZuneMP3TagContainer CreateContainerWithSomeStandardMetaData()
         {
-            var container = ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
+            var container = Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
 
             container.Add(new TextFrame("TALB", SomeAlbum, Encoding.UTF8));
             container.Add(new TextFrame("TPE1", SomeArtist, Encoding.UTF8));
@@ -92,7 +93,7 @@ namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
 
         public static ZuneMP3TagContainer CreateContainerWithNoMetaData()
         {
-            return new ZuneMP3TagContainer(ID3Tag.Id3TagFactory.CreateId3Tag(TagVersion.Id3V23));
+            return new ZuneMP3TagContainer(Id3TagFactory.CreateId3Tag(TagVersion.Id3V23));
         }
     }
 }

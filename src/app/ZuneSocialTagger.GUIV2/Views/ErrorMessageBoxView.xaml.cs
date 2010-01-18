@@ -28,7 +28,7 @@ namespace ZuneSocialTagger.GUIV2.Views
             this.DragMove();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OK_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }

@@ -1,5 +1,5 @@
 using ASFTag;
-using ID3Tag;
+using Id3Tag;
 using System.IO;
 using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.Core.WMATagger;
@@ -14,13 +14,15 @@ namespace ZuneSocialTagger.Core
 
             if (extension == ".mp3")
             {
-                FileState status = Id3TagManager.GetTagsStatus(path);
+                var tagManager = new Id3TagManager();
+
+                FileState status = tagManager.GetTagsStatus(path);
 
                 //if we just have id3v1.1 tags
                 if (status.Id3V1TagFound && !status.Id3V2TagFound)
-                    throw new ID3TagException("cannot read id3v1.1");
+                    throw new Id3TagException("cannot read id3v1.1");
 
-                return new ZuneMP3TagContainer(Id3TagManager.ReadV2Tag(path));
+                return new ZuneMP3TagContainer(tagManager.ReadV2Tag(path));
             }
 
             if (extension == ".wma")

@@ -14,7 +14,7 @@
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MinHeight="38" />
             <RowDefinition/>
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
@@ -25,11 +25,11 @@
             <TextBlock  FontSize="26.667" Text="ERROR"/>
         </StackPanel>
         
-        <StackPanel Margin="20,0,0,0" Width="350" HorizontalAlignment="Left" Grid.Row="1" Orientation="Horizontal">
+        <StackPanel Margin="20,0,0,0" Grid.Row="1" Orientation="Horizontal">
             <Image Width="50" Height="50" Source="../Assets/error.png"/>
-            <TextBlock Margin="10,0,0,0" Width="300" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding ErrorMessage}" FontSize="16"/>
+            <TextBlock Margin="10,0,0,0" MaxWidth="280" TextWrapping="WrapWithOverflow" VerticalAlignment="Center" Text="{Binding ErrorMessage}" FontSize="16"/>
         </StackPanel>
         
-        <Button Width="60" Grid.Row="2" HorizontalAlignment="Right" Content="OK" Click="Button_Click" />
+        <Button Width="60" Grid.Row="2" HorizontalAlignment="Right" Content="OK" Click="OK_Click" />
     </Grid>
 </Window>

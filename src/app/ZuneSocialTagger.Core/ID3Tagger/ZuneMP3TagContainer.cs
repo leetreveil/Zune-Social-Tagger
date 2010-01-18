@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using ID3Tag;
-using ID3Tag.HighLevel;
-using ID3Tag.HighLevel.ID3Frame;
+using Id3Tag;
+using Id3Tag.HighLevel;
+using Id3Tag.HighLevel.Id3Frame;
 using System.Linq;
 using System.Text;
 
@@ -28,7 +28,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             //select all available zune attributes from the mp3 file
             return from frame in _container.OfType<PrivateFrame>()
                    where ZuneIds.GetAll.Contains(frame.Owner)
-                   select new ZuneAttribute(frame.Owner, new Guid(frame.Data));
+                   select new ZuneAttribute(frame.Owner, new Guid(frame.Data.ToArray()));
         }
 
         public void AddZuneAttribute(ZuneAttribute zuneAttribute)
@@ -67,7 +67,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
                 TextFrame tempTextFrame = textFrame;
 
                 TextFrame existingFrame = (from frame in _container.OfType<TextFrame>()
-                                           where frame.Descriptor.ID == tempTextFrame.Descriptor.ID
+                                           where frame.Descriptor.Id == tempTextFrame.Descriptor.Id
                                            select frame).FirstOrDefault();
 
 
@@ -80,7 +80,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
 
         public void WriteToFile(string filePath)
         {
-            Id3TagManager.WriteV2Tag(filePath, _container);
+            new Id3TagManager().WriteV2Tag(filePath,_container);
         }
 
         private static IEnumerable<TextFrame> CreateTextFramesFromMetaData(MetaData metaData)
@@ -103,7 +103,7 @@ namespace ZuneSocialTagger.Core.ID3Tagger
             IEnumerable<TextFrame> allTextFrames = from frame in _container.OfType<TextFrame>()
                                                    select frame;
 
-            TextFrame result = allTextFrames.Where(x => x.Descriptor.ID == key).SingleOrDefault();
+            TextFrame result = allTextFrames.Where(x => x.Descriptor.Id == key).SingleOrDefault();
 
             return result != null ? result.Content : string.Empty;
         }

@@ -75,6 +75,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
         [Test]
         public void Then_it_should_be_able_to_update_a_zune_attribute_with_a_new_value_and_not_add_a_new_one()
         {
+            //TODO: fix failing test when tests are ran before it, this is because the file state is different when the test is ran
             var container = ZuneTagContainerFactory.GetContainer(_path);
 
             var oldCount = container.ReadZuneAttributes().Count();

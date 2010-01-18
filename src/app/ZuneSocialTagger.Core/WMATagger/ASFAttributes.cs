@@ -1,5 +1,8 @@
 namespace ZuneSocialTagger.Core.WMATagger
 {
+    /// <summary>
+    /// ASF Attributes that are specific to the ASF Specification
+    /// </summary>
     public static class ASFAttributes
     {
         public static string AlbumArtist = "WM/AlbumArtist";
