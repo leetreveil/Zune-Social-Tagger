@@ -1,8 +1,9 @@
+using System.ComponentModel;
 using System.Windows;
 
 namespace ZuneSocialTagger.GUIV2
 {
-    public class DraggableWindow : Window
+    public class DraggableWindow :  Window
     {
         public DraggableWindow()
         {

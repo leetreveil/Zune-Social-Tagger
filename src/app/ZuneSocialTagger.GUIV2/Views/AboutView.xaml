@@ -31,10 +31,13 @@
                 <Hyperlink NavigateUri="http://github.com/leetreveil/Zune-Social-Tagger" RequestNavigate="Hyperlink_RequestNavigate">
                     http://github.com/leetreveil/Zune-Social-Tagger
                 </Hyperlink></TextBlock>
+            <TextBlock VerticalAlignment="Bottom" Text="© 2009 Lee Treveil"/>
+
         </StackPanel>
 
-		<TextBlock Grid.Row="3" VerticalAlignment="Bottom" Text="© 2009 Lee Treveil"/>
+
 		<Button Height="25" Width="50" Content="Close"  Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click" />
+        <CheckBox Grid.Row="2" IsChecked="{Binding UpdateEnabled}" VerticalAlignment="Bottom" Content="Check for updates" Height="14.4" HorizontalAlignment="Left" Width="119" />
     </Grid>
 
 </local:DraggableWindow>

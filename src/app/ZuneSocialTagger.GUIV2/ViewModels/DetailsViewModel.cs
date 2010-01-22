@@ -49,9 +49,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 if (value != UpdateAlbumInfo)
                 {
                     Properties.Settings.Default.UpdateAlbumInfo = value;
-                    //TODO: move the save to when the application is being shutdown
                     Properties.Settings.Default.Save();
-                    base.InvokePropertyChanged("UpdateAlbumInfo");
                 }
 
             }
