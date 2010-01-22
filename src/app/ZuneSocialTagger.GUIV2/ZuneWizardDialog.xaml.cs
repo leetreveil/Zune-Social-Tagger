@@ -30,21 +30,18 @@ namespace ZuneSocialTagger.GUIV2
             //the user has to have write access (can have any file name)
             string updaterPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"socialtaggerupdater.exe");
 
-            //do update checking stuff here
-            UpdateManager.UpdateExePath = updaterPath;
-            UpdateManager.AppFeedUrl = "zunesocupdatefeed.xml";
-            UpdateManager.UpdateExe = Properties.Resources.socialtaggerupdater;
-
-            //always clean up at the beginning of the exe because we cant do it at the end
-            UpdateManager.CleanUp();
-
-            //if an update is available then show the update window
-            UpdateManager.CheckForUpdate(update => Dispatcher.Invoke(new Action(
-                                                                         () =>
-                                                                         new UpdateView(
-                                                                             new UpdateViewModel(update.Version)).Show())));
-
-           // 
+            if (Properties.Settings.Default.CheckForUpdates)
+            {
+                //do update checking stuff here
+                UpdateManager.UpdateExePath = updaterPath;
+                UpdateManager.AppFeedUrl = "zunesocupdatefeedx.xml";
+                UpdateManager.UpdateExe = Properties.Resources.socialtaggerupdater;
+                //always clean up at the beginning of the exe because we cant do it at the end
+                UpdateManager.CleanUp();
+                //if an update is available then show the update window
+                UpdateManager.CheckForUpdate(update => Dispatcher.Invoke(new Action(() => new UpdateView(
+                                                                                 new UpdateViewModel(update.Version)).Show())));
+            }
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
