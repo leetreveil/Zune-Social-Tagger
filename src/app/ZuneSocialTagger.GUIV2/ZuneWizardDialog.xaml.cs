@@ -11,7 +11,7 @@ namespace ZuneSocialTagger.GUIV2
     /// <summary>
     /// Interaction logic for ZuneWizardDialog.xaml
     /// </summary>
-    public partial class ZuneWizardDialog : Window
+    public partial class ZuneWizardDialog : DraggableWindow
     {
         private readonly ZuneWizardViewModel _zuneWizardViewModel;
 
@@ -20,7 +20,7 @@ namespace ZuneSocialTagger.GUIV2
             InitializeComponent();
 
             _zuneWizardViewModel = new ZuneWizardViewModel();
-            base.DataContext = _zuneWizardViewModel;
+            this.DataContext = _zuneWizardViewModel;
             this.Loaded += ZuneWizardDialog_Loaded;
         }
 
@@ -39,14 +39,12 @@ namespace ZuneSocialTagger.GUIV2
             UpdateManager.CleanUp();
 
             //if an update is available then show the update window
-            UpdateManager.CheckForUpdate(update => Console.WriteLine("update available!"));
+            UpdateManager.CheckForUpdate(update => Dispatcher.Invoke(new Action(
+                                                                         () =>
+                                                                         new UpdateView(
+                                                                             new UpdateViewModel(update.Version)).Show())));
 
-            new UpdateView().Show();
-        }
-
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DragMove();
+           // 
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)

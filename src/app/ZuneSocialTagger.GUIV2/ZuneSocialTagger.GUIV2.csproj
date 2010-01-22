@@ -46,6 +46,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -84,7 +85,9 @@
     <Compile Include="Models\ZuneWizardModel.cs" />
     <Compile Include="ErrorMessageBox.cs" />
     <Compile Include="NotifyPropertyChangedImpl.cs" />
+    <Compile Include="DraggableWindow.cs" />
     <Compile Include="ViewModels\SearchResultsDetailsViewModel.cs" />
+    <Compile Include="ViewModels\UpdateViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\ErrorMessageBoxView.xaml.cs">
       <DependentUpon>ErrorMessageBoxView.xaml</DependentUpon>

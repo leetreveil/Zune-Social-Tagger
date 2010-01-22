@@ -20,11 +20,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _model = model;
         }
 
-        internal override bool IsNextEnabled()
-        {
-            return false;
-        }
-
         public ICommand FromFilesCommand
         {
             get
@@ -110,5 +105,21 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _model.SearchBarViewModel.SearchText = songMetaData.AlbumName + " " +
                                                    _model.AlbumDetailsFromFile.Artist;
         }
+
+        internal override bool IsNextEnabled()
+        {
+            return false;
+        }
+
+        internal override bool IsNextVisible()
+        {
+            return false;
+        }
+
+        internal override bool IsBackVisible()
+        {
+            return false;
+        }
+
     }
 }

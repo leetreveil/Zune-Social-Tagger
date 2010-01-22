@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,18 +17,13 @@ namespace ZuneSocialTagger.GUIV2.Views
     /// <summary>
     /// Interaction logic for AboutView.xaml
     /// </summary>
-    public partial class AboutView : Window
+    public partial class AboutView : DraggableWindow
     {
         public AboutView()
         {
             InitializeComponent();
 
             this.DataContext = this;
-        }
-
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DragMove();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

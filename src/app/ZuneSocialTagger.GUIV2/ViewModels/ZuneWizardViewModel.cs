@@ -103,21 +103,32 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 if (_moveNextCommand == null)
                     _moveNextCommand = new RelayCommand(
                         () => this.TryToMoveToNextPage(),
-                        () => this.IsNextButtonVisible);
+                        () => this.IsNextButtonEnabled);
 
                 return _moveNextCommand;
             }
         }
 
-        public bool IsNextButtonVisible
+        public bool IsNextButtonEnabled
         {
             get { return this.CurrentPage != null && this.CurrentPage.IsNextEnabled(); }
+        }
+
+        public bool IsNextButtonVisible
+        {
+            get { return this.CurrentPage != null && this.CurrentPage.IsNextVisible(); }
+        }
+
+        public bool IsBackButtonVisible
+        {
+            get { return this.CurrentPage != null && this.CurrentPage.IsBackVisible(); }
         }
 
         private void TryToMoveToNextPage()
         {
             if (this.CurrentPageIndex < this.Pages.Count - 1)
             {
+                this.CurrentPage.InvokeMoveNextClicked();
                 //if the current page allows us to move next
                 this.CurrentPage = this.Pages[this.CurrentPageIndex + 1];
             }
@@ -199,22 +210,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     _currentPage.IsCurrentPage = true;
 
 
+                //force the ui to check for changes when the current page has changed
                 base.InvokePropertyChanged("CurrentPage");
                 base.InvokePropertyChanged("IsOnLastPage");
                 base.InvokePropertyChanged("NextButtonText");
                 base.InvokePropertyChanged("BackButtonText");
+                base.InvokePropertyChanged("IsBackButtonVisible");
+                base.InvokePropertyChanged("IsNextButtonVisible");
             }
-        }
-
-        /// <summary>
-        /// Returns true if the user is currently viewing the last page 
-        /// in the workflow.  This property is used by CoffeeWizardView
-        /// to switch the Next button's text to "Finish" when the user
-        /// has reached the final page.
-        /// </summary>
-        public bool IsOnLastPage
-        {
-            get { return this.CurrentPageIndex == this.Pages.Count - 1; }
         }
 
         /// <summary>

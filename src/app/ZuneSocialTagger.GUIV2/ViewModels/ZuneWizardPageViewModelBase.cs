@@ -9,7 +9,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         bool _isCurrentPage;
 
         public event EventHandler MoveNextOverride;
+        public event EventHandler MoveNextClicked;
 
+        public void InvokeMoveNextClicked()
+        {
+            EventHandler handler = MoveNextClicked;
+            if (handler != null) handler(this, new EventArgs());
+        }
 
         protected void OnMoveNextOverride()
         {
@@ -46,5 +52,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         /// </summary>
         /// <returns></returns>
         internal abstract bool IsNextEnabled();
+
+        internal virtual bool IsNextVisible()
+        {
+            return true;
+        }
+
+        internal virtual bool IsBackVisible()
+        {
+            return true;
+        }
     }
 }

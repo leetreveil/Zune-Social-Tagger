@@ -11,7 +11,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             _model = model;
             this.SearchBarViewModel.StartedSearching += SearchBarViewModel_StartedSearching;
+
+            base.MoveNextClicked += new EventHandler(SearchViewModel_MoveNextClicked);
         }
+
+        void SearchViewModel_MoveNextClicked(object sender, EventArgs e)
+        {
+            _model.SearchBarViewModel.Search();
+        }
+
 
         void SearchBarViewModel_StartedSearching(object sender, EventArgs e)
         {
@@ -33,12 +41,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         internal override string NextButtonText
         {
-            get { return "Next"; }
+            get { return "Search"; }
         }
 
         internal override bool IsNextEnabled()
         {
-            return false;
+            return _model.SearchBarViewModel.CanSearch;
         }
     }
 }

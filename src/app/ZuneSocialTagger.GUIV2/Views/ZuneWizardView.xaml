@@ -25,15 +25,8 @@
             <Setter Property="Margin" Value="3.5" />
             <Setter Property="MinWidth" Value="80" />
         </Style>
-
-        <!-- This Style inherits from the Button style seen above. -->
-        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}" x:Key="moveNextButtonStyle">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=IsOnLastPage}" Value="True">
-                    <Setter Property="Content" Value="Save" />
-                 </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </UserControl.Resources>
 
     <Grid>
@@ -62,13 +55,14 @@
             Grid.Row="0"
             Command="{Binding Path=MovePreviousCommand}"
             Content="{Binding BackButtonText}" 
+            Visibility="{Binding Path = IsBackButtonVisible,Converter={StaticResource BoolToVis}}"
             />
             <Button
             Grid.Column="1"
             Grid.Row="0"
             Command="{Binding Path=MoveNextCommand}"
-            Style="{StaticResource moveNextButtonStyle}" 
             Content="{Binding NextButtonText}"
+            Visibility="{Binding Path = IsNextButtonVisible,Converter={StaticResource BoolToVis}}"
             />
         </StackPanel>
     </Grid>

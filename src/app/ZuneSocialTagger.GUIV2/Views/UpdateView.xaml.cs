@@ -10,17 +10,28 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
     /// <summary>
     /// Interaction logic for UpdateView.xaml
     /// </summary>
-    public partial class UpdateView : Window
+    public partial class UpdateView : DraggableWindow
     {
-        public UpdateView()
+        private readonly UpdateViewModel _updateViewModel;
+
+        public UpdateView(UpdateViewModel updateViewModel)
         {
             InitializeComponent();
+
+            _updateViewModel = updateViewModel;
+            this.DataContext = _updateViewModel;
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
