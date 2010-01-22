@@ -34,7 +34,7 @@ namespace ZuneSocialTagger.GUIV2
             {
                 //do update checking stuff here
                 UpdateManager.UpdateExePath = updaterPath;
-                UpdateManager.AppFeedUrl = "zunesocupdatefeedx.xml";
+                UpdateManager.AppFeedUrl = "http://github.com/leetreveil/Zune-Social-Tagger/raw/master/docs/zunesocupdatefeed.xml";
                 UpdateManager.UpdateExe = Properties.Resources.socialtaggerupdater;
                 //always clean up at the beginning of the exe because we cant do it at the end
                 UpdateManager.CleanUp();
