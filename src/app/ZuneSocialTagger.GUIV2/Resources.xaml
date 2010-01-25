@@ -24,8 +24,9 @@
 			<Setter Property="ResizeMode" Value="NoResize" />
    			<Setter Property="WindowStyle" Value="None" />
 			<Setter Property="Width" Value="663" />
-            <Setter Property="Height" Value="300" />
-    		<Setter Property="Template">
+            <Setter Property="Title" Value="Zune Social Tagger"/>
+        <Setter Property="Icon" Value="Assets/zuneicondark.ico"/>
+        <Setter Property="Template">
     			<Setter.Value>
     				<ControlTemplate TargetType="{x:Type Window}">
  						<Border BorderBrush="#FFF0F0F0" BorderThickness="2">

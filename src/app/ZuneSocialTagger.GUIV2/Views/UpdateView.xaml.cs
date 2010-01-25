@@ -33,5 +33,16 @@ namespace ZuneSocialTagger.GUIV2.Views
         {
             this.Close();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var mainPage = new ZuneWizardDialog();
+
+            mainPage.Show();
+            mainPage.Left = this.Left;
+            mainPage.Top = this.Top;
+
+            this.Close();
+        }
     }
 }
