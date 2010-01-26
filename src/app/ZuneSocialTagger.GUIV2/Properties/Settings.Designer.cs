@@ -46,5 +46,30 @@ namespace ZuneSocialTagger.GUIV2.Properties {
                 this["CheckForUpdates"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://github.com/leetreveil/Zune-Social-Tagger/raw/master/docs/zunesocupdatefeed" +
+            ".xml")]
+        public string UpdateFeedUrl {
+            get {
+                return ((string)(this["UpdateFeedUrl"]));
+            }
+            set {
+                this["UpdateFeedUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("socialtaggerupdater.exe")]
+        public string UpdateExeName {
+            get {
+                return ((string)(this["UpdateExeName"]));
+            }
+            set {
+                this["UpdateExeName"] = value;
+            }
+        }
     }
 }

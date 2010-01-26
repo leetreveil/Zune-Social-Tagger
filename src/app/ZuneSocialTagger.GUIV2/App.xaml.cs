@@ -23,26 +23,35 @@ namespace ZuneSocialTagger.GUIV2
 
         void App_Startup(object sender, StartupEventArgs e)
         {
-            //path where we want to temporarily store the updater executable must be somewhere that
-            //the user has to have write access (can have any file name)
-            string updaterPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "socialtaggerupdater.exe");
+            new ZuneWizardDialog().Show();
+            ////path where we want to temporarily store the updater executable must be somewhere that
+            ////the user has to have write access (can have any file name)
+            //string updaterPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "socialtaggerupdater.exe");
 
-            if (GUIV2.Properties.Settings.Default.CheckForUpdates)
-            {
-                //do update checking stuff here
-                UpdateManager.UpdateExePath = updaterPath;
-                UpdateManager.AppFeedUrl = "http://github.com/leetreveil/Zune-Social-Tagger/raw/master/docs/zunesocupdatefeed.xml";
-                UpdateManager.UpdateExe = GUIV2.Properties.Resources.socialtaggerupdater;
-                //always clean up at the beginning of the exe because we cant do it at the end
-                UpdateManager.CleanUp();
-                //if an update is available then show the update window
-                UpdateManager.CheckForUpdate(update => Dispatcher.Invoke(new Action(() => new UpdateView(
-                                                                                 new UpdateViewModel(update.Version)).Show())));
-            }
-            else
-            {
-                new ZuneWizardDialog().Show();
-            }
+            //if (GUIV2.Properties.Settings.Default.CheckForUpdates)
+            //{
+            //    //do update checking stuff here
+            //    UpdateManager.UpdateExePath = updaterPath;
+            //    UpdateManager.AppFeedUrl = GUIV2.Properties.Settings.Default.UpdateFeedUrl;
+            //    UpdateManager.UpdateExe = GUIV2.Properties.Resources.socialtaggerupdater;
+            //    //always clean up at startup because we cant do it at the end
+            //    UpdateManager.CleanUp();
+
+            //    Update availUpd;
+            //    if (UpdateManager.CheckForUpdate(out availUpd) && availUpd != null)
+            //    {
+            //        new UpdateView(new UpdateViewModel(availUpd.Version)).Show();
+            //    }
+            //    else
+            //    {
+            //        new ZuneWizardDialog().Show();
+            //    }
+
+            //}
+            //else
+            //{
+            //    new ZuneWizardDialog().Show();
+            //}
         }
     }
 }

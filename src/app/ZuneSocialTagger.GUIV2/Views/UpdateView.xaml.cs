@@ -20,12 +20,14 @@ namespace ZuneSocialTagger.GUIV2.Views
     public partial class UpdateView : DraggableWindow
     {
         private readonly UpdateViewModel _updateViewModel;
+        private readonly Window _mainWindow;
 
-        public UpdateView(UpdateViewModel updateViewModel)
+        public UpdateView(UpdateViewModel updateViewModel, Window mainWindow)
         {
             InitializeComponent();
 
             _updateViewModel = updateViewModel;
+            _mainWindow = mainWindow;
             this.DataContext = _updateViewModel;
         }
 
@@ -36,12 +38,15 @@ namespace ZuneSocialTagger.GUIV2.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var mainPage = new ZuneWizardDialog();
+            //var mainPage = new ZuneWizardDialog();
 
-            mainPage.Show();
-            mainPage.Left = this.Left;
-            mainPage.Top = this.Top;
+            //mainPage.Show();
+            //mainPage.Left = this.Left;
+            //mainPage.Top = this.Top;
 
+            _mainWindow.Left = this.Left;
+            _mainWindow.Top = this.Top;
+            _mainWindow.Show();
             this.Close();
         }
     }

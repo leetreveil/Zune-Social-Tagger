@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2"
     Height="216"
-    WindowStartupLocation="CenterScreen"
     Style="{DynamicResource DefaultWindowStyle}"  >
 
     <Window.Resources>

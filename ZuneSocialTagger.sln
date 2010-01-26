@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code", "Code", "{5611B4FB-A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZuneSocialTagger.GUIV2", "src\app\ZuneSocialTagger.GUIV2\ZuneSocialTagger.GUIV2.csproj", "{F2B3D818-697F-4E53-A92F-A5C5016F1965}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ZuneSocialTagger.Setup", "src\app\ZuneSocialTagger.Setup\ZuneSocialTagger.Setup.vdproj", "{DF676FEA-1C38-454E-8703-CBF00710CBD9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{F2B3D818-697F-4E53-A92F-A5C5016F1965}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2B3D818-697F-4E53-A92F-A5C5016F1965}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2B3D818-697F-4E53-A92F-A5C5016F1965}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF676FEA-1C38-454E-8703-CBF00710CBD9}.Debug|Any CPU.ActiveCfg = Debug
+		{DF676FEA-1C38-454E-8703-CBF00710CBD9}.Debug|Any CPU.Build.0 = Debug
+		{DF676FEA-1C38-454E-8703-CBF00710CBD9}.Release|Any CPU.ActiveCfg = Release
+		{DF676FEA-1C38-454E-8703-CBF00710CBD9}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

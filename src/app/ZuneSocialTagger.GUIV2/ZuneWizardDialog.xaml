@@ -5,7 +5,7 @@
     xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2" x:Class="ZuneSocialTagger.GUIV2.ZuneWizardDialog" 
     SizeToContent="Height"
     Title="Zune Social Tagger" 
-    WindowStartupLocation="CenterScreen" 
+    WindowStartupLocation="CenterScreen"
     Style="{DynamicResource DefaultWindowStyle}" 
     Icon="Assets/zuneicondark.ico">
     
