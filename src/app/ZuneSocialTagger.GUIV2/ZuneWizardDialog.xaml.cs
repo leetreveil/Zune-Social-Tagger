@@ -27,38 +27,38 @@ namespace ZuneSocialTagger.GUIV2
 
         private void ZuneWizardDialog_Loaded(object sender, RoutedEventArgs e)
         {
-            string updaterPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                                              Properties.Settings.Default.UpdateExeName);
+            //string updaterPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            //                                  Properties.Settings.Default.UpdateExeName);
 
-            if (Properties.Settings.Default.CheckForUpdates)
-            {
-                //do update checking stuff here
-                UpdateManager.UpdateExePath = updaterPath;
-                UpdateManager.AppFeedUrl = Properties.Settings.Default.UpdateFeedUrl;
-                UpdateManager.UpdateExe = Properties.Resources.socialtaggerupdater;
-                //always clean up at startup because we cant do it at the end
-                UpdateManager.CleanUp();
+            //if (Properties.Settings.Default.CheckForUpdates)
+            //{
+            //    //do update checking stuff here
+            //    UpdateManager.UpdateExePath = updaterPath;
+            //    UpdateManager.AppFeedUrl = Properties.Settings.Default.UpdateFeedUrl;
+            //    UpdateManager.UpdateExe = Properties.Resources.socialtaggerupdater;
+            //    //always clean up at startup because we cant do it at the end
+            //    UpdateManager.CleanUp();
 
-                Update availUpd;
+            //    Update availUpd;
 
-                ThreadPool.QueueUserWorkItem(state =>
-                     {
-                         if (UpdateManager.CheckForUpdate(out availUpd) && availUpd != null)
-                         {
-                             Dispatcher.Invoke(new Action(() =>
-                                  {
+            //    ThreadPool.QueueUserWorkItem(state =>
+            //         {
+            //             if (UpdateManager.CheckForUpdate(out availUpd) && availUpd != null)
+            //             {
+            //                 Dispatcher.Invoke(new Action(() =>
+            //                      {
 
-                                      var updView = new UpdateView(new UpdateViewModel(availUpd.Version),this);
-                                      updView.Top = this.Top;
-                                      updView.Left = this.Left;
-                                      updView.Show();
+            //                          var updView = new UpdateView(new UpdateViewModel(availUpd.Version),this);
+            //                          updView.Top = this.Top;
+            //                          updView.Left = this.Left;
+            //                          updView.Show();
 
-                                      this.Hide();
-                                  }));
-                         }
-                     });
+            //                          this.Hide();
+            //                      }));
+            //             }
+            //         });
 
-            }
+            //}
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
@@ -69,6 +69,12 @@ namespace ZuneSocialTagger.GUIV2
         private void Minimize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+        }
+
+        private void AboutSettings_Click(object sender, RoutedEventArgs e)
+        {
+            var view = new AboutView {ShowInTaskbar = false};
+            view.Show();
         }
     }
 }

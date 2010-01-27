@@ -6,7 +6,7 @@
 
     <UserControl.Resources>
         
-        <!-- These four templates map a ViewModel to a View. -->
+        
         <DataTemplate DataType="{x:Type viewModels:SelectAudioFilesViewModel}">
             <views:SelectAudioFilesView />
         </DataTemplate>
@@ -45,9 +45,13 @@
         <Border Grid.Row="2">
             <ContentControl Content="{Binding Path=CurrentPage}"/>
         </Border>
+		
+        <TextBlock Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource BoolToVis}}" Grid.Row="4" Foreground="Red" VerticalAlignment="Center" HorizontalAlignment="Center">
+             <Hyperlink Foreground="Red" TextDecorations="" NavigateUri="http://www.dogsonacid.com" RequestNavigate="Hyperlink_RequestNavigate">
+                A new update is available for Zune Social Tagger, click here to update now.
+            </Hyperlink>
+        </TextBlock>
 
-        <Button Command="{Binding AboutCommand}" Grid.Row="4" HorizontalAlignment="Left" Content="About"/>
-        <!-- NAVIGATION BUTTONS -->
         
         <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Right">
             <Button

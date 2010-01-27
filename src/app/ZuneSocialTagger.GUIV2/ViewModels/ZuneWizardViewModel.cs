@@ -1,8 +1,12 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
+using System.Threading;
 using System.Windows.Input;
+using System.Windows.Threading;
+using leetreveil.AutoUpdate.Framework;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
@@ -15,9 +19,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private ZuneWizardPageViewModelBase _currentPage;
         private RelayCommand _moveNextCommand;
         private RelayCommand _movePreviousCommand;
-        private RelayCommand _aboutCommand;
         private ReadOnlyCollection<ZuneWizardPageViewModelBase> _pages;
         private ZuneWizardModel _sharedModel;
+        private bool _updateAvailable;
 
         public string NextButtonText
         {
@@ -36,6 +40,45 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             //set up the handler for overrides (this allows a page to move to the next page on demand without having to click next)
             foreach (var page in Pages)
                 page.MoveNextOverride += PageMoveNextOverride;
+
+
+            CheckForUpdates();
+        }
+
+        private void CheckForUpdates()
+        {
+            string updaterPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                                  Properties.Settings.Default.UpdateExeName);
+
+            if (Properties.Settings.Default.CheckForUpdates)
+            {
+                //do update checking stuff here
+                UpdateManager.UpdateExePath = updaterPath;
+                UpdateManager.AppFeedUrl = Properties.Settings.Default.UpdateFeedUrl;
+                UpdateManager.UpdateExe = Properties.Resources.socialtaggerupdater;
+                //always clean up at startup because we cant do it at the end
+                UpdateManager.CleanUp();
+
+
+                ThreadPool.QueueUserWorkItem(state =>
+                {
+                    if (UpdateManager.CheckForUpdate())
+                    {
+                        this.UpdateAvailable = true;
+                        //Dispatcher.Invoke(new Action(() =>
+                        //{
+
+                        //    var updView = new UpdateView(new UpdateViewModel(availUpd.Version), this);
+                        //    updView.Top = this.Top;
+                        //    updView.Left = this.Left;
+                        //    updView.Show();
+
+                        //    this.Hide();
+                        //}));
+                    }
+                });
+
+            }
         }
 
         private void PageMoveNextOverride(object sender, EventArgs e)
@@ -43,23 +86,19 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             TryToMoveToNextPage();
         }
 
-        public ICommand AboutCommand
+
+        public bool UpdateAvailable
         {
-            get
+            get { return _updateAvailable; }
+            set
             {
-                if (_aboutCommand == null)
-                    _aboutCommand = new RelayCommand(ShowAbout);
+                if (value != _updateAvailable)
+                {
+                    _updateAvailable = value;
+                    base.InvokePropertyChanged("UpdateAvailable");
+                }
 
-                return _aboutCommand;
             }
-        }
-
-        public void ShowAbout()
-        {
-            AboutView view = new AboutView();
-
-            view.ShowInTaskbar = false;
-            view.Show();
         }
 
         /// <summary>

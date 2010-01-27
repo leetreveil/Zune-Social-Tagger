@@ -19,7 +19,7 @@
         <!--HEADER-->
         <StackPanel Grid.Row="0">
             <local:ZuneHeaderGradient/>
-            <TextBlock  FontSize="26.667" Text="ABOUT"/>
+            <TextBlock  FontSize="26.667"><Run Text="ABOUT"/><Run Text=" / SETTINGS"/></TextBlock>
         </StackPanel>
 
         <StackPanel Grid.Row="1" >
