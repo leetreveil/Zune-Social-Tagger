@@ -23,7 +23,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get
             {
                 if (_applyUpdateCommand == null)
-                    _applyUpdateCommand = new RelayCommand(UpdateManager.ApplyUpdate);
+                    _applyUpdateCommand = new RelayCommand(UpdateManager.Instance.ApplyUpdate);
 
                 return _applyUpdateCommand;
             }
