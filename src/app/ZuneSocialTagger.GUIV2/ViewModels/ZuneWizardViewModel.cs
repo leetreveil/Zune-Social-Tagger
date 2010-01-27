@@ -41,7 +41,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             foreach (var page in Pages)
                 page.MoveNextOverride += PageMoveNextOverride;
 
-
             CheckForUpdates();
         }
 
@@ -53,29 +52,18 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             if (Properties.Settings.Default.CheckForUpdates)
             {
                 //do update checking stuff here
-                UpdateManager.UpdateExePath = updaterPath;
-                UpdateManager.AppFeedUrl = Properties.Settings.Default.UpdateFeedUrl;
-                UpdateManager.UpdateExe = Properties.Resources.socialtaggerupdater;
-                //always clean up at startup because we cant do it at the end
-                UpdateManager.CleanUp();
+                var updateManager = UpdateManager.Instance;
 
+                updateManager.UpdateExePath = updaterPath;
+                updateManager.AppFeedUrl = Properties.Settings.Default.UpdateFeedUrl;
+                updateManager.UpdateExe = Properties.Resources.socialtaggerupdater;
+                //always clean up at startup because we cant do it at the end
+                updateManager.CleanUp();
 
                 ThreadPool.QueueUserWorkItem(state =>
                 {
-                    if (UpdateManager.CheckForUpdate())
-                    {
+                    if (updateManager.CheckForUpdate())
                         this.UpdateAvailable = true;
-                        //Dispatcher.Invoke(new Action(() =>
-                        //{
-
-                        //    var updView = new UpdateView(new UpdateViewModel(availUpd.Version), this);
-                        //    updView.Top = this.Top;
-                        //    updView.Left = this.Left;
-                        //    updView.Show();
-
-                        //    this.Hide();
-                        //}));
-                    }
                 });
 
             }

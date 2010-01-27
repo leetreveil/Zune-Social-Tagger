@@ -32,7 +32,7 @@ namespace ZuneSocialTagger.GUIV2.Views
             //TODO: move the updateview so its part of the wizard as is not standalone
             var parentWindow = Window.GetWindow(this);
 
-            var updView = new UpdateView(new UpdateViewModel(UpdateManager.NewUpdate.Version), parentWindow)
+            var updView = new UpdateView(new UpdateViewModel(UpdateManager.Instance.NewUpdate.Version), parentWindow)
                               {
                                   Top = parentWindow.Top,
                                   Left = parentWindow.Left
