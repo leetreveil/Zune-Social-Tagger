@@ -183,6 +183,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_CCDC28EDF1CE451C9006C5B15C231326"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_D856C10510ED0949E11F3037664D37E8"
         "OwnerKey" = "8:_B5A33334CD654B36B97146BD7C5BCBF1"
         "MsmSig" = "8:_UNDEFINED"
@@ -375,6 +381,19 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5.SP1"
+                    {
+                    "Name" = "8:.NET Framework 3.5 SP1"
+                    "ProductCode" = "8:Microsoft.Net.Framework.3.5.SP1"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
             }
         }
     }
@@ -746,6 +765,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CCDC28EDF1CE451C9006C5B15C231326"
+            {
+            "SourcePath" = "8:..\\..\\..\\docs\\zuneicondark.jpg"
+            "TargetName" = "8:zuneicondark.jpg"
+            "Tag" = "8:"
+            "Folder" = "8:_0B398938E8A54021BA3DD046EBDB7EF5"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D856C10510ED0949E11F3037664D37E8"
             {
             "AssemblyRegister" = "3:1"
@@ -878,7 +917,7 @@
         {
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_0B398938E8A54021BA3DD046EBDB7EF5"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFilesFolder][ProductName]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -897,6 +936,17 @@
             "Property" = "8:ProgramMenuFolder"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_B08847A6FCCC4E28A52143BDA074D11D"
+                    {
+                    "Name" = "8:Zune Social Tagger"
+                    "AlwaysCreate" = "11:TRUE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_12EEE8E3CB7D49C2B8648F8AE354D6D9"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_7012AAAB04C347EBA49055D9FC1907DF"
@@ -925,24 +975,24 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:ZuneSocialTagger.Setup"
+        "ProductName" = "8:Zune Social Tagger"
         "ProductCode" = "8:{A91BE3CF-0F08-4D7A-97F6-FEF45146922A}"
-        "PackageCode" = "8:{CFC1347F-B8C1-48EE-84D4-A665C1ACDD46}"
+        "PackageCode" = "8:{BE5C5545-F90C-48D6-8101-E09BACAE5775}"
         "UpgradeCode" = "8:{7E3AF9F0-7D07-44ED-B189-B1A474A053CB}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Default Company Name"
+        "Manufacturer" = "8:Lee Treveil"
         "ARPHELPTELEPHONE" = "8:"
-        "ARPHELPLINK" = "8:"
-        "Title" = "8:ZuneSocialTagger.Setup"
+        "ARPHELPLINK" = "8:http://wiki.github.com/leetreveil/Zune-Social-Tagger/"
+        "Title" = "8:Zune Social Tagger"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Default Company Name"
+        "ARPCONTACT" = "8:Lee Treveil"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:"
-        "ARPURLINFOABOUT" = "8:"
+        "ARPCOMMENTS" = "8:Link an album to the zune social with any album available on the zune marketplace!"
+        "ARPURLINFOABOUT" = "8:http://wiki.github.com/leetreveil/"
         "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
@@ -1046,6 +1096,34 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_38B1C1F38DA340059B6FA38D64D443F5"
+            {
+            "Name" = "8:Zune Social Tagger"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:32512"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_B5A33334CD654B36B97146BD7C5BCBF1"
+            "Folder" = "8:_B08847A6FCCC4E28A52143BDA074D11D"
+            "WorkingFolder" = "8:_0B398938E8A54021BA3DD046EBDB7EF5"
+            "Icon" = "8:_B5A33334CD654B36B97146BD7C5BCBF1"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_AD386F039807456BB73181BDB561449B"
+            {
+            "Name" = "8:Zune Social Tagger"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_B5A33334CD654B36B97146BD7C5BCBF1"
+            "Folder" = "8:_7012AAAB04C347EBA49055D9FC1907DF"
+            "WorkingFolder" = "8:_0B398938E8A54021BA3DD046EBDB7EF5"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
@@ -1160,7 +1238,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_CCDC28EDF1CE451C9006C5B15C231326"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "ShowProgress"
@@ -1305,7 +1384,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_CCDC28EDF1CE451C9006C5B15C231326"
                             "UsePlugInResources" = "11:TRUE"
                             }
                         }
@@ -1327,7 +1407,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_CCDC28EDF1CE451C9006C5B15C231326"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "InstallAllUsersVisible"
@@ -1362,7 +1443,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_CCDC28EDF1CE451C9006C5B15C231326"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "CopyrightWarning"
@@ -1419,7 +1501,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_CCDC28EDF1CE451C9006C5B15C231326"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "UpdateText"
@@ -1430,8 +1513,8 @@
                             "Type" = "3:15"
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
-                            "Setting" = "3:1"
-                            "Value" = "8:#1258"
+                            "Setting" = "3:2"
+                            "Value" = "8:"
                             "DefaultValue" = "8:#1258"
                             "UsePlugInResources" = "11:TRUE"
                             }
