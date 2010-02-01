@@ -21,6 +21,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _model = model;
             this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel();
             this.SearchBarViewModel.StartedSearching += SearchBarViewModel_StartedSearching;
+            this.MoveNextClicked += SearchResultsViewModel_MoveNextClicked;
+        }
+
+        void SearchResultsViewModel_MoveNextClicked(object sender, EventArgs e)
+        {
+           base.OnMoveNextOverride();
         }
 
         private void SearchBarViewModel_StartedSearching(object sender, EventArgs e)

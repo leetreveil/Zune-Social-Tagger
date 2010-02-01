@@ -23,7 +23,20 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get
             {
                 if (_applyUpdateCommand == null)
-                    _applyUpdateCommand = new RelayCommand(UpdateManager.Instance.ApplyUpdate);
+                    _applyUpdateCommand = new RelayCommand(() =>
+                           {
+                               Mouse.OverrideCursor = Cursors.Wait;
+
+                               try
+                               {
+                                   UpdateManager.Instance.ApplyUpdate();
+                               }
+                               catch (Exception)
+                               {
+                                   //TODO: log error that the update could not be applied
+                                   Mouse.OverrideCursor = null;
+                               }
+                           });
 
                 return _applyUpdateCommand;
             }

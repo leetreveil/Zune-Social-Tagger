@@ -5,9 +5,12 @@
     xmlns:viewModels="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels">
 
     <UserControl.Resources>
-        
-        
-        <DataTemplate DataType="{x:Type viewModels:SelectAudioFilesViewModel}">
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+                <ResourceDictionary>
+
+                    <DataTemplate DataType="{x:Type viewModels:SelectAudioFilesViewModel}">
             <views:SelectAudioFilesView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:SearchViewModel}">
@@ -20,53 +23,50 @@
             <views:DetailsView />
         </DataTemplate>
 
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="Padding" Value="3.5,0" />
-            <Setter Property="Margin" Value="3.5" />
-            <Setter Property="MinWidth" Value="80" />
-        </Style>
-        
-        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Padding" Value="3.5,0" />
+                        <Setter Property="Margin" Value="3.5" />
+                        <Setter Property="MinWidth" Value="80" />
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>     
     </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-						<RowDefinition Height="20" />
+			<RowDefinition Height="20" />
             <RowDefinition Height="*" />
-						<RowDefinition Height="20" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
-        <!--HEADER-->
-        <TextBlock Grid.Column="0" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" FontSize="26.667" Text="ZUNE SOCIAL TAGGER"/>
+        <StackPanel Orientation="Horizontal">
+            <!--HEADER-->
+            <TextBlock Grid.Column="0" FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" FontSize="26.667" Text="ZUNE SOCIAL TAGGER"/>
+            <Button Command="{Binding UpdateCommand}" Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource BoolToVisConverter}}" Margin="10,5,0,0" Style="{DynamicResource UpdateButton}" VerticalAlignment="Top" Content="NEW UPDATE AVAILABLE"/>
+        </StackPanel>
+
 
         <!--CONTENT-->
         <Border Grid.Row="2">
             <ContentControl Content="{Binding Path=CurrentPage}"/>
         </Border>
 		
-        <TextBlock Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource BoolToVis}}" Grid.Row="4" Foreground="Red" VerticalAlignment="Center" HorizontalAlignment="Center">
-             <Hyperlink Foreground="Red" TextDecorations="" NavigateUri="http://www.dogsonacid.com" RequestNavigate="Hyperlink_RequestNavigate">
-                A new update is available for Zune Social Tagger, click here to update now.
-            </Hyperlink>
-        </TextBlock>
-
-        
         <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Right">
             <Button
             Grid.Column="0"
             Grid.Row="0"
             Command="{Binding Path=MovePreviousCommand}"
             Content="{Binding BackButtonText}" 
-            Visibility="{Binding Path = IsBackButtonVisible,Converter={StaticResource BoolToVis}}"
+            Visibility="{Binding Path = IsBackButtonVisible,Converter={StaticResource BoolToVisConverter}}"
             />
             <Button
             Grid.Column="1"
             Grid.Row="0"
             Command="{Binding Path=MoveNextCommand}"
             Content="{Binding NextButtonText}"
-            Visibility="{Binding Path = IsNextButtonVisible,Converter={StaticResource BoolToVis}}"
+            Visibility="{Binding Path = IsNextButtonVisible,Converter={StaticResource BoolToVisConverter}}"
             />
         </StackPanel>
     </Grid>

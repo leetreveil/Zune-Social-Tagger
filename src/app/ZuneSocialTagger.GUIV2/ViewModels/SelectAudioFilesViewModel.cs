@@ -33,7 +33,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void SelectFiles()
         {
-            var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files |*.mp3;*.wma" };
+            var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files |*.mp3;*.wma" + "|All Files|*.*" };
+
+      
 
             if (ofd.ShowDialog() == DialogResult.OK)
                 ReadFiles(ofd.FileNames);
@@ -74,6 +76,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
+        /// <summary>
+        /// converts TrackNumber string into an int
+        /// </summary>
+        /// <returns></returns>
         private static Func<DetailRow, int> SortByTrackNumber()
         {
             return key =>

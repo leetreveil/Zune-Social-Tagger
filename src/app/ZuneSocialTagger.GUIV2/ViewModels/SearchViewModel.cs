@@ -11,15 +11,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             _model = model;
             this.SearchBarViewModel.StartedSearching += SearchBarViewModel_StartedSearching;
-
-            base.MoveNextClicked += new EventHandler(SearchViewModel_MoveNextClicked);
+            this.MoveNextClicked += SearchViewModel_MoveNextClicked;
         }
 
         void SearchViewModel_MoveNextClicked(object sender, EventArgs e)
         {
             _model.SearchBarViewModel.Search();
         }
-
 
         void SearchBarViewModel_StartedSearching(object sender, EventArgs e)
         {

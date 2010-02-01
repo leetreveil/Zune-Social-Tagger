@@ -10,9 +10,7 @@
     Icon="Assets/zuneicondark.ico">
     
     <Window.Resources>
-        <ResourceDictionary Source="Resources.xaml" >
-        	
-        </ResourceDictionary>
+        <ResourceDictionary Source="Resources.xaml" />
     </Window.Resources>
     
     <Grid>
@@ -29,7 +27,7 @@
     	<local:ZuneHeaderGradient/>
         
         <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Margin="0,0,40,0" Style="{DynamicResource AboutSettingsButton}" VerticalAlignment="Bottom" Content="ABOUT / SETTINGS" Click="AboutSettings_Click"/>
+            <Button Margin="0,0,30,0" Style="{DynamicResource AboutSettingsButton}" VerticalAlignment="Bottom" Content="ABOUT / SETTINGS" Click="AboutSettings_Click"/>
             <Button Margin="0,0,9,0" Style="{DynamicResource MinimizeButton}" VerticalAlignment="Bottom" Width="10" Height="2" Click="Minimize_Click"/>
             <Button ToolTip="Close" Width="10" Height="10" VerticalAlignment="Bottom" Grid.Column="1" Style="{StaticResource CloseButton}" Click="Close_Click" />
         </StackPanel>

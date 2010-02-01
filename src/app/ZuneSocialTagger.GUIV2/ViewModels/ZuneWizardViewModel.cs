@@ -5,15 +5,17 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Input;
-using System.Windows.Threading;
 using leetreveil.AutoUpdate.Framework;
-using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
+using ZuneSocialTagger.GUIV2.Properties;
 using ZuneSocialTagger.GUIV2.Views;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
+    /// <summary>
+    /// Orchestrates the moving between pages (wizard)
+    /// </summary>
     public class ZuneWizardViewModel : NotifyPropertyChangedImpl
     {
         private ZuneWizardPageViewModelBase _currentPage;
@@ -47,33 +49,39 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private void CheckForUpdates()
         {
             string updaterPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                                  Properties.Settings.Default.UpdateExeName);
+                                  Settings.Default.UpdateExeName);
 
-            if (Properties.Settings.Default.CheckForUpdates)
+            if (Settings.Default.CheckForUpdates)
             {
-                //do update checking stuff here
-                var updateManager = UpdateManager.Instance;
-
-                updateManager.UpdateExePath = updaterPath;
-                updateManager.AppFeedUrl = Properties.Settings.Default.UpdateFeedUrl;
-                updateManager.UpdateExe = Properties.Resources.socialtaggerupdater;
-                //always clean up at startup because we cant do it at the end
-                updateManager.CleanUp();
-
-                ThreadPool.QueueUserWorkItem(state =>
+                try
                 {
-                    if (updateManager.CheckForUpdate())
-                        this.UpdateAvailable = true;
-                });
+                    //do update checking stuff here
+                    var updateManager = UpdateManager.Instance;
 
+                    updateManager.UpdateExePath = updaterPath;
+                    updateManager.AppFeedUrl = Settings.Default.UpdateFeedUrl;
+                    updateManager.UpdateExe = Resources.socialtaggerupdater;
+
+                    //always clean up at startup because we cant do it at the end
+                    updateManager.CleanUp();
+
+                    ThreadPool.QueueUserWorkItem(state =>
+                                                     {
+                                                         if (updateManager.CheckForUpdate())
+                                                             this.UpdateAvailable = true;
+                                                     });
+                }
+                catch (Exception e)
+                {
+                    //TODO: log that we could not check for updates
+                }
             }
         }
 
         private void PageMoveNextOverride(object sender, EventArgs e)
         {
-            TryToMoveToNextPage();
+            this.CurrentPage = this.Pages[this.CurrentPageIndex + 1];
         }
-
 
         public bool UpdateAvailable
         {
@@ -86,6 +94,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     base.InvokePropertyChanged("UpdateAvailable");
                 }
 
+            }
+        }
+
+        private ICommand _updateCommand;
+        public ICommand UpdateCommand
+        {
+            get
+            {
+                if (_updateCommand == null)
+                {
+                    _updateCommand =
+                        new RelayCommand(
+                            () => new UpdateView(new UpdateViewModel(UpdateManager.Instance.NewUpdate.Version)).Show());
+                }
+
+                return _updateCommand;
             }
         }
 
@@ -129,7 +153,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 if (_moveNextCommand == null)
                     _moveNextCommand = new RelayCommand(
-                        () => this.TryToMoveToNextPage(),
+                        () => this.TellPageThatNextHasBeenClicked(),
                         () => this.IsNextButtonEnabled);
 
                 return _moveNextCommand;
@@ -151,70 +175,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return this.CurrentPage != null && this.CurrentPage.IsBackVisible(); }
         }
 
-        private void TryToMoveToNextPage()
+        private void TellPageThatNextHasBeenClicked()
         {
-            if (this.CurrentPageIndex < this.Pages.Count - 1)
-            {
-                this.CurrentPage.InvokeMoveNextClicked();
-                //if the current page allows us to move next
-                this.CurrentPage = this.Pages[this.CurrentPageIndex + 1];
-            }
-            else
-            {
-                //when we try to move to the next page and we are on the last one
-                //we want to run the save process
-                Save();
-            }
-        }
-
-        private void Save()
-        {
-            Mouse.OverrideCursor = Cursors.Wait;
-
-
-            var uaeExceptions = new List<UnauthorizedAccessException>();
-
-            foreach (var row in _sharedModel.Rows)
-            {
-                try
-                {
-                    var container = row.Container;
-
-                    if (row.SelectedSong.HasAllZuneIds)
-                    {
-                        container.RemoveZuneAttribute("WM/WMContentID");
-                        container.RemoveZuneAttribute("WM/WMCollectionID");
-                        container.RemoveZuneAttribute("WM/WMCollectionGroupID");
-                        container.RemoveZuneAttribute("ZuneCollectionID");
-                        container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
-
-                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, row.SelectedSong.AlbumMediaID));
-                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, row.SelectedSong.ArtistMediaID));
-                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, row.SelectedSong.MediaID));
-
-                        if (Properties.Settings.Default.UpdateAlbumInfo)
-                            container.AddMetaData(row.SelectedSong.MetaData);
-
-                        //TODO: convert TrackNumbers that are imported as 1/1 to just 1 or 1/12 to just 1
-                        container.WriteToFile(row.FilePath);
-                    }
-
-                    //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
-                }
-                catch (UnauthorizedAccessException uae)
-                {
-                    uaeExceptions.Add(uae);
-                    //TODO: better error handling
-                }
-            }
-
-            if (uaeExceptions.Count > 0)
-                //usually occurs when a file is readonly
-                ErrorMessageBox.Show("One or more files could not be written to. Have you checked the files are not marked read-only?");
-            else
-                new SuccessView(new SuccessViewModel(_sharedModel)).Show();
-
-            Mouse.OverrideCursor = null;
+            this.CurrentPage.InvokeMoveNextClicked();
         }
 
         /// <summary>

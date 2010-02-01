@@ -18,7 +18,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public ObservableCollection<Album> SearchResults { get; set; }
         public event EventHandler StartedSearching;
-        public event EventHandler FinishedSearching;
 
         public SearchBarViewModel()
         {
@@ -30,9 +29,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return _searchText; }
             set
             {
-                _searchText = value;
-                CanSearch = !String.IsNullOrEmpty(_searchText);
-                base.InvokePropertyChanged("SearchText");
+                if (value != _searchText)
+                {
+                    _searchText = value;
+                    CanSearch = !String.IsNullOrEmpty(_searchText);
+                    base.InvokePropertyChanged("SearchText");
+                }
             }
         }
 
@@ -68,11 +70,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get
             {
                 if (_searchCommand == null)
-                    _searchCommand = new RelayCommand<string>(searchStr =>
-                                                                  {
-                                                                      InvokeStartedSearching();
-                                                                      SearchFor(searchStr);
-                                                                  });
+                    _searchCommand = new RelayCommand<string>(searchStr => Search());
 
                 return _searchCommand;
             }
@@ -83,8 +81,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         /// </summary>
         public void Search()
         {
-            if (!String.IsNullOrEmpty(SearchText))
-                SearchFor(SearchText);
+            InvokeStartedSearching();
+            SearchFor(SearchText);
         }
 
         private void SearchFor(string searchString)
@@ -104,20 +102,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                          this.IsSearching = false;
                      }));
                  });
-
-
-            InvokeFinishedSearching();
         }
 
         private void InvokeStartedSearching()
         {
             EventHandler searching = StartedSearching;
-            if (searching != null) searching(this, new EventArgs());
-        }
-
-        private void InvokeFinishedSearching()
-        {
-            EventHandler searching = FinishedSearching;
             if (searching != null) searching(this, new EventArgs());
         }
     }

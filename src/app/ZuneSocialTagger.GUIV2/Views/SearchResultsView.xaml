@@ -19,14 +19,14 @@
     </UserControl.Triggers>
 
     <Border x:Name="LayoutRoot">
-		<Grid Height="300">
+		<Grid Height="350">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition/>
 				<ColumnDefinition/>
 			</Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" MinHeight="84" />
-				<RowDefinition Height="40"/>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="20"/>
 				<RowDefinition  />
 			</Grid.RowDefinitions>
 			
