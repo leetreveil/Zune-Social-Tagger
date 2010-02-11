@@ -1,4 +1,10 @@
-﻿namespace ZuneSocialTagger.GUIV2.ViewModels
+﻿using System;
+using System.IO;
+using System.Windows;
+using System.Windows.Media.Imaging;
+using System.Windows.Controls;
+
+namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class WebsiteAlbumMetaDataViewModel
     {
@@ -7,7 +13,6 @@
         private string _artist;
         private string _title;
         private string _year;
-
 
         public string Year
         {
@@ -21,13 +26,11 @@
             set { _title = value; }
         }
 
-
         public string Artist
         {
             get { return string.IsNullOrEmpty(_artist) ? "Unknown Artist" : _artist; }
             set { _artist = value; }
         }
-
 
         public string SongCount
         {
@@ -39,6 +42,21 @@
         {
             get { return _artworkUrl ?? @"../Assets/blankartwork.png"; }
             set { _artworkUrl = value; }
+        }
+
+        public void CopyArtworkToClipboard()
+        {
+            //TODO: find a better way to copy the artwork, this is very very smelly
+
+            //image.UriSource = new Uri("pack://application:,,,/Assets/blankartwork.png");
+            var image = new BitmapImage();
+
+            image.BeginInit();
+            image.UriSource = new Uri(this.ArtworkUrl);
+            image.EndInit();
+
+            if (ArtworkUrl != @"../Assets/blankartwork.png")
+                Clipboard.SetImage(image);
         }
     }
 }

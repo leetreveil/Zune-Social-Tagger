@@ -2,54 +2,44 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Threading;
+using Caliburn.PresentationFramework.Screens;
 
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SearchResultsViewModel : ZuneWizardPageViewModelBase
+    public class SearchResultsViewModel : Screen
     {
-        private readonly ZuneWizardModel _model;
+        private readonly IUnityContainer _container;
+        private readonly IZuneWizardModel _model;
         private bool _isLoading;
-        private SearchResultsDetailsViewModel _searchResultsDetailsViewModel;
+        private bool _canMoveNext;
+        private SearchResultsDetailViewModel _searchResultsDetailViewModel;
 
-        public SearchResultsViewModel(ZuneWizardModel model)
+        public SearchResultsViewModel(IUnityContainer container, IZuneWizardModel model)
         {
+            _container = container;
             _model = model;
-            this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel();
-            this.SearchBarViewModel.StartedSearching += SearchBarViewModel_StartedSearching;
-            this.MoveNextClicked += SearchResultsViewModel_MoveNextClicked;
+            this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
         }
 
-        void SearchResultsViewModel_MoveNextClicked(object sender, EventArgs e)
-        {
-           base.OnMoveNextOverride();
-        }
-
-        private void SearchBarViewModel_StartedSearching(object sender, EventArgs e)
-        {
-            if (base.IsCurrentPage)
-                this.SearchResultsDetailsViewModel = null;
-        }
 
         public ObservableCollection<Album> Albums
         {
             get { return this.SearchBarViewModel.SearchResults; }
         }
 
-        public SearchResultsDetailsViewModel SearchResultsDetailsViewModel
+        public SearchResultsDetailViewModel SearchResultsDetailViewModel
         {
-            get { return _searchResultsDetailsViewModel; }
+            get { return _searchResultsDetailViewModel; }
             set
             {
-                if (value != _searchResultsDetailsViewModel)
-                {
-                    _searchResultsDetailsViewModel = value;
-                    base.InvokePropertyChanged("SearchResultsDetailsViewModel");
-                }
+                    _searchResultsDetailViewModel = value;
+                   NotifyOfPropertyChange(() => SearchResultsDetailViewModel);
             }
         }
 
@@ -73,44 +63,49 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return _isLoading; }
             set
             {
-                if (value != _isLoading)
-                {
-                    _isLoading = value;
-                    base.InvokePropertyChanged("IsLoading");
-                }
+                _isLoading = value;
+                NotifyOfPropertyChange(() => IsLoading);
             }
         }
 
-        public void LoadAlbum(string url)
+        public void MoveBack()
+        {
+            _model.CurrentPage = _container.Resolve<SearchViewModel>();
+        }
+
+        public void MoveNext()
+        {
+            _model.CurrentPage = _container.Resolve<DetailsViewModel>();
+        }
+
+        public void LoadAlbum(Album album)
         {
             this.IsLoading = true;
+
+            if (album == null) return;
+
+            string fullUrlToAlbumXmlDetails = String.Concat(Urls.Album, album.AlbumMediaID);
 
             ThreadPool.QueueUserWorkItem(_ =>
              {
                  try
                  {
-                     var reader = new AlbumDocumentReader(url);
+                     var reader = new AlbumDocumentReader(fullUrlToAlbumXmlDetails);
 
                      IEnumerable<Track> tracks = reader.Read();
 
-                     //do updating of controls on bound ui objects on UI thread
-                     base.UIDispatcher.Invoke(new Action(() =>
-                                                             {
-
-                                                                 UpdateAlbumMetaDataViewModel(tracks);
-                                                                 AddSelectedSongs(tracks);
-                                                             }));
+                     UpdateAlbumMetaDataViewModel(tracks);
+                     AddSelectedSongs(tracks);
 
 
                      this.IsLoading = false;
                  }
                  catch (Exception)
                  {
-                     this.SearchResultsDetailsViewModel.SelectedAlbumTitle =
-                            "Sorry could not get album details";
+                     this.SearchResultsDetailViewModel.SelectedAlbumTitle =
+                            "Could not get album details";
                  }
              });
-
 
         }
 
@@ -130,21 +125,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void AddSelectedSongs(IEnumerable<Track> tracks)
         {
-            this.SearchResultsDetailsViewModel = new SearchResultsDetailsViewModel { SelectedAlbumTitle = tracks.First().MetaData.AlbumName };
+            this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel { SelectedAlbumTitle = tracks.First().MetaData.AlbumName };
 
             foreach (var track in tracks)
-                this.SearchResultsDetailsViewModel.SelectedAlbumSongs.Add(track);
+                this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(track);
 
             foreach (var row in _model.Rows)
             {
-                row.SongsFromWebsite = this.SearchResultsDetailsViewModel.SelectedAlbumSongs;
+                row.SongsFromWebsite = this.SearchResultsDetailViewModel.SelectedAlbumSongs;
                 row.Tracks = tracks;
             }
-        }
-
-        internal override bool IsNextEnabled()
-        {
-            return true;
         }
     }
 }

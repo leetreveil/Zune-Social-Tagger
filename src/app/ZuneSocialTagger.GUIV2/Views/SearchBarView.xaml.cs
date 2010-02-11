@@ -3,11 +3,11 @@
 namespace ZuneSocialTagger.GUIV2.Views
 {
     /// <summary>
-    /// Interaction logic for SearchView.xaml
+    /// Interaction logic for SearchBarView.xaml
     /// </summary>
-    public partial class SearchView : UserControl
+    public partial class SearchBarView : UserControl
     {
-        public SearchView()
+        public SearchBarView()
         {
             this.InitializeComponent();
         }

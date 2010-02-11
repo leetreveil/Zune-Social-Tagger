@@ -1,6 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
+﻿using System.Windows.Controls;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -12,17 +10,6 @@ namespace ZuneSocialTagger.GUIV2.Views
         public WebsiteAlbumMetaDataView()
         {
             InitializeComponent();
-        }
-
-        private void MenuItem_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            Clipboard.SetImage((BitmapSource) this.ArtworkImage.Source);
-        }
-
-        private void ArtworkImage_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            RightClickMenu.PlacementTarget = this;
-            RightClickMenu.IsOpen = true;
         }
     }
 }

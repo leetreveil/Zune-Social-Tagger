@@ -1,10 +1,15 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using Caliburn.PresentationFramework.Screens;
 using ZuneSocialTagger.GUIV2.ViewModels;
+using Caliburn.Core;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
-    public class ZuneWizardModel
+    public class ZuneWizardModel : PropertyChangedBase, IZuneWizardModel
     {
+        private Screen _currentPage;
+
         public ZuneWizardModel()
         {
             this.SearchBarViewModel = new SearchBarViewModel();
@@ -17,5 +22,15 @@ namespace ZuneSocialTagger.GUIV2.Models
         public WebsiteAlbumMetaDataViewModel AlbumDetailsFromWebsite { get; set; }
         public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile { get; set; }
         public ObservableCollection<DetailRow> Rows { get; set; }
+
+        public Screen CurrentPage
+        {
+            get { return _currentPage; }
+            set
+            {
+                _currentPage = value;
+                NotifyOfPropertyChange(() => CurrentPage);
+            }
+        }
     }
 }

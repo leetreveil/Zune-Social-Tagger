@@ -1,14 +1,13 @@
 using System;
 using System.Windows.Input;
-using ZuneSocialTagger.GUIV2.Commands;
+using Caliburn.PresentationFramework.Screens;
 using leetreveil.AutoUpdate.Framework;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class UpdateViewModel : ViewModelBase
+    public class UpdateViewModel : Screen
     {
         private readonly Version _versionAvailable;
-        private RelayCommand _applyUpdateCommand;
 
         public UpdateViewModel(Version versionAvailable)
         {
@@ -17,29 +16,21 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public string Version { get { return _versionAvailable.ToString(); } }
 
-
-        public ICommand ApplyUpdateCommand
+        public void ApplyUpdate()
         {
-            get
+            Mouse.OverrideCursor = Cursors.Wait;
+
+            try
             {
-                if (_applyUpdateCommand == null)
-                    _applyUpdateCommand = new RelayCommand(() =>
-                           {
-                               Mouse.OverrideCursor = Cursors.Wait;
-
-                               try
-                               {
-                                   UpdateManager.Instance.ApplyUpdate();
-                               }
-                               catch (Exception)
-                               {
-                                   //TODO: log error that the update could not be applied
-                                   Mouse.OverrideCursor = null;
-                               }
-                           });
-
-                return _applyUpdateCommand;
+                UpdateManager.Instance.ApplyUpdate();
+            }
+            catch (Exception)
+            {
+                //TODO: log error that the update could not be applied
+                Mouse.OverrideCursor = null;
             }
         }
     }
+
+
 }

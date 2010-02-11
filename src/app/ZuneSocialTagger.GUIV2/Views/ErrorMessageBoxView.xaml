@@ -21,7 +21,7 @@
         
         <!--HEADER-->
         <StackPanel Grid.Row="0">
-            <local:ZuneHeaderGradient/>
+            <Control Template="{DynamicResource Gradient}"/>
             <TextBlock  FontSize="26.667" Text="ERROR"/>
         </StackPanel>
         

@@ -1,30 +1,28 @@
 using System;
+using Microsoft.Practices.Unity;
 using ZuneSocialTagger.GUIV2.Models;
+using Caliburn.PresentationFramework.Screens;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SearchViewModel : ZuneWizardPageViewModelBase
+    public class SearchViewModel : Screen
     {
-        private readonly ZuneWizardModel _model;
+        private readonly IUnityContainer _container;
+        private readonly IZuneWizardModel _model;
 
-        public SearchViewModel(ZuneWizardModel model)
+        public SearchViewModel(IUnityContainer container, IZuneWizardModel model)
         {
+            _container = container;
             _model = model;
-            this.SearchBarViewModel.StartedSearching += SearchBarViewModel_StartedSearching;
-            this.MoveNextClicked += SearchViewModel_MoveNextClicked;
-        }
-
-        void SearchViewModel_MoveNextClicked(object sender, EventArgs e)
-        {
-            _model.SearchBarViewModel.Search();
+            this.SearchBar.StartedSearching += SearchBarViewModel_StartedSearching;
         }
 
         void SearchBarViewModel_StartedSearching(object sender, EventArgs e)
         {
             //we only want to move to the next page if we are on the current one
             //this prevents moving to another page when this page is not 'visible'
-            if (base.IsCurrentPage)
-                base.OnMoveNextOverride();
+
+            _model.CurrentPage = _container.Resolve<SearchResultsViewModel>();
         }
 
         public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
@@ -32,19 +30,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return _model.AlbumDetailsFromFile; }
         }
 
-        public SearchBarViewModel SearchBarViewModel
+        public SearchBarViewModel SearchBar
         {
             get { return _model.SearchBarViewModel; }
         }
 
-        internal override string NextButtonText
+        public void Search()
         {
-            get { return "Search"; }
-        }
-
-        internal override bool IsNextEnabled()
-        {
-            return _model.SearchBarViewModel.CanSearch;
+            this.SearchBar.Search();
         }
     }
 }

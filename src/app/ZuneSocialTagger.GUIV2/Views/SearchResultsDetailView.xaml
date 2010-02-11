@@ -13,13 +13,14 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Margin="3">
                         <TextBlock Width="23" Text="{Binding MetaData.TrackNumber}" VerticalAlignment="Center" FontSize="18"/>
-                        <TextBlock Text="{Binding MetaData.Title}" VerticalAlignment="Center" FontSize="13.333" Margin="10,0,0,0"/>
+                        <TextBlock ToolTip="{Binding MetaData.Title}" Text="{Binding MetaData.Title}" VerticalAlignment="Center" FontSize="13.333" Margin="10,0,0,0"/>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.Template>
                 <ControlTemplate>
-                    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" x:Name="ScrollViewer" Padding="{TemplateBinding Padding}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" x:Name="ScrollViewer" 
+                                  Padding="{TemplateBinding Padding}">
                         <ItemsPresenter />
                     </ScrollViewer>
                 </ControlTemplate>

@@ -4,9 +4,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SuccessViewModel
     {
-        private readonly ZuneWizardModel _model;
+        private readonly IZuneWizardModel _model;
 
-        public SuccessViewModel(ZuneWizardModel model)
+        public SuccessViewModel(IZuneWizardModel model)
         {
             _model = model;
         }

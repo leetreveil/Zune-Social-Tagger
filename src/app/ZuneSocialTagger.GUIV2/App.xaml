@@ -1,8 +1,9 @@
-﻿<Application
+﻿<am:CaliburnApplication
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:am="clr-namespace:Caliburn.PresentationFramework.ApplicationModel;assembly=Caliburn.PresentationFramework"
     x:Class="ZuneSocialTagger.GUIV2.App"
-    mc:Ignorable="d" StartupUri="ZuneWizardDialog.xaml">
-</Application>
+    mc:Ignorable="d" >
+</am:CaliburnApplication>

@@ -2,40 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
-using System.Windows.Input;
+using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core;
-using ZuneSocialTagger.GUIV2.Commands;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
+using Screen = Caliburn.PresentationFramework.Screens.Screen;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SelectAudioFilesViewModel : ZuneWizardPageViewModelBase
+    public class SelectAudioFilesViewModel : Screen
     {
-        private readonly ZuneWizardModel _model;
-        private RelayCommand _fromFilesCommand;
+        private readonly IUnityContainer _container;
+        private readonly IZuneWizardModel _model;
 
-        public SelectAudioFilesViewModel(ZuneWizardModel model)
+        public SelectAudioFilesViewModel(IUnityContainer container, IZuneWizardModel model)
         {
+            _container = container;
             _model = model;
         }
 
-        public ICommand FromFilesCommand
-        {
-            get
-            {
-                if (_fromFilesCommand == null)
-                    _fromFilesCommand = new RelayCommand(SelectFiles);
-
-                return _fromFilesCommand;
-            }
-        }
-
-        private void SelectFiles()
+        public void SelectFiles()
         {
             var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files |*.mp3;*.wma" + "|All Files|*.*" };
-
-      
 
             if (ofd.ShowDialog() == DialogResult.OK)
                 ReadFiles(ofd.FileNames);
@@ -45,8 +33,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             _model.Rows = new ObservableCollection<DetailRow>();
 
-
-            //TODO: need to sort by track no after loading
             try
             {
                 foreach (var filePath in files)
@@ -68,7 +54,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 //takes the first track read from the model and updates the metadata view
                 SetAlbumDetailsFromFile(_model.Rows.Count, _model.Rows.First().MetaData);
 
-                base.OnMoveNextOverride();
+                _model.CurrentPage = _container.Resolve<SearchViewModel>();
             }
             catch (Exception id3TagException)
             {
@@ -111,21 +97,5 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _model.SearchBarViewModel.SearchText = songMetaData.AlbumName + " " +
                                                    _model.AlbumDetailsFromFile.Artist;
         }
-
-        internal override bool IsNextEnabled()
-        {
-            return false;
-        }
-
-        internal override bool IsNextVisible()
-        {
-            return false;
-        }
-
-        internal override bool IsBackVisible()
-        {
-            return false;
-        }
-
     }
 }

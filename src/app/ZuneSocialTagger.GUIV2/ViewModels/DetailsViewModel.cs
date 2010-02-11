@@ -2,26 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.Models;
+using Caliburn.PresentationFramework.Screens;
 using ZuneSocialTagger.GUIV2.Views;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    class DetailsViewModel : ZuneWizardPageViewModelBase
+    class DetailsViewModel : Screen
     {
-        private readonly ZuneWizardModel _model;
+        private readonly IUnityContainer _container;
+        private readonly IZuneWizardModel _model;
 
-        public DetailsViewModel(ZuneWizardModel model)
+        public DetailsViewModel(IUnityContainer container, IZuneWizardModel model)
         {
+            _container = container;
             _model = model;
-
-            base.MoveNextClicked += DetailsViewModel_MoveNextClicked;
         }
 
-        private void DetailsViewModel_MoveNextClicked(object sender, EventArgs e)
+        public void Save()
         {
- 
             Mouse.OverrideCursor = Cursors.Wait;
 
             var uaeExceptions = new List<UnauthorizedAccessException>();
@@ -69,6 +70,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             Mouse.OverrideCursor = null;
         }
 
+        public void MoveBack()
+        {
+            _model.CurrentPage = _container.Resolve<SearchResultsViewModel>();
+        }
+
         public ObservableCollection<DetailRow> Rows 
         {
             get { return _model.Rows; }
@@ -82,19 +88,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
         {
             get { return _model.AlbumDetailsFromFile; }
-        }
-
-        internal override bool IsNextEnabled()
-        {
-            return true;
-        }
-
-        internal override string NextButtonText
-        {
-            get
-            {
-                return "Save";
-            }
         }
 
         public bool UpdateAlbumInfo

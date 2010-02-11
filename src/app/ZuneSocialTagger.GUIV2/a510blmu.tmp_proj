@@ -37,61 +37,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Core, Version=1.1.0.38293, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\caliburn\Caliburn.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Caliburn.PresentationFramework, Version=1.1.0.38293, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\caliburn\Caliburn.PresentationFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="leetreveil.AutoUpdate.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\leetreveil.AutoUpdate\leetreveil.AutoUpdate.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ObjectBuilder2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\unity\Microsoft.Practices.ObjectBuilder2.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\unity\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationFramework.Aero">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UIAutomationProvider">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="PresentationCore">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="PresentationFramework">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -163,6 +110,9 @@
     <Compile Include="Views\WebsiteAlbumMetaDataView.xaml.cs">
       <DependentUpon>WebsiteAlbumMetaDataView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ZuneHeaderGradient.xaml.cs">
+      <DependentUpon>ZuneHeaderGradient.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -219,65 +169,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\blankartwork.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\magnifyingglass.png" />
-    <Resource Include="Assets\magnifyingglassblack.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ApplicationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ErrorMessageBoxView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SearchBarView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\AboutView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DetailsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\SearchResultsDetailView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SearchResultsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\SearchView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\SelectAudioFilesView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\SuccessView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UpdateView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WebsiteAlbumMetaDataView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZuneSocialTagger.Core\ZuneSocialTagger.Core.csproj">
@@ -286,13 +181,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\arrow.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\zuneicondark.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\error.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\socialtaggerupdater.exe" />
@@ -308,4 +200,42 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ReferencePath Include="..\..\..\libs\caliburn\Caliburn.Core.dll" />
+    <ReferencePath Include="..\..\..\libs\caliburn\Caliburn.PresentationFramework.dll" />
+    <ReferencePath Include="..\..\..\libs\leetreveil.AutoUpdate\leetreveil.AutoUpdate.Framework.dll" />
+    <ReferencePath Include="..\..\..\libs\unity\Microsoft.Practices.ObjectBuilder2.dll" />
+    <ReferencePath Include="..\..\..\libs\unity\Microsoft.Practices.Unity.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.0\PresentationCore.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.0\PresentationFramework.Aero.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.0\PresentationFramework.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.5\System.Core.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.5\System.Data.DataSetExtensions.dll" />
+    <ReferencePath Include="C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Data.dll" />
+    <ReferencePath Include="C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.dll" />
+    <ReferencePath Include="C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Drawing.dll" />
+    <ReferencePath Include="C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Windows.Forms.dll" />
+    <ReferencePath Include="C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Xml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.5\System.Xml.Linq.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.0\UIAutomationProvider.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.0\WindowsBase.dll" />
+    <ReferencePath Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.Core\bin\Debug\ZuneSocialTagger.Core.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\ApplicationView.g.cs" />
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\Views\ErrorMessageBoxView.g.cs" />
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\Views\SearchBarView.g.cs" />
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\Views\AboutView.g.cs" />
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\Views\DetailsView.g.cs" />
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\Views\SearchResultsDetailView.g.cs" />
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\Views\SearchResultsView.g.cs" />
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\Views\SearchView.g.cs" />
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\Views\SelectAudioFilesView.g.cs" />
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\Views\SuccessView.g.cs" />
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\Views\UpdateView.g.cs" />
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\Views\WebsiteAlbumMetaDataView.g.cs" />
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\ZuneHeaderGradient.g.cs" />
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\App.g.cs" />
+    <Compile Include="C:\Users\Lee\Desktop\My Dropbox\Zune Social Tagger\src\app\ZuneSocialTagger.GUIV2\obj\Debug\GeneratedInternalTypeHelper.g.cs" />
+  </ItemGroup>
 </Project>

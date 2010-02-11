@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
 
         <!--HEADER-->
-        <local:ZuneHeaderGradient/>
+        <Control Template="{DynamicResource Gradient}"/>
         <TextBlock VerticalAlignment="Top" Grid.Row="1" FontSize="26.667" Text="UPDATE AVAILABLE"/>
 
         <TextBlock Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap">A new update is available for Zune Social Tagger, it is strongly reccomended that you update now.</TextBlock>
