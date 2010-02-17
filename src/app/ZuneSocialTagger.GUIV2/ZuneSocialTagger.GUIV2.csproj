@@ -108,6 +108,9 @@
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Models\Album.cs" />
     <Compile Include="Models\AlbumDocumentReader.cs" />
+    <Compile Include="Models\AlbumItemProvider.cs" />
+    <Compile Include="Models\IItemsProvider.cs" />
+    <Compile Include="Models\VirtualizingCollection.cs" />
     <Compile Include="Models\DetailRow.cs" />
     <Compile Include="Models\IZuneWizardModel.cs" />
     <Compile Include="Models\AlbumMetaData.cs" />
@@ -175,11 +178,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <BlendEmbeddedFont Include="Assets\Fonts\ZegoeCapsBold.ttf">
+    <Resource Include="Assets\Fonts\ZegoeCapsBold.ttf">
       <All>True</All>
       <AutoFill>True</AutoFill>
-    </BlendEmbeddedFont>
-    <BlendEmbeddedFont Include="Assets\Fonts\ZegoeLight-U.ttf">
+    </Resource>
+    <Resource Include="Assets\Fonts\ZegoeLight-U.ttf">
       <All>True</All>
       <AutoFill>True</AutoFill>
       <Characters>
@@ -188,7 +191,7 @@
       <Lowercase>True</Lowercase>
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
+    </Resource>
     <Resource Include="Assets\Fonts\ZegoeUI-U.ttf">
       <All>True</All>
       <AutoFill>True</AutoFill>
@@ -199,7 +202,7 @@
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
     </Resource>
-    <BlendEmbeddedFont Include="Assets\Fonts\ZegoeUI-UBold.ttf">
+    <Resource Include="Assets\Fonts\ZegoeUI-UBold.ttf">
       <All>True</All>
       <AutoFill>True</AutoFill>
       <Characters>
@@ -208,8 +211,8 @@
       <Lowercase>True</Lowercase>
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
-    <BlendEmbeddedFont Include="Assets\Fonts\ZegoeUISemiBold-U.ttf">
+    </Resource>
+    <Resource Include="Assets\Fonts\ZegoeUISemiBold-U.ttf">
       <All>True</All>
       <AutoFill>True</AutoFill>
       <Characters>
@@ -218,7 +221,7 @@
       <Lowercase>True</Lowercase>
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
+    </Resource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

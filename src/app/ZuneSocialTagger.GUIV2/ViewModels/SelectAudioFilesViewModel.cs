@@ -26,7 +26,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private int _downloadProgress;
         private bool _sortOrder;
 
-        public BindableCollection<Album> Albums { get; set; }
+        public VirtualizingCollection<Album> VirtualAlbums { get; set; }
+        private List<Album> Albums { get; set; }
 
         public int DownloadProgress
         {
@@ -43,86 +44,104 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _container = container;
             _model = model;
 
-            this.Albums = new BindableCollection<Album>();
+            this.Albums = new List<Album>();
+
             this.DownloadProgress = 0;
 
             _sortOrder = false;
 
-            this.SelectFiles();
+            this.LoadAlbumsFromZuneDatabase();
+
+
+            var provider = new AlbumItemProvider(this.Albums);
+
+            this.VirtualAlbums = new VirtualizingCollection<Album>(provider, 10);
+
 
             //TODO: remove all zune fonts, default is close enough anyway
         }
 
         public void LoadFromZuneWebsite()
         {
-            ThreadPool.QueueUserWorkItem(_ =>
-                                             {
-                                                 int current = 0;
+            #region Old Code
 
-                                                 foreach (var album in Albums)
-                                                 {
-                                                     string fullUrlToAlbumXmlDetails =
-                                                         String.Concat(
-                                                                          "http://catalog.zune.net/v3.0/en-US/music/album/",
-                                                                          album.AlbumMediaId);
+            //ThreadPool.QueueUserWorkItem(_ =>
+            //     {
+            //         int current = 0;
 
-                                                     //do not attempt to load albums that are not linked
-                                                     if (album.IsLinked)
-                                                     {
-                                                         try
-                                                         {
-                                                             var reader = new AlbumDocumentReader();
+            //         foreach (var album in Albums)
+            //         {
+            //             string fullUrlToAlbumXmlDetails =
+            //                 String.Concat(
+            //                                  "http://catalog.zune.net/v3.0/en-US/music/album/",
+            //                                  album.AlbumMediaId);
 
-                                                             bool initialized =
-                                                                 reader.Initialize(fullUrlToAlbumXmlDetails);
 
-                                                             if (initialized)
-                                                                 album.WebAlbumMetaData = reader.Read();
-                                                         }
-                                                         catch (Exception)
-                                                         {
-                                                             Debug.WriteLine("Could not get album details");
-                                                         }
-                                                     }
+            //             //TODO: figure out how to only download images /album when the view displays them, i.e. a virtual view
 
-                                                     current++;
+            //             //do not attempt to load albums that are not linked
+            //             if (album.IsLinked)
+            //             {
+            //                 try
+            //                 {
+            //                     var reader = new AlbumDocumentReader();
 
-                                                     int progressPercent =
-                                                         (int) (((double) current/this.Albums.Count)*100);
-                                                     this.DownloadProgress = progressPercent;
-                                                 }
-                                             });
+            //                     if (reader.Initialize(fullUrlToAlbumXmlDetails))
+            //                     {
+            //                         Album closedAlbum = album;
+
+            //                         reader.DownloadCompleted +=
+            //                             dledAlbum =>
+            //                             {
+            //                                 current++;
+
+            //                                 closedAlbum.WebAlbumMetaData = dledAlbum;
+
+            //                                 int progressPercent =
+            //                                        (int)(((double)current / this.Albums.Count) * 100);
+            //                                 this.DownloadProgress = progressPercent;
+            //                             };
+            //                     }
+
+            //                 }
+            //                 catch (Exception)
+            //                 {
+            //                     Debug.WriteLine("Could not get album details");
+            //                 }
+            //             }
+
+
+            //         }
+            //     });
+
+            #endregion
         }
 
-        public void SelectFiles()
+        public void LoadAlbumsFromZuneDatabase()
         {
             //load in albums from zune database
             //for testing we are going to use a xml doc
 
+            //ThreadPool.QueueUserWorkItem(_ =>
+            //     {
+                     var xmlSerializer =
+                         new XmlSerializer(typeof (BindableCollection<Album>));
 
-            ThreadPool.QueueUserWorkItem(_ =>
-                                             {
-                                                 var xmlSerializer =
-                                                     new XmlSerializer(typeof (BindableCollection<Album>));
+                     var deserializedAlbums = (BindableCollection<Album>) 
+                         xmlSerializer.Deserialize(XmlReader.Create(
+                            new FileStream("zunedatabasecache.xml",FileMode.Open)));
 
-                                                 var deserializedAlbums = (BindableCollection<Album>)
-                                                                          xmlSerializer.Deserialize(
-                                                                                                       XmlReader.Create(
-                                                                                                                           new FileStream
-                                                                                                                               ("zunedatabasecache.xml",
-                                                                                                                                FileMode
-                                                                                                                                    .
-                                                                                                                                    Open)));
+                     List<Album> sortedAlbums =
+                         deserializedAlbums.OrderBy(x => !x.IsLinked).ToList();
 
+                     foreach (var album in sortedAlbums)
+                         this.Albums.Add(album);
+                 //});
+        }
 
-                                                 List<Album> sortedAlbums =
-                                                     deserializedAlbums.OrderBy(x => !x.IsLinked).ToList();
-
-                                                 foreach (var album in sortedAlbums)
-                                                 {
-                                                     this.Albums.Add(album);
-                                                 }
-                                             });
+        public void LinkAlbum(Album album)
+        {
+            _model.CurrentPage = _container.Resolve<SearchViewModel>();
         }
 
         public void Sort(string header)
@@ -133,7 +152,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 sortedAlbums = SortByLinkStatus(x => x.ZuneAlbumMetaData.AlbumTitle);
 
             if (header == "Linked To")
-                sortedAlbums = SortByLinkStatus(x=> !x.IsLinked);
+                sortedAlbums = SortByLinkStatus(x => !x.IsLinked);
 
             _sortOrder = !_sortOrder;
 
@@ -145,7 +164,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        private List<Album> SortByLinkStatus<T>(Func<Album,T> selector)
+        private List<Album> SortByLinkStatus<T>(Func<Album, T> selector)
         {
             List<Album> sortedAlbums = _sortOrder
                                            ? this.Albums.OrderBy(selector).ToList()

@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Views
@@ -23,6 +24,11 @@ namespace ZuneSocialTagger.GUIV2.Views
             var header = (GridViewColumnHeader) e.OriginalSource;
 
             _model.Sort((string) header.Column.Header);
+        }
+
+        private void LinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            _model.LinkAlbum((Album) lvAlbums.SelectedItem);
         }
 
     }

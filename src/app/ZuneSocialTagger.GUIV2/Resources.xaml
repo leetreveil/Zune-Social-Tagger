@@ -13,7 +13,11 @@
     <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
 
     <Storyboard x:Key="LoadingAnim">
-        <StringAnimationUsingKeyFrames RepeatBehavior="Forever" BeginTime="00:00:00" Storyboard.TargetName="tbLoading" Storyboard.TargetProperty="(TextBlock.Text)">
+        <StringAnimationUsingKeyFrames RepeatBehavior="Forever" 
+                                       BeginTime="00:00:00" 
+                                       Storyboard.TargetName="tbLoading" 
+                                       Storyboard.TargetProperty="(TextBlock.Text)">
+            
             <DiscreteStringKeyFrame KeyTime="00:00:00" Value="Loading"/>
             <DiscreteStringKeyFrame KeyTime="00:00:00.2000000" Value="Loading."/>
             <DiscreteStringKeyFrame KeyTime="00:00:00.4000000" Value="Loading.."/>
@@ -23,7 +27,7 @@
 
     <Storyboard x:Key="SearchingAnim">
         <StringAnimationUsingKeyFrames RepeatBehavior="Forever" BeginTime="00:00:00" 
-                                           Storyboard.TargetName="tbSearching" Storyboard.TargetProperty="(TextBlock.Text)">
+               Storyboard.TargetName="tbSearching" Storyboard.TargetProperty="(TextBlock.Text)">
             <DiscreteStringKeyFrame KeyTime="00:00:00" Value="Searching"/>
             <DiscreteStringKeyFrame KeyTime="00:00:00.2000000" Value="Searching."/>
             <DiscreteStringKeyFrame KeyTime="00:00:00.4000000" Value="Searching.."/>
@@ -80,7 +84,6 @@
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="btnImage" Property="Source" Value="Assets/magnifyingglassblack.png"/>
                         </Trigger>
-                        <!--<Trigger Property="IsEnabled" Value="False"/>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -158,7 +161,6 @@
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
-		<Setter Property="FontFamily" Value="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U"/>
 		<Setter Property="FontSize" Value="10"/>
 		<Setter Property="Foreground" Value="#FFA2ABAA"/>
 	</Style>
@@ -187,7 +189,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="FontFamily" Value="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U"/>
         <Setter Property="FontSize" Value="10"/>
         <Setter Property="Foreground" Value="#FFA2ABAA"/>
     </Style>

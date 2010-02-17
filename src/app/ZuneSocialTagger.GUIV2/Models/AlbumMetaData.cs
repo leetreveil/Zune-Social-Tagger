@@ -31,7 +31,7 @@ namespace ZuneSocialTagger.GUIV2.Models
                 {
                     image = new BitmapImage();
                     image.BeginInit();
-                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.CacheOption = BitmapCacheOption.OnDemand;
                     image.CreateOptions = BitmapCreateOptions.None;
                     image.UriSource = new Uri(this.ArtworkUrl, UriKind.RelativeOrAbsolute);
                     image.EndInit();
