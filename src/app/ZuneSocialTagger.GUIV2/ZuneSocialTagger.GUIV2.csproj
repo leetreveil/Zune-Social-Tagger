@@ -65,6 +65,9 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -103,11 +106,16 @@
     <Compile Include="Converters\AlbumCountToStringConverter.cs" />
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
+    <Compile Include="Models\Album.cs" />
+    <Compile Include="Models\AlbumDocumentReader.cs" />
     <Compile Include="Models\DetailRow.cs" />
     <Compile Include="Models\IZuneWizardModel.cs" />
+    <Compile Include="Models\AlbumMetaData.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
     <Compile Include="ErrorMessageBox.cs" />
     <Compile Include="DraggableWindow.cs" />
+    <Compile Include="Utils\GridViewSort.cs" />
+    <Compile Include="Utils\ListViewColumns.cs" />
     <Compile Include="ViewModels\SearchResultsDetailViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
     <Compile Include="Views\ErrorMessageBoxView.xaml.cs">
@@ -181,7 +189,7 @@
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
     </BlendEmbeddedFont>
-    <BlendEmbeddedFont Include="Assets\Fonts\ZegoeUI-U.ttf">
+    <Resource Include="Assets\Fonts\ZegoeUI-U.ttf">
       <All>True</All>
       <AutoFill>True</AutoFill>
       <Characters>
@@ -190,7 +198,7 @@
       <Lowercase>True</Lowercase>
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
+    </Resource>
     <BlendEmbeddedFont Include="Assets\Fonts\ZegoeUI-UBold.ttf">
       <All>True</All>
       <AutoFill>True</AutoFill>
@@ -295,10 +303,15 @@
     <Resource Include="Assets\error.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\Fonts\BaroqueScript.ttf" />
     <None Include="Resources\socialtaggerupdater.exe" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Commands\" />
+    <Resource Include="Assets\yes.png" />
+    <Resource Include="Assets\no.png" />
+    <Content Include="zunedatabasecache.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

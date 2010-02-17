@@ -1,12 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Media.Imaging;
+using System.Xml.Serialization;
+using Caliburn.PresentationFramework;
 using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
+using Album = ZuneSocialTagger.GUIV2.Models.Album;
 using Screen = Caliburn.PresentationFramework.Screens.Screen;
+using System.Xml;
+using System.Diagnostics;
+using System.Windows.Input;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -14,88 +23,135 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         private readonly IUnityContainer _container;
         private readonly IZuneWizardModel _model;
+        private int _downloadProgress;
+        private bool _sortOrder;
+
+        public BindableCollection<Album> Albums { get; set; }
+
+        public int DownloadProgress
+        {
+            get { return _downloadProgress; }
+            set
+            {
+                _downloadProgress = value;
+                NotifyOfPropertyChange(() => this.DownloadProgress);
+            }
+        }
 
         public SelectAudioFilesViewModel(IUnityContainer container, IZuneWizardModel model)
         {
             _container = container;
             _model = model;
+
+            this.Albums = new BindableCollection<Album>();
+            this.DownloadProgress = 0;
+
+            _sortOrder = false;
+
+            this.SelectFiles();
+
+            //TODO: remove all zune fonts, default is close enough anyway
+        }
+
+        public void LoadFromZuneWebsite()
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+                                             {
+                                                 int current = 0;
+
+                                                 foreach (var album in Albums)
+                                                 {
+                                                     string fullUrlToAlbumXmlDetails =
+                                                         String.Concat(
+                                                                          "http://catalog.zune.net/v3.0/en-US/music/album/",
+                                                                          album.AlbumMediaId);
+
+                                                     //do not attempt to load albums that are not linked
+                                                     if (album.IsLinked)
+                                                     {
+                                                         try
+                                                         {
+                                                             var reader = new AlbumDocumentReader();
+
+                                                             bool initialized =
+                                                                 reader.Initialize(fullUrlToAlbumXmlDetails);
+
+                                                             if (initialized)
+                                                                 album.WebAlbumMetaData = reader.Read();
+                                                         }
+                                                         catch (Exception)
+                                                         {
+                                                             Debug.WriteLine("Could not get album details");
+                                                         }
+                                                     }
+
+                                                     current++;
+
+                                                     int progressPercent =
+                                                         (int) (((double) current/this.Albums.Count)*100);
+                                                     this.DownloadProgress = progressPercent;
+                                                 }
+                                             });
         }
 
         public void SelectFiles()
         {
-            var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files |*.mp3;*.wma" + "|All Files|*.*" };
+            //load in albums from zune database
+            //for testing we are going to use a xml doc
 
-            if (ofd.ShowDialog() == DialogResult.OK)
-                ReadFiles(ofd.FileNames);
+
+            ThreadPool.QueueUserWorkItem(_ =>
+                                             {
+                                                 var xmlSerializer =
+                                                     new XmlSerializer(typeof (BindableCollection<Album>));
+
+                                                 var deserializedAlbums = (BindableCollection<Album>)
+                                                                          xmlSerializer.Deserialize(
+                                                                                                       XmlReader.Create(
+                                                                                                                           new FileStream
+                                                                                                                               ("zunedatabasecache.xml",
+                                                                                                                                FileMode
+                                                                                                                                    .
+                                                                                                                                    Open)));
+
+
+                                                 List<Album> sortedAlbums =
+                                                     deserializedAlbums.OrderBy(x => !x.IsLinked).ToList();
+
+                                                 foreach (var album in sortedAlbums)
+                                                 {
+                                                     this.Albums.Add(album);
+                                                 }
+                                             });
         }
 
-        private void ReadFiles(IEnumerable<string> files)
+        public void Sort(string header)
         {
-            _model.Rows = new ObservableCollection<DetailRow>();
+            var sortedAlbums = new List<Album>();
 
-            try
+            if (header == "Album")
+                sortedAlbums = SortByLinkStatus(x => x.ZuneAlbumMetaData.AlbumTitle);
+
+            if (header == "Linked To")
+                sortedAlbums = SortByLinkStatus(x=> !x.IsLinked);
+
+            _sortOrder = !_sortOrder;
+
+            this.Albums.Clear();
+
+            foreach (var sortedAlbum in sortedAlbums)
             {
-                foreach (var filePath in files)
-                {
-                    IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(filePath);
-
-                    //for each song in the album add the container to the models row list
-                    _model.Rows.Add(new DetailRow(filePath, container));
-                }
-
-                //sort the rows by track number
-                var sortedTracks = _model.Rows.OrderBy(SortByTrackNumber()).ToList();
-
-                _model.Rows.Clear();
-
-                foreach (var row in sortedTracks)
-                    _model.Rows.Add(row);
-
-                //takes the first track read from the model and updates the metadata view
-                SetAlbumDetailsFromFile(_model.Rows.Count, _model.Rows.First().MetaData);
-
-                _model.CurrentPage = _container.Resolve<SearchViewModel>();
-            }
-            catch (Exception id3TagException)
-            {
-                ErrorMessageBox.Show("Error reading album " + Environment.NewLine + id3TagException.Message);
+                this.Albums.Add(sortedAlbum);
             }
         }
 
-        /// <summary>
-        /// converts TrackNumber string into an int
-        /// </summary>
-        /// <returns></returns>
-        private static Func<DetailRow, int> SortByTrackNumber()
+        private List<Album> SortByLinkStatus<T>(Func<Album,T> selector)
         {
-            return key =>
-                       {
-                           int result;
-                           Int32.TryParse(key.MetaData.TrackNumber, out result);
+            List<Album> sortedAlbums = _sortOrder
+                                           ? this.Albums.OrderBy(selector).ToList()
+                                           : this.Albums.OrderByDescending(selector).ToList();
 
-                           return result;
-                       };
-        }
-
-        private void SetAlbumDetailsFromFile(int songCount, MetaData songMetaData)
-        {
-            _model.AlbumDetailsFromFile = new WebsiteAlbumMetaDataViewModel
-                                              {
-                                                  Artist = songMetaData.AlbumArtist,
-                                                  Title = songMetaData.AlbumName,
-                                                  Year = songMetaData.Year,
-                                                  SongCount = songCount.ToString(),
-                                              };
-
-            //fall back to contributing artists if album artist is not available
-            if (String.IsNullOrEmpty(songMetaData.AlbumArtist))
-                _model.AlbumDetailsFromFile.Artist = songMetaData.ContributingArtists.FirstOrDefault();
-
-
-            //add info so search bar displays the album artist and album title from 
-            //the album that has been selected
-            _model.SearchBarViewModel.SearchText = songMetaData.AlbumName + " " +
-                                                   _model.AlbumDetailsFromFile.Artist;
+            return sortedAlbums;
         }
     }
 }

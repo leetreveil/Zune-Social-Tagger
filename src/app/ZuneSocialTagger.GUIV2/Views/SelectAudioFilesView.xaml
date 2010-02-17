@@ -2,24 +2,111 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:cm="clr-namespace:Caliburn.PresentationFramework;assembly=Caliburn.PresentationFramework" 
-    x:Class="ZuneSocialTagger.GUIV2.Views.SelectAudioFilesView"
-	x:Name="Window">
+    xmlns:utils="clr-namespace:ZuneSocialTagger.GUIV2.Utils" 
+    x:Class="ZuneSocialTagger.GUIV2.Views.SelectAudioFilesView">
 
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
-	
-	<Grid x:Name="LayoutRoot">
+
+    <Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
             <RowDefinition />
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Height="30" 
-                   Text="Choose the album you want linking to the zune social" />
-        
-        <Button cm:Message.Attach="[Event Click] = [Action SelectFiles]"  
-                HorizontalAlignment="Center" Grid.Row="1" Content="Select Audio Files"/>
+        <ListView ItemsSource="{Binding Albums}" 
+                  utils:ListViewColumns.Stretch="True" MaxHeight="400" Foreground="Black"
+                  GridViewColumnHeader.Click="GridViewColumnHeader_Click"
+                  >
+            
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Album">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel DataContext="{Binding ZuneAlbumMetaData}" Orientation="Horizontal">
+                                    <Image Height="50" Width="50" Source="{Binding ImageSource}" Margin="0,0,10,0"/>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding AlbumTitle}"/>
+                                        <TextBlock Text="{Binding AlbumArtist}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
 
+                    <GridViewColumn Header="Linked To" Width="Auto" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl>
+                                    <ContentControl.Style>
+                                        <Style TargetType="{x:Type ContentControl}">
+                                            <Style.Triggers>
+                                                
+                                                <DataTrigger Binding="{Binding IsLinked}" Value="True">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate>
+                                                                <StackPanel DataContext="{Binding WebAlbumMetaData}" Orientation="Horizontal">
+                                                                    <Image Width="16" Height="16" Source="../Assets/yes.png"  Margin="0,0,10,0"/>
+                                                                    <Image Height="50" Width="50" Source="{Binding ImageSource}"  Margin="0,0,10,0"/>
+                                                                    <StackPanel VerticalAlignment="Center">
+                                                                        <TextBlock Text="{Binding AlbumTitle}"/>
+                                                                        <TextBlock Text="{Binding AlbumArtist}"/>
+                                                                    </StackPanel>
+                                                                </StackPanel>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                                
+                                                <DataTrigger Binding="{Binding IsLinked}" Value="False">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Image Width="16" Height="16" Source="../Assets/no.png" Margin="0,0,10,0"/>
+                                                                    <TextBlock FontSize="20"
+                                                                               Text="UNLINKED" />
+                                                                </StackPanel>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentControl.Style>
+
+                                </ContentControl>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    
+                </GridView>
+            </ListView.View>
+
+        </ListView>
+
+        <Grid Margin="0,10,0,0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+            <Button FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#BaroqueScript" Margin="0,0,10,0" 
+                    cm:Message.Attach="[Event Click] = [Action SelectFiles]"  
+                Content="Load"/>
+
+            <Button Margin="0,0,10,0" Grid.Column="1" cm:Message.Attach="[Event Click] = [Action LoadFromZuneWebsite]" 
+                    Content="Load From Zune Website"/>
+            
+            <ProgressBar Grid.Column="2" Value="{Binding Path=DownloadProgress, Mode=OneWay}"/>
+        </Grid>
+        
+
+          
     </Grid>
 </UserControl>

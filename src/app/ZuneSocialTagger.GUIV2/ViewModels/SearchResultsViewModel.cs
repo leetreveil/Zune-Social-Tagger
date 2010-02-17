@@ -8,6 +8,8 @@ using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Threading;
 using Caliburn.PresentationFramework.Screens;
+using Album = ZuneSocialTagger.Core.Album;
+using AlbumDocumentReader = ZuneSocialTagger.Core.ZuneWebsite.AlbumDocumentReader;
 
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
