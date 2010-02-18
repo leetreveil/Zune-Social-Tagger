@@ -510,7 +510,7 @@ namespace ZuneSocialTagger.GUIV2.Models
         /// Loads the page of items.
         /// </summary>
         /// <param name="pageIndex">Index of the page.</param>
-        protected virtual void LoadPage(int pageIndex)
+        public virtual void LoadPage(int pageIndex)
         {
             PopulatePage(pageIndex, FetchPage(pageIndex));
         }

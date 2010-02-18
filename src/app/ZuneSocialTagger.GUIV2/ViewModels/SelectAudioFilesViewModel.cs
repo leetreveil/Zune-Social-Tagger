@@ -25,8 +25,18 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private readonly IZuneWizardModel _model;
         private int _downloadProgress;
         private bool _sortOrder;
+        private VirtualizingCollection<Album> _virtualAlbums;
 
-        public VirtualizingCollection<Album> VirtualAlbums { get; set; }
+        public VirtualizingCollection<Album> VirtualAlbums
+        {
+            get { return _virtualAlbums; }
+            set
+            {
+                _virtualAlbums = value;
+                NotifyOfPropertyChange(() => this.VirtualAlbums);
+            }
+        }
+
         private List<Album> Albums { get; set; }
 
         public int DownloadProgress
@@ -58,6 +68,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.VirtualAlbums = new VirtualizingCollection<Album>(provider, 10);
 
 
+            this.VirtualAlbums.LoadPage(0);
             //TODO: remove all zune fonts, default is close enough anyway
         }
 
@@ -149,22 +160,25 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             var sortedAlbums = new List<Album>();
 
             if (header == "Album")
-                sortedAlbums = SortByLinkStatus(x => x.ZuneAlbumMetaData.AlbumTitle);
+                sortedAlbums = SortBy(x => x.ZuneAlbumMetaData.AlbumTitle);
 
             if (header == "Linked To")
-                sortedAlbums = SortByLinkStatus(x => !x.IsLinked);
+                sortedAlbums = SortBy(x => !x.IsLinked);
 
             _sortOrder = !_sortOrder;
 
             this.Albums.Clear();
 
             foreach (var sortedAlbum in sortedAlbums)
-            {
                 this.Albums.Add(sortedAlbum);
-            }
+
+
+            //force the listview to refresh the current page by rebinding the listviews datacontext
+            var provider = new AlbumItemProvider(this.Albums);
+            this.VirtualAlbums = new VirtualizingCollection<Album>(provider, 10);
         }
 
-        private List<Album> SortByLinkStatus<T>(Func<Album, T> selector)
+        private List<Album> SortBy<T>(Func<Album, T> selector)
         {
             List<Album> sortedAlbums = _sortOrder
                                            ? this.Albums.OrderBy(selector).ToList()

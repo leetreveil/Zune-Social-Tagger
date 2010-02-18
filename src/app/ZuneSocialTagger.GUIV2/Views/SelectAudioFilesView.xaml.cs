@@ -31,5 +31,10 @@ namespace ZuneSocialTagger.GUIV2.Views
             _model.LinkAlbum((Album) lvAlbums.SelectedItem);
         }
 
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
+
     }
 }
