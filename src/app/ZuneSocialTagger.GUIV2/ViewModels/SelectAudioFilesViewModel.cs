@@ -62,70 +62,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             this.LoadAlbumsFromZuneDatabase();
 
-
             var provider = new AlbumItemProvider(this.Albums);
 
             this.VirtualAlbums = new VirtualizingCollection<Album>(provider, 10);
 
-
             this.VirtualAlbums.LoadPage(0);
             //TODO: remove all zune fonts, default is close enough anyway
-        }
-
-        public void LoadFromZuneWebsite()
-        {
-            #region Old Code
-
-            //ThreadPool.QueueUserWorkItem(_ =>
-            //     {
-            //         int current = 0;
-
-            //         foreach (var album in Albums)
-            //         {
-            //             string fullUrlToAlbumXmlDetails =
-            //                 String.Concat(
-            //                                  "http://catalog.zune.net/v3.0/en-US/music/album/",
-            //                                  album.AlbumMediaId);
-
-
-            //             //TODO: figure out how to only download images /album when the view displays them, i.e. a virtual view
-
-            //             //do not attempt to load albums that are not linked
-            //             if (album.IsLinked)
-            //             {
-            //                 try
-            //                 {
-            //                     var reader = new AlbumDocumentReader();
-
-            //                     if (reader.Initialize(fullUrlToAlbumXmlDetails))
-            //                     {
-            //                         Album closedAlbum = album;
-
-            //                         reader.DownloadCompleted +=
-            //                             dledAlbum =>
-            //                             {
-            //                                 current++;
-
-            //                                 closedAlbum.WebAlbumMetaData = dledAlbum;
-
-            //                                 int progressPercent =
-            //                                        (int)(((double)current / this.Albums.Count) * 100);
-            //                                 this.DownloadProgress = progressPercent;
-            //                             };
-            //                     }
-
-            //                 }
-            //                 catch (Exception)
-            //                 {
-            //                     Debug.WriteLine("Could not get album details");
-            //                 }
-            //             }
-
-
-            //         }
-            //     });
-
-            #endregion
         }
 
         public void LoadAlbumsFromZuneDatabase()
@@ -146,8 +88,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                          deserializedAlbums.OrderBy(x => !x.IsLinked).ToList();
 
                      foreach (var album in sortedAlbums)
-                         this.Albums.Add(album);
-                 //});
+                     {
+                         //TODO: using linq here
+
+                         Album tbaAlbum = album;
+
+                         tbaAlbum.IsLinked = !String.IsNullOrEmpty(album.AlbumMediaId);
+
+                         this.Albums.Add(tbaAlbum);
+                     }
         }
 
         public void LinkAlbum(Album album)

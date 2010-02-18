@@ -12,27 +12,24 @@ namespace ZuneSocialTagger.GUIV2.Models
 {
     public class AlbumDocumentReader
     {
+        private readonly string _url;
         private XmlReader _reader;
         private SyndicationFeed _feed;
         private WebClient _client;
 
         public event Action<AlbumMetaData> DownloadCompleted = delegate { };
 
-        public bool Initialize(string url)
+        public AlbumDocumentReader(string url)
         {
-            try
-            {
-                _client = new WebClient();
+            _url = url;
+            _client = new WebClient();
 
-                _client.DownloadDataCompleted += _client_DownloadDataCompleted;
-                _client.DownloadDataAsync(new Uri(url));
+            _client.DownloadDataCompleted += _client_DownloadDataCompleted;
+        }
 
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+        public void Start()
+        {
+            _client.DownloadDataAsync(new Uri(_url));
         }
 
         void _client_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
@@ -42,6 +39,10 @@ namespace ZuneSocialTagger.GUIV2.Models
                 _reader = XmlReader.Create(new MemoryStream(e.Result));
 
                 this.DownloadCompleted.Invoke(this.Read());
+            }
+            else
+            {
+                this.DownloadCompleted.Invoke(null);
             }
         }
 

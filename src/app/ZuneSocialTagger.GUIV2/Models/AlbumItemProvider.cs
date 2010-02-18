@@ -26,50 +26,32 @@ namespace ZuneSocialTagger.GUIV2.Models
 
             for (int i = startIndex; i < startIndex + count; i++)
             {
-                Album album;
+                Album album = startIndex < _collectionSource.Count
+                                  ?
+                                      _collectionSource[i]
+                                  : _collectionSource[i - count];
 
-                if (startIndex < _collectionSource.Count)
-                {
-                    album = _collectionSource[i];
-                }
-                else
-                {
-                    album = _collectionSource[i - count];
-                }
-
-
-                //if (startIndex >= count -10)
-                //{
-                //    album = _collectionSource[i -1];
-                //}
 
                 string fullUrlToAlbumXmlDetails =
                     String.Concat("http://catalog.zune.net/v3.0/en-US/music/album/",
-                                     album.AlbumMediaId);
+                                  album.AlbumMediaId);
 
-
-                //TODO: figure out how to only download images /album when the view displays them, i.e. a virtual view
 
                 //do not attempt to load albums that are not linked
                 if (album.IsLinked)
                 {
-                    try
-                    {
-                        var reader = new AlbumDocumentReader();
+                    var reader = new AlbumDocumentReader(fullUrlToAlbumXmlDetails);
+                    reader.DownloadCompleted += dledAlbum =>
+                                                    {
+                                                        if (dledAlbum == null)
+                                                        {
+                                                            Debug.WriteLine("could not get album :(");
+                                                            album.IsLinked = false;
+                                                        }
 
-                        if (reader.Initialize(fullUrlToAlbumXmlDetails))
-                        {
-                            reader.DownloadCompleted +=
-                                dledAlbum =>
-                                    {
-                                        album.WebAlbumMetaData = dledAlbum;
-                                    };
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        Debug.WriteLine("Could not get album details");
-                    }
+                                                        album.WebAlbumMetaData = dledAlbum;
+                                                    };
+                    reader.Start();
                 }
 
                 list.Add(album);

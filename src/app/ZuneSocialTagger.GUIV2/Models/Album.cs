@@ -7,13 +7,19 @@ namespace ZuneSocialTagger.GUIV2.Models
     {
         private AlbumMetaData _webAlbumMetaData;
         private AlbumMetaData _zuneAlbumMetaData;
+        private bool _isLinked;
 
         public string AlbumMediaId { get; set; }
         public bool Selected { get; set; }
 
         public bool IsLinked
         {
-            get { return !String.IsNullOrEmpty(this.AlbumMediaId); }
+            //get { return !String.IsNullOrEmpty(this.AlbumMediaId); }
+            get { return _isLinked; }
+            set
+            {
+                _isLinked = value;
+            }
         }
 
         public AlbumMetaData ZuneAlbumMetaData
