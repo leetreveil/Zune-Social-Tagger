@@ -45,6 +45,16 @@
             </Border.Background>
         </Border>
     </ControlTemplate>
+    
+    <ControlTemplate x:Key="AlbumDetails">
+        <StackPanel Orientation="Horizontal">
+            <Image Height="50" Width="50" Source="{Binding ArtworkUrl}"  Margin="0,0,10,0"/>
+            <StackPanel>
+                <TextBlock Text="{Binding AlbumTitle}"/>
+                <TextBlock Text="{Binding AlbumArtist}"/>
+            </StackPanel>
+        </StackPanel>
+    </ControlTemplate>
 
     <ControlTemplate x:Key="TextboxChromeStyle" TargetType="{x:Type ScrollViewer}">
         <Grid x:Name="Grid" Background="{TemplateBinding Background}">

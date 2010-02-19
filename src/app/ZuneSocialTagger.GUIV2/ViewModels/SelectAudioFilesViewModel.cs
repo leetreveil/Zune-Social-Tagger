@@ -1,21 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Threading;
-using System.Windows.Forms;
-using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 using Caliburn.PresentationFramework;
 using Microsoft.Practices.Unity;
-using ZuneSocialTagger.Core;
+using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
 using Album = ZuneSocialTagger.GUIV2.Models.Album;
 using Screen = Caliburn.PresentationFramework.Screens.Screen;
 using System.Xml;
-using System.Diagnostics;
-using System.Windows.Input;
+using DbAlbumDetails = ZuneSocialTagger.GUIV2.Models.DbAlbumDetails;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -23,9 +18,57 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         private readonly IUnityContainer _container;
         private readonly IZuneWizardModel _model;
-        private int _downloadProgress;
-        private bool _sortOrder;
+        private readonly IZuneDatabaseReader _dbReader;
+        private bool _albumSortOrder;
+        private bool _linkedToSortOrder;
         private VirtualizingCollection<Album> _virtualAlbums;
+        private List<Album> Albums { get; set; }
+        private int _albumOrArtistMismatchTotal;
+        private int _unlinkedTotal;
+        private int _linkedTotal;
+        private bool _isLoading;
+        private readonly AlbumItemProvider _itemsProvider;
+
+        private bool _canSort;
+
+        public SelectAudioFilesViewModel(IUnityContainer container, IZuneWizardModel model, IZuneDatabaseReader dbReader)
+        {
+            _container = container;
+            _model = model;
+            _dbReader = dbReader;
+
+            this.Albums = new List<Album>();
+
+            this.LoadAlbumsFromZuneDatabase();
+
+            _itemsProvider = new AlbumItemProvider(this.Albums);
+            _itemsProvider.AllDownloadsComplete += provider_AllDownloadsComplete;
+            _itemsProvider.ItemFinishedDownloading += provider_ItemFinishedDownloading;
+
+            this.VirtualAlbums = new VirtualizingCollection<Album>(_itemsProvider, 10);
+
+            //TODO: remove all zune fonts, default is close enough anyway
+        }
+
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set
+            {
+                _isLoading = value;
+                NotifyOfPropertyChange(() => this.IsLoading);
+            }
+        }
+
+        public bool CanSort
+        {
+            get { return _canSort; }
+            set
+            {
+                _canSort = value;
+                NotifyOfPropertyChange(() => this.CanSort);
+            }
+        }
 
         public VirtualizingCollection<Album> VirtualAlbums
         {
@@ -37,66 +80,76 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        private List<Album> Albums { get; set; }
-
-        public int DownloadProgress
+        public int LinkedTotal
         {
-            get { return _downloadProgress; }
+            get { return _linkedTotal; }
             set
             {
-                _downloadProgress = value;
-                NotifyOfPropertyChange(() => this.DownloadProgress);
+                _linkedTotal = value;
+                NotifyOfPropertyChange(() => this.LinkedTotal);
             }
         }
 
-        public SelectAudioFilesViewModel(IUnityContainer container, IZuneWizardModel model)
+        public int UnlinkedTotal
         {
-            _container = container;
-            _model = model;
-
-            this.Albums = new List<Album>();
-
-            this.DownloadProgress = 0;
-
-            _sortOrder = false;
-
-            this.LoadAlbumsFromZuneDatabase();
-
-            var provider = new AlbumItemProvider(this.Albums);
-
-            this.VirtualAlbums = new VirtualizingCollection<Album>(provider, 10);
-
-            this.VirtualAlbums.LoadPage(0);
-            //TODO: remove all zune fonts, default is close enough anyway
+            get { return _unlinkedTotal; }
+            set
+            {
+                _unlinkedTotal = value;
+                NotifyOfPropertyChange(() => this.UnlinkedTotal);
+            }
         }
+
+        public int AlbumOrArtistMismatchTotal
+        {
+            get { return _albumOrArtistMismatchTotal; }
+            set
+            {
+                _albumOrArtistMismatchTotal = value;
+                NotifyOfPropertyChange(() => this.AlbumOrArtistMismatchTotal);
+            }
+        }
+
+        void provider_ItemFinishedDownloading()
+        {
+            this.LinkedTotal = this.Albums.Where(x => x.IsLinked == LinkStatus.Linked).Count();
+            this.UnlinkedTotal = this.Albums.Where(x => x.IsLinked == LinkStatus.Unlinked).Count();
+            this.AlbumOrArtistMismatchTotal = this.Albums.Where(x => x.IsLinked == LinkStatus.AlbumOrArtistMismatch).Count();
+        }
+
+        void provider_AllDownloadsComplete()
+        {
+            this.CanSort = true;
+        }
+
+        public void LoadFromZuneWebsite()
+        {
+            this.IsLoading = true;
+            this.VirtualAlbums.LoadAllPages();
+        }
+
 
         public void LoadAlbumsFromZuneDatabase()
         {
-            //load in albums from zune database
-            //for testing we are going to use a xml doc
+            foreach (var album in _dbReader.ReadAlbums())
+            {
+                this.Albums.Add(new Album    
+                { 
+                    ZuneAlbumMetaData = new DbAlbumDetails()
+                        {
+                            AlbumArtist = album.AlbumArtist,
+                            AlbumTitle = album.AlbumTitle,
+                            AlbumMediaId = album.AlbumMediaId,
+                            ArtworkUrl = album.ArtworkUrl,
+                            DateAdded = album.DateAdded
+                        }
+                });
+            }
 
-            //ThreadPool.QueueUserWorkItem(_ =>
-            //     {
-                     var xmlSerializer =
-                         new XmlSerializer(typeof (BindableCollection<Album>));
-
-                     var deserializedAlbums = (BindableCollection<Album>) 
-                         xmlSerializer.Deserialize(XmlReader.Create(
-                            new FileStream("zunedatabasecache.xml",FileMode.Open)));
-
-                     List<Album> sortedAlbums =
-                         deserializedAlbums.OrderBy(x => !x.IsLinked).ToList();
-
-                     foreach (var album in sortedAlbums)
-                     {
-                         //TODO: using linq here
-
-                         Album tbaAlbum = album;
-
-                         tbaAlbum.IsLinked = !String.IsNullOrEmpty(album.AlbumMediaId);
-
-                         this.Albums.Add(tbaAlbum);
-                     }
+            foreach (var album in this.Albums)
+                album.IsLinked = !String.IsNullOrEmpty(album.ZuneAlbumMetaData.AlbumMediaId)
+                                     ? LinkStatus.Unknown
+                                     : LinkStatus.Unlinked;
         }
 
         public void LinkAlbum(Album album)
@@ -109,12 +162,18 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             var sortedAlbums = new List<Album>();
 
             if (header == "Album")
-                sortedAlbums = SortBy(x => x.ZuneAlbumMetaData.AlbumTitle);
+            {
+                sortedAlbums = SortBy(x => x.ZuneAlbumMetaData.AlbumTitle,_albumSortOrder);
+                _albumSortOrder = !_albumSortOrder;
+            }
 
             if (header == "Linked To")
-                sortedAlbums = SortBy(x => !x.IsLinked);
+            {
+                sortedAlbums = SortBy(x => x.IsLinked,_linkedToSortOrder);
+                _linkedToSortOrder = !_linkedToSortOrder;
+            }
 
-            _sortOrder = !_sortOrder;
+            //TODO: dont like how sorting is working, i.e. having two sort variables
 
             this.Albums.Clear();
 
@@ -123,13 +182,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
 
             //force the listview to refresh the current page by rebinding the listviews datacontext
-            var provider = new AlbumItemProvider(this.Albums);
-            this.VirtualAlbums = new VirtualizingCollection<Album>(provider, 10);
+            this.VirtualAlbums = new VirtualizingCollection<Album>(_itemsProvider, 10);
         }
 
-        private List<Album> SortBy<T>(Func<Album, T> selector)
+        private List<Album> SortBy<T>(Func<Album, T> selector,bool sortOrder)
         {
-            List<Album> sortedAlbums = _sortOrder
+            List<Album> sortedAlbums = sortOrder
                                            ? this.Albums.OrderBy(selector).ToList()
                                            : this.Albums.OrderByDescending(selector).ToList();
 

@@ -515,6 +515,21 @@ namespace ZuneSocialTagger.GUIV2.Models
             PopulatePage(pageIndex, FetchPage(pageIndex));
         }
 
+        /// <summary>
+        /// Loads every page one by one
+        /// </summary>
+        public void LoadAllPages()
+        {
+            //TODO: needs testing
+            int totalPages = (int) Math.Ceiling((double) this.Count / this.PageSize);
+
+
+            for (int i = 0; i < totalPages; i++)
+            {
+                PopulatePage(i,FetchPage(i));
+            }
+        }
+
         #endregion
 
         #region Fetch methods

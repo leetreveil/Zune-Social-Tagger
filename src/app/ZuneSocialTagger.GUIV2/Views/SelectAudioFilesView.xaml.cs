@@ -21,20 +21,15 @@ namespace ZuneSocialTagger.GUIV2.Views
 
         private void GridViewColumnHeader_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var header = (GridViewColumnHeader) e.OriginalSource;
+            GridViewColumnHeader header = (GridViewColumnHeader) e.OriginalSource;
 
-            _model.Sort((string) header.Column.Header);
+            //header.Column.
+           // _model.Sort((string) header.Column.Header);
         }
 
         private void LinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             _model.LinkAlbum((Album) lvAlbums.SelectedItem);
         }
-
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-
-        }
-
     }
 }

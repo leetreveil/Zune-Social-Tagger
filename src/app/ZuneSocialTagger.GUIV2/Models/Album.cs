@@ -1,34 +1,30 @@
-﻿using System;
-using System.ComponentModel;
+﻿using Caliburn.Core;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
-    public class Album : INotifyPropertyChanged
+    public class Album : PropertyChangedBase
     {
         private AlbumMetaData _webAlbumMetaData;
-        private AlbumMetaData _zuneAlbumMetaData;
-        private bool _isLinked;
+        private DbAlbumDetails _zuneAlbumMetaData;
+        private LinkStatus _isLinked;
 
-        public string AlbumMediaId { get; set; }
-        public bool Selected { get; set; }
-
-        public bool IsLinked
+        public LinkStatus IsLinked
         {
-            //get { return !String.IsNullOrEmpty(this.AlbumMediaId); }
             get { return _isLinked; }
             set
             {
                 _isLinked = value;
+                NotifyOfPropertyChange(() => this.IsLinked);
             }
         }
 
-        public AlbumMetaData ZuneAlbumMetaData
+        public DbAlbumDetails ZuneAlbumMetaData
         {
             get { return _zuneAlbumMetaData; }
             set
             {
                 _zuneAlbumMetaData = value;
-                InvokePropertyChanged(new PropertyChangedEventArgs("ZuneAlbumMetaData"));
+                NotifyOfPropertyChange(() => this.ZuneAlbumMetaData);
             }
         }
         public AlbumMetaData WebAlbumMetaData
@@ -37,16 +33,8 @@ namespace ZuneSocialTagger.GUIV2.Models
             set
             {
                 _webAlbumMetaData = value;
-                InvokePropertyChanged(new PropertyChangedEventArgs("WebAlbumMetaData"));
+                NotifyOfPropertyChange(() => this.WebAlbumMetaData);
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void InvokePropertyChanged(PropertyChangedEventArgs e)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, e);
         }
     }
 }

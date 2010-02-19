@@ -1,5 +1,6 @@
 ﻿using Caliburn.PresentationFramework.ApplicationModel;
 using Microsoft.Practices.Unity;
+using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2
@@ -15,6 +16,7 @@ namespace ZuneSocialTagger.GUIV2
         {
             _container = new UnityContainer();
             _container.RegisterType<IZuneWizardModel, ZuneWizardModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IZuneDatabaseReader, TestZuneDatabaseReader>();
             _container.RegisterInstance(_container);
         }
 
