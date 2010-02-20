@@ -19,32 +19,32 @@ namespace ZuneSocialTagger.GUIV2.Models
             }
         }
 
-        public object ImageSource
-        {
-            get
-            {
-                BitmapImage image;
+        //public object ImageSource
+        //{
+        //    get
+        //    {
+        //        BitmapImage image;
 
-                //TODO: find a better way instead of using goto :( to display blank artwork when an image cant be loaded
-            TryLabel:
-                try
-                {
-                    image = new BitmapImage();
-                    image.BeginInit();
-                    image.CacheOption = BitmapCacheOption.OnDemand;
-                    image.CreateOptions = BitmapCreateOptions.None;
-                    image.UriSource = new Uri(this.ArtworkUrl, UriKind.RelativeOrAbsolute);
-                    image.EndInit();
-                }
-                catch
-                {
-                    this.ArtworkUrl = @"pack://application:,,,/Assets/blankartwork.png";
+        //        //TODO: find a better way instead of using goto :( to display blank artwork when an image cant be loaded
+        //    TryLabel:
+        //        try
+        //        {
+        //            image = new BitmapImage();
+        //            image.BeginInit();
+        //            image.CacheOption = BitmapCacheOption.OnDemand;
+        //            image.CreateOptions = BitmapCreateOptions.None;
+        //            image.UriSource = new Uri(this.ArtworkUrl, UriKind.RelativeOrAbsolute);
+        //            image.EndInit();
+        //        }
+        //        catch
+        //        {
+        //            this.ArtworkUrl = @"pack://application:,,,/Assets/blankartwork.png";
 
-                    goto TryLabel;
-                }
+        //            goto TryLabel;
+        //        }
 
-                return image;
-            }
-        }
+        //        return image;
+        //    }
+        //}
     }
 }

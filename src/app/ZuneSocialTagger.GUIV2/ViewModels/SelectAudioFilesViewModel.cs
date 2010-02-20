@@ -18,7 +18,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private bool _albumSortOrder;
         private bool _linkedToSortOrder;
         private VirtualizingCollection<Album> _virtualAlbums;
-        private readonly List<Album> _albums;
+        private List<Album> _albums;
         private int _albumOrArtistMismatchTotal;
         private int _unlinkedTotal;
         private int _linkedTotal;
@@ -27,7 +27,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private bool _canSort;
 
-        public SelectAudioFilesViewModel(IUnityContainer container, IZuneWizardModel model, IZuneDatabaseReader dbReader)
+        public SelectAudioFilesViewModel(IUnityContainer container, 
+                                         IZuneWizardModel model, 
+                                         IZuneDatabaseReader dbReader)
         {
             _container = container;
             _model = model;
@@ -131,10 +133,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 });
             }
 
-            foreach (var album in this._albums)
+            //TODO: change unkown to the default link status in the database
+            foreach (var album in _albums)
                 album.IsLinked = !String.IsNullOrEmpty(album.ZuneAlbumMetaData.AlbumMediaId)
                                      ? LinkStatus.Unknown
                                      : LinkStatus.Unlinked;
+
+            //sorting by date added so you see the newest albums youve added first
+            _albums = _albums.OrderByDescending(x => x.ZuneAlbumMetaData.DateAdded).ToList();
         }
 
         public void LinkAlbum(Album album)

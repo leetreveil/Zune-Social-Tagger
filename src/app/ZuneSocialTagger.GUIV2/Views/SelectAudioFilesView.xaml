@@ -21,13 +21,13 @@
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,0,5">
 
             <Image Width="16" Height="16" Source="../Assets/yes.png" Margin="0,0,2,0"/>
-            <TextBlock Text="{Binding LinkedTotal}" Margin="0,0,10,0"/>
+            <TextBlock Text="{Binding LinkedTotal}" Margin="0,0,10,0" FontWeight="SemiBold"/>
 
             <Image Width="16" Height="16" Source="../Assets/no.png" Margin="0,0,2,0" />
-            <TextBlock Text="{Binding UnlinkedTotal}" Margin="0,0,10,0"/>
+            <TextBlock Text="{Binding UnlinkedTotal}" Margin="0,0,10,0" FontWeight="SemiBold"/>
 
             <Image Width="16" Height="16" Source="../Assets/warning.png" Margin="0,0,2,0"/>
-            <TextBlock Text="{Binding AlbumOrArtistMismatchTotal}"/>
+            <TextBlock Text="{Binding AlbumOrArtistMismatchTotal}" FontWeight="SemiBold"/>
         </StackPanel>
 
 
@@ -70,10 +70,8 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel DataContext="{Binding ZuneAlbumMetaData}" Orientation="Horizontal">
-                                    <Image Height="50" Width="50" Source="{Binding ImageSource}" Margin="0,0,10,0"/>
-                                    <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding AlbumTitle}"/>
-                                        <TextBlock Text="{Binding AlbumArtist}"/>
+                                    <StackPanel>
+                                        <Control Template="{DynamicResource AlbumDetails}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </DataTemplate>

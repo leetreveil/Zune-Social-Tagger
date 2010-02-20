@@ -49,9 +49,9 @@
     <ControlTemplate x:Key="AlbumDetails">
         <StackPanel Orientation="Horizontal">
             <Image Height="50" Width="50" Source="{Binding ArtworkUrl}"  Margin="0,0,10,0"/>
-            <StackPanel>
+            <StackPanel VerticalAlignment="Center" >
                 <TextBlock Text="{Binding AlbumTitle}"/>
-                <TextBlock Text="{Binding AlbumArtist}"/>
+                <TextBlock Text="{Binding AlbumArtist}" Foreground="#FF8A8D90"/>
             </StackPanel>
         </StackPanel>
     </ControlTemplate>
