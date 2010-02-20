@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,19 +11,26 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
     {
         private List<DbAlbumDetails> _deserializedAlbums;
 
-        public void Load()
+        public bool Initialize()
         {
-            // load xml doc
+            try
+            {
+                var xmlSerializer = new XmlSerializer(typeof (List<DbAlbumDetails>));
+
+                XmlReader textReader = XmlReader.Create( new FileStream("zunedatabasecache.xml",FileMode.Open));
+
+                _deserializedAlbums = (List<DbAlbumDetails>)xmlSerializer.Deserialize(textReader);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public IEnumerable<DbAlbumDetails> ReadAlbums()
         {
-            var xmlSerializer =
-                new XmlSerializer(typeof(List<DbAlbumDetails>));
-
-            _deserializedAlbums = (List<DbAlbumDetails>)
-                 xmlSerializer.Deserialize(XmlReader.Create(new FileStream("zunedatabasecache.xml", FileMode.Open)));
-
             return _deserializedAlbums;
         }
 

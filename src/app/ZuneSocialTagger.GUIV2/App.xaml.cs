@@ -16,6 +16,8 @@ namespace ZuneSocialTagger.GUIV2
         {
             _container = new UnityContainer();
             _container.RegisterType<IZuneWizardModel, ZuneWizardModel>(new ContainerControlledLifetimeManager());
+
+            //we will switch out the DatabaseReader to the proper one nearer to release, maybe using #IF Debug
             _container.RegisterType<IZuneDatabaseReader, TestZuneDatabaseReader>();
             _container.RegisterInstance(_container);
         }

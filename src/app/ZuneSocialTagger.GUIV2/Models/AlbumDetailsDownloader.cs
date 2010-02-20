@@ -10,7 +10,10 @@ using System.Text;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
-    public class AlbumDocumentReader
+    /// <summary>
+    /// Gets the details of a specific piece of zune media from its mediaID
+    /// </summary>
+    public class AlbumDetailsDownloader
     {
         private readonly string _url;
         private XmlReader _reader;
@@ -19,7 +22,7 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public event Action<AlbumMetaData> DownloadCompleted = delegate { };
 
-        public AlbumDocumentReader(string url)
+        public AlbumDetailsDownloader(string url)
         {
             _url = url;
             _client = new WebClient();

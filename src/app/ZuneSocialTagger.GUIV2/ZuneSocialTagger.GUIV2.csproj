@@ -107,7 +107,7 @@
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Models\Album.cs" />
-    <Compile Include="Models\AlbumDocumentReader.cs" />
+    <Compile Include="Models\AlbumDetailsDownloader.cs" />
     <Compile Include="Models\AlbumItemProvider.cs" />
     <Compile Include="Models\DbAlbumDetails.cs" />
     <Compile Include="Models\IItemsProvider.cs" />

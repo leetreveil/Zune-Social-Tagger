@@ -44,7 +44,7 @@ namespace ZuneSocialTagger.GUIV2.Models
                 //albums that have a valid url but have not been checked for validity yet are deemed unknown
                 if (album.IsLinked == LinkStatus.Unknown)
                 {
-                    var reader = new AlbumDocumentReader(fullUrlToAlbumXmlDetails);
+                    var reader = new AlbumDetailsDownloader(fullUrlToAlbumXmlDetails);
                     reader.DownloadCompleted += dledAlbum =>
                         {
                             _downloadCounter++;

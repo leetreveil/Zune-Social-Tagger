@@ -1,15 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Xml.Serialization;
-using Caliburn.PresentationFramework;
 using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
 using Album = ZuneSocialTagger.GUIV2.Models.Album;
 using Screen = Caliburn.PresentationFramework.Screens.Screen;
-using System.Xml;
 using DbAlbumDetails = ZuneSocialTagger.GUIV2.Models.DbAlbumDetails;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
@@ -22,7 +18,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private bool _albumSortOrder;
         private bool _linkedToSortOrder;
         private VirtualizingCollection<Album> _virtualAlbums;
-        private List<Album> Albums { get; set; }
+        private readonly List<Album> _albums;
         private int _albumOrArtistMismatchTotal;
         private int _unlinkedTotal;
         private int _linkedTotal;
@@ -36,12 +32,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _container = container;
             _model = model;
             _dbReader = dbReader;
+            _albums = new List<Album>();
 
-            this.Albums = new List<Album>();
-
+            //TODO: don't do any loading until after the page has loaded, need a OnPageLoadedEvent from view
             this.LoadAlbumsFromZuneDatabase();
 
-            _itemsProvider = new AlbumItemProvider(this.Albums);
+            _itemsProvider = new AlbumItemProvider(_albums);
             _itemsProvider.AllDownloadsComplete += provider_AllDownloadsComplete;
             _itemsProvider.ItemFinishedDownloading += provider_ItemFinishedDownloading;
 
@@ -110,30 +106,19 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        void provider_ItemFinishedDownloading()
-        {
-            this.LinkedTotal = this.Albums.Where(x => x.IsLinked == LinkStatus.Linked).Count();
-            this.UnlinkedTotal = this.Albums.Where(x => x.IsLinked == LinkStatus.Unlinked).Count();
-            this.AlbumOrArtistMismatchTotal = this.Albums.Where(x => x.IsLinked == LinkStatus.AlbumOrArtistMismatch).Count();
-        }
-
-        void provider_AllDownloadsComplete()
-        {
-            this.CanSort = true;
-        }
-
         public void LoadFromZuneWebsite()
         {
             this.IsLoading = true;
             this.VirtualAlbums.LoadAllPages();
         }
 
-
         public void LoadAlbumsFromZuneDatabase()
         {
+            _dbReader.Initialize();
+
             foreach (var album in _dbReader.ReadAlbums())
             {
-                this.Albums.Add(new Album    
+                this._albums.Add(new Album    
                 { 
                     ZuneAlbumMetaData = new DbAlbumDetails()
                         {
@@ -146,7 +131,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 });
             }
 
-            foreach (var album in this.Albums)
+            foreach (var album in this._albums)
                 album.IsLinked = !String.IsNullOrEmpty(album.ZuneAlbumMetaData.AlbumMediaId)
                                      ? LinkStatus.Unknown
                                      : LinkStatus.Unlinked;
@@ -175,23 +160,37 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             //TODO: dont like how sorting is working, i.e. having two sort variables
 
-            this.Albums.Clear();
+            this._albums.Clear();
 
             foreach (var sortedAlbum in sortedAlbums)
-                this.Albums.Add(sortedAlbum);
+                this._albums.Add(sortedAlbum);
 
 
             //force the listview to refresh the current page by rebinding the listviews datacontext
             this.VirtualAlbums = new VirtualizingCollection<Album>(_itemsProvider, 10);
         }
 
-        private List<Album> SortBy<T>(Func<Album, T> selector,bool sortOrder)
+        private List<Album> SortBy<T>(Func<Album, T> selector, bool sortOrder)
         {
             List<Album> sortedAlbums = sortOrder
-                                           ? this.Albums.OrderBy(selector).ToList()
-                                           : this.Albums.OrderByDescending(selector).ToList();
+                                           ? this._albums.OrderBy(selector).ToList()
+                                           : this._albums.OrderByDescending(selector).ToList();
 
             return sortedAlbums;
         }
+
+        void provider_ItemFinishedDownloading()
+        {
+            //Update totals after each of the albums details have been downloaded
+            this.LinkedTotal = this._albums.Where(x => x.IsLinked == LinkStatus.Linked).Count();
+            this.UnlinkedTotal = this._albums.Where(x => x.IsLinked == LinkStatus.Unlinked).Count();
+            this.AlbumOrArtistMismatchTotal = this._albums.Where(x => x.IsLinked == LinkStatus.AlbumOrArtistMismatch).Count();
+        }
+
+        void provider_AllDownloadsComplete()
+        {
+            this.CanSort = true;
+        }
+
     }
 }
