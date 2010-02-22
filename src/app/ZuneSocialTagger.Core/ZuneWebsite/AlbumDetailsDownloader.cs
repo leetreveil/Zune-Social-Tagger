@@ -6,19 +6,18 @@ using System.Xml;
 using System.Xml.Linq;
 using System.ServiceModel.Syndication;
 using System.IO;
-using System.Text;
 
-namespace ZuneSocialTagger.GUIV2.Models
+namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     /// <summary>
-    /// Gets the details of a specific piece of zune media from its mediaID
+    /// Downloads the album details from the zune album's xml document
     /// </summary>
     public class AlbumDetailsDownloader
     {
         private readonly string _url;
         private XmlReader _reader;
         private SyndicationFeed _feed;
-        private WebClient _client;
+        private readonly WebClient _client;
 
         public event Action<AlbumMetaData> DownloadCompleted = delegate { };
 
@@ -30,7 +29,7 @@ namespace ZuneSocialTagger.GUIV2.Models
             _client.DownloadDataCompleted += _client_DownloadDataCompleted;
         }
 
-        public void Start()
+        public void Download()
         {
             _client.DownloadDataAsync(new Uri(_url));
         }
@@ -59,11 +58,11 @@ namespace ZuneSocialTagger.GUIV2.Models
         private AlbumMetaData GetAlbumDetails()
         {
             return new AlbumMetaData
-              {
-                  AlbumTitle = _feed.Title.Text,
-                  AlbumArtist = GetArtist(_feed),
-                  ArtworkUrl = GetArtworkUrl(_feed)
-              };
+                       {
+                           AlbumTitle = _feed.Title.Text,
+                           AlbumArtist = GetArtist(_feed),
+                           ArtworkUrl = GetArtworkUrl(_feed)
+                       };
         }
 
 

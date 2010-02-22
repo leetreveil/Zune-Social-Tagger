@@ -19,14 +19,6 @@ namespace ZuneSocialTagger.GUIV2.Views
             this.DataContextChanged += delegate { _model = (SelectAudioFilesViewModel) this.DataContext; };
         }
 
-        private void GridViewColumnHeader_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            GridViewColumnHeader header = (GridViewColumnHeader) e.OriginalSource;
-
-            //header.Column.
-           // _model.Sort((string) header.Column.Header);
-        }
-
         private void LinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             _model.LinkAlbum((Album) lvAlbums.SelectedItem);

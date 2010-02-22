@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
@@ -31,9 +32,14 @@ namespace ZuneSocialTagger.GUIV2.Models
 
             for (int i = startIndex; i < startIndex + count; i++)
             {
-                Album album = startIndex < _collectionSource.Count
-                                  ?
-                                      _collectionSource[i]
+                //if there are less than 10 albums then break when all have been read
+                if (i >= _collectionSource.Count)
+                    break;
+
+
+                //TODO: check the logic behind this, seems a bit weird
+                Album album = startIndex < _collectionSource.Count 
+                                  ? _collectionSource[i] 
                                   : _collectionSource[i - count];
 
 
@@ -94,7 +100,7 @@ namespace ZuneSocialTagger.GUIV2.Models
 
                             this.ItemFinishedDownloading.Invoke();
                         };
-                    reader.Start();
+                    reader.Download();
 
 
                 }

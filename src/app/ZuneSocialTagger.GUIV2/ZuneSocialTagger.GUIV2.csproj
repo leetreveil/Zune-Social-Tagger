@@ -107,15 +107,13 @@
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Models\Album.cs" />
-    <Compile Include="Models\AlbumDetailsDownloader.cs" />
+    <Compile Include="Models\AlbumDetails.cs" />
     <Compile Include="Models\AlbumItemProvider.cs" />
-    <Compile Include="Models\DbAlbumDetails.cs" />
     <Compile Include="Models\IItemsProvider.cs" />
     <Compile Include="Models\LinkStatus.cs" />
     <Compile Include="Models\VirtualizingCollection.cs" />
     <Compile Include="Models\DetailRow.cs" />
     <Compile Include="Models\IZuneWizardModel.cs" />
-    <Compile Include="Models\AlbumMetaData.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
     <Compile Include="ErrorMessageBox.cs" />
     <Compile Include="DraggableWindow.cs" />
@@ -319,9 +317,6 @@
     <Resource Include="Assets\warning.png" />
     <Resource Include="Assets\stop.png" />
     <Resource Include="Assets\information.png" />
-    <Content Include="zunedatabasecache.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

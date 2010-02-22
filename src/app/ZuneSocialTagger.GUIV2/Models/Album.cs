@@ -1,11 +1,12 @@
 ﻿using Caliburn.Core;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
     public class Album : PropertyChangedBase
     {
         private AlbumMetaData _webAlbumMetaData;
-        private DbAlbumDetails _zuneAlbumMetaData;
+        private AlbumDetails _zuneAlbumMetaData;
         private LinkStatus _isLinked;
 
         public LinkStatus IsLinked
@@ -18,13 +19,13 @@ namespace ZuneSocialTagger.GUIV2.Models
             }
         }
 
-        public DbAlbumDetails ZuneAlbumMetaData
+        public AlbumDetails ZuneAlbumMetaData
         {
             get { return _zuneAlbumMetaData; }
             set
             {
-                _zuneAlbumMetaData = value;
-                NotifyOfPropertyChange(() => this.ZuneAlbumMetaData);
+                    _zuneAlbumMetaData = value;
+                    NotifyOfPropertyChange(() => this.ZuneAlbumMetaData);
             }
         }
         public AlbumMetaData WebAlbumMetaData

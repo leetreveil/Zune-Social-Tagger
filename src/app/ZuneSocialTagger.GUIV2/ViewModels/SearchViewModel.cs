@@ -39,5 +39,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             this.SearchBar.Search();
         }
+        
+        public void MoveBack()
+        {
+            _model.CurrentPage = _container.Resolve<SelectAudioFilesViewModel>();
+        }
     }
 }

@@ -6,7 +6,9 @@ using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
 using Album = ZuneSocialTagger.GUIV2.Models.Album;
 using Screen = Caliburn.PresentationFramework.Screens.Screen;
-using DbAlbumDetails = ZuneSocialTagger.GUIV2.Models.DbAlbumDetails;
+using System.IO;
+using ZuneSocialTagger.Core;
+using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -27,8 +29,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private bool _canSort;
 
-        public SelectAudioFilesViewModel(IUnityContainer container, 
-                                         IZuneWizardModel model, 
+        public SelectAudioFilesViewModel(IUnityContainer container,
+                                         IZuneWizardModel model,
                                          IZuneDatabaseReader dbReader)
         {
             _container = container;
@@ -36,7 +38,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _dbReader = dbReader;
             _albums = new List<Album>();
 
-            //TODO: don't do any loading until after the page has loaded, need a OnPageLoadedEvent from view
             this.LoadAlbumsFromZuneDatabase();
 
             _itemsProvider = new AlbumItemProvider(_albums);
@@ -47,6 +48,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             //TODO: remove all zune fonts, default is close enough anyway
         }
+
+        #region View Binding Properties
 
         public bool IsLoading
         {
@@ -114,37 +117,75 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.VirtualAlbums.LoadAllPages();
         }
 
+        #endregion
+
         public void LoadAlbumsFromZuneDatabase()
         {
             _dbReader.Initialize();
 
-            foreach (var album in _dbReader.ReadAlbums())
+            //TODO: fix bug where when the artwork from the database is either corrupted or does not exist should not cause an error
+            foreach (ZuneSocialTagger.Core.ZuneDatabase.Album dbAlbumDetails in _dbReader.ReadAlbums())
             {
-                this._albums.Add(new Album    
-                { 
-                    ZuneAlbumMetaData = new DbAlbumDetails()
-                        {
-                            AlbumArtist = album.AlbumArtist,
-                            AlbumTitle = album.AlbumTitle,
-                            AlbumMediaId = album.AlbumMediaId,
-                            ArtworkUrl = album.ArtworkUrl,
-                            DateAdded = album.DateAdded
-                        }
-                });
+                Album newAlbum = new Album();
+
+                string artworkUrl = dbAlbumDetails.ArtworkUrl;
+
+                if (String.IsNullOrEmpty(artworkUrl))
+                    artworkUrl = "pack://application:,,,/Assets/blankartwork.png";
+                else
+                {
+                    var path = new string(artworkUrl.Skip(7).ToArray());
+
+                    if (!File.Exists(path))
+                        artworkUrl = "pack://application:,,,/Assets/blankartwork.png";
+                }
+
+                newAlbum.ZuneAlbumMetaData = new AlbumDetails(dbAlbumDetails.MediaId,dbAlbumDetails.AlbumTitle, dbAlbumDetails.AlbumArtist,
+                                                              artworkUrl, dbAlbumDetails.AlbumMediaId,
+                                                              dbAlbumDetails.DateAdded, dbAlbumDetails.ReleaseYear,
+                                                              dbAlbumDetails.TrackCount);
+
+
+                newAlbum.IsLinked = !String.IsNullOrEmpty(newAlbum.ZuneAlbumMetaData.AlbumMediaId)
+                                        ? LinkStatus.Unknown
+                                        : LinkStatus.Unlinked;
+
+
+                //TODO: need to check if an image is valid or not otherwise the application will crash
+
+                _albums.Add(newAlbum);
             }
 
             //TODO: change unkown to the default link status in the database
-            foreach (var album in _albums)
-                album.IsLinked = !String.IsNullOrEmpty(album.ZuneAlbumMetaData.AlbumMediaId)
-                                     ? LinkStatus.Unknown
-                                     : LinkStatus.Unlinked;
 
             //sorting by date added so you see the newest albums youve added first
             _albums = _albums.OrderByDescending(x => x.ZuneAlbumMetaData.DateAdded).ToList();
         }
 
-        public void LinkAlbum(Album album)
+        public void LinkAlbum(Album albumToBeLinked)
         {
+            AlbumDetails dbAlbumDetails = albumToBeLinked.ZuneAlbumMetaData;
+
+            _model.SearchBarViewModel.SearchText = dbAlbumDetails.AlbumArtist + " " +
+                                                   dbAlbumDetails.AlbumTitle;
+
+            _model.AlbumDetailsFromFile = new WebsiteAlbumMetaDataViewModel
+                                              {
+                                                  Artist = dbAlbumDetails.AlbumArtist,
+                                                  Title = dbAlbumDetails.AlbumTitle,
+                                                  ArtworkUrl = dbAlbumDetails.ArtworkUrl,
+                                                  SongCount = dbAlbumDetails.TrackCount.ToString(),
+                                                  Year = dbAlbumDetails.ReleaseYear.ToString()
+                                              };
+
+            IEnumerable<Track> tracksForAlbum = _dbReader.GetTracksForAlbum(dbAlbumDetails.MediaId);
+
+            foreach (var track in tracksForAlbum)
+            {
+                _model.Rows.Add(new DetailRow(track.FilePath,ZuneTagContainerFactory.GetContainer(track.FilePath)));
+            }
+
+
             _model.CurrentPage = _container.Resolve<SearchViewModel>();
         }
 
@@ -154,13 +195,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             if (header == "Album")
             {
-                sortedAlbums = SortBy(x => x.ZuneAlbumMetaData.AlbumTitle,_albumSortOrder);
+                sortedAlbums = SortBy(x => x.ZuneAlbumMetaData.AlbumTitle, _albumSortOrder);
                 _albumSortOrder = !_albumSortOrder;
             }
 
             if (header == "Linked To")
             {
-                sortedAlbums = SortBy(x => x.IsLinked,_linkedToSortOrder);
+                sortedAlbums = SortBy(x => x.IsLinked, _linkedToSortOrder);
                 _linkedToSortOrder = !_linkedToSortOrder;
             }
 
@@ -185,18 +226,18 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             return sortedAlbums;
         }
 
-        void provider_ItemFinishedDownloading()
+        private void provider_ItemFinishedDownloading()
         {
             //Update totals after each of the albums details have been downloaded
             this.LinkedTotal = this._albums.Where(x => x.IsLinked == LinkStatus.Linked).Count();
             this.UnlinkedTotal = this._albums.Where(x => x.IsLinked == LinkStatus.Unlinked).Count();
-            this.AlbumOrArtistMismatchTotal = this._albums.Where(x => x.IsLinked == LinkStatus.AlbumOrArtistMismatch).Count();
+            this.AlbumOrArtistMismatchTotal =
+                this._albums.Where(x => x.IsLinked == LinkStatus.AlbumOrArtistMismatch).Count();
         }
 
-        void provider_AllDownloadsComplete()
+        private void provider_AllDownloadsComplete()
         {
             this.CanSort = true;
         }
-
     }
 }

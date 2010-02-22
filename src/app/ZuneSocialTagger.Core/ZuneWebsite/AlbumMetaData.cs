@@ -1,7 +1,6 @@
 using System;
-using System.Windows.Media.Imaging;
 
-namespace ZuneSocialTagger.GUIV2.Models
+namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     public class AlbumMetaData
     {

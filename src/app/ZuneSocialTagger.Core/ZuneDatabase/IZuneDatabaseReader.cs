@@ -5,7 +5,8 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
     public interface IZuneDatabaseReader
     {
         bool Initialize();
-        IEnumerable<DbAlbumDetails> ReadAlbums();
-        DbAlbumDetails GetAlbum(int index);
+        IEnumerable<Album> ReadAlbums();
+        Album GetAlbum(int index);
+        IEnumerable<Track> GetTracksForAlbum(int index);
     }
 }

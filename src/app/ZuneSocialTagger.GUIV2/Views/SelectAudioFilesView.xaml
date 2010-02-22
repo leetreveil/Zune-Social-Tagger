@@ -3,7 +3,6 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:cm="clr-namespace:Caliburn.PresentationFramework;assembly=Caliburn.PresentationFramework" 
     xmlns:utils="clr-namespace:ZuneSocialTagger.GUIV2.Utils" 
-    xmlns:Triggers="clr-namespace:Caliburn.PresentationFramework.Triggers;assembly=Caliburn.PresentationFramework"
     xmlns:Actions="clr-namespace:Caliburn.PresentationFramework.Actions;assembly=Caliburn.PresentationFramework" 
     x:Class="ZuneSocialTagger.GUIV2.Views.SelectAudioFilesView">
 
@@ -39,23 +38,9 @@
                   utils:ListViewColumns.Stretch="True" MaxHeight="400" Foreground="Black">
             
 
-                  <!--<GridViewColumnHeader x:Name="gvch" cm:Message.Attach="[Event Click] = [Action Sort(gvch.Column.Header)]"  />-->
-                
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Link Album" Click="LinkAlbum_Click">
-                        <!--<cm:Message.Triggers>
-                            <cm:RoutedMessageTriggerCollection>
-                                <Triggers:EventMessageTrigger EventName="Click">
-                                    <Triggers:EventMessageTrigger.Message>
-                                        <Actions:ActionMessage MethodName="LinkAlbum">
-                                            <cm:Parameter Value="{Binding ElementName=lvAlbums, Path=SelectedItem}"/>
-                                        </Actions:ActionMessage>
-                                    </Triggers:EventMessageTrigger.Message>
-                                </Triggers:EventMessageTrigger>
-                            </cm:RoutedMessageTriggerCollection>
-                        </cm:Message.Triggers>-->
-                    </MenuItem>
+                    <MenuItem Header="Link Album" Click="LinkAlbum_Click"  />
                     <MenuItem Header="De-Link Album"/>
                 </ContextMenu>
             </ListView.ContextMenu>
@@ -70,8 +55,12 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel DataContext="{Binding ZuneAlbumMetaData}" Orientation="Horizontal">
-                                    <StackPanel>
-                                        <Control Template="{DynamicResource AlbumDetails}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Height="50" Width="50" Source="{Binding ImageSource}"  Margin="0,0,10,0"/>
+                                        <StackPanel VerticalAlignment="Center" >
+                                            <TextBlock ToolTip="{Binding AlbumTitle}" Text="{Binding AlbumTitle}"/>
+                                            <TextBlock ToolTip="{Binding AlbumArtist}" Text="{Binding AlbumArtist}" Foreground="#FF8A8D90"/>
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
                             </DataTemplate>
