@@ -183,7 +183,7 @@
 
             <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}" 
                     Margin="0,0,10,0" Grid.Column="1" cm:Message.Attach="[Event Click] = [Action LoadFromZuneWebsite]" 
-                    Content="CANCEL"
+                    Content="DOWNLOAD ALL ALBUMS FROM ZUNE MARKETPLACE"
                     Style="{StaticResource ZuneButton}" />
             
         </Grid>

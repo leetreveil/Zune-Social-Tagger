@@ -9,7 +9,7 @@
       <link>http://wiki.github.com/leetreveil/Zune-Social-Tagger/</link>
       <description>Autoupdate support and stuffs</description>
       <pubDate>Sunday, 27 December 2009 00:35:00 GMT</pubDate>
-      <appcast:version>1.2.8</appcast:version>
+      <appcast:version>3.0.0</appcast:version>
       <enclosure url="http://github.com/leetreveil/Zune-Social-Tagger/raw/master/docs/Zune_Social_Tagger_Test_Update.zip" length="17574" type="application/octet-stream" />
     </item>
   </channel>
