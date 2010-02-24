@@ -129,13 +129,13 @@
     <Compile Include="Models\DetailRow.cs" />
     <Compile Include="Models\IZuneWizardModel.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
-    <Compile Include="ErrorMessageBox.cs" />
+    <Compile Include="ZuneMessageBox.cs" />
     <Compile Include="DraggableWindow.cs" />
     <Compile Include="Utils\ListViewColumns.cs" />
     <Compile Include="ViewModels\SearchResultsDetailViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
-    <Compile Include="Views\ErrorMessageBoxView.xaml.cs">
-      <DependentUpon>ErrorMessageBoxView.xaml</DependentUpon>
+    <Compile Include="Views\ZuneMessageBoxView.xaml.cs">
+      <DependentUpon>ZuneMessageBoxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SearchBarView.xaml.cs">
       <DependentUpon>SearchBarView.xaml</DependentUpon>
@@ -258,7 +258,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ErrorMessageBoxView.xaml">
+    <Page Include="Views\ZuneMessageBoxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -371,6 +371,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\alert.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

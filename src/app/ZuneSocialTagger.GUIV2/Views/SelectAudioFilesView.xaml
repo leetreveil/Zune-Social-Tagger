@@ -158,7 +158,8 @@
 
         </ListView>
 
-        <ProgressBar Margin="0,10,0,0" Width="Auto" Style="{StaticResource GradientProgressbar}" Height="5" Grid.Row="2" Value="{Binding LoadingProgress}"/>
+        <ProgressBar Margin="0,10,0,0" Width="Auto" 
+                     Style="{StaticResource GradientProgressbar}" Height="5" Grid.Row="2" Value="{Binding LoadingProgress}"/>
 
         <Grid Margin="0,10,0,0" Grid.Row="3">
             <Grid.ColumnDefinitions>
@@ -167,13 +168,14 @@
             </Grid.ColumnDefinitions>
 
 
-            <Button FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#BaroqueScript" Margin="0,0,10,0" 
+            <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}" 
+                    Margin="0,0,10,0" 
                     cm:Message.Attach="[Event Click] = [Action LoadAlbumsFromZuneDatabase]"  
-                Content="Refresh"/>
+                    Content="Reload Zune Database"/>
 
             <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}" 
                     Margin="0,0,10,0" Grid.Column="1" cm:Message.Attach="[Event Click] = [Action LoadFromZuneWebsite]" 
-                    Content="Load All Albums From Zune Website"/>
+                    Content="Download All Albums From Zune Marketplace"/>
             
         </Grid>
           

@@ -63,7 +63,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             if (uaeExceptions.Count > 0)
                 //usually occurs when a file is readonly
-                ErrorMessageBox.Show("One or more files could not be written to. Have you checked the files are not marked read-only?");
+                ZuneMessageBox.Show("One or more files could not be written to. Have you checked the files are not marked read-only?",ErrorMode.Error);
             else
                 new SuccessView(new SuccessViewModel(_model)).Show();
 

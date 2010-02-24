@@ -1,9 +1,7 @@
-﻿<local:DraggableWindow x:Class="ZuneSocialTagger.GUIV2.Views.ErrorMessageBoxView"
+﻿<local:DraggableWindow x:Class="ZuneSocialTagger.GUIV2.Views.ZuneMessageBoxView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2"
-    xmlns:ViewModels="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels"
-    Title="ErrorMessageBoxView" 
+    xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2" 
     Style="{DynamicResource DefaultWindowStyle}"  
     WindowStartupLocation="CenterScreen"
     FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" Height="180" Width="400">
@@ -22,11 +20,11 @@
         <!--HEADER-->
         <StackPanel Grid.Row="0">
             <Control Template="{DynamicResource Gradient}"/>
-            <TextBlock  FontSize="26.667" Text="ERROR"/>
+            <TextBlock  FontSize="26.667" Text="{Binding MessageTitle}"/>
         </StackPanel>
         
         <StackPanel Margin="20,0,0,0" Grid.Row="1" Orientation="Horizontal">
-            <Image Width="50" Height="50" Source="../Assets/error.png"/>
+            <Image Width="50" Height="50" Source="{Binding ImageSourceUrl}"/>
             <TextBlock Margin="10,0,0,0" MaxWidth="280" TextWrapping="WrapWithOverflow" VerticalAlignment="Center" Text="{Binding ErrorMessage}" FontSize="16"/>
         </StackPanel>
         
