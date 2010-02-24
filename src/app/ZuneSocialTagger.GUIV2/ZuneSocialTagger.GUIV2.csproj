@@ -16,7 +16,7 @@
     <WarningLevel>4</WarningLevel>
     <ExpressionBlendVersion>3.0.1927.0</ExpressionBlendVersion>
     <ApplicationIcon>Assets\zuneicondark.ico</ApplicationIcon>
-    <TargetFrameworkSubset>Client</TargetFrameworkSubset>
+    <TargetFrameworkSubset>Full</TargetFrameworkSubset>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -52,13 +52,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Core, Version=2.0.0.39524, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+    <Reference Include="Caliburn.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\caliburnold\Caliburn.Core.dll</HintPath>
+      <HintPath>..\..\..\libs\caliburn\Caliburn.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Caliburn.PresentationFramework, Version=2.0.0.39524, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+    <Reference Include="Caliburn.PresentationFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\caliburnold\Caliburn.PresentationFramework.dll</HintPath>
+      <HintPath>..\..\..\libs\caliburn\Caliburn.PresentationFramework.dll</HintPath>
     </Reference>
     <Reference Include="leetreveil.AutoUpdate.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

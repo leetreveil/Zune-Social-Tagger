@@ -1,9 +1,8 @@
-﻿using Caliburn.PresentationFramework.ApplicationModel;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.ViewModels;
-
+using Caliburn.PresentationFramework.ApplicationModel;
 namespace ZuneSocialTagger.GUIV2
 {
     /// <summary>
