@@ -18,7 +18,8 @@ namespace ZuneSocialTagger.GUIV2
             _container.RegisterType<IZuneWizardModel, ZuneWizardModel>(new ContainerControlledLifetimeManager());
 
 
-            //setting the SelectAutoFilesViewModel to be a singleton, the database wont be loaded each time the viewmodel is constructed now
+            //setting the SelectAutoFilesViewModel to be a singleton, 
+            //the database wont be loaded each time the viewmodel is constructed now
             _container.RegisterType<SelectAudioFilesViewModel, SelectAudioFilesViewModel>(
                 new ContainerControlledLifetimeManager());
 

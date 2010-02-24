@@ -13,6 +13,69 @@
     <converters:LinkStatusToImageConverter x:Key="LinkStatusToImageConverter"/>
     <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
 
+
+    <Style x:Key="ZuneButton" TargetType="{x:Type Button}">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="#373A3D"/>
+        <Setter Property="Height" Value="21"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+
+                        <Border x:Name="zuneBtnBorder" CornerRadius="4" BorderThickness="1" BorderBrush="#C2C2C2">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                    <GradientStop Color="#F7F7F7" Offset="0"/>
+                                    <GradientStop Color="#DFDFDF" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                        </Border>
+
+                        <ContentPresenter  Margin="15,0,15,0" 
+                                           HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center" 
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                          RecognizesAccessKey="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="zuneBtnBorder" Property="BorderBrush" Value="#EF79BF"/>
+                        </Trigger>
+                        <Trigger Property="IsDefaulted" Value="True"/>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="zuneBtnBorder" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <GradientStop Color="#EAEAEA" Offset="0"/>
+                                        <GradientStop Color="#D4D4D4" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="zuneBtnBorder" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <GradientStop Color="#F7F7F7" Offset="0"/>
+                                        <GradientStop Color="#DFDFDF" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="#CECECE"/>
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
     <Style x:Key="GradientProgressbar"
      TargetType="{x:Type ProgressBar}">
         <Setter Property="Template">
@@ -246,7 +309,10 @@
                             </Path.Data>
                         </Path>
 
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                          RecognizesAccessKey="True"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsFocused" Value="True"/>

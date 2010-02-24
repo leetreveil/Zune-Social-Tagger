@@ -31,8 +31,8 @@
         </StackPanel>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button Margin="0,0,10,0"  Command="{Binding ApplyUpdateCommand}" Width="80" Height="25" Grid.Row="4" Content="Update Now"/>
-            <Button Width="80" Height="25" Grid.Row="4" Click="Button_Click" Content="Update Later"/>
+            <Button Style="{StaticResource ZuneButton}" Margin="0,0,10,0"  Command="{Binding ApplyUpdateCommand}" Grid.Row="4" Content="UPDATE NOW"/>
+            <Button Style="{StaticResource ZuneButton}" Grid.Row="4" Click="Button_Click" Content="UPDATE LATER"/>
         </StackPanel>
 
     </Grid>

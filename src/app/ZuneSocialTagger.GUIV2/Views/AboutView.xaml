@@ -42,7 +42,7 @@
         </StackPanel>
 
 
-		<Button Height="25" Width="50" Content="Close"  Grid.Row="2"
+		<Button Style="{StaticResource ZuneButton}" Content="CLOSE"  Grid.Row="2"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click" />
         
         <CheckBox Grid.Row="2" IsChecked="{Binding UpdateEnabled}" 

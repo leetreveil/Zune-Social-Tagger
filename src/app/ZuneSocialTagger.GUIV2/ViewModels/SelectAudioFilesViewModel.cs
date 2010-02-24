@@ -29,7 +29,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private int _linkedTotal;
         private bool _isLoading;
         private int _loadingProgress;
-        private readonly BindableCollection<Album> _albums;
 
         public SelectAudioFilesViewModel(IUnityContainer container,
                                          IZuneWizardModel model,
@@ -41,7 +40,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _dbReader.Initialize();
             _dbReader.FinishedReadingAlbums += _dbReader_FinishedReadingAlbums;
             _dbReader.ProgressChanged += _dbReader_ProgressChanged;
-            _albums = _model.DatabaseAlbums;
+
+            this.Albums = new BindableCollection<Album>();
 
             LoadAlbumsFromZuneDatabase();
         }
@@ -58,10 +58,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        public BindableCollection<Album> Albums
-        {
-            get { return _albums; }
-        }
+        public BindableCollection<Album> Albums { get; set; }
 
         public int LoadingProgress
         {
@@ -121,7 +118,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     : LinkStatus.Unknown;
             }
 
-            var downloader = new AlbumDownloaderWithProgressReporting(_albums);
+            var downloader = new AlbumDownloaderWithProgressReporting(this.Albums);
 
             downloader.ProgressChanged += downloader_ProgressChanged;
             downloader.FinishedDownloadingAlbums += downloader_FinishedDownloadingAlbums;
@@ -131,7 +128,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public void LoadAlbumsFromZuneDatabase()
         {
             this.IsLoading = true;
-            _albums.Clear();
+            this.Albums.Clear();
 
             ThreadPool.QueueUserWorkItem(delegate
              {
@@ -142,7 +139,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                      //TODO: need to check if an image is valid or not otherwise the application will crash
 
-                     _albums.Add(newAlbum);
+                     this.Albums.Add(newAlbum);
                  }
              });
 
@@ -204,10 +201,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                 downloader.Download();
 
-                var indexOf = _albums.IndexOf(album);
-                _albums.Remove(album);
+                var indexOf = this.Albums.IndexOf(album);
+                this.Albums.Remove(album);
 
-                _albums.Insert(indexOf, newAlbum);
+                this.Albums.Insert(indexOf, newAlbum);
             }
         }
 
@@ -306,17 +303,17 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             //TODO: dont like how sorting is working, i.e. having two sort variables
 
-            this._albums.Clear();
+            this.Albums.Clear();
 
             foreach (var sortedAlbum in sortedAlbums)
-                this._albums.Add(sortedAlbum);
+                this.Albums.Add(sortedAlbum);
         }
 
         private List<Album> SortBy<T>(Func<Album, T> selector, bool sortOrder)
         {
             List<Album> sortedAlbums = sortOrder
-                                           ? this._albums.OrderBy(selector).ToList()
-                                           : this._albums.OrderByDescending(selector).ToList();
+                                           ? this.Albums.OrderBy(selector).ToList()
+                                           : this.Albums.OrderByDescending(selector).ToList();
 
             return sortedAlbums;
         }
@@ -328,7 +325,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         /// <param name="arg2">Total</param>
         private void _dbReader_ProgressChanged(int arg1, int arg2)
         {
-            this.UnlinkedTotal = _albums.Where(x => x.LinkStatus == LinkStatus.Unlinked).Count();
+            this.UnlinkedTotal = this.Albums.Where(x => x.LinkStatus == LinkStatus.Unlinked).Count();
 
             ReportProgress(arg1, arg2);
         }
@@ -374,11 +371,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void UpdateLinkTotals()
         {
-            this.LinkedTotal = _albums.Where(x => x.LinkStatus == LinkStatus.Linked).Count();
-            this.UnlinkedTotal = _albums.Where(x => x.LinkStatus == LinkStatus.Unlinked).Count();
-            this.AlbumOrArtistMismatchTotal = _albums.Where(x => x.LinkStatus == LinkStatus.AlbumOrArtistMismatch).Count();
+            this.LinkedTotal = this.Albums.Where(x => x.LinkStatus == LinkStatus.Linked).Count();
+            this.UnlinkedTotal = this.Albums.Where(x => x.LinkStatus == LinkStatus.Unlinked).Count();
+            this.AlbumOrArtistMismatchTotal = this.Albums.Where(x => x.LinkStatus == LinkStatus.AlbumOrArtistMismatch).Count();
         }
-
-
     }
 }

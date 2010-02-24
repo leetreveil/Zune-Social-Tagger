@@ -11,7 +11,7 @@
 
     <Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition />
             <RowDefinition />
             <RowDefinition />
 			<RowDefinition />
@@ -27,6 +27,7 @@
 
             <Image Width="16" Height="16" Source="../Assets/warning.png" Margin="0,0,2,0"/>
             <TextBlock Text="{Binding AlbumOrArtistMismatchTotal}" FontWeight="SemiBold"/>
+            
         </StackPanel>
 
 
@@ -34,28 +35,34 @@
                   VirtualizingStackPanel.IsVirtualizing="True" 
                   VirtualizingStackPanel.VirtualizationMode="Recycling" 
                   ScrollViewer.IsDeferredScrollingEnabled="True" 
-                  ItemsSource="{Binding Albums}" 
-                  utils:ListViewColumns.Stretch="True" MaxHeight="400" Foreground="Black">
+                  ItemsSource="{Binding Albums}" IsTextSearchEnabled="True"
+                  utils:ListViewColumns.Stretch="True" MaxHeight="400"
+                  Foreground="Black"
+                  TextSearch.TextPath="ZuneAlbumMetaData.AlbumTitle">
             
-
             <ListView.ContextMenu>
                 <ContextMenu>
+                    
                     <MenuItem Header="Link" Click="LinkAlbum_Click">
                         <MenuItem.Icon>
                             <Image Width="16" Height="16" Source="../Assets/add.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
+                    
                     <MenuItem Header="De-Link" Click="DelinkAlbum_Click">
                         <MenuItem.Icon>
                             <Image Width="16" Height="16" Source="../Assets/minus.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
+                    
                     <Separator />
+                    
                     <MenuItem Header="Refresh" Click="Refresh_Click">
                         <MenuItem.Icon>
                             <Image Width="16" Height="16" Source="../Assets/refresh.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
+                    
                 </ContextMenu>
             </ListView.ContextMenu>
             
@@ -171,11 +178,13 @@
             <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}" 
                     Margin="0,0,10,0" 
                     cm:Message.Attach="[Event Click] = [Action LoadAlbumsFromZuneDatabase]"  
-                    Content="Reload Zune Database"/>
+                    Content="RELOAD ZUNE DATABASE"
+                    Style="{StaticResource ZuneButton}" />
 
             <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}" 
                     Margin="0,0,10,0" Grid.Column="1" cm:Message.Attach="[Event Click] = [Action LoadFromZuneWebsite]" 
-                    Content="Download All Albums From Zune Marketplace"/>
+                    Content="DOWNLOAD ALL ALBUMS FROM ZUNE MARKETPLACE"
+                    Style="{StaticResource ZuneButton}" />
             
         </Grid>
           

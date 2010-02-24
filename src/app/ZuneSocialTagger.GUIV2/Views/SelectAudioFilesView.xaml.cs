@@ -10,12 +10,12 @@ namespace ZuneSocialTagger.GUIV2.Views
     public partial class SelectAudioFilesView : UserControl
     {
         private SelectAudioFilesViewModel _model;
+
         public SelectAudioFilesView()
         {
             this.InitializeComponent();
 			
             // Insert code required on object creation below this point.
-
             this.DataContextChanged += delegate { _model = (SelectAudioFilesViewModel) this.DataContext; };
         }
 
