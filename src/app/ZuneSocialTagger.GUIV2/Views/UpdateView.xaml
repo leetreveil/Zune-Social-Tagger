@@ -1,8 +1,7 @@
 ﻿<local:DraggableWindow x:Class="ZuneSocialTagger.GUIV2.Views.UpdateView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2"
-    Height="216" Width="425"
+    xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2" xmlns:PresentationFramework="clr-namespace:Caliburn.PresentationFramework;assembly=Caliburn.PresentationFramework" Height="216" Width="425"
     Style="{DynamicResource DefaultWindowStyle}" 
     WindowStartupLocation="CenterScreen">
 
@@ -31,7 +30,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Style="{StaticResource ZuneButton}" Margin="0,0,10,0"  Command="{Binding ApplyUpdateCommand}" Grid.Row="4" Content="UPDATE NOW"/>
+            <Button Style="{StaticResource ZuneButton}" Margin="0,0,10,0"  PresentationFramework:Message.Attach="ApplyUpdate()"  Grid.Row="4" Content="UPDATE NOW"/>
             <Button Style="{StaticResource ZuneButton}" Grid.Row="4" Click="Button_Click" Content="UPDATE LATER"/>
         </StackPanel>
 
