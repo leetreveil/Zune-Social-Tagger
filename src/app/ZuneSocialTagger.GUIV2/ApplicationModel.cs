@@ -92,8 +92,15 @@ namespace ZuneSocialTagger.GUIV2
 
                     ThreadPool.QueueUserWorkItem(state =>
                     {
-                        if (updateManager.CheckForUpdate())
-                            this.UpdateAvailable = true;
+                        try
+                        {
+                            if (updateManager.CheckForUpdate())
+                                this.UpdateAvailable = true;
+                        }
+                        catch (Exception)
+                        {
+                        }
+
                     });
                 }
                 catch (Exception e)

@@ -15,7 +15,7 @@
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition/>
                     <ColumnDefinition Width="10"/>
-					<ColumnDefinition/>
+					<ColumnDefinition Width="Auto"/>
 				</Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
@@ -23,16 +23,18 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-                <views:WebsiteAlbumMetaDataView VerticalAlignment="Top" DataContext="{Binding AlbumDetailsFromFile}" />
+            <views:WebsiteAlbumMetaDataView VerticalAlignment="Top" DataContext="{Binding AlbumDetailsFromFile}" />
                 
             <views:SearchBarView VerticalAlignment="Top" DataContext="{Binding SearchBar}" Grid.Column="2"  />
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                
                 <Button Width="60"  Content="Back" Margin="0,0,10,0"
                     cm:Message.Attach="[Event Click] = [Action MoveBack]"/>
 
                 <Button Width="60"   Content="Search"
                     IsEnabled="{Binding SearchBar.IsAbleToSearch}" cm:Message.Attach="[Event Click] = [Action Search]"/>
+                
             </StackPanel>
 
         </Grid>

@@ -7,15 +7,15 @@ namespace ZuneSocialTagger.GUIV2.Models
     {
         private AlbumMetaData _webAlbumMetaData;
         private AlbumDetails _zuneAlbumMetaData;
-        private LinkStatus _isLinked;
+        private LinkStatus _linkStatus;
 
-        public LinkStatus IsLinked
+        public LinkStatus LinkStatus
         {
-            get { return _isLinked; }
+            get { return _linkStatus; }
             set
             {
-                _isLinked = value;
-                NotifyOfPropertyChange(() => this.IsLinked);
+                _linkStatus = value;
+                NotifyOfPropertyChange(() => this.LinkStatus);
             }
         }
 

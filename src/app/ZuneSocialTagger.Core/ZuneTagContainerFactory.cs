@@ -12,7 +12,7 @@ namespace ZuneSocialTagger.Core
         {
             string extension = Path.GetExtension(path);
 
-            if (extension == ".mp3")
+            if (extension.ToLower() == ".mp3")
             {
                 var tagManager = new Id3TagManager();
 
@@ -25,7 +25,7 @@ namespace ZuneSocialTagger.Core
                 return new ZuneMP3TagContainer(tagManager.ReadV2Tag(path));
             }
 
-            if (extension == ".wma")
+            if (extension.ToLower() == ".wma")
                 return new ZuneWMATagContainer(ASFTagManager.ReadTag(path));
 
             return null;

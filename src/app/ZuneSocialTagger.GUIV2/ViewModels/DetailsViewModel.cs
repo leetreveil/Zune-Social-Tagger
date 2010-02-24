@@ -49,7 +49,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                             container.AddMetaData(row.SelectedSong.MetaData);
 
                         //TODO: convert TrackNumbers that are imported as 1/1 to just 1 or 1/12 to just 1
-                        //container.WriteToFile(row.FilePath);
+                        container.WriteToFile(row.FilePath);
                     }
 
                     //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file

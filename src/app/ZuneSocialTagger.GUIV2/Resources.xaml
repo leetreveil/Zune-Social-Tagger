@@ -10,7 +10,29 @@
     <converters:TextToVisibilityConverter x:Key="TextToVisConverter" />
     <converters:AlbumCountToStringConverter x:Key="AlbumCountToStringConverter" />
     <converters:NotConverter x:Key="NotConverter"/>
+    <converters:LinkStatusToImageConverter x:Key="LinkStatusToImageConverter"/>
     <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+
+    <Style x:Key="GradientProgressbar"
+     TargetType="{x:Type ProgressBar}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ProgressBar}">
+                    <Grid>
+                        <Border Name="PART_Track"/>
+                        <Border Name="PART_Indicator" HorizontalAlignment="Left">
+                            <Border.Background>
+                                <LinearGradientBrush>
+                                    <GradientStop Color="#F89C38" Offset="0"/>
+                                    <GradientStop Color="#EC1293" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                        </Border> 
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Storyboard x:Key="LoadingAnim">
         <StringAnimationUsingKeyFrames RepeatBehavior="Forever" 

@@ -79,5 +79,23 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
            return albumDetails.Tracks.Select(track => new Track() {FilePath = track.FilePath});
         }
+
+        public event Action FinishedReadingAlbums;
+        public event Action<int, int> ProgressChanged;
+
+        public Album GetAlbumByAlbumTitle(string albumTitle)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DoesAlbumExist(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            
+        }
     }
 }

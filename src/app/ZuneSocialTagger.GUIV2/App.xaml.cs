@@ -2,6 +2,7 @@
 using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
+using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2
 {
@@ -17,8 +18,12 @@ namespace ZuneSocialTagger.GUIV2
             _container = new UnityContainer();
             _container.RegisterType<IZuneWizardModel, ZuneWizardModel>(new ContainerControlledLifetimeManager());
 
-            //we will switch out the DatabaseReader to the proper one nearer to release, maybe using #IF Debug
-            _container.RegisterType<IZuneDatabaseReader, TestZuneDatabaseReader>();
+
+            //setting the SelectAutoFilesViewModel to be a singleton, the database wont be loaded each time the viewmodel is constructed now
+            _container.RegisterType<SelectAudioFilesViewModel, SelectAudioFilesViewModel>(
+                new ContainerControlledLifetimeManager());
+
+            _container.RegisterType<IZuneDatabaseReader, ZuneDatabaseReader>();
             _container.RegisterInstance(_container);
         }
 
