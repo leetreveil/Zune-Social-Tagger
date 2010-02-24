@@ -52,13 +52,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Core, Version=1.1.0.38293, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+    <Reference Include="Caliburn.Core, Version=2.0.0.39524, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\caliburn\Caliburn.Core.dll</HintPath>
+      <HintPath>..\..\..\libs\caliburnold\Caliburn.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Caliburn.PresentationFramework, Version=1.1.0.38293, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+    <Reference Include="Caliburn.PresentationFramework, Version=2.0.0.39524, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\caliburn\Caliburn.PresentationFramework.dll</HintPath>
+      <HintPath>..\..\..\libs\caliburnold\Caliburn.PresentationFramework.dll</HintPath>
     </Reference>
     <Reference Include="leetreveil.AutoUpdate.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -319,7 +319,6 @@
     <Resource Include="Assets\error.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Fonts\BaroqueScript.ttf" />
     <None Include="Resources\socialtaggerupdater.exe" />
   </ItemGroup>
   <ItemGroup>
