@@ -23,14 +23,14 @@
         <Control Template="{DynamicResource Gradient}"/>
         <TextBlock VerticalAlignment="Top" Grid.Row="1" FontSize="26.667" Text="UPDATE AVAILABLE"/>
 
-        <TextBlock Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap">A new update is available for Zune Social Tagger, it is strongly reccomended that you update now.</TextBlock>
+        <TextBlock Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap">A new update is available for Zune Social Tagger, it is strongly reccomended that you update now.</TextBlock>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock  FontSize="22" Text="Zune Social Tagger "/>
             <TextBlock FontSize="22" Text="{Binding Version}"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="4" Orientation="Horizontal" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button Style="{StaticResource ZuneButton}" Margin="0,0,10,0"  Command="{Binding ApplyUpdateCommand}" Grid.Row="4" Content="UPDATE NOW"/>
             <Button Style="{StaticResource ZuneButton}" Grid.Row="4" Click="Button_Click" Content="UPDATE LATER"/>
         </StackPanel>

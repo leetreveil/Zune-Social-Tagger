@@ -20,7 +20,7 @@
         <!--HEADER-->
         <StackPanel Grid.Row="0">
             <Control Template="{DynamicResource Gradient}"/>
-            <TextBlock  FontSize="26.667" Text="{Binding MessageTitle}"/>
+            <TextBlock FontFamily="../Assets/Fonts/Zegoe Caps"  FontSize="26.667" Text="{Binding MessageTitle}"/>
         </StackPanel>
         
         <StackPanel Grid.Row="1" Orientation="Horizontal">
