@@ -5,6 +5,7 @@ namespace ZuneSocialTagger.GUIV2.Models
         Unknown,
         Linked,
         Unlinked,
+        Unavailable,
         AlbumOrArtistMismatch,
     }
 }

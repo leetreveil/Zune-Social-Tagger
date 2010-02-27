@@ -67,6 +67,7 @@
     <Compile Include="WMATagger\ASFAttributes.cs" />
     <Compile Include="WMATagger\ZuneWMATagContainer.cs" />
     <Compile Include="IZuneTagContainer.cs" />
+    <Compile Include="XmlDeser.cs" />
     <Compile Include="ZuneAttribute.cs" />
     <Compile Include="ZuneDatabase\Album.cs" />
     <Compile Include="ZuneDatabase\DbAlbumDetails.cs" />

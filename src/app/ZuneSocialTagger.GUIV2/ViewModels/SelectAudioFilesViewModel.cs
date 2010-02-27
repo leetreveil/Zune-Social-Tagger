@@ -386,7 +386,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private void UpdateLinkTotals()
         {
             this.LinkedTotal = this.Albums.Where(x => x.LinkStatus == LinkStatus.Linked).Count();
-            this.UnlinkedTotal = this.Albums.Where(x => x.LinkStatus == LinkStatus.Unlinked).Count();
+            var unlinkedTotal = this.Albums.Where(x => x.LinkStatus == LinkStatus.Unlinked).Count();
+            var couldNotDownloadTotal =
+                this.Albums.Where(x => x.LinkStatus == LinkStatus.Unavailable).Count();
+
+            this.UnlinkedTotal = unlinkedTotal + couldNotDownloadTotal;
             this.AlbumOrArtistMismatchTotal = this.Albums.Where(x => x.LinkStatus == LinkStatus.AlbumOrArtistMismatch).Count();
         }
     }

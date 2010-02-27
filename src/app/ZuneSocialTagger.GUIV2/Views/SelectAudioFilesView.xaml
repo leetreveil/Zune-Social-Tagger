@@ -207,6 +207,24 @@
                                                     </Setter>
                                                 </DataTrigger>
 
+                                                <DataTrigger Binding="{Binding LinkStatus}"
+                                                             Value="Unavailable">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Image Width="16"
+                                                                           Height="16"
+                                                                           Source="../Assets/no.png"
+                                                                           Margin="0,0,10,0" />
+                                                                    <TextBlock FontSize="20"
+                                                                               Text="UNAVAILABLE" />
+                                                                </StackPanel>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+
                                             </Style.Triggers>
                                         </Style>
                                     </ContentControl.Style>

@@ -32,7 +32,7 @@ namespace ZuneSocialTagger.GUIV2.Models
                 if (album.LinkStatus == LinkStatus.Unknown)
                 {
                     var reader = new AlbumDetailsDownloader(fullUrlToAlbumXmlDetails);
-                    int index1 = index;
+
                     reader.DownloadCompleted += dledAlbum =>
                                                     {
                                                         _downloadCounter++;
@@ -57,10 +57,10 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public static void DownloadAlbum(AlbumMetaData dledAlbum, Album album)
         {
-            if (dledAlbum == null || album.LinkStatus == LinkStatus.Unlinked)
+            if (dledAlbum == null)
             {
                 Debug.WriteLine("could not get album :(");
-                album.LinkStatus = LinkStatus.Unlinked;
+                album.LinkStatus = LinkStatus.Unavailable;
             }
             else
             {
@@ -75,9 +75,8 @@ namespace ZuneSocialTagger.GUIV2.Models
 
                 //TODO: find better way to do comparison
                 string firstTwoChars =
-                    new string(
-                        album.ZuneAlbumMetaData.AlbumTitle.ToUpper().Take(2)
-                            .ToArray());
+                    new string(album.ZuneAlbumMetaData.AlbumTitle.ToUpper().Take(2).ToArray());
+
                 bool albumTitlesFirstTwoCharactersMatch =
                     dledAlbum.AlbumTitle.ToUpper().StartsWith(firstTwoChars);
 
