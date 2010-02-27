@@ -16,6 +16,8 @@ namespace ZuneSocialTagger.Core
             {
                 var tagManager = new Id3TagManager();
 
+
+                //TODO: app crashes here when a file is loaded from a remote directory, i.e. on network
                 FileState status = tagManager.GetTagsStatus(path);
 
                 //if we just have id3v1.1 tags

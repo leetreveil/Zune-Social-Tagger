@@ -35,11 +35,11 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             return true;
         }
 
-        public static T GetFieldValue<T>(int mediaId, EListType listType, int atom, T defaultValue)
+        private static T GetFieldValue<T>(int mediaId, EListType listType, int atom, T defaultValue)
         {
             int[] columnIndexes = new int[] { atom };
             object[] fieldValues = new object[] { defaultValue };
-            HRESULT hresult = ZuneLibrary.GetFieldValues(mediaId, listType, 1, columnIndexes, fieldValues,
+            ZuneLibrary.GetFieldValues(mediaId, listType, 1, columnIndexes, fieldValues,
                                                          new QueryPropertyBag());
             return (T)fieldValues[0];
         }
@@ -128,14 +128,14 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             return album;
         }
 
-        public IEnumerable<Track> GetTracksForAlbum(int index)
+        public IEnumerable<Track> GetTracksForAlbum(int albumId)
         {
-            ZuneQueryList zuneQueryList = _zuneLibrary.GetTracksByAlbum(0, index, EQuerySortType.eQuerySortOrderAscending,
+            ZuneQueryList zuneQueryList = _zuneLibrary.GetTracksByAlbum(0, albumId, EQuerySortType.eQuerySortOrderAscending,
                                                            (uint)SchemaMap.kiIndex_AlbumID);
 
             for (int i = 0; i < zuneQueryList.Count; i++)
             {
-                var track = new ZuneQueryItem(zuneQueryList, i);
+                ZuneQueryItem track = new ZuneQueryItem(zuneQueryList, i);
 
                 string filePath = (string)track.GetFieldValue(typeof(string), (uint)ZuneQueryList.AtomNameToAtom("SourceURL"));
 
@@ -143,6 +143,28 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             }
 
             zuneQueryList.Dispose();
+        }
+
+        public void RemoveAlbumFromDatabase(int albumId )
+        {
+            ZuneQueryList zuneQueryList = _zuneLibrary.GetTracksByAlbum(0, albumId, EQuerySortType.eQuerySortOrderAscending,
+                                               (uint)SchemaMap.kiIndex_AlbumID);
+
+            for (int i = 0; i < zuneQueryList.Count; i++)
+            {
+                ZuneQueryItem track = new ZuneQueryItem(zuneQueryList, i);
+
+                _zuneLibrary.DeleteMedia(new[] {track.ID}, EMediaTypes.eMediaTypeAudio, false);
+            }
+
+          _zuneLibrary.CleanupTransientMedia();
+
+            zuneQueryList.Dispose();
+        }
+
+        public void AddTrackToDatabase(string filePath)
+        {
+            _zuneLibrary.AddMedia(filePath);
         }
 
         public void Dispose()

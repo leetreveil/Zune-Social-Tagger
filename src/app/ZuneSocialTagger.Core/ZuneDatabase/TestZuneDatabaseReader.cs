@@ -73,9 +73,9 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             return null;
         }
 
-        public IEnumerable<Track> GetTracksForAlbum(int index)
+        public IEnumerable<Track> GetTracksForAlbum(int albumId)
         {
-            var albumDetails = _deserializedAlbums.Where(x => x.MediaId == index).First();
+            var albumDetails = _deserializedAlbums.Where(x => x.MediaId == albumId).First();
 
            return albumDetails.Tracks.Select(track => new Track() {FilePath = track.FilePath});
         }
@@ -89,6 +89,16 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         }
 
         public bool DoesAlbumExist(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAlbumFromDatabase(int albumId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddTrackToDatabase(string filePath)
         {
             throw new NotImplementedException();
         }

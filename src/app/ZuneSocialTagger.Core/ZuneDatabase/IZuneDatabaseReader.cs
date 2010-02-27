@@ -8,7 +8,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         bool Initialize();
         IEnumerable<Album> ReadAlbums();
         Album GetAlbum(int index);
-        IEnumerable<Track> GetTracksForAlbum(int index);
+        IEnumerable<Track> GetTracksForAlbum(int albumId);
         event Action FinishedReadingAlbums;
         event Action<int, int> ProgressChanged;
 
@@ -20,5 +20,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         Album GetAlbumByAlbumTitle(string albumTitle);
 
         bool DoesAlbumExist(int index);
+        void RemoveAlbumFromDatabase(int albumId );
+        void AddTrackToDatabase(string filePath);
     }
 }

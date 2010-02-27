@@ -1,85 +1,122 @@
-﻿<UserControl
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    xmlns:cm="clr-namespace:Caliburn.PresentationFramework;assembly=Caliburn.PresentationFramework" 
-    xmlns:utils="clr-namespace:ZuneSocialTagger.GUIV2.Utils"
-    x:Class="ZuneSocialTagger.GUIV2.Views.SelectAudioFilesView">
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cm="clr-namespace:Caliburn.PresentationFramework;assembly=Caliburn.PresentationFramework"
+             xmlns:utils="clr-namespace:ZuneSocialTagger.GUIV2.Utils"
+             x:Class="ZuneSocialTagger.GUIV2.Views.SelectAudioFilesView">
 
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot">
-		<Grid.RowDefinitions>
+        <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
-			<RowDefinition />
-		</Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,0,5">
+        <StackPanel HorizontalAlignment="Right"
+                    Orientation="Horizontal"
+                    Margin="0,0,0,5">
 
-            <Image Width="16" Height="16" Source="../Assets/yes.png" Margin="0,0,2,0"/>
-            <TextBlock Text="{Binding LinkedTotal}" Margin="0,0,10,0" FontWeight="SemiBold"/>
+            <Image Width="16"
+                   Height="16"
+                   Source="../Assets/yes.png"
+                   Margin="0,0,2,0" />
+            <TextBlock Text="{Binding LinkedTotal}"
+                       Margin="0,0,10,0"
+                       FontWeight="SemiBold" />
 
-            <Image Width="16" Height="16" Source="../Assets/no.png" Margin="0,0,2,0" />
-            <TextBlock Text="{Binding UnlinkedTotal}" Margin="0,0,10,0" FontWeight="SemiBold"/>
+            <Image Width="16"
+                   Height="16"
+                   Source="../Assets/no.png"
+                   Margin="0,0,2,0" />
+            <TextBlock Text="{Binding UnlinkedTotal}"
+                       Margin="0,0,10,0"
+                       FontWeight="SemiBold" />
 
-            <Image Width="16" Height="16" Source="../Assets/warning.png" Margin="0,0,2,0"/>
-            <TextBlock Text="{Binding AlbumOrArtistMismatchTotal}" FontWeight="SemiBold"/>
-            
+            <Image Width="16"
+                   Height="16"
+                   Source="../Assets/warning.png"
+                   Margin="0,0,2,0" />
+            <TextBlock Text="{Binding AlbumOrArtistMismatchTotal}"
+                       FontWeight="SemiBold" />
+
         </StackPanel>
 
 
-        <ListView SelectionMode="Single" Grid.Row="1" x:Name="lvAlbums" 
-                  VirtualizingStackPanel.IsVirtualizing="True" 
-                  VirtualizingStackPanel.VirtualizationMode="Recycling" 
-                  ScrollViewer.IsDeferredScrollingEnabled="True" 
-                  ItemsSource="{Binding Albums}" IsTextSearchEnabled="True"
-                  utils:ListViewColumns.Stretch="True" MaxHeight="400"
+        <ListView SelectionMode="Single"
+                  Grid.Row="1"
+                  x:Name="lvAlbums"
+                  VirtualizingStackPanel.IsVirtualizing="True"
+                  VirtualizingStackPanel.VirtualizationMode="Recycling"
+                  ScrollViewer.IsDeferredScrollingEnabled="True"
+                  ItemsSource="{Binding Albums}"
+                  IsTextSearchEnabled="True"
+                  utils:ListViewColumns.Stretch="True"
+                  MaxHeight="400"
                   Foreground="Black"
-                  TextSearch.TextPath="ZuneAlbumMetaData.AlbumTitle">
-            
+                  TextSearch.TextPath="ZuneAlbumMetaData.AlbumTitle"
+                  Style="{StaticResource ListViewNoBorder}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
             <ListView.ContextMenu>
                 <ContextMenu>
-                    
-                    <MenuItem Header="Link" Click="LinkAlbum_Click">
+
+                    <MenuItem Header="Link"
+                              Click="LinkAlbum_Click">
                         <MenuItem.Icon>
-                            <Image Width="16" Height="16" Source="../Assets/add.png"/>
+                            <Image Width="16"
+                                   Height="16"
+                                   Source="../Assets/add.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    
-                    <MenuItem Header="De-Link" Click="DelinkAlbum_Click">
+
+                    <MenuItem Header="De-Link"
+                              Click="DelinkAlbum_Click">
                         <MenuItem.Icon>
-                            <Image Width="16" Height="16" Source="../Assets/minus.png"/>
+                            <Image Width="16"
+                                   Height="16"
+                                   Source="../Assets/minus.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    
+
                     <Separator />
-                    
-                    <MenuItem Header="Refresh" Click="Refresh_Click">
+
+                    <MenuItem Header="Refresh"
+                              Click="Refresh_Click">
                         <MenuItem.Icon>
-                            <Image Width="16" Height="16" Source="../Assets/refresh.png"/>
+                            <Image Width="16"
+                                   Height="16"
+                                   Source="../Assets/refresh.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    
+
                 </ContextMenu>
             </ListView.ContextMenu>
-            
+
             <ListView.View>
                 <GridView>
                     <GridViewColumn>
-                        <GridViewColumnHeader cm:Message.Attach="[Event Click] = [Action Sort($this.Content)]" 
-                                              Content="Album"/>
-                        
+                        <GridViewColumnHeader cm:Message.Attach="[Event Click] = [Action Sort($this.Content)]"
+                                              Content="Album" />
+
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel DataContext="{Binding ZuneAlbumMetaData}" Orientation="Horizontal">
+                                <StackPanel DataContext="{Binding ZuneAlbumMetaData}"
+                                            Orientation="Horizontal">
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Height="50" Width="50" Source="{Binding ImageSource}"  Margin="0,0,10,0"/>
-                                        <StackPanel VerticalAlignment="Center" >
-                                            <TextBlock ToolTip="{Binding AlbumTitle}" Text="{Binding AlbumTitle}"/>
-                                            <TextBlock ToolTip="{Binding AlbumArtist}" Text="{Binding AlbumArtist}" Foreground="#FF8A8D90"/>
+                                        <Image Height="50"
+                                               Width="50"
+                                               Source="{Binding ImageSource}"
+                                               Margin="0,0,10,0" />
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock ToolTip="{Binding AlbumTitle}"
+                                                       Text="{Binding AlbumTitle}" />
+                                            <TextBlock ToolTip="{Binding AlbumArtist}"
+                                                       Text="{Binding AlbumArtist}"
+                                                       Foreground="#FF8A8D90" />
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
@@ -88,48 +125,63 @@
                     </GridViewColumn>
 
                     <GridViewColumn Width="Auto">
-                        <GridViewColumnHeader cm:Message.Attach="[Event Click] = [Action Sort($this.Content)]" 
-                                              Content="Linked To"/>
-                        
+                        <GridViewColumnHeader cm:Message.Attach="[Event Click] = [Action Sort($this.Content)]"
+                                              Content="Linked To" />
+
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl>
                                     <ContentControl.Style>
                                         <Style TargetType="{x:Type ContentControl}">
                                             <Style.Triggers>
-                                                 <DataTrigger Binding="{Binding LinkStatus}" Value="Linked">
+                                                <DataTrigger Binding="{Binding LinkStatus}"
+                                                             Value="Linked">
                                                     <Setter Property="Template">
                                                         <Setter.Value>
                                                             <ControlTemplate>
-                                                                <StackPanel DataContext="{Binding WebAlbumMetaData}" Orientation="Horizontal">
-                                                                    <Image Width="16" Height="16" Source="../Assets/yes.png" Margin="0,0,10,0"/>
-                                                                    <Control Template="{DynamicResource AlbumDetails}"/>
+                                                                <StackPanel DataContext="{Binding WebAlbumMetaData}"
+                                                                            Orientation="Horizontal">
+                                                                    <Image Width="16"
+                                                                           Height="16"
+                                                                           Source="../Assets/yes.png"
+                                                                           Margin="0,0,10,0" />
+                                                                    <Control Template="{DynamicResource AlbumDetails}" />
                                                                 </StackPanel>
                                                             </ControlTemplate>
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
 
-                                                <DataTrigger Binding="{Binding LinkStatus}" Value="Unknown">
+                                                <DataTrigger Binding="{Binding LinkStatus}"
+                                                             Value="Unknown">
                                                     <Setter Property="Template">
                                                         <Setter.Value>
                                                             <ControlTemplate>
-                                                                <StackPanel DataContext="{Binding WebAlbumMetaData}" Orientation="Horizontal">
-                                                                    <Image Width="16" Height="16" Source="../Assets/help.png" Margin="0,0,10,0"/>
-                                                                    <Control Template="{DynamicResource AlbumDetails}"/>
+                                                                <StackPanel DataContext="{Binding WebAlbumMetaData}"
+                                                                            Orientation="Horizontal">
+                                                                    <Image Width="16"
+                                                                           Height="16"
+                                                                           Source="../Assets/help.png"
+                                                                           Margin="0,0,10,0" />
+                                                                    <Control Template="{DynamicResource AlbumDetails}" />
                                                                 </StackPanel>
                                                             </ControlTemplate>
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
 
-                                                <DataTrigger Binding="{Binding LinkStatus}" Value="AlbumOrArtistMismatch">
+                                                <DataTrigger Binding="{Binding LinkStatus}"
+                                                             Value="AlbumOrArtistMismatch">
                                                     <Setter Property="Template">
                                                         <Setter.Value>
                                                             <ControlTemplate>
-                                                                <StackPanel DataContext="{Binding WebAlbumMetaData}" Orientation="Horizontal">
-                                                                    <Image Width="16" Height="16" Source="../Assets/warning.png" Margin="0,0,10,0"/>
-                                                                    <Control Template="{DynamicResource AlbumDetails}"/>
+                                                                <StackPanel DataContext="{Binding WebAlbumMetaData}"
+                                                                            Orientation="Horizontal">
+                                                                    <Image Width="16"
+                                                                           Height="16"
+                                                                           Source="../Assets/warning.png"
+                                                                           Margin="0,0,10,0" />
+                                                                    <Control Template="{DynamicResource AlbumDetails}" />
                                                                 </StackPanel>
                                                             </ControlTemplate>
                                                         </Setter.Value>
@@ -137,12 +189,16 @@
                                                 </DataTrigger>
 
 
-                                                <DataTrigger Binding="{Binding LinkStatus}" Value="Unlinked">
+                                                <DataTrigger Binding="{Binding LinkStatus}"
+                                                             Value="Unlinked">
                                                     <Setter Property="Template">
                                                         <Setter.Value>
                                                             <ControlTemplate>
                                                                 <StackPanel Orientation="Horizontal">
-                                                                    <Image Width="16" Height="16" Source="../Assets/no.png" Margin="0,0,10,0"/>
+                                                                    <Image Width="16"
+                                                                           Height="16"
+                                                                           Source="../Assets/no.png"
+                                                                           Margin="0,0,10,0" />
                                                                     <TextBlock FontSize="20"
                                                                                Text="UNLINKED" />
                                                                 </StackPanel>
@@ -159,34 +215,41 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    
+
                 </GridView>
             </ListView.View>
 
         </ListView>
 
-        <ProgressBar Margin="0,10,0,0" Width="Auto" 
-                     Style="{StaticResource GradientProgressbar}" Height="5" Grid.Row="2" Value="{Binding LoadingProgress}"/>
+        <ProgressBar Margin="0,10,0,0"
+                     Width="Auto"
+                     Style="{StaticResource GradientProgressbar}"
+                     Height="5"
+                     Grid.Row="2"
+                     Value="{Binding LoadingProgress}" />
 
-        <Grid Margin="0,10,0,0" Grid.Row="3">
+        <Grid Margin="0,10,0,0"
+              Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
 
-            <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}" 
-                    Margin="0,0,10,0" 
-                    cm:Message.Attach="[Event Click] = [Action LoadAlbumsFromZuneDatabase]"  
-                    Content="RELOAD ZUNE DATABASE"
+            <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}"
+                    Margin="0,0,10,0"
+                    cm:Message.Attach="[Event Click] = [Action LoadAlbumsFromZuneDatabase]"
+                    Content="REFRESH"
                     Style="{StaticResource ZuneButton}" />
 
-            <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}" 
-                    Margin="0,0,10,0" Grid.Column="1" cm:Message.Attach="[Event Click] = [Action LoadFromZuneWebsite]" 
-                    Content="DOWNLOAD ALL ALBUMS FROM ZUNE MARKETPLACE"
+            <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}"
+                    Margin="0,0,10,0"
+                    Grid.Column="1"
+                    cm:Message.Attach="[Event Click] = [Action LoadFromZuneWebsite]"
+                    Content="SCAN ALL"
                     Style="{StaticResource ZuneButton}" />
-            
+
         </Grid>
-          
+
     </Grid>
 </UserControl>

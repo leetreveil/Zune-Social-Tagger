@@ -186,7 +186,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             if (!doesAlbumExist)
             {
-                ShowRefreshDatabaseError();  
+                ShowCouldNotFindAlbumError();  
             }
             else
             {
@@ -214,7 +214,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             if (!doesAlbumExist)
             {
-                ShowRefreshDatabaseError();
+                ShowCouldNotFindAlbumError();
             }
             else
             {
@@ -250,20 +250,31 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             var doesAlbumExist = _dbReader.DoesAlbumExist(album.ZuneAlbumMetaData.MediaId);
 
             if (!doesAlbumExist)
-            {
-                ShowRefreshDatabaseError();
-            }
+                ShowCouldNotFindAlbumError();
+
             else
             {
                 Mouse.OverrideCursor = Cursors.Wait;
 
-                var tracksForAlbum = _dbReader.GetTracksForAlbum(album.ZuneAlbumMetaData.MediaId);
+                //TODO: fix bug where application crashes when removing an album that is currently playing
+
+                var tracksForAlbum = _dbReader.GetTracksForAlbum(album.ZuneAlbumMetaData.MediaId).ToList();
+
+                _dbReader.RemoveAlbumFromDatabase(album.ZuneAlbumMetaData.MediaId);
+
+                Thread.Sleep(5000);
 
                 foreach (var track in tracksForAlbum)
                 {
                     var container = ZuneTagContainerFactory.GetContainer(track.FilePath);
 
+                    container.RemoveZuneAttribute("WM/WMContentID");
+                    container.RemoveZuneAttribute("WM/WMCollectionID");
+                    container.RemoveZuneAttribute("WM/WMCollectionGroupID");
                     container.RemoveZuneAttribute("ZuneCollectionID");
+                    container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
+                    container.RemoveZuneAttribute("ZuneCollectionID");
+                    container.RemoveZuneAttribute("ZuneUserEditedFields");
                     container.RemoveZuneAttribute(ZuneIds.Album);
                     container.RemoveZuneAttribute(ZuneIds.Artist);
                     container.RemoveZuneAttribute(ZuneIds.Track);
@@ -271,16 +282,19 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     container.WriteToFile(track.FilePath);
                 }
 
+
+                foreach (var track in tracksForAlbum)
+                    _dbReader.AddTrackToDatabase(track.FilePath);
+
                 Mouse.OverrideCursor = null;
 
                 //TODO: change this to an information message box because it is not an error
-                ZuneMessageBox.Show("Album should now be de-linked. You may need to "+ 
-                                        "remove then re-add the album for the changes to take effect.",ErrorMode.Warning);  
+                ZuneMessageBox.Show("Album should now be de-linked. You may need to " +
+                                    "remove then re-add the album for the changes to take effect.", ErrorMode.Warning);
             }
-
         }
 
-        private void ShowRefreshDatabaseError()
+        private void ShowCouldNotFindAlbumError()
         {
             ZuneMessageBox.Show("Could not find album, you may need to refresh the database.",ErrorMode.Error);
         }
