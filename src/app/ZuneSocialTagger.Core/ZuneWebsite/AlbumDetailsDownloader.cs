@@ -29,7 +29,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             _client.DownloadDataCompleted += _client_DownloadDataCompleted;
         }
 
-        public void Download()
+        public void DownloadAsync()
         {
             _client.DownloadDataAsync(new Uri(_url));
         }

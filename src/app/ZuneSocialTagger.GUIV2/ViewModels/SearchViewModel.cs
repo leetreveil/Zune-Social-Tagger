@@ -2,6 +2,8 @@ using System;
 using Microsoft.Practices.Unity;
 using ZuneSocialTagger.GUIV2.Models;
 using Caliburn.PresentationFramework.Screens;
+using Caliburn.PresentationFramework;
+using Album = ZuneSocialTagger.Core.Album;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -10,34 +12,29 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private readonly IUnityContainer _container;
         private readonly IZuneWizardModel _model;
 
-        public SearchViewModel(IUnityContainer container, IZuneWizardModel model)
+        public SearchViewModel(IUnityContainer container, IZuneWizardModel model, SearchHeaderViewModel searchHeaderViewModel)
         {
             _container = container;
             _model = model;
-            this.SearchBar.StartedSearching += SearchBarViewModel_StartedSearching;
+
+            this.SearchHeader = searchHeaderViewModel;
+            this.SearchHeader.SearchBar.StartedSearching += SearchBar_StartedSearching;
         }
 
-        void SearchBarViewModel_StartedSearching(object sender, EventArgs e)
+        void SearchBar_StartedSearching(BindableCollection<Album> albums)
         {
-            //we only want to move to the next page if we are on the current one
-            //this prevents moving to another page when this page is not 'visible'
+            var searchResultsViewModel = _container.Resolve<SearchResultsViewModel>();
+            searchResultsViewModel.Albums = albums;
+            searchResultsViewModel.SearchHeader = this.SearchHeader;
 
-            _model.CurrentPage = _container.Resolve<SearchResultsViewModel>();
+            _model.CurrentPage = searchResultsViewModel;
         }
 
-        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
-        {
-            get { return _model.AlbumDetailsFromFile; }
-        }
-
-        public SearchBarViewModel SearchBar
-        {
-            get { return _model.SearchBarViewModel; }
-        }
+        public SearchHeaderViewModel SearchHeader { get; set; }
 
         public void Search()
         {
-            this.SearchBar.Search();
+            this.SearchHeader.SearchBar.Search();
         }
         
         public void MoveBack()

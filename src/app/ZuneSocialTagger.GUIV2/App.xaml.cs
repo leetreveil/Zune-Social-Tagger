@@ -3,6 +3,8 @@ using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.ViewModels;
 using Caliburn.PresentationFramework.ApplicationModel;
+
+
 namespace ZuneSocialTagger.GUIV2
 {
     /// <summary>
@@ -21,6 +23,9 @@ namespace ZuneSocialTagger.GUIV2
             //setting the SelectAutoFilesViewModel to be a singleton, 
             //the database wont be loaded each time the viewmodel is constructed now
             _container.RegisterType<SelectAudioFilesViewModel, SelectAudioFilesViewModel>(
+                new ContainerControlledLifetimeManager());
+
+            _container.RegisterType<SearchHeaderViewModel, SearchHeaderViewModel>(
                 new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IZuneDatabaseReader, ZuneDatabaseReader>();

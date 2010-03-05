@@ -1,19 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Windows.Input;
 using Caliburn.PresentationFramework;
 using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
-using ZuneSocialTagger.GUIV2.Views;
 using Album = ZuneSocialTagger.GUIV2.Models.Album;
 using Screen = Caliburn.PresentationFramework.Screens.Screen;
-using System.IO;
-using ZuneSocialTagger.Core;
-using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
 using System.Threading;
-using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -41,7 +35,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _dbReader.FinishedReadingAlbums += _dbReader_FinishedReadingAlbums;
             _dbReader.ProgressChanged += _dbReader_ProgressChanged;
 
-            this.Albums = new BindableCollection<Album>();
+            this.Albums = new BindableCollection<AlbumDetailsViewModel>();
 
             LoadAlbumsFromZuneDatabase();
         }
@@ -58,7 +52,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        public BindableCollection<Album> Albums { get; set; }
+        public BindableCollection<AlbumDetailsViewModel> Albums { get; set; }
 
         public int LoadingProgress
         {
@@ -99,26 +93,26 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 NotifyOfPropertyChange(() => this.AlbumOrArtistMismatchTotal);
             }
         }
-        #endregion
 
+        #endregion
 
         public void LoadFromZuneWebsite()
         {
             this.IsLoading = true;
 
-
-            //reset the web album details each time because 
-            //we want the details to reload each time the user hits reload
-            foreach (var album in Albums)
+            foreach (var albumVm in Albums)
             {
-                album.WebAlbumMetaData = null;
+                //reset the web album details each time because 
+                //we want the details to reload each time the user hits reload
+                albumVm.Album.WebAlbumMetaData = null;
+
                 //set all albums that dont have a mediaid to unlinked
-                album.LinkStatus = String.IsNullOrEmpty(album.ZuneAlbumMetaData.AlbumMediaId) 
-                    ? LinkStatus.Unlinked 
-                    : LinkStatus.Unknown;
+                //albumVm.Album.LinkStatus = String.IsNullOrEmpty(albumVm.Album.ZuneAlbumMetaData.AlbumMediaId) 
+                //    ? LinkStatus.Unlinked 
+                //    : LinkStatus.Unknown;
             }
 
-            var downloader = new AlbumDownloaderWithProgressReporting(this.Albums);
+            var downloader = new AlbumDownloaderWithProgressReporting(this.Albums.Select(x => x.Album));
 
             downloader.ProgressChanged += downloader_ProgressChanged;
             downloader.FinishedDownloadingAlbums += downloader_FinishedDownloadingAlbums;
@@ -131,172 +125,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.Albums.Clear();
 
             ThreadPool.QueueUserWorkItem(delegate
-             {
-                 //TODO: fix bug where when the artwork from the database is either corrupted or does not exist should not cause an error
-                 foreach ( Core.ZuneDatabase.Album dbAlbumDetails in _dbReader.ReadAlbums())
                  {
-                     Album newAlbum = GetNewAlbum(dbAlbumDetails);
+                     foreach (Album newAlbum in _dbReader.ReadAlbums().Select(dbAlbumDetails => Album.GetNewAlbum(dbAlbumDetails)))
+                         this.Albums.Add(new AlbumDetailsViewModel(newAlbum,_container,_model,_dbReader));
 
-                     //TODO: need to check if an image is valid or not otherwise the application will crash
-
-                     this.Albums.Add(newAlbum);
-                 }
-             });
+                     this.IsLoading = false;
+                 });
 
 
             //TODO: change unkown to the default link status in the database
-        }
-
-        private static Album GetNewAlbum(Core.ZuneDatabase.Album dbAlbumDetails)
-        {
-            Album newAlbum = new Album();
-
-            string artworkUrl = dbAlbumDetails.ArtworkUrl;
-
-            if (String.IsNullOrEmpty(artworkUrl))
-                artworkUrl = "pack://application:,,,/Assets/blankartwork.png";
-            else
-            {
-                var path = new string(artworkUrl.Skip(7).ToArray());
-
-                if (!File.Exists(path))
-                    artworkUrl = "pack://application:,,,/Assets/blankartwork.png";
-            }
-
-            newAlbum.ZuneAlbumMetaData =
-                new AlbumDetails(dbAlbumDetails.MediaId,
-                                 dbAlbumDetails.AlbumTitle,
-                                 dbAlbumDetails.AlbumArtist,
-                                 artworkUrl, dbAlbumDetails.AlbumMediaId,
-                                 dbAlbumDetails.DateAdded,
-                                 dbAlbumDetails.ReleaseYear,
-                                 dbAlbumDetails.TrackCount);
-
-
-            //set all albums that dont have a mediaid to unlinked
-            if (String.IsNullOrEmpty(newAlbum.ZuneAlbumMetaData.AlbumMediaId))
-                newAlbum.LinkStatus = LinkStatus.Unlinked;
-
-            return newAlbum;
-        }
-
-        public void RefreshAlbum(Album album)
-        {
-            var doesAlbumExist = _dbReader.DoesAlbumExist(album.ZuneAlbumMetaData.MediaId);
-
-            if (!doesAlbumExist)
-            {
-                ShowCouldNotFindAlbumError();  
-            }
-            else
-            {
-                var newAlbum = GetNewAlbum(_dbReader.GetAlbum(album.ZuneAlbumMetaData.MediaId));
-
-                string url = String.Concat("http://catalog.zune.net/v3.0/en-US/music/album/",
-                                       newAlbum.ZuneAlbumMetaData.AlbumMediaId);
-
-                var downloader = new AlbumDetailsDownloader(url);
-
-                downloader.DownloadCompleted += obj => AlbumDownloaderWithProgressReporting.DownloadAlbum(obj, newAlbum);
-
-                downloader.Download();
-
-                var indexOf = this.Albums.IndexOf(album);
-                this.Albums.Remove(album);
-
-                this.Albums.Insert(indexOf, newAlbum);
-            }
-        }
-
-        public void LinkAlbum(Album albumToBeLinked)
-        {
-            var doesAlbumExist = _dbReader.DoesAlbumExist(albumToBeLinked.ZuneAlbumMetaData.MediaId);
-
-            if (!doesAlbumExist)
-            {
-                ShowCouldNotFindAlbumError();
-            }
-            else
-            {
-                AlbumDetails dbAlbumDetails = albumToBeLinked.ZuneAlbumMetaData;
-
-                _model.SearchBarViewModel.SearchText = dbAlbumDetails.AlbumArtist + " " +
-                                                       dbAlbumDetails.AlbumTitle;
-
-                _model.AlbumDetailsFromFile = new WebsiteAlbumMetaDataViewModel
-                {
-                    Artist = dbAlbumDetails.AlbumArtist,
-                    Title = dbAlbumDetails.AlbumTitle,
-                    ArtworkUrl = dbAlbumDetails.ArtworkUrl,
-                    SongCount = dbAlbumDetails.TrackCount.ToString(),
-                    Year = dbAlbumDetails.ReleaseYear.ToString()
-                };
-
-                IEnumerable<Track> tracksForAlbum = _dbReader.GetTracksForAlbum(dbAlbumDetails.MediaId);
-
-                _model.Rows.Clear();
-
-                foreach (var track in tracksForAlbum)
-                    _model.Rows.Add(new DetailRow(track.FilePath, ZuneTagContainerFactory.GetContainer(track.FilePath)));
-
-
-                _model.CurrentPage = _container.Resolve<SearchViewModel>();
-            }
-        }
-
-
-        public void DelinkAlbum(Album album)
-        {
-            var doesAlbumExist = _dbReader.DoesAlbumExist(album.ZuneAlbumMetaData.MediaId);
-
-            if (!doesAlbumExist)
-                ShowCouldNotFindAlbumError();
-
-            else
-            {
-                Mouse.OverrideCursor = Cursors.Wait;
-
-                //TODO: fix bug where application crashes when removing an album that is currently playing
-
-                var tracksForAlbum = _dbReader.GetTracksForAlbum(album.ZuneAlbumMetaData.MediaId).ToList();
-
-                _dbReader.RemoveAlbumFromDatabase(album.ZuneAlbumMetaData.MediaId);
-
-                Thread.Sleep(5000);
-
-                foreach (var track in tracksForAlbum)
-                {
-                    var container = ZuneTagContainerFactory.GetContainer(track.FilePath);
-
-                    container.RemoveZuneAttribute("WM/WMContentID");
-                    container.RemoveZuneAttribute("WM/WMCollectionID");
-                    container.RemoveZuneAttribute("WM/WMCollectionGroupID");
-                    container.RemoveZuneAttribute("ZuneCollectionID");
-                    container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
-                    container.RemoveZuneAttribute("ZuneCollectionID");
-                    container.RemoveZuneAttribute("ZuneUserEditedFields");
-                    container.RemoveZuneAttribute(ZuneIds.Album);
-                    container.RemoveZuneAttribute(ZuneIds.Artist);
-                    container.RemoveZuneAttribute(ZuneIds.Track);
-
-                    container.WriteToFile(track.FilePath);
-                }
-
-
-                foreach (var track in tracksForAlbum)
-                    _dbReader.AddTrackToDatabase(track.FilePath);
-
-                Mouse.OverrideCursor = null;
-
-                //TODO: change this to an information message box because it is not an error
-                ZuneMessageBox.Show("Album should now be de-linked. You may need to " +
-                                    "remove then re-add the album for the changes to take effect.", ErrorMode.Warning);
-            }
-        }
-
-        private void ShowCouldNotFindAlbumError()
-        {
-            ZuneMessageBox.Show("Could not find album, you may need to refresh the database.",ErrorMode.Error);
         }
 
         public void Sort(string header)
@@ -320,14 +157,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.Albums.Clear();
 
             foreach (var sortedAlbum in sortedAlbums)
-                this.Albums.Add(sortedAlbum);
+                this.Albums.Add(new AlbumDetailsViewModel(sortedAlbum,_container,_model,_dbReader));
         }
 
         private List<Album> SortBy<T>(Func<Album, T> selector, bool sortOrder)
         {
             List<Album> sortedAlbums = sortOrder
-                                           ? this.Albums.OrderBy(selector).ToList()
-                                           : this.Albums.OrderByDescending(selector).ToList();
+                                           ? this.Albums.Select(x => x.Album).OrderBy(selector).ToList()
+                                           : this.Albums.Select(x => x.Album).OrderByDescending(selector).ToList();
 
             return sortedAlbums;
         }
@@ -339,14 +176,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         /// <param name="arg2">Total</param>
         private void _dbReader_ProgressChanged(int arg1, int arg2)
         {
-            this.UnlinkedTotal = this.Albums.Where(x => x.LinkStatus == LinkStatus.Unlinked).Count();
+            this.UnlinkedTotal =
+                this.Albums.Select(x => x.Album).Where(x => x.LinkStatus == LinkStatus.Unlinked).Count();
 
             ReportProgress(arg1, arg2);
         }
 
         private void ReportProgress(int current, int total)
         {
-            this.LoadingProgress = current * 100 / total;
+            this.LoadingProgress = current*100/total;
         }
 
         private void _dbReader_FinishedReadingAlbums()
@@ -367,6 +205,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             //}
         }
 
+
         private void downloader_FinishedDownloadingAlbums()
         {
             this.LoadingProgress = 0;
@@ -385,13 +224,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void UpdateLinkTotals()
         {
-            this.LinkedTotal = this.Albums.Where(x => x.LinkStatus == LinkStatus.Linked).Count();
-            var unlinkedTotal = this.Albums.Where(x => x.LinkStatus == LinkStatus.Unlinked).Count();
+            this.LinkedTotal = this.Albums.Select(x => x.Album).Where(x => x.LinkStatus == LinkStatus.Linked).Count();
+            var unlinkedTotal = this.Albums.Select(x => x.Album).Where(x => x.LinkStatus == LinkStatus.Unlinked).Count();
             var couldNotDownloadTotal =
-                this.Albums.Where(x => x.LinkStatus == LinkStatus.Unavailable).Count();
+                this.Albums.Select(x => x.Album).Where(x => x.LinkStatus == LinkStatus.Unavailable).Count();
 
             this.UnlinkedTotal = unlinkedTotal + couldNotDownloadTotal;
-            this.AlbumOrArtistMismatchTotal = this.Albums.Where(x => x.LinkStatus == LinkStatus.AlbumOrArtistMismatch).Count();
+            this.AlbumOrArtistMismatchTotal =
+                this.Albums.Select(x => x.Album).Where(x => x.LinkStatus == LinkStatus.AlbumOrArtistMismatch).Count();
         }
     }
 }

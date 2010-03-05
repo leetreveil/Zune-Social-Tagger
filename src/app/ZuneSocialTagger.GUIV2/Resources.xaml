@@ -10,6 +10,7 @@
     <converters:AlbumCountToStringConverter x:Key="AlbumCountToStringConverter" />
     <converters:NotConverter x:Key="NotConverter" />
     <converters:LinkStatusToImageConverter x:Key="LinkStatusToImageConverter" />
+    <converters:PathToImageThumbnailConverter x:Key="PathToImageThumbnailConverter" />
     <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
 
 
@@ -101,7 +102,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 
 
     <Style x:Key="GradientProgressbar"

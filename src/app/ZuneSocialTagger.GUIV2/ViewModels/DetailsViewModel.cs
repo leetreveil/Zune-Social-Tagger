@@ -77,17 +77,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _model.CurrentPage = _container.Resolve<SearchResultsViewModel>();
         }
 
+        public void MoveToStart()
+        {
+            _model.CurrentPage = _container.Resolve<SelectAudioFilesViewModel>();
+        }
+
         public ObservableCollection<DetailRow> Rows 
         {
             get { return _model.Rows; }
         } 
 
-        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromWebsite
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite
         {
             get { return _model.AlbumDetailsFromWebsite; }
         }
 
-        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile
         {
             get { return _model.AlbumDetailsFromFile; }
         }

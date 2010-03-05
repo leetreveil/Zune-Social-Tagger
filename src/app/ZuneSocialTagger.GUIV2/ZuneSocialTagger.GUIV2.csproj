@@ -122,6 +122,7 @@
     <Compile Include="Converters\AlbumCountToStringConverter.cs" />
     <Compile Include="Converters\LinkStatusToImageConverter.cs" />
     <Compile Include="Converters\NotConverter.cs" />
+    <Compile Include="Converters\PathToImageThumbnailConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Models\Album.cs" />
     <Compile Include="Models\AlbumDetails.cs" />

@@ -22,22 +22,21 @@
     <Border x:Name="LayoutRoot">
 		<Grid Height="350">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition/>
-				<ColumnDefinition/>
-			</Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="20"/>
 				<RowDefinition  />
                 <RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
-			
-            <views:WebsiteAlbumMetaDataView x:Name="websiteMetaData" DataContext="{Binding AlbumDetailsFromFile}"  VerticalAlignment="Top"/>
-            
-			<views:SearchBarView DataContext="{Binding SearchBarViewModel}" VerticalAlignment="Top" Grid.Column="1" />
-            
+
+            <views:SearchHeaderView VerticalAlignment="Top" Grid.ColumnSpan="3" DataContext="{Binding SearchHeader}" />
+
             <TextBlock Grid.Row="1" Width="60" x:Name="tbLoading" Visibility="{Binding Path=IsLoading, Converter = {StaticResource BoolToVisConverter}}" 
-                       Grid.Column="1" VerticalAlignment="Bottom" FontSize="13.333" Foreground="#FF8A8D90" HorizontalAlignment="Right" />
+                       Grid.Column="2" VerticalAlignment="Bottom" FontSize="13.333" Foreground="#FF8A8D90" HorizontalAlignment="Right" />
             
 			<ListView Grid.Row="2" x:Name="lvAlbums" cm:Message.Attach="[Event SelectionChanged] = Action[LoadAlbum(lvAlbums.SelectedItem)]" 
                       SelectedIndex="0" Background="Transparent" BorderBrush="Transparent" IsSynchronizedWithCurrentItem="True" 
@@ -61,7 +60,7 @@
 				</ListView.ItemTemplate>
 			</ListView>
 			
-            <views:SearchResultsDetailView Grid.Row="2" Grid.Column="1" DataContext="{Binding SearchResultsDetailViewModel}"/>
+            <views:SearchResultsDetailView Grid.Row="2" Grid.Column="2" DataContext="{Binding SearchResultsDetailViewModel}"/>
             
             <StackPanel Margin="0,25,0,0" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right"  Orientation="Horizontal">
                 

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
-using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.ViewModels;
+using System.Linq;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -21,17 +21,17 @@ namespace ZuneSocialTagger.GUIV2.Views
 
         private void LinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _model.LinkAlbum((Album) lvAlbums.SelectedItem);
+            _model.Albums.Select(x=> lvAlbums.SelectedItem as AlbumDetailsViewModel).First().LinkAlbum();
         }
 
         private void Refresh_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _model.RefreshAlbum((Album)lvAlbums.SelectedItem);
+            _model.Albums.Select(x => lvAlbums.SelectedItem as AlbumDetailsViewModel).First().RefreshAlbum();
         }
 
         private void DelinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _model.DelinkAlbum((Album) lvAlbums.SelectedItem);
+            _model.Albums.Select(x => lvAlbums.SelectedItem as AlbumDetailsViewModel).First().DelinkAlbum();
         }
     }
 }

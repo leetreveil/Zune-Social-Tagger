@@ -25,8 +25,8 @@
                     <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-			 <views:WebsiteAlbumMetaDataView DataContext="{Binding AlbumDetailsFromFile}" Grid.Column = "0" />
-             <views:WebsiteAlbumMetaDataView DataContext="{Binding AlbumDetailsFromWebsite}" Grid.Column = "1" />
+			 <views:ExpandedAlbumDetailsView DataContext="{Binding AlbumDetailsFromFile}" Grid.Column = "0" />
+             <views:ExpandedAlbumDetailsView DataContext="{Binding AlbumDetailsFromWebsite}" Grid.Column = "1" />
                 
             </Grid>
         </Border>
@@ -94,12 +94,17 @@
 
     </Border>
 
-        <CheckBox IsChecked="{Binding UpdateAlbumInfo}" VerticalAlignment="Bottom" Grid.Row="2" 
+        <CheckBox IsChecked="{Binding UpdateAlbumInfo}" VerticalAlignment="Top" Grid.Row="2" 
                   Content="Update album information (artist, title, etc)"/>
+        
+        <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="Auto" Grid.Row="2" 
+                Style="{StaticResource ZuneButton}" Content="START AGAIN"
+                cm:Message.Attach="[Event Click] = [Action MoveToStart]"/>
 
         <StackPanel Margin="0,25,0,0" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right"  Orientation="Horizontal">
+            
             <Button Style="{StaticResource ZuneButton}" Content="BACK" Margin="0,0,10,0"
-                        cm:Message.Attach="[Event Click] = [Action MoveBack"/>
+                        cm:Message.Attach="[Event Click] = [Action MoveBack]"/>
 
             <Button Style="{StaticResource ZuneButton}" Content="SAVE"
                         cm:Message.Attach="[Event Click] = [Action Save]"/>

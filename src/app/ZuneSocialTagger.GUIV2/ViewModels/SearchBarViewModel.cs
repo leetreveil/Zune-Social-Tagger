@@ -21,7 +21,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public BindableCollection<Album> SearchResults { get; set; }
 
-        public event EventHandler StartedSearching = delegate { };
+        public event Action<BindableCollection<Album>> StartedSearching = delegate { };
 
         public string SearchText
         {
@@ -60,7 +60,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         /// </summary>
         public void Search()
         {
-            StartedSearching.Invoke(this, new EventArgs());
+            StartedSearching.Invoke(this.SearchResults);
             SearchFor(this.SearchText);
         }
 

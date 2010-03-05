@@ -56,10 +56,6 @@
       <HintPath>..\..\..\..\..\..\..\..\Program Files\Zune\ZuneDBApi.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ZuneShell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Zune\ZuneShell.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtensionMethods.cs" />

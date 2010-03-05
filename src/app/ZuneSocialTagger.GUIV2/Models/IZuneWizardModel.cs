@@ -6,9 +6,8 @@ namespace ZuneSocialTagger.GUIV2.Models
 {
     public interface IZuneWizardModel
     {
-        SearchBarViewModel SearchBarViewModel { get; set; }
-        WebsiteAlbumMetaDataViewModel AlbumDetailsFromWebsite { get; set; }
-        WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile { get; set; }
+        ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
+        ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
         ObservableCollection<DetailRow> Rows { get; set; }
         Screen CurrentPage { get; set; }
     }

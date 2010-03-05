@@ -10,22 +10,15 @@
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
 	
-	<Grid x:Name="LayoutRoot">
 			<Grid>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition/>
-                    <ColumnDefinition Width="10"/>
-					<ColumnDefinition Width="Auto"/>
-				</Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <views:WebsiteAlbumMetaDataView VerticalAlignment="Top" DataContext="{Binding AlbumDetailsFromFile}" />
-                
-            <views:SearchBarView VerticalAlignment="Top" DataContext="{Binding SearchBar}" Grid.Column="2"  />
+            <views:SearchHeaderView VerticalAlignment="Top" DataContext="{Binding SearchHeader}" Grid.ColumnSpan="3" />
+
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
                 
@@ -38,5 +31,4 @@
             </StackPanel>
 
         </Grid>
-	</Grid>
 </UserControl>

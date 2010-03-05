@@ -6,9 +6,7 @@
     WindowStartupLocation="CenterScreen"
     FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U"
     xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views"
-    xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2"
-    xmlns:ViewModels="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels"
-    ShowInTaskbar="False"
+    xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2" ShowInTaskbar="False"
     Topmost="True"
     Width="600" Height="200">
 
@@ -38,9 +36,9 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             
-            <views:WebsiteAlbumMetaDataView DataContext="{Binding AlbumDetailsFromFile}"/>
+            <views:ExpandedAlbumDetailsView DataContext="{Binding AlbumDetailsFromFile}"/>
             <Image Margin="10,10,10,10" Grid.Column="1" Source="../Assets/arrow.png"/>
-            <views:WebsiteAlbumMetaDataView DataContext="{Binding AlbumDetailsFromWebsite}" Grid.Column="2"/>
+            <views:ExpandedAlbumDetailsView DataContext="{Binding AlbumDetailsFromWebsite}" Grid.Column="2"/>
         </Grid>
         
         <StackPanel Grid.Row="2" VerticalAlignment="Bottom">

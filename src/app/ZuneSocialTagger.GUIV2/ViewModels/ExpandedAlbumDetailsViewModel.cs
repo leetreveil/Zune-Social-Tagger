@@ -1,13 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using System.Windows.Controls;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class WebsiteAlbumMetaDataViewModel
+    public class ExpandedAlbumDetailsViewModel
     {
         private string _songCount;
         private string _artworkUrl;

@@ -3,11 +3,11 @@
 namespace ZuneSocialTagger.GUIV2.Views
 {
     /// <summary>
-    /// Interaction logic for WebsiteAlbumMetaDataView.xaml
+    /// Interaction logic for ExpandedAlbumDetailsView.xaml
     /// </summary>
-    public partial class WebsiteAlbumMetaDataView : UserControl
+    public partial class ExpandedAlbumDetailsView : UserControl
     {
-        public WebsiteAlbumMetaDataView()
+        public ExpandedAlbumDetailsView()
         {
             InitializeComponent();
         }

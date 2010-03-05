@@ -11,12 +11,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _model = model;
         }
 
-        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromWebsite
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite
         {
             get { return _model.AlbumDetailsFromWebsite; }
         }
 
-        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile
         {
             get { return _model.AlbumDetailsFromFile; }
         }

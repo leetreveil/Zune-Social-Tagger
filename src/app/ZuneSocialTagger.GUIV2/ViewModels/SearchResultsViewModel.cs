@@ -19,21 +19,18 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private readonly IUnityContainer _container;
         private readonly IZuneWizardModel _model;
         private bool _isLoading;
-        private bool _canMoveNext;
         private SearchResultsDetailViewModel _searchResultsDetailViewModel;
 
-        public SearchResultsViewModel(IUnityContainer container, IZuneWizardModel model)
+        public SearchResultsViewModel(IUnityContainer container, IZuneWizardModel model, SearchHeaderViewModel searchHeaderViewModel)
         {
             _container = container;
             _model = model;
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
+            this.SearchHeader = searchHeaderViewModel;
         }
 
 
-        public ObservableCollection<Album> Albums
-        {
-            get { return this.SearchBarViewModel.SearchResults; }
-        }
+        public ObservableCollection<Album> Albums { get; set; }
 
         public SearchResultsDetailViewModel SearchResultsDetailViewModel
         {
@@ -47,17 +44,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public string AlbumCount
         {
-            get { return String.Format("ALBUMS ({0})", Albums.Count); }
-        }
-
-        public SearchBarViewModel SearchBarViewModel
-        {
-            get { return _model.SearchBarViewModel; }
-        }
-
-        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
-        {
-            get { return _model.AlbumDetailsFromFile; }
+            get { return String.Format("ALBUMS ({0})", this.Albums.Count); }
         }
 
         public bool IsLoading
@@ -69,6 +56,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 NotifyOfPropertyChange(() => IsLoading);
             }
         }
+
+        public SearchHeaderViewModel SearchHeader { get; set; }
 
         public void MoveBack()
         {
@@ -115,7 +104,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             MetaData firstTracksMetaData = tracks.First().MetaData;
 
-            _model.AlbumDetailsFromWebsite = new WebsiteAlbumMetaDataViewModel
+            _model.AlbumDetailsFromWebsite = new ExpandedAlbumDetailsViewModel
                                                  {
                                                      Title = firstTracksMetaData.AlbumName,
                                                      Artist = firstTracksMetaData.AlbumArtist,
