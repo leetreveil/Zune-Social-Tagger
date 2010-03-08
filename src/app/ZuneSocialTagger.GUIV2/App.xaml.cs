@@ -28,6 +28,9 @@ namespace ZuneSocialTagger.GUIV2
             _container.RegisterType<SearchHeaderViewModel, SearchHeaderViewModel>(
                 new ContainerControlledLifetimeManager());
 
+            _container.RegisterType<ExpandedAlbumDetailsViewModel, ExpandedAlbumDetailsViewModel>(
+                new ContainerControlledLifetimeManager());
+
             _container.RegisterType<IZuneDatabaseReader, ZuneDatabaseReader>();
             _container.RegisterInstance(_container);
         }

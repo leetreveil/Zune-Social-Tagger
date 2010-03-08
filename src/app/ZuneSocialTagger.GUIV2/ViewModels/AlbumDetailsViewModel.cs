@@ -54,15 +54,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 AlbumDetails albumDetails = this.Album.ZuneAlbumMetaData;
 
-                _model.AlbumDetailsFromFile = new ExpandedAlbumDetailsViewModel
-                {
-                    Artist = albumDetails.AlbumArtist,
-                    Title = albumDetails.AlbumTitle,
-                    ArtworkUrl = albumDetails.ArtworkUrl,
-                    SongCount = albumDetails.TrackCount.ToString(),
-                    Year = albumDetails.ReleaseYear.ToString()
-                };
-
                 IEnumerable<Track> tracksForAlbum = _dbReader.GetTracksForAlbum(albumDetails.MediaId);
 
                 _model.Rows.Clear();
@@ -70,12 +61,20 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 foreach (var track in tracksForAlbum)
                     _model.Rows.Add(new DetailRow(track.FilePath, ZuneTagContainerFactory.GetContainer(track.FilePath)));
 
+
                 var searchViewModel = _container.Resolve<SearchViewModel>();
 
                 searchViewModel.SearchHeader.SearchBar.SearchText = albumDetails.AlbumArtist + " " +
                                                        albumDetails.AlbumTitle;
 
-                searchViewModel.SearchHeader.AlbumDetails = _model.AlbumDetailsFromFile;
+                searchViewModel.SearchHeader.AlbumDetails = new ExpandedAlbumDetailsViewModel
+                    {
+                        Artist = albumDetails.AlbumArtist,
+                        Title = albumDetails.AlbumTitle,
+                        ArtworkUrl = albumDetails.ArtworkUrl,
+                        SongCount = albumDetails.TrackCount.ToString(),
+                        Year = albumDetails.ReleaseYear.ToString()
+                    };
 
                 _model.CurrentPage = searchViewModel;
             }

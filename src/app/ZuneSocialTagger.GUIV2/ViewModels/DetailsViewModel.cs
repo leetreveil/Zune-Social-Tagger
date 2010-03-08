@@ -15,10 +15,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private readonly IUnityContainer _container;
         private readonly IZuneWizardModel _model;
 
-        public DetailsViewModel(IUnityContainer container, IZuneWizardModel model)
+        public DetailsViewModel(IUnityContainer container, 
+                                IZuneWizardModel model, 
+                                ExpandedAlbumDetailsViewModel albumDetailsFromWebsite,
+                                ExpandedAlbumDetailsViewModel albumDetailsFromFile)
         {
             _container = container;
             _model = model;
+
+            this.AlbumDetailsFromWebsite = albumDetailsFromWebsite;
+            this.AlbumDetailsFromFile = albumDetailsFromFile;
         }
 
         public void Save()
@@ -65,7 +71,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 //usually occurs when a file is readonly
                 ZuneMessageBox.Show("One or more files could not be written to. Have you checked the files are not marked read-only?",ErrorMode.Error);
             else
-                new SuccessView(new SuccessViewModel(_model)).Show();
+                new SuccessView(_container.Resolve<SuccessViewModel>()).Show();
 
             Mouse.OverrideCursor = null;
 
@@ -87,15 +93,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return _model.Rows; }
         } 
 
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite
-        {
-            get { return _model.AlbumDetailsFromWebsite; }
-        }
-
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile
-        {
-            get { return _model.AlbumDetailsFromFile; }
-        }
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
 
         public bool UpdateAlbumInfo
         {

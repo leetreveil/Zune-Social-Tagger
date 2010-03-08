@@ -20,6 +20,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private readonly IZuneWizardModel _model;
         private bool _isLoading;
         private SearchResultsDetailViewModel _searchResultsDetailViewModel;
+        private ExpandedAlbumDetailsViewModel _albumDetails;
 
         public SearchResultsViewModel(IUnityContainer container, IZuneWizardModel model, SearchHeaderViewModel searchHeaderViewModel)
         {
@@ -66,7 +67,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void MoveNext()
         {
-            _model.CurrentPage = _container.Resolve<DetailsViewModel>();
+            var detailsViewModel = _container.Resolve<DetailsViewModel>();
+            detailsViewModel.AlbumDetailsFromWebsite = _albumDetails;
+            detailsViewModel.AlbumDetailsFromFile = this.SearchHeader.AlbumDetails;
+
+            _model.CurrentPage = detailsViewModel;
         }
 
         public void LoadAlbum(Album album)
@@ -85,7 +90,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                      IEnumerable<Track> tracks = reader.Read();
 
-                     UpdateAlbumMetaDataViewModel(tracks);
+                     _albumDetails = SetAlbumDetails(tracks);
                      AddSelectedSongs(tracks);
 
 
@@ -100,23 +105,26 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         }
 
-        private void UpdateAlbumMetaDataViewModel(IEnumerable<Track> tracks)
+        private ExpandedAlbumDetailsViewModel SetAlbumDetails(IEnumerable<Track> tracks)
         {
             MetaData firstTracksMetaData = tracks.First().MetaData;
 
-            _model.AlbumDetailsFromWebsite = new ExpandedAlbumDetailsViewModel
-                                                 {
-                                                     Title = firstTracksMetaData.AlbumName,
-                                                     Artist = firstTracksMetaData.AlbumArtist,
-                                                     ArtworkUrl = tracks.First().ArtworkUrl,
-                                                     Year = firstTracksMetaData.Year,
-                                                     SongCount = tracks.Count().ToString()
-                                                 };
+            return new ExpandedAlbumDetailsViewModel
+                 {
+                     Title = firstTracksMetaData.AlbumName,
+                     Artist = firstTracksMetaData.AlbumArtist,
+                     ArtworkUrl = tracks.First().ArtworkUrl,
+                     Year = firstTracksMetaData.Year,
+                     SongCount = tracks.Count().ToString()
+                 };
         }
 
         private void AddSelectedSongs(IEnumerable<Track> tracks)
         {
-            this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel { SelectedAlbumTitle = tracks.First().MetaData.AlbumName };
+            this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel
+                                                    {
+                                                        SelectedAlbumTitle = tracks.First().MetaData.AlbumName
+                                                    };
 
             foreach (var track in tracks)
                 this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(track);
