@@ -17,7 +17,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public SortViewModel(BindableCollection<AlbumDetailsViewModel> albums)
         {
             _albums = albums;
-            this.SortOrder = SortOrder.DateAdded;
+            this.SortOrder = SortOrder.NotSorted;
         }
 
         public event Action<BindableCollection<AlbumDetailsViewModel>> SortCompleted = delegate { };
@@ -32,43 +32,61 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
+        public void Sort(SortOrder sortOrder)
+        {
+            this.SortOrder = sortOrder;
+            PerformSort();
+        }
+
         public void Sort()
         {
             SetSortState();
+            PerformSort();
+        }
 
+        private void PerformSort()
+        {
             ThreadPool.QueueUserWorkItem(_ =>
-             {
-                 BindableCollection<AlbumDetailsViewModel> sortedBindableAlbums;
-
-                 switch (SortOrder)
                  {
-                     case SortOrder.DateAdded:
-                         sortedBindableAlbums =
-                             _albums.OrderByDescending(x => x.ZuneAlbumMetaData.DateAdded).ToBindableCollection();
-                         break; ;
-                     case SortOrder.Album:
-                         sortedBindableAlbums =
-                             _albums.OrderBy(x => x.ZuneAlbumMetaData.AlbumTitle).ToBindableCollection();
-                         break;
-                     case SortOrder.Artist:
-                         sortedBindableAlbums =
-                             _albums.OrderBy(x => x.ZuneAlbumMetaData.AlbumArtist).ToBindableCollection();
-                         break;
-                     case SortOrder.LinkStatus:
-                         sortedBindableAlbums =
-                             _albums.OrderByDescending(x => x.LinkStatus).ToBindableCollection();
-                         break;
-                     default:
-                         throw new ArgumentOutOfRangeException();
-                 }
+                     BindableCollection<AlbumDetailsViewModel> sortedBindableAlbums;
 
-                 this.SortCompleted.Invoke(sortedBindableAlbums);
-             });
+                     switch (SortOrder)
+                     {
+                         case SortOrder.DateAdded:
+                             sortedBindableAlbums =
+                                 _albums.OrderByDescending(
+                                     x => x.ZuneAlbumMetaData.DateAdded).
+                                     ToBindableCollection();
+                             break;
+                             ;
+                         case SortOrder.Album:
+                             sortedBindableAlbums =
+                                 _albums.OrderBy(x => x.ZuneAlbumMetaData.AlbumTitle).
+                                     ToBindableCollection();
+                             break;
+                         case SortOrder.Artist:
+                             sortedBindableAlbums =
+                                 _albums.OrderBy(x => x.ZuneAlbumMetaData.AlbumArtist).
+                                     ToBindableCollection();
+                             break;
+                         case SortOrder.LinkStatus:
+                             sortedBindableAlbums =
+                                 _albums.OrderByDescending(x => x.LinkStatus).
+                                     ToBindableCollection();
+                             break;
+                         default:
+                             throw new ArgumentOutOfRangeException();
+                     }
+
+                     this.SortCompleted.Invoke(sortedBindableAlbums);
+                 });
         }
 
         private void SetSortState()
         {
-            List<SortOrder> sortOrders = Enum.GetValues(typeof (SortOrder)).Cast<SortOrder>().ToList();
+            //skip not sorted as we do not want to display that while looping through sort orders
+            List<SortOrder> sortOrders =
+                Enum.GetValues(typeof (SortOrder)).Cast<SortOrder>().Where(x => x != SortOrder.NotSorted).ToList();
 
             int index = sortOrders.IndexOf(this.SortOrder);
 
@@ -81,8 +99,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         DateAdded,
         Album,
         Artist,
-        LinkStatus
+        LinkStatus,
+        NotSorted
     }
-
-    
 }

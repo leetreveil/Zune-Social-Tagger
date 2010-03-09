@@ -119,6 +119,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             this.IsLoading = true;
             this.Albums.Clear();
+            this.SortViewModel.SortOrder = SortOrder.NotSorted;
 
             ThreadPool.QueueUserWorkItem(delegate
                  {
@@ -163,17 +164,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             ResetLoadingProgress();
 
-            //TODO: do sorting in place so as albums are being loaded they are being sorted too
-
-            //sorting by date added so you see the newest albums youve added first
-            //var sortedByDate = _albums.OrderByDescending(x => x.ZuneAlbumMetaData.DateAdded).ToList();
-
-            //_albums.Clear();
-
-            //foreach (var album in sortedByDate)
-            //{
-            //    _albums.Add(album);
-            //}
+            this.SortViewModel.Sort(SortOrder.DateAdded);
         }
 
 

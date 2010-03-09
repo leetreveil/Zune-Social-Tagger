@@ -22,6 +22,8 @@ namespace ZuneSocialTagger.GUIV2.Converters
                     return "ARTIST";
                 case SortOrder.LinkStatus:
                     return "LINK STATUS";
+                case SortOrder.NotSorted:
+                    return String.Empty;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

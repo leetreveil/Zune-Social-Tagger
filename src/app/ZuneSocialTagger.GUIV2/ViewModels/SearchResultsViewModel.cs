@@ -30,7 +30,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.SearchHeader = searchHeaderViewModel;
         }
 
-
         public ObservableCollection<Album> Albums { get; set; }
 
         public SearchResultsDetailViewModel SearchResultsDetailViewModel
