@@ -126,9 +126,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                      {
                          var album = new AlbumDetailsViewModel(_container, _model, _dbReader);
 
-                         album.ZuneAlbumMetaData = ZuneTypeConverters.ConvertDbAlbumToAlbumDetails(newAlbum);
+                         album.ZuneAlbumMetaData = newAlbum;
 
-                         if (String.IsNullOrEmpty(album.ZuneAlbumMetaData.AlbumMediaId))
+                         if (album.ZuneAlbumMetaData.AlbumMediaId == Guid.Empty)
                              album.LinkStatus = LinkStatus.Unlinked;
 
                          album.PropertyChanged += album_PropertyChanged;

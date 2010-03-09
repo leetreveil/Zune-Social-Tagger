@@ -131,7 +131,6 @@
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Models\ExtensionMethods.cs" />
     <Compile Include="Models\ZuneTypeConverters.cs" />
-    <Compile Include="Models\AlbumDetails.cs" />
     <Compile Include="Models\AlbumDownloaderWithProgressReporting.cs" />
     <Compile Include="Models\LinkStatus.cs" />
     <Compile Include="Models\DetailRow.cs" />

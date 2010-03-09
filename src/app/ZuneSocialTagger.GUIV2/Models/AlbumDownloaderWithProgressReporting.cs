@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.ViewModels;
+using ZuneSocialTagger.Core.ZuneDatabase;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
@@ -65,7 +66,7 @@ namespace ZuneSocialTagger.GUIV2.Models
                                              dledAlbum.AlbumArtist,
                                              album.ZuneAlbumMetaData);
 
-                album.WebAlbumMetaData = new AlbumDetails
+                album.WebAlbumMetaData = new Album
                 {
                     AlbumArtist = dledAlbum.AlbumArtist,
                     AlbumTitle = dledAlbum.AlbumTitle,

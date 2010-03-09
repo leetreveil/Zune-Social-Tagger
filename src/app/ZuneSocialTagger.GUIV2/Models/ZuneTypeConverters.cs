@@ -1,28 +1,11 @@
-﻿using System;
-using System.Linq;
-using Caliburn.Core;
-using ZuneSocialTagger.GUIV2.ViewModels;
+﻿using System.Linq;
+using ZuneSocialTagger.Core.ZuneDatabase;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
     public static class ZuneTypeConverters
     {
-        public static AlbumDetails ConvertDbAlbumToAlbumDetails(Core.ZuneDatabase.Album dbAlbumDetails)
-        {
-            return new AlbumDetails
-            {
-                MediaId = dbAlbumDetails.MediaId,
-                AlbumTitle = dbAlbumDetails.AlbumTitle,
-                AlbumArtist = dbAlbumDetails.AlbumArtist,
-                ArtworkUrl = dbAlbumDetails.ArtworkUrl,
-                AlbumMediaId = dbAlbumDetails.AlbumMediaId,
-                DateAdded = dbAlbumDetails.DateAdded,
-                ReleaseYear = dbAlbumDetails.ReleaseYear,
-                TrackCount = dbAlbumDetails.TrackCount
-            };
-        }
-
-        public static LinkStatus GetAlbumLinkStatus(string albumTitle, string albumArtist, AlbumDetails existingAlbum)
+        public static LinkStatus GetAlbumLinkStatus(string albumTitle, string albumArtist, Album existingAlbum)
         {
             bool artistTitlesMatch = albumArtist.ToUpper() ==
                                      existingAlbum.AlbumArtist.ToUpper();

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows.Input;
 using Caliburn.Core;
 using Microsoft.Practices.Unity;
@@ -9,6 +10,7 @@ using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Views;
+using Album = ZuneSocialTagger.Core.ZuneDatabase.Album;
 using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
@@ -18,8 +20,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private readonly IUnityContainer _container;
         private readonly IZuneWizardModel _model;
         private readonly IZuneDatabaseReader _dbReader;
-        private AlbumDetails _zuneAlbumMetaData;
-        private AlbumDetails _webAlbumMetaData;
+        private Album _zuneAlbumMetaData;
+        private Album _webAlbumMetaData;
         private LinkStatus _linkStatus;
 
         public AlbumDetailsViewModel(IUnityContainer container,
@@ -31,7 +33,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _dbReader = dbReader;
         }
 
-        public AlbumDetails ZuneAlbumMetaData
+        public Album ZuneAlbumMetaData
         {
             get { return _zuneAlbumMetaData; }
             set
@@ -41,7 +43,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        public AlbumDetails WebAlbumMetaData
+        public Album WebAlbumMetaData
         {
             get { return _webAlbumMetaData; }
             set
@@ -71,7 +73,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
             else
             {
-                AlbumDetails albumDetails = this.ZuneAlbumMetaData;
+                Album albumDetails = this.ZuneAlbumMetaData;
 
                 IEnumerable<Track> tracksForAlbum = _dbReader.GetTracksForAlbum(albumDetails.MediaId);
 
@@ -154,29 +156,40 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 ShowCouldNotFindAlbumError();
             else
             {
-                AlbumDetails albumDetails = ZuneTypeConverters.ConvertDbAlbumToAlbumDetails(
-                    _dbReader.GetAlbum(this.ZuneAlbumMetaData.MediaId));
+                ThreadPool.QueueUserWorkItem(_ =>
+                 {
+                     Album albumDetails = _dbReader.GetAlbum(this.ZuneAlbumMetaData.MediaId);
 
-                string url = String.Concat("http://catalog.zune.net/v3.0/en-US/music/album/",
-                                           albumDetails.AlbumMediaId);
+                     this.LinkStatus = LinkStatus.Unknown;
 
-                var downloader = new AlbumDetailsDownloader(url);
+                     string url = String.Concat("http://catalog.zune.net/v3.0/en-US/music/album/",
+                                                albumDetails.AlbumMediaId);
 
-                downloader.DownloadCompleted += alb =>
-                    {
-                        this.LinkStatus = ZuneTypeConverters.GetAlbumLinkStatus(alb.AlbumTitle,
-                                                                   alb.AlbumArtist,
-                                                                   albumDetails);
+                     if (albumDetails.AlbumMediaId != Guid.Empty)
+                     {
+                         var downloader = new AlbumDetailsDownloader(url);
 
-                        this.WebAlbumMetaData  = new AlbumDetails
-                        {
-                            AlbumArtist = alb.AlbumArtist,
-                            AlbumTitle = alb.AlbumTitle,
-                            ArtworkUrl = alb.ArtworkUrl
-                        };
-                    };
+                         downloader.DownloadCompleted += alb =>
+                         {
+                             this.LinkStatus = ZuneTypeConverters.GetAlbumLinkStatus(alb.AlbumTitle,
+                                                                        alb.AlbumArtist,
+                                                                        albumDetails);
 
-                downloader.DownloadAsync();
+                             this.WebAlbumMetaData = new Album
+                             {
+                                 AlbumArtist = alb.AlbumArtist,
+                                 AlbumTitle = alb.AlbumTitle,
+                                 ArtworkUrl = alb.ArtworkUrl
+                             };
+                         };
+
+                         downloader.DownloadAsync();
+                     }
+                     else
+                     {
+                         this.LinkStatus = LinkStatus.Unlinked;
+                     }
+                 });
             }
         }
 

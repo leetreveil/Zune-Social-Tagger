@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
+
 
 namespace ZuneSocialTagger.Core.ZuneDatabase
 {
@@ -10,7 +10,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         public string AlbumArtist { get; set; }
         public string ArtworkUrl { get; set; }
         public DateTime DateAdded { get; set; }
-        public string AlbumMediaId { get; set; }
+        public Guid AlbumMediaId { get; set; }
         public int MediaId { get; set; }
         public int ReleaseYear { get; set; }
         public int TrackCount { get; set; }
