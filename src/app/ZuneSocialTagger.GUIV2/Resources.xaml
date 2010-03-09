@@ -15,8 +15,7 @@
     <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
 
 
-    <Style x:Key="ZuneButton"
-           TargetType="{x:Type Button}">
+    <Style TargetType="{x:Type Button}">
         <Setter Property="FontWeight"
                 Value="Bold" />
         <Setter Property="Foreground"

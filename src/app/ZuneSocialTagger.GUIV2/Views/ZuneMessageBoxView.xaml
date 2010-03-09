@@ -28,7 +28,7 @@
             <TextBlock Margin="10,0,0,0" MaxWidth="280" TextWrapping="WrapWithOverflow" VerticalAlignment="Center" Text="{Binding ErrorMessage}" FontSize="16"/>
         </StackPanel>
         
-        <Button Style="{StaticResource ZuneButton}" Grid.Row="2" HorizontalAlignment="Right" Content="OK" Click="OK_Click" />
+        <Button Grid.Row="2" HorizontalAlignment="Right" Content="OK" Click="OK_Click" />
     </Grid>
 
 </local:DraggableWindow>

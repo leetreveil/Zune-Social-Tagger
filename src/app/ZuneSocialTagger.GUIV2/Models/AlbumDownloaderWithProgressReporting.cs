@@ -32,11 +32,12 @@ namespace ZuneSocialTagger.GUIV2.Models
                 {
                     var reader = new AlbumDetailsDownloader(fullUrlToAlbumXmlDetails);
 
+                    AlbumDetailsViewModel album1 = album;
                     reader.DownloadCompleted += dledAlbum =>
                         {
                             _downloadCounter++;
 
-                            SetAlbumDetails(dledAlbum, album);
+                            SetAlbumDetails(dledAlbum, album1);
 
 
                             //TODO: don't like how we are doing progress reporting

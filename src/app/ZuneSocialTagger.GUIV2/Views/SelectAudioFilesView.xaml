@@ -122,15 +122,13 @@
             <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}"
                     Margin="0,0,10,0"
                     cm:Message.Attach="[Event Click] = [Action LoadAlbumsFromZuneDatabase]"
-                    Content="REFRESH"
-                    Style="{StaticResource ZuneButton}" />
+                    Content="REFRESH" />
 
             <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}"
                     Margin="0,0,10,0"
                     Grid.Column="1"
                     cm:Message.Attach="[Event Click] = [Action LoadFromZuneWebsite]"
-                    Content="SCAN ALL"
-                    Style="{StaticResource ZuneButton}" />
+                    Content="SCAN ALL" />
 
         </Grid>
 

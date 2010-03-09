@@ -22,10 +22,10 @@
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
                 
-                <Button Style="{StaticResource ZuneButton}" Content="BACK" Margin="0,0,10,0"
+                <Button Content="BACK" Margin="0,0,10,0"
                     cm:Message.Attach="[Event Click] = [Action MoveBack]"/>
 
-                <Button Style="{StaticResource ZuneButton}" Content="SEARCH"
+                <Button Content="SEARCH"
                     IsEnabled="{Binding SearchBar.IsAbleToSearch}" cm:Message.Attach="[Event Click] = [Action Search]"/>
                 
             </StackPanel>

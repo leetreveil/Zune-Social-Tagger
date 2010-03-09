@@ -65,10 +65,10 @@
             
             <StackPanel Margin="0,25,0,0" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right"  Orientation="Horizontal">
                 
-                <Button Style="{StaticResource ZuneButton}" Content="BACK" Margin="0,0,10,0"
+                <Button Content="BACK" Margin="0,0,10,0"
                         cm:Message.Attach="[Event Click] = [Action MoveBack]"/>
                 
-                <Button Style="{StaticResource ZuneButton}" Content="NEXT" 
+                <Button Content="NEXT" 
                        IsEnabled="{Binding Path=IsLoading, Converter={StaticResource NotConverter}}" 
                         cm:Message.Attach="[Event Click] = [Action MoveNext]"/>
             </StackPanel>
