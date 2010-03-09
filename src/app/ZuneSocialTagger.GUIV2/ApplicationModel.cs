@@ -97,10 +97,7 @@ namespace ZuneSocialTagger.GUIV2
                             if (updateManager.CheckForUpdate())
                                 this.UpdateAvailable = true;
                         }
-                        catch (Exception)
-                        {
-                        }
-
+                        catch (Exception){}
                     });
                 }
                 catch (Exception e)

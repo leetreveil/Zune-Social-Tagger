@@ -18,7 +18,7 @@
             </Grid.ColumnDefinitions>
 
 
-            <StackPanel DataContext="{Binding Album.ZuneAlbumMetaData}"
+            <StackPanel DataContext="{Binding ZuneAlbumMetaData}"
                                             Orientation="Horizontal">
                 <StackPanel Orientation="Horizontal">
                     
@@ -43,11 +43,11 @@
                     <Style TargetType="{x:Type ContentControl}">
                         <Style.Triggers>
                             
-                        <DataTrigger Binding="{Binding Album.LinkStatus}" Value="Linked">
+                        <DataTrigger Binding="{Binding LinkStatus}" Value="Linked">
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                    <StackPanel DataContext="{Binding Album.WebAlbumMetaData}"
+                                    <StackPanel DataContext="{Binding WebAlbumMetaData}"
                                                                         Orientation="Horizontal">
                                             <Image Width="16"
                                                                        Height="16"
@@ -60,27 +60,28 @@
                             </Setter>
                         </DataTrigger>
 
-                        <DataTrigger Binding="{Binding Album.LinkStatus}" Value="Unknown">
+                        <DataTrigger Binding="{Binding LinkStatus}" Value="Unknown">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>
-                                        <StackPanel DataContext="{Binding Album.WebAlbumMetaData}"
-                                                                            Orientation="Horizontal">
-                                                <Image Width="16" Height="16"
-                                                                           Source="../Assets/help.png"
-                                                                           Margin="0,0,10,0" />
-                                            <Control Template="{DynamicResource Album.AlbumDetails}" />
-                                            </StackPanel>
+                                            <StackPanel DataContext="{Binding WebAlbumMetaData}"
+                                                                                Orientation="Horizontal">
+                                                    <Image Width="16" Height="16"
+                                                           Source="../Assets/help.png"
+                                                           Margin="0,0,10,0" />
+                                                
+                                                <Control Template="{DynamicResource AlbumDetails}" />
+                                             </StackPanel>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
                         </DataTrigger>
 
-                        <DataTrigger Binding="{Binding Album.LinkStatus}" Value="AlbumOrArtistMismatch">
+                        <DataTrigger Binding="{Binding LinkStatus}" Value="AlbumOrArtistMismatch">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>
-                                        <StackPanel DataContext="{Binding Album.WebAlbumMetaData}" Orientation="Horizontal">
+                                        <StackPanel DataContext="{Binding WebAlbumMetaData}" Orientation="Horizontal">
                                             
                                                 <Image Width="16"
                                                        Height="16"
@@ -96,7 +97,7 @@
                         </DataTrigger>
 
 
-                        <DataTrigger Binding="{Binding Album.LinkStatus}" Value="Unlinked">
+                        <DataTrigger Binding="{Binding LinkStatus}" Value="Unlinked">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>
@@ -111,7 +112,7 @@
                                 </Setter>
                          </DataTrigger>
 
-                        <DataTrigger Binding="{Binding Album.LinkStatus}" Value="Unavailable">
+                        <DataTrigger Binding="{Binding LinkStatus}" Value="Unavailable">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>

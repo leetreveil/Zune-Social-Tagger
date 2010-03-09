@@ -30,8 +30,8 @@ namespace ZuneSocialTagger.GUIV2
 
             _container.RegisterType<ExpandedAlbumDetailsViewModel, ExpandedAlbumDetailsViewModel>(
                 new ContainerControlledLifetimeManager());
-
-            _container.RegisterType<IZuneDatabaseReader, ZuneDatabaseReader>();
+            
+            _container.RegisterType<IZuneDatabaseReader, TestZuneDatabaseReader>();
             _container.RegisterInstance(_container);
         }
 

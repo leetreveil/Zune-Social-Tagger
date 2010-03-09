@@ -37,11 +37,11 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\..\Program Files\Zune\</OutputPath>
     <DefineConstants>TRACE;DEBUG;6</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -124,16 +124,27 @@
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\PathToImageThumbnailConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
-    <Compile Include="Models\Album.cs" />
+    <Compile Include="Models\ZuneTypeConverters.cs" />
     <Compile Include="Models\AlbumDetails.cs" />
     <Compile Include="Models\AlbumDownloaderWithProgressReporting.cs" />
     <Compile Include="Models\LinkStatus.cs" />
     <Compile Include="Models\DetailRow.cs" />
     <Compile Include="Models\IZuneWizardModel.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
+    <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
+    <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
+    <Compile Include="ViewModels\SearchHeaderViewModel.cs" />
+    <Compile Include="Views\AlbumDetailsView.xaml.cs">
+      <DependentUpon>AlbumDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExpandedAlbumDetailsView.xaml.cs">
+      <DependentUpon>ExpandedAlbumDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchHeaderView.xaml.cs">
+      <DependentUpon>SearchHeaderView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ZuneMessageBox.cs" />
     <Compile Include="DraggableWindow.cs" />
-    <Compile Include="Utils\ListViewColumns.cs" />
     <Compile Include="ViewModels\SearchResultsDetailViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
     <Compile Include="Views\ZuneMessageBoxView.xaml.cs">
@@ -161,7 +172,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ViewModels\SuccessViewModel.cs" />
-    <Compile Include="ViewModels\WebsiteAlbumMetaDataViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
@@ -185,9 +195,6 @@
     </Compile>
     <Compile Include="Views\UpdateView.xaml.cs">
       <DependentUpon>UpdateView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WebsiteAlbumMetaDataView.xaml.cs">
-      <DependentUpon>WebsiteAlbumMetaDataView.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -260,6 +267,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\AlbumDetailsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ExpandedAlbumDetailsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SearchHeaderView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\ZuneMessageBoxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -299,10 +318,6 @@
     <Page Include="Views\UpdateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WebsiteAlbumMetaDataView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

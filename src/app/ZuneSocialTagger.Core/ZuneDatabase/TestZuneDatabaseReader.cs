@@ -2,58 +2,41 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace ZuneSocialTagger.Core.ZuneDatabase
 {
     public class TestZuneDatabaseReader : IZuneDatabaseReader
     {
-        private List<DbAlbumDetails> _deserializedAlbums;
+        private List<Album> _deserializedAlbums;
 
         public bool Initialize()
         {
-            try
-            {
-                using (var fs = new FileStream(@"ZuneDatabase\zunedatabasecache.xml", FileMode.Open))
-                    _deserializedAlbums = fs.XmlDeserializeFromStream<List<DbAlbumDetails>>();
+            using (var fs = new FileStream(@"ZuneDatabase\testzunedatabase.xml", FileMode.Open))
+                _deserializedAlbums = fs.XmlDeserializeFromStream<List<Album>>();
 
                 return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
         }
 
         public IEnumerable<Album> ReadAlbums()
         {
-            return _deserializedAlbums.Select(album => new Album()
-                   {
-                       AlbumArtist = album.AlbumArtist,
-                       AlbumMediaId = album.AlbumMediaId,
-                       AlbumTitle = album.AlbumTitle,
-                       ArtworkUrl = album.ArtworkUrl,
-                       DateAdded = album.DateAdded,
-                       MediaId = album.MediaId,
-                       ReleaseYear = album.ReleaseYear,
-                       TrackCount = album.TrackCount
-                   });
+            int counter = 0;
+
+            foreach (var album in _deserializedAlbums)
+            {
+                counter++;
+                yield return album;
+                ProgressChanged.Invoke(counter, _deserializedAlbums.Count);
+            }
+
+            FinishedReadingAlbums.Invoke();
         }
 
         public Album GetAlbum(int index)
         {
             if (_deserializedAlbums != null && _deserializedAlbums.Count > 0)
             {
-                return _deserializedAlbums.Where(x => x.MediaId == index).Select(album => new Album
-                                                                                              {
-                          AlbumArtist = album.AlbumArtist,
-                          AlbumMediaId = album.AlbumMediaId,
-                          AlbumTitle = album.AlbumTitle,
-                          ArtworkUrl = album.ArtworkUrl,
-                          DateAdded = album.DateAdded,
-                          MediaId = album.MediaId,
-                          ReleaseYear =  album.ReleaseYear,
-                          TrackCount =  album.TrackCount
-                      }).First();
+                return _deserializedAlbums.Where(x => x.MediaId == index).First();
             }
 
             return null;
@@ -66,8 +49,8 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
            return albumDetails.Tracks.Select(track => new Track() {FilePath = track.FilePath});
         }
 
-        public event Action FinishedReadingAlbums;
-        public event Action<int, int> ProgressChanged;
+        public event Action FinishedReadingAlbums = delegate { };
+        public event Action<int, int> ProgressChanged = delegate { };
 
         public Album GetAlbumByAlbumTitle(string albumTitle)
         {
@@ -76,7 +59,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
         public bool DoesAlbumExist(int index)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public void RemoveAlbumFromDatabase(int albumId)

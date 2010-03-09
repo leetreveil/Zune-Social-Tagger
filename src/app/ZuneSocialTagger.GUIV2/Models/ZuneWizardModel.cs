@@ -21,7 +21,7 @@ namespace ZuneSocialTagger.GUIV2.Models
             set
             {
                 _currentPage = value;
-                NotifyOfPropertyChange(() => CurrentPage);
+                NotifyOfPropertyChange(() => this.CurrentPage);
             }
         }
     }

@@ -41,7 +41,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\..\Program Files\Zune\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;6</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -114,8 +114,6 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -129,8 +127,10 @@
     <Compile Include="Converters\LinkStatusToImageConverter.cs" />
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\PathToImageThumbnailConverter.cs" />
+    <Compile Include="Converters\SortOrderToTextConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
-    <Compile Include="Models\Album.cs" />
+    <Compile Include="Models\ExtensionMethods.cs" />
+    <Compile Include="Models\ZuneTypeConverters.cs" />
     <Compile Include="Models\AlbumDetails.cs" />
     <Compile Include="Models\AlbumDownloaderWithProgressReporting.cs" />
     <Compile Include="Models\LinkStatus.cs" />
@@ -138,16 +138,23 @@
     <Compile Include="Models\IZuneWizardModel.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
     <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
+    <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
     <Compile Include="ViewModels\SearchHeaderViewModel.cs" />
+    <Compile Include="ViewModels\SortViewModel.cs" />
     <Compile Include="Views\AlbumDetailsView.xaml.cs">
       <DependentUpon>AlbumDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExpandedAlbumDetailsView.xaml.cs">
+      <DependentUpon>ExpandedAlbumDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SearchHeaderView.xaml.cs">
       <DependentUpon>SearchHeaderView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SortView.xaml.cs">
+      <DependentUpon>SortView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ZuneMessageBox.cs" />
     <Compile Include="DraggableWindow.cs" />
-    <Compile Include="Utils\ListViewColumns.cs" />
     <Compile Include="ViewModels\SearchResultsDetailViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
     <Compile Include="Views\ZuneMessageBoxView.xaml.cs">
@@ -175,7 +182,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ViewModels\SuccessViewModel.cs" />
-    <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
@@ -199,9 +205,6 @@
     </Compile>
     <Compile Include="Views\UpdateView.xaml.cs">
       <DependentUpon>UpdateView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ExpandedAlbumDetailsView.xaml.cs">
-      <DependentUpon>ExpandedAlbumDetailsView.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -286,6 +289,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SortView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ZuneMessageBoxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -354,12 +361,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ZuneSocialTagger.Core\ZuneSocialTagger.Core2010.csproj">
-      <Project>{C5F5D93F-50BC-4BE1-9594-5D3D3CB5BCE6}</Project>
-      <Name>ZuneSocialTagger.Core2010</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\arrow.png" />
   </ItemGroup>
   <ItemGroup>
@@ -423,6 +424,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\alert.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ZuneSocialTagger.Core\ZuneSocialTagger.Core2010.csproj">
+      <Project>{C5F5D93F-50BC-4BE1-9594-5D3D3CB5BCE6}</Project>
+      <Name>ZuneSocialTagger.Core2010</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,3 +1,6 @@
+using System.Xml.Serialization;
+
+
 namespace ZuneSocialTagger.Core.ZuneDatabase
 {
     public class Track

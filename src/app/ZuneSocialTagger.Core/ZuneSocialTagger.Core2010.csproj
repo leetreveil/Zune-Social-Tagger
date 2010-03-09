@@ -14,9 +14,8 @@
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,15 +54,6 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="ZuneDBApi, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Zune\ZuneDBApi.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ZuneShell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Zune\ZuneShell.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtensionMethods.cs" />
@@ -71,15 +61,12 @@
     <Compile Include="WMATagger\ASFAttributes.cs" />
     <Compile Include="WMATagger\ZuneWMATagContainer.cs" />
     <Compile Include="IZuneTagContainer.cs" />
-    <Compile Include="XmlDeser.cs" />
     <Compile Include="ZuneAttribute.cs" />
     <Compile Include="ZuneDatabase\Album.cs" />
-    <Compile Include="ZuneDatabase\DbAlbumDetails.cs" />
-    <Compile Include="ZuneDatabase\DbTrack.cs" />
     <Compile Include="ZuneDatabase\IZuneDatabaseReader.cs" />
     <Compile Include="ZuneDatabase\TestZuneDatabaseReader.cs" />
     <Compile Include="ZuneDatabase\Track.cs" />
-    <Compile Include="ZuneDatabase\ZuneDatabaseReader.cs" />
+    <None Include="ZuneDatabase\ZuneDatabaseReader.cs" />
     <Compile Include="ZuneIds.cs" />
     <Compile Include="ID3Tagger\ZuneMP3TagContainer.cs" />
     <Compile Include="ZuneTagContainerFactory.cs" />
@@ -94,8 +81,9 @@
     <Compile Include="ZuneWebsite\Urls.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ZuneDatabase\zunedatabasecache.xml">
+    <Content Include="ZuneDatabase\testzunedatabase.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
