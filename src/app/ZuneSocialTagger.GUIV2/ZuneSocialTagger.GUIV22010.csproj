@@ -136,9 +136,11 @@
     <Compile Include="Models\DetailRow.cs" />
     <Compile Include="Models\IZuneWizardModel.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
+    <Compile Include="Models\AlbumDetails.cs" />
     <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
     <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
     <Compile Include="ViewModels\SearchHeaderViewModel.cs" />
+    <Compile Include="Models\SortOrder.cs" />
     <Compile Include="ViewModels\SortViewModel.cs" />
     <Compile Include="Views\AlbumDetailsView.xaml.cs">
       <DependentUpon>AlbumDetailsView.xaml</DependentUpon>

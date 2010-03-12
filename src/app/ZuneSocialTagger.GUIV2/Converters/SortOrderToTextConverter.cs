@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using ZuneSocialTagger.GUIV2.ViewModels;
+using ZuneSocialTagger.GUIV2.Models;
 
 
 namespace ZuneSocialTagger.GUIV2.Converters

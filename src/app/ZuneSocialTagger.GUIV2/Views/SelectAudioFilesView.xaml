@@ -27,6 +27,7 @@
                    Height="16"
                    Source="../Assets/yes.png"
                    Margin="0,0,2,0" />
+            
             <TextBlock Text="{Binding LinkedTotal}"
                        Margin="0,0,10,0"
                        FontWeight="SemiBold" />
@@ -35,6 +36,7 @@
                    Height="16"
                    Source="../Assets/no.png"
                    Margin="0,0,2,0" />
+            
             <TextBlock Text="{Binding UnlinkedTotal}"
                        Margin="0,0,10,0"
                        FontWeight="SemiBold" />
@@ -43,6 +45,7 @@
                    Height="16"
                    Source="../Assets/warning.png"
                    Margin="0,0,2,0" />
+            
             <TextBlock Text="{Binding AlbumOrArtistMismatchTotal}"
                        FontWeight="SemiBold" />
 
@@ -98,7 +101,6 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <views:AlbumDetailsView />
-        
                 </DataTemplate>
             </ListView.ItemTemplate>
 
@@ -111,7 +113,7 @@
                      Grid.Row="2"
                      Value="{Binding LoadingProgress}" />
 
-        <Grid Margin="0,10,0,0"
+        <Grid Margin ="0,10,0,0"
               Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />

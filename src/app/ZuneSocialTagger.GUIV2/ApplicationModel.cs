@@ -1,7 +1,7 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Xml.Serialization;
 using Caliburn.PresentationFramework.Screens;
 using leetreveil.AutoUpdate.Framework;
 using ZuneSocialTagger.GUIV2.Properties;
@@ -9,7 +9,6 @@ using ZuneSocialTagger.GUIV2.ViewModels;
 using ZuneSocialTagger.GUIV2.Models;
 using Microsoft.Practices.Unity;
 using ZuneSocialTagger.GUIV2.Views;
-using System.Windows;
 
 
 namespace ZuneSocialTagger.GUIV2
@@ -28,6 +27,25 @@ namespace ZuneSocialTagger.GUIV2
             _model.CurrentPage = _container.Resolve<SelectAudioFilesViewModel>();
 
             CheckForUpdates();
+
+            this.WasShutdown += ApplicationModel_WasShutdown;
+        }
+
+        void ApplicationModel_WasShutdown(object sender, EventArgs e)
+        {
+            try
+            {
+                var albums = _container.Resolve<SelectAudioFilesViewModel>().Albums;
+
+                var xSer = new XmlSerializer(albums.GetType());
+
+                using (var fs = new FileStream("zunesoccache.xml", FileMode.Create))
+                    xSer.Serialize(fs, albums);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
         }
 
         public void ShowUpdateView()

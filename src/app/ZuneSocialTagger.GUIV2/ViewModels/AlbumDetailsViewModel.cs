@@ -33,6 +33,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _dbReader = dbReader;
         }
 
+        public AlbumDetailsViewModel()
+        {
+        }
+
         public Album ZuneAlbumMetaData
         {
             get { return _zuneAlbumMetaData; }
@@ -68,9 +72,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             var doesAlbumExist = _dbReader.DoesAlbumExist(this.ZuneAlbumMetaData.MediaId);
 
             if (!doesAlbumExist)
-            {
                 ShowCouldNotFindAlbumError();
-            }
             else
             {
                 Album albumDetails = this.ZuneAlbumMetaData;
@@ -85,16 +87,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 var searchViewModel = _container.Resolve<SearchViewModel>();
 
                 searchViewModel.SearchHeader.SearchBar.SearchText = albumDetails.AlbumArtist + " " +
-                                                       albumDetails.AlbumTitle;
+                                                                    albumDetails.AlbumTitle;
 
                 searchViewModel.SearchHeader.AlbumDetails = new ExpandedAlbumDetailsViewModel
-                    {
-                        Artist = albumDetails.AlbumArtist,
-                        Title = albumDetails.AlbumTitle,
-                        ArtworkUrl = albumDetails.ArtworkUrl,
-                        SongCount = albumDetails.TrackCount.ToString(),
-                        Year = albumDetails.ReleaseYear.ToString()
-                    };
+                                                                {
+                                                                    Artist = albumDetails.AlbumArtist,
+                                                                    Title = albumDetails.AlbumTitle,
+                                                                    ArtworkUrl = albumDetails.ArtworkUrl,
+                                                                    SongCount = albumDetails.TrackCount.ToString(),
+                                                                    Year = albumDetails.ReleaseYear.ToString()
+                                                                };
 
                 _model.CurrentPage = searchViewModel;
             }

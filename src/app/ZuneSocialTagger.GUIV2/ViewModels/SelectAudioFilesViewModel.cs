@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml.Serialization;
 using Caliburn.PresentationFramework;
 using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core.ZuneDatabase;
@@ -7,6 +9,8 @@ using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
 using Screen = Caliburn.PresentationFramework.Screens.Screen;
 using System.Threading;
+using ZuneSocialTagger.Core;
+using Album = ZuneSocialTagger.Core.ZuneDatabase.Album;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -32,15 +36,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             this.Albums = new BindableCollection<AlbumDetailsViewModel>();
 
-            this.SortViewModel = new SortViewModel(this.Albums);
-            this.SortViewModel.SortCompleted += SortViewModel_SortCompleted;
+            this.SortViewModel = new SortViewModel();
+            this.SortViewModel.SortClicked += SortViewModel_SortClicked;
 
-            LoadAlbumsFromZuneDatabase();
-        }
-
-        private void SortViewModel_SortCompleted(BindableCollection<AlbumDetailsViewModel> sortedAlbums)
-        {
-            this.Albums = sortedAlbums;
+            LoadAlbumsFromCache();
         }
 
         #region View Binding Properties
@@ -79,30 +78,65 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public int LinkedTotal
         {
-            get 
-            { 
-                return this.Albums.Where(x => x.LinkStatus == LinkStatus.Linked).Count(); 
-            }
+            get { return this.Albums.Where(x => x.LinkStatus == LinkStatus.Linked).Count(); }
         }
 
         public int UnlinkedTotal
         {
-            get 
-            { 
-                return this.Albums.Where(x => x.LinkStatus == LinkStatus.Unlinked 
-                    || x.LinkStatus == LinkStatus.Unavailable).Count(); 
+            get
+            {
+                return this.Albums.Where(x => x.LinkStatus == LinkStatus.Unlinked
+                                              || x.LinkStatus == LinkStatus.Unavailable).Count();
             }
         }
 
         public int AlbumOrArtistMismatchTotal
         {
-            get
-            {
-                return this.Albums.Where(x => x.LinkStatus == LinkStatus.AlbumOrArtistMismatch).Count();
-            }
+            get { return this.Albums.Where(x => x.LinkStatus == LinkStatus.AlbumOrArtistMismatch).Count(); }
         }
 
         #endregion
+
+        private void LoadAlbumsFromCache()
+        {
+            this.IsLoading = true;
+            this.Albums.Clear();
+            this.SortViewModel.SortOrder = SortOrder.NotSorted;
+
+            ThreadPool.QueueUserWorkItem(_ =>
+                 {
+                     try
+                     {
+                         using (var fs = new FileStream("zunesoccache.xml", FileMode.Open))
+                         {
+                             var deserAlbums = fs.XmlDeserializeFromStream<BindableCollection<AlbumDetailsViewModel>>();
+
+                             int counter = 0;
+                             foreach (var albumDetailsViewModel in deserAlbums)
+                             {
+                                 var newAlbum = new AlbumDetailsViewModel(_container, _model, _dbReader);
+                                 newAlbum.LinkStatus = albumDetailsViewModel.LinkStatus;
+                                 newAlbum.WebAlbumMetaData = albumDetailsViewModel.WebAlbumMetaData;
+                                 newAlbum.ZuneAlbumMetaData = albumDetailsViewModel.ZuneAlbumMetaData;
+
+                                 this.Albums.Add(newAlbum);
+                                 UpdateLinkTotals();
+                                 ReportProgress(counter, deserAlbums.Count);
+
+                                 counter++;
+                             }
+
+                             _dbReader_FinishedReadingAlbums();
+                         }
+
+                     }
+                     catch
+                     {
+                         //if there is any problems loading the cache then fallback to loading the database
+                         LoadAlbumsFromZuneDatabase();
+                     }
+                 });
+        }
 
         public void LoadFromZuneWebsite()
         {
@@ -122,31 +156,70 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.SortViewModel.SortOrder = SortOrder.NotSorted;
 
             ThreadPool.QueueUserWorkItem(delegate
+             {
+                 foreach (Album newAlbum in _dbReader.ReadAlbums())
                  {
-                     foreach (Album newAlbum in _dbReader.ReadAlbums())
+                     var album = new AlbumDetailsViewModel(_container, _model, _dbReader);
+
+                     album.ZuneAlbumMetaData = newAlbum;
+
+                     if (album.ZuneAlbumMetaData.AlbumMediaId == Guid.Empty)
+                         album.LinkStatus = LinkStatus.Unlinked;
+
+                     //add handler to be notified when the LinkStatus enum changes
+                     album.PropertyChanged += album_PropertyChanged;
+
+                     this.Albums.Add(album);
+
+                     UpdateLinkTotals();
+                 }
+
+                 this.IsLoading = false;
+             });
+        }
+
+        private void SortViewModel_SortClicked(SortOrder sortOrder)
+        {
+            PerformSort(sortOrder);
+        }
+
+        private void PerformSort(SortOrder sortOrder)
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+                 {
+                     switch (sortOrder)
                      {
-                         var album = new AlbumDetailsViewModel(_container, _model, _dbReader);
-
-                         album.ZuneAlbumMetaData = newAlbum;
-
-                         if (album.ZuneAlbumMetaData.AlbumMediaId == Guid.Empty)
-                             album.LinkStatus = LinkStatus.Unlinked;
-
-                         album.PropertyChanged += album_PropertyChanged;
-
-                         this.Albums.Add(album);
-
-                         UpdateLinkTotals();
+                         case SortOrder.DateAdded:
+                             this.Albums =
+                                 this.Albums.OrderByDescending(
+                                     x => x.ZuneAlbumMetaData.DateAdded).
+                                     ToBindableCollection();
+                             break;
+                         case SortOrder.Album:
+                             this.Albums =
+                                 this.Albums.OrderBy(x => x.ZuneAlbumMetaData.AlbumTitle).
+                                     ToBindableCollection();
+                             break;
+                         case SortOrder.Artist:
+                             this.Albums =
+                                 this.Albums.OrderBy(x => x.ZuneAlbumMetaData.AlbumArtist).
+                                     ToBindableCollection();
+                             break;
+                         case SortOrder.LinkStatus:
+                             this.Albums =
+                                 this.Albums.OrderByDescending(x => x.LinkStatus).
+                                     ToBindableCollection();
+                             break;
+                         default:
+                             throw new ArgumentOutOfRangeException();
                      }
-
-                     this.IsLoading = false;
                  });
         }
 
         private void album_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "LinkStatus")
-                UpdateLinkTotals();   
+                UpdateLinkTotals();
         }
 
         private void _dbReader_ProgressChanged(int arg1, int arg2)
@@ -155,18 +228,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             ReportProgress(arg1, arg2);
         }
 
+        private void _dbReader_FinishedReadingAlbums()
+        {
+            ResetLoadingProgress();
+            this.SortViewModel.Sort(SortOrder.DateAdded);
+        }
+
         private void ReportProgress(int current, int total)
         {
             this.LoadingProgress = current*100/total;
         }
-
-        private void _dbReader_FinishedReadingAlbums()
-        {
-            ResetLoadingProgress();
-
-            this.SortViewModel.Sort(SortOrder.DateAdded);
-        }
-
 
         private void downloader_FinishedDownloadingAlbums()
         {
@@ -178,7 +249,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             //arg1 = current album ;arg2 = total albums
             if (arg1 < arg2)
                 ReportProgress(arg1, arg2);
-            
+
             UpdateLinkTotals();
         }
 

@@ -1,26 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Caliburn.Core;
-using Caliburn.PresentationFramework;
 using ZuneSocialTagger.GUIV2.Models;
-
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SortViewModel : PropertyChangedBase
     {
-        private BindableCollection<AlbumDetailsViewModel> _albums;
         private SortOrder _sortOrder;
 
-        public SortViewModel(BindableCollection<AlbumDetailsViewModel> albums)
+        public SortViewModel()
         {
-            _albums = albums;
             this.SortOrder = SortOrder.NotSorted;
+            SetSortState();
         }
 
-        public event Action<BindableCollection<AlbumDetailsViewModel>> SortCompleted = delegate { };
+        public event Action<SortOrder> SortClicked = delegate { };
 
         public SortOrder SortOrder
         {
@@ -35,53 +31,17 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public void Sort(SortOrder sortOrder)
         {
             this.SortOrder = sortOrder;
-            PerformSort();
         }
 
         public void Sort()
         {
             SetSortState();
-            PerformSort();
+            SortClicked.Invoke(this.SortOrder);
         }
 
-        private void PerformSort()
-        {
-            ThreadPool.QueueUserWorkItem(_ =>
-                 {
-                     BindableCollection<AlbumDetailsViewModel> sortedBindableAlbums;
-
-                     switch (SortOrder)
-                     {
-                         case SortOrder.DateAdded:
-                             sortedBindableAlbums =
-                                 _albums.OrderByDescending(
-                                     x => x.ZuneAlbumMetaData.DateAdded).
-                                     ToBindableCollection();
-                             break;
-                             ;
-                         case SortOrder.Album:
-                             sortedBindableAlbums =
-                                 _albums.OrderBy(x => x.ZuneAlbumMetaData.AlbumTitle).
-                                     ToBindableCollection();
-                             break;
-                         case SortOrder.Artist:
-                             sortedBindableAlbums =
-                                 _albums.OrderBy(x => x.ZuneAlbumMetaData.AlbumArtist).
-                                     ToBindableCollection();
-                             break;
-                         case SortOrder.LinkStatus:
-                             sortedBindableAlbums =
-                                 _albums.OrderByDescending(x => x.LinkStatus).
-                                     ToBindableCollection();
-                             break;
-                         default:
-                             throw new ArgumentOutOfRangeException();
-                     }
-
-                     this.SortCompleted.Invoke(sortedBindableAlbums);
-                 });
-        }
-
+        /// <summary>
+        /// Move the sort order to the next one in the list
+        /// </summary>
         private void SetSortState()
         {
             //skip not sorted as we do not want to display that while looping through sort orders
@@ -92,14 +52,5 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             this.SortOrder = index == sortOrders.Count - 1 ? sortOrders[0] : sortOrders[index + 1];
         }
-    }
-
-    public enum SortOrder
-    {
-        DateAdded,
-        Album,
-        Artist,
-        LinkStatus,
-        NotSorted
     }
 }
