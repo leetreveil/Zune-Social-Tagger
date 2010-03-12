@@ -137,6 +137,7 @@
     <Compile Include="Models\IZuneWizardModel.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
     <Compile Include="Models\AlbumDetails.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
     <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
     <Compile Include="ViewModels\SearchHeaderViewModel.cs" />

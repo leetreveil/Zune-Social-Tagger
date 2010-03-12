@@ -14,5 +14,8 @@
     <Setting Name="UpdateExeName" Type="System.String" Scope="User">
       <Value Profile="(Default)">socialtaggerupdater.exe</Value>
     </Setting>
+    <Setting Name="SortOrder" Type="ZuneSocialTagger.GUIV2.Models.SortOrder" Scope="User">
+      <Value Profile="(Default)">DateAdded</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

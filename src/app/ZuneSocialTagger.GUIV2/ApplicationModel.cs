@@ -33,10 +33,10 @@ namespace ZuneSocialTagger.GUIV2
 
         void ApplicationModel_WasShutdown(object sender, EventArgs e)
         {
+            var selectAudioFilesViewModel = _container.Resolve<SelectAudioFilesViewModel>();
+            var albums = selectAudioFilesViewModel.Albums;
             try
             {
-                var albums = _container.Resolve<SelectAudioFilesViewModel>().Albums;
-
                 var xSer = new XmlSerializer(albums.GetType());
 
                 using (var fs = new FileStream("zunesoccache.xml", FileMode.Create))
@@ -46,6 +46,10 @@ namespace ZuneSocialTagger.GUIV2
             {
                 Console.WriteLine(exception);
             }
+
+            var sortOrder = selectAudioFilesViewModel.SortViewModel.SortOrder;
+            Settings.Default.SortOrder = sortOrder;
+            Settings.Default.Save();
         }
 
         public void ShowUpdateView()

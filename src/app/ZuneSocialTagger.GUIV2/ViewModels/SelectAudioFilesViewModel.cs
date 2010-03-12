@@ -7,6 +7,7 @@ using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
+using ZuneSocialTagger.GUIV2.Properties;
 using Screen = Caliburn.PresentationFramework.Screens.Screen;
 using System.Threading;
 using ZuneSocialTagger.Core;
@@ -114,19 +115,26 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                              int counter = 0;
                              foreach (var albumDetailsViewModel in deserAlbums)
                              {
-                                 var newAlbum = new AlbumDetailsViewModel(_container, _model, _dbReader);
-                                 newAlbum.LinkStatus = albumDetailsViewModel.LinkStatus;
-                                 newAlbum.WebAlbumMetaData = albumDetailsViewModel.WebAlbumMetaData;
-                                 newAlbum.ZuneAlbumMetaData = albumDetailsViewModel.ZuneAlbumMetaData;
+                                 var newAlbum = new AlbumDetailsViewModel(_container, _model, _dbReader)
+                                                    {
+                                                        LinkStatus = albumDetailsViewModel.LinkStatus,
+                                                        WebAlbumMetaData = albumDetailsViewModel.WebAlbumMetaData,
+                                                        ZuneAlbumMetaData = albumDetailsViewModel.ZuneAlbumMetaData
+                                                    };
 
                                  this.Albums.Add(newAlbum);
+
                                  UpdateLinkTotals();
                                  ReportProgress(counter, deserAlbums.Count);
+
+                                 //add handler to be notified when the LinkStatus enum changes
+                                 newAlbum.PropertyChanged += album_PropertyChanged;
 
                                  counter++;
                              }
 
-                             _dbReader_FinishedReadingAlbums();
+                             ResetLoadingProgress();
+                             this.SortViewModel.SortOrder = Settings.Default.SortOrder;
                          }
 
                      }
@@ -187,6 +195,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             ThreadPool.QueueUserWorkItem(_ =>
                  {
+                     //TODO: remove code repetition
                      switch (sortOrder)
                      {
                          case SortOrder.DateAdded:
