@@ -1,3 +1,4 @@
+using System;
 using ASFTag;
 using Id3Tag;
 using System.IO;
@@ -16,7 +17,6 @@ namespace ZuneSocialTagger.Core
             {
                 var tagManager = new Id3TagManager();
 
-
                 //TODO: app crashes here when a file is loaded from a remote directory, i.e. on network
                 FileState status = tagManager.GetTagsStatus(path);
 
@@ -30,7 +30,7 @@ namespace ZuneSocialTagger.Core
             if (extension.ToLower() == ".wma")
                 return new ZuneWMATagContainer(ASFTagManager.ReadTag(path));
 
-            return null;
+            throw new NotSupportedException("The " + Path.GetExtension(path) + " file extension is not supported with zune social tagger.");
         }
     }
 }

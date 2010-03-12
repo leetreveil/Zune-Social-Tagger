@@ -1,6 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfAlbum xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Album>
+    <AlbumTitle>Voodoo People</AlbumTitle>
+    <AlbumArtist>Pendulum</AlbumArtist>
+    <ArtworkUrl />
+    <DateAdded>2009-05-11T21:52:43</DateAdded>
+    <Tracks>
+      <Track>
+        <FilePath>E:\Music\Loose\01 Voodoo People (Pendulum Remix).m4a</FilePath>
+      </Track>
+    </Tracks>
+    <AlbumMediaId>{65368900-0100-11DB-89CA-0019B92A3933}</AlbumMediaId>
+    <MediaId>453</MediaId>
+    <ReleaseYear>2006</ReleaseYear>
+    <TrackCount>1</TrackCount>
+  </Album>
+  <Album>
     <AlbumTitle>When Your Heart Stops Beating (Parental Advisory)</AlbumTitle>
     <AlbumArtist>+44</AlbumArtist>
     <ArtworkUrl />

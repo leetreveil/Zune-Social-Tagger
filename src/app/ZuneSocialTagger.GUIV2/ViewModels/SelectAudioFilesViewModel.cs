@@ -31,7 +31,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _container = container;
             _model = model;
             _dbReader = dbReader;
-            _dbReader.Initialize();
             _dbReader.FinishedReadingAlbums += _dbReader_FinishedReadingAlbums;
             _dbReader.ProgressChanged += _dbReader_ProgressChanged;
 
@@ -162,6 +161,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.IsLoading = true;
             this.Albums.Clear();
             this.SortViewModel.SortOrder = SortOrder.NotSorted;
+
+            _dbReader.Initialize();
 
             ThreadPool.QueueUserWorkItem(delegate
              {

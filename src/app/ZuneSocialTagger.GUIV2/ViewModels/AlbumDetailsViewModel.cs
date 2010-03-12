@@ -67,6 +67,19 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
+        private IZuneTagContainer TryGetContainer(Track track)
+        {
+            try
+            {
+                return ZuneTagContainerFactory.GetContainer(track.FilePath);
+            }
+            catch (NotSupportedException ex)
+            {
+                ZuneMessageBox.Show(ex.Message, ErrorMode.Error);
+                return null;
+            }
+        }
+
         public void LinkAlbum()
         {
             var doesAlbumExist = _dbReader.DoesAlbumExist(this.ZuneAlbumMetaData.MediaId);
@@ -82,7 +95,18 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 _model.Rows.Clear();
 
                 foreach (var track in tracksForAlbum)
-                    _model.Rows.Add(new DetailRow(track.FilePath, ZuneTagContainerFactory.GetContainer(track.FilePath)));
+                {
+                    IZuneTagContainer container = TryGetContainer(track);
+
+                    if (container != null)
+                    {
+                        _model.Rows.Add(new DetailRow(track.FilePath, container));
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
 
                 var searchViewModel = _container.Resolve<SearchViewModel>();
 
@@ -118,11 +142,21 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                 var tracksForAlbum = _dbReader.GetTracksForAlbum(this.ZuneAlbumMetaData.MediaId).ToList();
 
-                _dbReader.RemoveAlbumFromDatabase(this.ZuneAlbumMetaData.MediaId);
+                //_dbReader.RemoveAlbumFromDatabase(this.ZuneAlbumMetaData.MediaId);
 
                 foreach (var track in tracksForAlbum)
                 {
-                    var container = ZuneTagContainerFactory.GetContainer(track.FilePath);
+                    IZuneTagContainer container = TryGetContainer(track);
+
+                    if (container != null)
+                    {
+                        _model.Rows.Add(new DetailRow(track.FilePath, container));
+                    }
+                    else
+                    {
+                        Mouse.OverrideCursor = null;
+                        return;
+                    }
 
                     container.RemoveZuneAttribute("WM/WMContentID");
                     container.RemoveZuneAttribute("WM/WMCollectionID");
@@ -139,8 +173,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 }
 
 
-                foreach (var track in tracksForAlbum)
-                    _dbReader.AddTrackToDatabase(track.FilePath);
+                //foreach (var track in tracksForAlbum)
+                //    _dbReader.AddTrackToDatabase(track.FilePath);
 
                 Mouse.OverrideCursor = null;
 
