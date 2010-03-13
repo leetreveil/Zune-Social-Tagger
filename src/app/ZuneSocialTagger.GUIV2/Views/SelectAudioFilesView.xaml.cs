@@ -1,6 +1,16 @@
-﻿using System.Windows.Controls;
-using ZuneSocialTagger.GUIV2.ViewModels;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -9,29 +19,9 @@ namespace ZuneSocialTagger.GUIV2.Views
     /// </summary>
     public partial class SelectAudioFilesView : UserControl
     {
-        private SelectAudioFilesViewModel _model;
-
         public SelectAudioFilesView()
         {
-            this.InitializeComponent();
-			
-            // Insert code required on object creation below this point.
-            this.DataContextChanged += delegate { _model = (SelectAudioFilesViewModel) this.DataContext; };
-        }
-
-        private void LinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            _model.Albums.Select(x=> lvAlbums.SelectedItem as AlbumDetailsViewModel).First().LinkAlbum();
-        }
-
-        private void Refresh_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            _model.Albums.Select(x => lvAlbums.SelectedItem as AlbumDetailsViewModel).First().RefreshAlbum();
-        }
-
-        private void DelinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            _model.Albums.Select(x => lvAlbums.SelectedItem as AlbumDetailsViewModel).First().DelinkAlbum();
+            InitializeComponent();
         }
     }
 }

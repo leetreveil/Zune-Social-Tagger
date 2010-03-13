@@ -22,7 +22,7 @@ namespace ZuneSocialTagger.GUIV2
 
             //setting the SelectAutoFilesViewModel to be a singleton, 
             //the database wont be loaded each time the viewmodel is constructed now
-            _container.RegisterType<SelectAudioFilesViewModel, SelectAudioFilesViewModel>(
+            _container.RegisterType<WebAlbumListViewModel, WebAlbumListViewModel>(
                 new ContainerControlledLifetimeManager());
 
             _container.RegisterType<SearchHeaderViewModel, SearchHeaderViewModel>(

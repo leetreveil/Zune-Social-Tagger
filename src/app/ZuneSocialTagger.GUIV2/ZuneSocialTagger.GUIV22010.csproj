@@ -142,6 +142,7 @@
     <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
     <Compile Include="ViewModels\SearchHeaderViewModel.cs" />
     <Compile Include="Models\SortOrder.cs" />
+    <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />
     <Compile Include="ViewModels\SortViewModel.cs" />
     <Compile Include="Views\AlbumDetailsView.xaml.cs">
       <DependentUpon>AlbumDetailsView.xaml</DependentUpon>
@@ -151,6 +152,9 @@
     </Compile>
     <Compile Include="Views\SearchHeaderView.xaml.cs">
       <DependentUpon>SearchHeaderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectAudioFilesView.xaml.cs">
+      <DependentUpon>SelectAudioFilesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SortView.xaml.cs">
       <DependentUpon>SortView.xaml</DependentUpon>
@@ -169,7 +173,7 @@
     <Compile Include="ViewModels\SearchBarViewModel.cs" />
     <Compile Include="ViewModels\SearchResultsViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
-    <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />
+    <Compile Include="ViewModels\WebAlbumListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -199,8 +203,8 @@
     <Compile Include="Views\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SelectAudioFilesView.xaml.cs">
-      <DependentUpon>SelectAudioFilesView.xaml</DependentUpon>
+    <Compile Include="Views\WebAlbumListView.xaml.cs">
+      <DependentUpon>WebAlbumListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SuccessView.xaml.cs">
       <DependentUpon>SuccessView.xaml</DependentUpon>
@@ -291,6 +295,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SelectAudioFilesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SortView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -337,7 +345,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SelectAudioFilesView.xaml">
+    <Page Include="Views\WebAlbumListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

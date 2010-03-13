@@ -33,7 +33,7 @@ namespace ZuneSocialTagger.GUIV2
 
         void ApplicationModel_WasShutdown(object sender, EventArgs e)
         {
-            var selectAudioFilesViewModel = _container.Resolve<SelectAudioFilesViewModel>();
+            var selectAudioFilesViewModel = _container.Resolve<WebAlbumListViewModel>();
             var albums = selectAudioFilesViewModel.Albums;
             try
             {

@@ -75,7 +75,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             Mouse.OverrideCursor = null;
 
-            _model.CurrentPage = _container.Resolve<SelectAudioFilesViewModel>();
+            _model.CurrentPage = _container.Resolve<WebAlbumListViewModel>();
         }
 
         public void MoveBack()
@@ -85,7 +85,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void MoveToStart()
         {
-            _model.CurrentPage = _container.Resolve<SelectAudioFilesViewModel>();
+            _model.CurrentPage = _container.Resolve<WebAlbumListViewModel>();
         }
 
         public ObservableCollection<DetailRow> Rows 

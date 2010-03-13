@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Practices.Unity;
 using ZuneSocialTagger.GUIV2.Models;
 using Caliburn.PresentationFramework.Screens;
@@ -39,7 +38,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         
         public void MoveBack()
         {
-            _model.CurrentPage = _container.Resolve<SelectAudioFilesViewModel>();
+            _model.CurrentPage = _container.Resolve<WebAlbumListViewModel>();
         }
     }
 }
