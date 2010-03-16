@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Practices.Unity;
+using Microsoft.Practices.ServiceLocation;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.ViewModels;
 
@@ -10,15 +10,15 @@ namespace ZuneSocialTagger.GUIV2.Models
     public class ZuneDbAdapter : IZuneDbAdapter
     {
         private readonly IZuneDatabaseReader _zuneDatabaseReader;
-        private readonly IUnityContainer _container;
+        private readonly IServiceLocator _locator;
 
         public event Action FinishedReadingAlbums = delegate { };
         public event Action<int, int> ProgressChanged = delegate { };
 
-        public ZuneDbAdapter(IZuneDatabaseReader zuneDatabaseReader, IUnityContainer container)
+        public ZuneDbAdapter(IZuneDatabaseReader zuneDatabaseReader, IServiceLocator locator)
         {
             _zuneDatabaseReader = zuneDatabaseReader;
-            _container = container;
+            _locator = locator;
 
             zuneDatabaseReader.ProgressChanged += (arg1, arg2) => this.ProgressChanged.Invoke(arg1,arg2);
             zuneDatabaseReader.FinishedReadingAlbums += () => this.FinishedReadingAlbums.Invoke();
@@ -31,11 +31,9 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public IEnumerable<AlbumDetailsViewModel> ReadAlbums()
         {
-            return from album
-                       in _zuneDatabaseReader.ReadAlbums()
+            return from album in _zuneDatabaseReader.ReadAlbums()
                    select ToAlbumDetailsViewModel(album);
         }
-
 
         public AlbumDetailsViewModel GetAlbum(int index)
         {
@@ -58,10 +56,11 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         private AlbumDetailsViewModel ToAlbumDetailsViewModel(Album album)
         {
-            return new AlbumDetailsViewModel(_container,this)
-                       {
-                           ZuneAlbumMetaData = album
-                       };
+            var albumDetailsViewModel = _locator.GetInstance<AlbumDetailsViewModel>();
+
+            albumDetailsViewModel.ZuneAlbumMetaData = album;
+
+            return albumDetailsViewModel;
         }
     }
 }

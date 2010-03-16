@@ -15,22 +15,41 @@ namespace ZuneSocialTagger.Core
 
             if (extension.ToLower() == ".mp3")
             {
-                var tagManager = new Id3TagManager();
+                try
+                {
+                    var tagManager = new Id3TagManager();
 
-                //TODO: app crashes here when a file is loaded from a remote directory, i.e. on network
-                FileState status = tagManager.GetTagsStatus(path);
+                    //TODO: app crashes here when a file is loaded from a remote directory, i.e. on network
+                    FileState status = tagManager.GetTagsStatus(path);
 
-                //if we just have id3v1.1 tags
-                if (status.Id3V1TagFound && !status.Id3V2TagFound)
-                    throw new Id3TagException("cannot read id3v1.1");
+                    //if we just have id3v1.1 tags
+                    if (status.Id3V1TagFound && !status.Id3V2TagFound)
+                        throw new Id3TagException("cannot read id3v1.1");
 
-                return new ZuneMP3TagContainer(tagManager.ReadV2Tag(path));
+                    return new ZuneMP3TagContainer(tagManager.ReadV2Tag(path));
+                }
+                catch (Id3TagException ex)
+                {
+                    if (ex.InnerException != null)
+                        throw new AudioFileReadException(ex.InnerException.Message, ex.InnerException);
+
+                    throw new AudioFileReadException(ex.Message);
+                }
             }
 
             if (extension.ToLower() == ".wma")
-                return new ZuneWMATagContainer(ASFTagManager.ReadTag(path));
+            {
+                try
+                {
+                    return new ZuneWMATagContainer(ASFTagManager.ReadTag(path));
+                }
+                catch (Exception ex)
+                {
+                    throw new AudioFileReadException(ex.Message,ex);
+                }
+            }
 
-            throw new NotSupportedException("The " + Path.GetExtension(path) + " file extension is not supported with zune social tagger.");
+            throw new AudioFileReadException("The " + Path.GetExtension(path) + " file extension is not supported with zune social tagger.");
         }
     }
 }

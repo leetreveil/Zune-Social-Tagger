@@ -1,10 +1,8 @@
 using System;
 using Caliburn.PresentationFramework;
-using Microsoft.Practices.Unity;
-using ZuneSocialTagger.Core.ZuneDatabase;
+using Microsoft.Practices.ServiceLocation;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
-using ZuneSocialTagger.GUIV2.Views;
 using Screen = Caliburn.PresentationFramework.Screens.Screen;
 using System.Threading;
 
@@ -12,23 +10,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class WebAlbumListViewModel : Screen
     {
-        private readonly IUnityContainer _container;
+        private readonly IServiceLocator _locator;
         private readonly IZuneWizardModel _model;
-        private IZuneDbAdapter _dbReader;
+        private IZuneDbAdapter _dbAdapter;
         private bool _isLoading;
         private int _loadingProgress;
         private BindableCollection<AlbumDetailsViewModel> _albums;
         private AlbumDownloaderWithProgressReporting _downloader;
 
-        public WebAlbumListViewModel(IUnityContainer container,
-                                         IZuneWizardModel model,
-                                         IZuneDbAdapter dbReader)
+        public WebAlbumListViewModel(IServiceLocator locator, IZuneWizardModel model, IZuneDbAdapter dbAdapter)
         {
-            _container = container;
+            _locator = locator;
             _model = model;
-            _dbReader = dbReader;
-            _dbReader.FinishedReadingAlbums += _dbReader_FinishedReadingAlbums;
-            _dbReader.ProgressChanged += _dbReader_ProgressChanged;
+
+            _dbAdapter = dbAdapter;
+            _dbAdapter.FinishedReadingAlbums += DbAdapterFinishedReadingAlbums;
+            _dbAdapter.ProgressChanged += DbAdapterProgressChanged;
 
             this.Albums = new BindableCollection<AlbumDetailsViewModel>();
 
@@ -126,48 +123,36 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.Albums.Clear();
             this.SortViewModel.SortOrder = SortOrder.NotSorted;
 
-            bool initialized = _dbReader.Initialize();
-
-            if (!initialized)
+            ThreadPool.QueueUserWorkItem(delegate
             {
-                //fall back to the actual zune database if the cache could not be loaded
-                if (_dbReader.GetType() == typeof (CachedZuneDatabaseReader))
-                    LoadDatabase();
-                else
-                    ZuneMessageBox.Show("Error loading zune database", ErrorMode.Error);
-            }
-            else
-            {
-                ThreadPool.QueueUserWorkItem(delegate
+                foreach (AlbumDetailsViewModel newAlbum in _dbAdapter.ReadAlbums())
                 {
-                    foreach (AlbumDetailsViewModel newAlbum in _dbReader.ReadAlbums())
-                    {
-                        //add handler to be notified when the LinkStatus enum changes
-                        newAlbum.PropertyChanged += album_PropertyChanged;
+                    //add handler to be notified when the LinkStatus enum changes
+                    newAlbum.PropertyChanged += album_PropertyChanged;
 
-                        if (newAlbum.ZuneAlbumMetaData.AlbumMediaId == Guid.Empty)
-                            newAlbum.LinkStatus = LinkStatus.Unlinked;
+                    if (newAlbum.ZuneAlbumMetaData.AlbumMediaId == Guid.Empty)
+                        newAlbum.LinkStatus = LinkStatus.Unlinked;
 
-                        this.Albums.Add(newAlbum);
-                    }
+                    this.Albums.Add(newAlbum);
+                }
 
-                    this.IsLoading = false;
-                });
-            }
+                this.IsLoading = false;
+            });
+           
         }
 
-        public void LoadDatabase()
-        {
-            _dbReader = new ZuneDbAdapter(_container.Resolve<IZuneDatabaseReader>(),_container);
-            _dbReader.ProgressChanged +=_dbReader_ProgressChanged;
-            _dbReader.FinishedReadingAlbums +=_dbReader_FinishedReadingAlbums;
+        //public void LoadDatabase()
+        //{
+        //    _dbAdapter = new ZuneDbAdapter(_locator.GetInstance<IZuneDatabaseReader>(),_locator);
+        //    _dbAdapter.ProgressChanged +=DbAdapterProgressChanged;
+        //    _dbAdapter.FinishedReadingAlbums +=DbAdapterFinishedReadingAlbums;
 
-            LoadAlbumsFromCacheOrZuneDatabase();
-        }
+        //    LoadAlbumsFromCacheOrZuneDatabase();
+        //}
 
         public void SwitchToClassicMode()
         {
-            _model.CurrentPage = _container.Resolve<SelectAudioFilesViewModel>();
+            _model.CurrentPage = _locator.GetInstance<SelectAudioFilesViewModel>();
         }
 
         private void PerformSort(SortOrder sortOrder)
@@ -215,13 +200,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 UpdateLinkTotals();
         }
 
-        private void _dbReader_ProgressChanged(int arg1, int arg2)
+        private void DbAdapterProgressChanged(int arg1, int arg2)
         {
             UpdateLinkTotals();
             ReportProgress(arg1, arg2);
         }
 
-        private void _dbReader_FinishedReadingAlbums()
+        private void DbAdapterFinishedReadingAlbums()
         {
             ResetLoadingProgress();
             this.SortViewModel.Sort(SortOrder.DateAdded);

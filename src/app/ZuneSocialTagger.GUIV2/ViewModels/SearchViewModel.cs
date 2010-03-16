@@ -1,4 +1,4 @@
-using Microsoft.Practices.Unity;
+using Microsoft.Practices.ServiceLocation;
 using ZuneSocialTagger.GUIV2.Models;
 using Caliburn.PresentationFramework.Screens;
 using Caliburn.PresentationFramework;
@@ -8,25 +8,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SearchViewModel : Screen
     {
-        private readonly IUnityContainer _container;
+        private readonly IServiceLocator _locator;
         private readonly IZuneWizardModel _model;
 
-        public SearchViewModel(IUnityContainer container, IZuneWizardModel model, SearchHeaderViewModel searchHeaderViewModel)
+        public SearchViewModel(IServiceLocator locator, IZuneWizardModel model)
         {
-            _container = container;
+            _locator = locator;
             _model = model;
 
-            this.SearchHeader = searchHeaderViewModel;
+            this.SearchHeader = model.SearchHeader;
             this.SearchHeader.SearchBar.StartedSearching += SearchBar_StartedSearching;
         }
 
-        void SearchBar_StartedSearching(BindableCollection<Album> albums)
+        private void SearchBar_StartedSearching(BindableCollection<Album> albums)
         {
-            var searchResultsViewModel = _container.Resolve<SearchResultsViewModel>();
-            searchResultsViewModel.Albums = albums;
-            searchResultsViewModel.SearchHeader = this.SearchHeader;
-
-            _model.CurrentPage = searchResultsViewModel;
+            _model.FoundAlbums = albums;
+            _model.CurrentPage = _locator.GetInstance<SearchResultsViewModel>();
         }
 
         public SearchHeaderViewModel SearchHeader { get; set; }
@@ -38,7 +35,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         
         public void MoveBack()
         {
-            _model.CurrentPage = _container.Resolve<WebAlbumListViewModel>();
+            _model.CurrentPage = _locator.GetInstance<WebAlbumListViewModel>();
         }
     }
 }

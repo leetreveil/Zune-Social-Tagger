@@ -5,7 +5,7 @@ using System.Threading;
 using System.Windows.Input;
 using Caliburn.Core;
 using Caliburn.PresentationFramework;
-using Microsoft.Practices.Unity;
+using Microsoft.Practices.ServiceLocation;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
@@ -17,19 +17,18 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class AlbumDetailsViewModel : PropertyChangedBase
     {
-        private readonly IUnityContainer _container;
+        private readonly IServiceLocator _locator;
         private readonly IZuneWizardModel _model;
         private readonly IZuneDbAdapter _dbReader;
         private Album _zuneAlbumMetaData;
         private Album _webAlbumMetaData;
         private LinkStatus _linkStatus;
 
-        public AlbumDetailsViewModel(IUnityContainer container,
-                                         IZuneDbAdapter dbReader)
+        public AlbumDetailsViewModel(IServiceLocator locator, IZuneWizardModel model, IZuneDbAdapter dbAdapter)
         {
-            _container = container;
-            _model = _container.Resolve<IZuneWizardModel>();
-            _dbReader = dbReader;
+            _locator = locator;
+            _model = model;
+            _dbReader = dbAdapter;
         }
 
         private AlbumDetailsViewModel()
@@ -75,9 +74,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             IEnumerable<Track> tracksForAlbum = _dbReader.GetTracksForAlbum(albumDetails.MediaId);
 
-            IZuneWizardModel model  = _container.Resolve<IZuneWizardModel>();
-
-            model.Rows = new BindableCollection<DetailRow>();
+            _model.Rows = new BindableCollection<DetailRow>();
 
             foreach (var track in tracksForAlbum)
             {
@@ -86,30 +83,27 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     //TODO: do we really want to not be able to link an album if just one track cant be read?
                     IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(track.FilePath);
 
-                    model.Rows.Add(new DetailRow(track.FilePath, container));
+                    _model.Rows.Add(new DetailRow(track.FilePath, container));
                 }
-                catch (NotSupportedException ex)
+                catch (AudioFileReadException ex)
                 {
                     ZuneMessageBox.Show(ex.Message, ErrorMode.Error);
                     return;
                 }
             }
 
-            var searchViewModel = _container.Resolve<SearchViewModel>();
+            _model.SearchHeader.SearchBar.SearchText = albumDetails.AlbumArtist + " " + albumDetails.AlbumTitle;
 
-            searchViewModel.SearchHeader.SearchBar.SearchText = albumDetails.AlbumArtist + " " +
-                                                                albumDetails.AlbumTitle;
+            _model.SearchHeader.AlbumDetails = new ExpandedAlbumDetailsViewModel
+            {
+                Artist = albumDetails.AlbumArtist,
+                Title = albumDetails.AlbumTitle,
+                ArtworkUrl = albumDetails.ArtworkUrl,
+                SongCount = albumDetails.TrackCount.ToString(),
+                Year = albumDetails.ReleaseYear.ToString()
+            };
 
-            searchViewModel.SearchHeader.AlbumDetails = new ExpandedAlbumDetailsViewModel
-                                                            {
-                                                                Artist = albumDetails.AlbumArtist,
-                                                                Title = albumDetails.AlbumTitle,
-                                                                ArtworkUrl = albumDetails.ArtworkUrl,
-                                                                SongCount = albumDetails.TrackCount.ToString(),
-                                                                Year = albumDetails.ReleaseYear.ToString()
-                                                            };
-
-            model.CurrentPage = searchViewModel;
+            _model.CurrentPage = _locator.GetInstance<SearchViewModel>();
         }
 
         public void DelinkAlbum()
@@ -145,7 +139,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                     container.WriteToFile(track.FilePath);
                 }
-                catch (NotSupportedException ex)
+                catch (AudioFileReadException ex)
                 {
                     ZuneMessageBox.Show(ex.Message, ErrorMode.Error);
                     return;

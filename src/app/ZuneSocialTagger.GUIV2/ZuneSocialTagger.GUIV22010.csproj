@@ -57,19 +57,26 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="caliburn">
-      <HintPath>..\..\..\libs\caliburn\caliburn.dll</HintPath>
+    <Reference Include="Caliburn.Core">
+      <HintPath>..\..\..\libs\caliburn\Caliburn.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.PresentationFramework">
+      <HintPath>..\..\..\libs\caliburn\Caliburn.PresentationFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Unity">
+      <HintPath>..\..\..\libs\unity\Caliburn.Unity.dll</HintPath>
     </Reference>
     <Reference Include="leetreveil.AutoUpdate.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\leetreveil.AutoUpdate\leetreveil.AutoUpdate.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ObjectBuilder2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Microsoft.Practices.ObjectBuilder2">
       <HintPath>..\..\..\libs\unity\Microsoft.Practices.ObjectBuilder2.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\..\..\libs\serviceLocation\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\..\libs\unity\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero">

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.Models;
@@ -12,15 +13,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     class DetailsViewModel : Screen
     {
-        private readonly IUnityContainer _container;
+        private readonly IServiceLocator _locator;
         private readonly IZuneWizardModel _model;
 
-        public DetailsViewModel(IUnityContainer container, 
+        public DetailsViewModel(IServiceLocator locator, 
                                 IZuneWizardModel model, 
                                 ExpandedAlbumDetailsViewModel albumDetailsFromWebsite,
                                 ExpandedAlbumDetailsViewModel albumDetailsFromFile)
         {
-            _container = container;
+            _locator = locator;
             _model = model;
 
             this.AlbumDetailsFromWebsite = albumDetailsFromWebsite;
@@ -71,21 +72,21 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 //usually occurs when a file is readonly
                 ZuneMessageBox.Show("One or more files could not be written to. Have you checked the files are not marked read-only?",ErrorMode.Error);
             else
-                new SuccessView(_container.Resolve<SuccessViewModel>()).Show();
+                new SuccessView(_locator.GetInstance<SuccessViewModel>()).Show();
 
             Mouse.OverrideCursor = null;
 
-            _model.CurrentPage = _container.Resolve<WebAlbumListViewModel>();
+            _model.CurrentPage = _locator.GetInstance<WebAlbumListViewModel>();
         }
 
         public void MoveBack()
         {
-            _model.CurrentPage = _container.Resolve<SearchResultsViewModel>();
+            _model.CurrentPage = _locator.GetInstance<SearchResultsViewModel>();
         }
 
         public void MoveToStart()
         {
-            _model.CurrentPage = _container.Resolve<WebAlbumListViewModel>();
+            _model.CurrentPage = _locator.GetInstance<WebAlbumListViewModel>();
         }
 
         public ObservableCollection<DetailRow> Rows 

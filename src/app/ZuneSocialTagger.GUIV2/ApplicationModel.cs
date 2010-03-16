@@ -4,10 +4,11 @@ using System.Threading;
 using System.Xml.Serialization;
 using Caliburn.PresentationFramework.Screens;
 using leetreveil.AutoUpdate.Framework;
+using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
 using ZuneSocialTagger.GUIV2.Properties;
 using ZuneSocialTagger.GUIV2.ViewModels;
 using ZuneSocialTagger.GUIV2.Models;
-using Microsoft.Practices.Unity;
 using ZuneSocialTagger.GUIV2.Views;
 
 
@@ -16,27 +17,54 @@ namespace ZuneSocialTagger.GUIV2
     public class ApplicationModel : Screen
     {
         private readonly IZuneWizardModel _model;
-        private readonly UnityContainer _container;
+        private IZuneDbAdapter _adapter;
+        private readonly IUnityContainer _container;
+        private readonly IServiceLocator _locator;
         private bool _updateAvailable;
 
-        public ApplicationModel(IZuneWizardModel model, UnityContainer container)
+        public ApplicationModel(IServiceLocator locator, IZuneWizardModel model,
+                                IZuneDbAdapter adapter,IUnityContainer container)
         {
+            _locator = locator;
             _model = model;
+            _adapter = adapter;
             _container = container;
-
-            _model.CurrentPage = _container.Resolve<WebAlbumListViewModel>();
 
             CheckForUpdates();
 
             this.WasShutdown += ApplicationModel_WasShutdown;
+
+            InitializeDatabase();
+
+            _model.CurrentPage = _locator.GetInstance<WebAlbumListViewModel>();
+        }
+
+        private void InitializeDatabase()
+        {
+            bool initialized = _adapter.Initialize();
+
+            if (!initialized)
+            {
+                //fall back to the actual zune database if the cache could not be loaded
+                if (_adapter.GetType() == typeof(CachedZuneDatabaseReader))
+                {
+                    _container.RegisterType<IZuneDbAdapter, ZuneDbAdapter>();
+
+                    _adapter = _locator.GetInstance<IZuneDbAdapter>();
+                    InitializeDatabase();
+                }
+                else
+                    ZuneMessageBox.Show("Error loading zune database", ErrorMode.Error);
+            }
         }
 
         void ApplicationModel_WasShutdown(object sender, EventArgs e)
         {
             //TODO: attempt to seriailze data if application was forcibly shut down
 
-            var selectAudioFilesViewModel = _container.Resolve<WebAlbumListViewModel>();
-            var albums = selectAudioFilesViewModel.Albums;
+            var albumListViewModel = _locator.GetInstance<WebAlbumListViewModel>();
+            var albums = albumListViewModel.Albums;
+
             try
             {
                 var xSer = new XmlSerializer(albums.GetType());
@@ -49,7 +77,7 @@ namespace ZuneSocialTagger.GUIV2
                 Console.WriteLine(exception);
             }
 
-            var sortOrder = selectAudioFilesViewModel.SortViewModel.SortOrder;
+            var sortOrder = albumListViewModel.SortViewModel.SortOrder;
             Settings.Default.SortOrder = sortOrder;
             Settings.Default.Save();
         }

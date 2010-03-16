@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Caliburn.PresentationFramework;
-using Microsoft.Practices.Unity;
+using Microsoft.Practices.ServiceLocation;
 using ZuneSocialTagger.GUIV2.ViewModels;
 using ZuneSocialTagger.Core;
 using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
@@ -13,14 +13,14 @@ namespace ZuneSocialTagger.GUIV2.Models
     public class CachedZuneDatabaseReader : IZuneDbAdapter
     {
         private BindableCollection<AlbumDetailsViewModel> _deserializedAlbums;
-        private IUnityContainer _container;
+        private IServiceLocator _locator;
 
         public event Action FinishedReadingAlbums = delegate { };
         public event Action<int, int> ProgressChanged = delegate { };
 
-        public CachedZuneDatabaseReader(IUnityContainer container)
+        public CachedZuneDatabaseReader(IServiceLocator locator)
         {
-            _container = container;
+            _locator = locator;
         }
 
         public bool Initialize()
@@ -56,12 +56,13 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         private AlbumDetailsViewModel Construct(AlbumDetailsViewModel albumDetailsViewModel)
         {
-            return new AlbumDetailsViewModel(_container,this)
-                       {
-                           ZuneAlbumMetaData = albumDetailsViewModel.ZuneAlbumMetaData,
-                           LinkStatus = albumDetailsViewModel.LinkStatus,
-                           WebAlbumMetaData = albumDetailsViewModel.WebAlbumMetaData     
-                       };
+            var detailsViewModel = _locator.GetInstance<AlbumDetailsViewModel>();
+
+            detailsViewModel.ZuneAlbumMetaData = albumDetailsViewModel.ZuneAlbumMetaData;
+            detailsViewModel.LinkStatus = albumDetailsViewModel.LinkStatus;
+            detailsViewModel.WebAlbumMetaData = albumDetailsViewModel.WebAlbumMetaData;   
+  
+            return detailsViewModel;
         }
 
         public AlbumDetailsViewModel GetAlbum(int index)

@@ -1,7 +1,6 @@
-using Caliburn.Core;
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SearchHeaderViewModel : PropertyChangedBase
+    public class SearchHeaderViewModel
     {
         public SearchHeaderViewModel()
         {

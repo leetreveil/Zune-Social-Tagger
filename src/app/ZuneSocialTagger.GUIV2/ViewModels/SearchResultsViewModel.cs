@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.Practices.Unity;
+using Microsoft.Practices.ServiceLocation;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
@@ -16,18 +16,20 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SearchResultsViewModel : Screen
     {
-        private readonly IUnityContainer _container;
+        private readonly IServiceLocator _locator;
         private readonly IZuneWizardModel _model;
         private bool _isLoading;
         private SearchResultsDetailViewModel _searchResultsDetailViewModel;
         private ExpandedAlbumDetailsViewModel _albumDetails;
 
-        public SearchResultsViewModel(IUnityContainer container, IZuneWizardModel model, SearchHeaderViewModel searchHeaderViewModel)
+        public SearchResultsViewModel(IServiceLocator locator, IZuneWizardModel model)
         {
-            _container = container;
+            _locator = locator;
             _model = model;
+
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
-            this.SearchHeader = searchHeaderViewModel;
+            this.SearchHeader = _model.SearchHeader;
+            this.Albums = _model.FoundAlbums;
         }
 
         public ObservableCollection<Album> Albums { get; set; }
@@ -61,12 +63,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void MoveBack()
         {
-            _model.CurrentPage = _container.Resolve<SearchViewModel>();
+            _model.CurrentPage = _locator.GetInstance<SearchViewModel>();
         }
 
         public void MoveNext()
         {
-            var detailsViewModel = _container.Resolve<DetailsViewModel>();
+            var detailsViewModel = _locator.GetInstance<DetailsViewModel>();
             detailsViewModel.AlbumDetailsFromWebsite = _albumDetails;
             detailsViewModel.AlbumDetailsFromFile = this.SearchHeader.AlbumDetails;
 

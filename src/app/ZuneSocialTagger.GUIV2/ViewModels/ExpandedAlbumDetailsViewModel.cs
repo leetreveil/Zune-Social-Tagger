@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Caliburn.Core;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -15,7 +16,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public string Year
         {
             get { return string.IsNullOrEmpty(_year) ? "Unknown Year" : _year; }
-            set { _year = value; }
+            set
+            {
+                _year = value;
+            }
         }
 
         public string Title

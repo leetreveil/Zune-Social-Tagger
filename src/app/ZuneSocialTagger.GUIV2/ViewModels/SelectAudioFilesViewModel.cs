@@ -2,29 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Practices.Unity;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Views;
 using Screen = Caliburn.PresentationFramework.Screens.Screen;
 using ZuneSocialTagger.Core;
+using Microsoft.Practices.ServiceLocation;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SelectAudioFilesViewModel : Screen
     {
-        private readonly IUnityContainer _container;
+        private readonly IServiceLocator _locator;
         private readonly IZuneWizardModel _model;
 
-        public SelectAudioFilesViewModel(IUnityContainer container,
+        public SelectAudioFilesViewModel(IServiceLocator locator,
                                          IZuneWizardModel model)
         {
-            _container = container;
+            _locator = locator;
             _model = model;
         }
 
         public void SwitchToNewMode()
         {
-            _model.CurrentPage = _container.Resolve<WebAlbumListViewModel>();
+            _model.CurrentPage = _locator.GetInstance<WebAlbumListViewModel>();
         }
 
         public void SelectFiles()
@@ -47,7 +47,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                     _model.Rows =  _model.Rows.OrderBy(SharedMethods.SortByTrackNumber()).ToBindableCollection();
                 }
-                catch (NotSupportedException ex)
+                catch(AudioFileReadException ex)
                 {
                     ZuneMessageBox.Show(ex.Message, ErrorMode.Error);
                     return;
@@ -56,13 +56,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             MetaData ftMetaData = _model.Rows.First().MetaData;
 
-            var searchViewModel = _container.Resolve<SearchViewModel>();
+            _model.SearchHeader.SearchBar.SearchText = ftMetaData.AlbumArtist + " " +
+                                                       ftMetaData.AlbumName;
 
-            searchViewModel.SearchHeader.SearchBar.SearchText = ftMetaData.AlbumArtist + " " +
-                                                                ftMetaData.AlbumName;
-
-           
-            searchViewModel.SearchHeader.AlbumDetails = new ExpandedAlbumDetailsViewModel
+            _model.SearchHeader.AlbumDetails = new ExpandedAlbumDetailsViewModel
             {
                 Artist = ftMetaData.AlbumArtist,
                 Title = ftMetaData.AlbumName,
@@ -70,7 +67,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 Year = ftMetaData.Year
             };
 
-            _model.CurrentPage = searchViewModel;
+            _model.CurrentPage = _locator.GetInstance<SearchViewModel>();
         }
 
 

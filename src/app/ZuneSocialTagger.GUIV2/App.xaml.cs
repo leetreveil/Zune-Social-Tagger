@@ -1,4 +1,7 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Caliburn.Core.Configuration;
+using Caliburn.Unity;
+using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.ViewModels;
@@ -12,33 +15,28 @@ namespace ZuneSocialTagger.GUIV2
     /// </summary>
     public partial class App : CaliburnApplication
     {
-        private readonly UnityContainer _container;
-
-        public App()
+        protected override object CreateRootModel()
         {
-            _container = new UnityContainer();
-            _container.RegisterType<IZuneWizardModel, ZuneWizardModel>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IZuneDatabaseReader, TestZuneDatabaseReader>(); 
-            _container.RegisterType<IZuneDbAdapter, CachedZuneDatabaseReader>();
+            return Container.GetInstance<ApplicationModel>();
+        }
+
+        protected override IServiceLocator CreateContainer()
+        {
+            var container = new UnityContainer();
+            var adapter = new UnityAdapter(container);
+
+            container.RegisterType<IZuneWizardModel, ZuneWizardModel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IZuneDatabaseReader, TestZuneDatabaseReader>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IZuneDbAdapter, CachedZuneDatabaseReader>(new ContainerControlledLifetimeManager());
 
             //setting the SelectAutoFilesViewModel to be a singleton, 
             //the database wont be loaded each time the viewmodel is constructed now
-            _container.RegisterType<WebAlbumListViewModel, WebAlbumListViewModel>(
+            container.RegisterType<WebAlbumListViewModel, WebAlbumListViewModel>(
                 new ContainerControlledLifetimeManager());
 
-            _container.RegisterType<SearchHeaderViewModel, SearchHeaderViewModel>(
-                new ContainerControlledLifetimeManager());
+            container.RegisterInstance(container);
 
-            _container.RegisterType<ExpandedAlbumDetailsViewModel, ExpandedAlbumDetailsViewModel>(
-                new ContainerControlledLifetimeManager());
-
-
-            _container.RegisterInstance(_container);
-        }
-
-        protected override object CreateRootModel()
-        {
-            return _container.Resolve<ApplicationModel>();
+            return adapter;
         }
     }
 }

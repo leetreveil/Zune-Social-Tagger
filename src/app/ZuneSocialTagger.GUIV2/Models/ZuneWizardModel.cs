@@ -1,6 +1,9 @@
-﻿using Caliburn.PresentationFramework.Screens;
+﻿using System.Collections.ObjectModel;
+using Caliburn.PresentationFramework.Screens;
 using Caliburn.Core;
 using Caliburn.PresentationFramework;
+using ZuneSocialTagger.Core;
+using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
@@ -11,9 +14,9 @@ namespace ZuneSocialTagger.GUIV2.Models
         public ZuneWizardModel()
         {
             this.Rows = new BindableCollection<DetailRow>();
+            this.SearchHeader = new SearchHeaderViewModel();
+            this.FoundAlbums = new ObservableCollection<Album>();
         }
-
-        public BindableCollection<DetailRow> Rows { get; set; }
 
         public Screen CurrentPage
         {
@@ -24,5 +27,9 @@ namespace ZuneSocialTagger.GUIV2.Models
                 NotifyOfPropertyChange(() => this.CurrentPage);
             }
         }
+
+        public BindableCollection<DetailRow> Rows { get; set; }
+        public ObservableCollection<Album> FoundAlbums { get; set; }
+        public SearchHeaderViewModel SearchHeader { get; set; }
     }
 }
