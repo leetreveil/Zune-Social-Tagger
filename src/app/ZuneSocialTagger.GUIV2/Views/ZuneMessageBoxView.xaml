@@ -4,7 +4,7 @@
     xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2" 
     Style="{DynamicResource DefaultWindowStyle}"  
     WindowStartupLocation="CenterScreen"
-    FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" Topmost="True" Height="180" Width="400">
+    FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" Topmost="True" Height="205" Width="400">
 
     <Window.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
@@ -12,9 +12,9 @@
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="38" />
-            <RowDefinition/>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         
         <!--HEADER-->
@@ -23,12 +23,13 @@
             <TextBlock FontFamily="../Assets/Fonts/Zegoe Caps"  FontSize="26.667" Text="{Binding MessageTitle}"/>
         </StackPanel>
         
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Height="Auto">
             <Image Width="50" Height="50" Source="{Binding ImageSourceUrl}"/>
-            <TextBlock Margin="10,0,0,0" MaxWidth="280" TextWrapping="WrapWithOverflow" VerticalAlignment="Center" Text="{Binding ErrorMessage}" FontSize="16"/>
+            <TextBlock ToolTip="{Binding ErrorMessage}" Margin="10,0,0,0" TextWrapping="Wrap"
+                       Text="{Binding ErrorMessage}" FontSize="16" Width="275" />
         </StackPanel>
         
-        <Button Grid.Row="2" HorizontalAlignment="Right" Content="OK" Click="OK_Click" />
+        <Button Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="OK" Click="OK_Click" />
     </Grid>
 
 </local:DraggableWindow>
