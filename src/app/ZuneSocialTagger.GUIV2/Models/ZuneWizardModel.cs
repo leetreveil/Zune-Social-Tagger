@@ -1,6 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using Caliburn.PresentationFramework.Screens;
+﻿using Caliburn.PresentationFramework.Screens;
 using Caliburn.Core;
+using Caliburn.PresentationFramework;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
@@ -10,10 +10,10 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public ZuneWizardModel()
         {
-            this.Rows = new ObservableCollection<DetailRow>();
+            this.Rows = new BindableCollection<DetailRow>();
         }
 
-        public ObservableCollection<DetailRow> Rows { get; set; }
+        public BindableCollection<DetailRow> Rows { get; set; }
 
         public Screen CurrentPage
         {

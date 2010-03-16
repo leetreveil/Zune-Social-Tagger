@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cm="clr-namespace:Caliburn.PresentationFramework;assembly=Caliburn.PresentationFramework" 
              mc:Ignorable="d" >
 
     <UserControl.Resources>
@@ -18,8 +19,13 @@
 
 
 
-        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Height="30" Text="Choose the album you want linking to the zune social" />
-        <Button Command="{Binding FromFilesCommand}" HorizontalAlignment="Center" Grid.Row="1" Content="SELECT AUDIO FILES"/>
-        <Button Command="{Binding FromFilesCommand}" HorizontalAlignment="Right" Grid.Row="2" Content="SWITCH TO NEW MODE"/>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" 
+                   Height="30" Text="Choose the album you want linking to the zune social" />
+        
+        <Button cm:Message.Attach="[Event Click] = [Action SelectFiles]" 
+                HorizontalAlignment="Center" Grid.Row="1" Content="SELECT AUDIO FILES"/>
+        
+        <Button cm:Message.Attach="[Event Click] = [Action SwitchToNewMode]" 
+                HorizontalAlignment="Right" Grid.Row="2" Content="SWITCH TO NEW MODE"/>
     </Grid>
 </UserControl>

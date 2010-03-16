@@ -57,13 +57,8 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\caliburn\Caliburn.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Caliburn.PresentationFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\caliburn\Caliburn.PresentationFramework.dll</HintPath>
+    <Reference Include="caliburn">
+      <HintPath>..\..\..\libs\caliburn\caliburn.dll</HintPath>
     </Reference>
     <Reference Include="leetreveil.AutoUpdate.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -129,12 +124,15 @@
     <Compile Include="Converters\PathToImageThumbnailConverter.cs" />
     <Compile Include="Converters\SortOrderToTextConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
+    <Compile Include="Models\CachedZuneDatabaseReader.cs" />
     <Compile Include="Models\ExtensionMethods.cs" />
-    <Compile Include="Models\ZuneTypeConverters.cs" />
+    <Compile Include="Models\IZuneDbAdapter.cs" />
+    <Compile Include="Models\SharedMethods.cs" />
     <Compile Include="Models\AlbumDownloaderWithProgressReporting.cs" />
     <Compile Include="Models\LinkStatus.cs" />
     <Compile Include="Models\DetailRow.cs" />
     <Compile Include="Models\IZuneWizardModel.cs" />
+    <Compile Include="Models\ZuneDbAdapter.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
     <Compile Include="Models\AlbumDetails.cs" />
     <Compile Include="Settings.cs" />

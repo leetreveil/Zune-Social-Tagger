@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.ServiceModel.Syndication;
 using System.IO;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.Core.ZuneWebsite
 {
@@ -29,6 +30,11 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             _client.DownloadDataCompleted += _client_DownloadDataCompleted;
         }
 
+        public void Cancel()
+        {
+            _client.CancelAsync();
+        }
+
         public void DownloadAsync()
         {
             _client.DownloadDataAsync(new Uri(_url));
@@ -38,10 +44,22 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         {
             if (e.Error == null)
             {
-                _reader = XmlReader.Create(new MemoryStream(e.Result));
+                try
+                {
+                    _reader = XmlReader.Create(new MemoryStream(e.Result));
 
-                this.DownloadCompleted.Invoke(this.Read());
+                    this.DownloadCompleted.Invoke(this.Read());
+                }
+                catch
+                {
+                    this.DownloadCompleted.Invoke(null);
+                }
             }
+            //if (e.Cancelled)
+            //{
+            //    Debug.WriteLine("cancelled");
+            //    this.DownloadCompleted.Invoke(null);
+            //}
             else
             {
                 this.DownloadCompleted.Invoke(null);
@@ -80,10 +98,8 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             //TODO: pull out the string formattings, we should just be returning the artwork guid 
             //and deal with what size image to get later
 
-            //TODO: we shouldnt be getting an image that big anyway
-
             return imageElement != null
-                       ? String.Format("{0}{1}?width=50&height=50", "http://image.catalog.zune.net/v3.0/image/",
+                       ? String.Format("{0}{1}?width=50&height=50", Urls.Image,
                                        ExtractGuidFromUrnUuid(imageElement.Elements().First().Value))
                        : null;
         }
@@ -91,7 +107,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         private XElement GetElement(SyndicationFeed feed, string elementName)
         {
             Collection<XElement> elements =
-                feed.ElementExtensions.ReadElementExtensions<XElement>(elementName, "http://schemas.zune.net/catalog/music/2007/10");
+                feed.ElementExtensions.ReadElementExtensions<XElement>(elementName, Urls.Schema);
 
             return elements.Count > 0 ? elements.First() : null;
         }

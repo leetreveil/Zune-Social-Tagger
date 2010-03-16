@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.ViewModels;
 using ZuneSocialTagger.Core.ZuneDatabase;
@@ -15,9 +16,21 @@ namespace ZuneSocialTagger.GUIV2.Models
         public event Action FinishedDownloadingAlbums = delegate { };
         public event Action<int, int> ProgressChanged = delegate { };
 
+        private List<AlbumDetailsDownloader> _downloadList;
+
         public AlbumDownloaderWithProgressReporting(IEnumerable<AlbumDetailsViewModel> albums)
         {
             _albums = albums;
+            _downloadList = new List<AlbumDetailsDownloader>();
+        }
+
+        public void StopDownloading()
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+             {
+                 foreach (var downloader in _downloadList)
+                     downloader.Cancel();
+             });
         }
 
         public void Start()
@@ -25,20 +38,21 @@ namespace ZuneSocialTagger.GUIV2.Models
             foreach (var album in _albums)
             {
                 string fullUrlToAlbumXmlDetails =
-                    String.Concat("http://catalog.zune.net/v3.0/en-US/music/album/",
-                                  album.ZuneAlbumMetaData.AlbumMediaId);
+                    String.Concat(Urls.Album, album.ZuneAlbumMetaData.AlbumMediaId);
 
                 if (album.LinkStatus == LinkStatus.Unknown)
                 {
-                    var reader = new AlbumDetailsDownloader(fullUrlToAlbumXmlDetails);
+                    var downloader = new AlbumDetailsDownloader(fullUrlToAlbumXmlDetails);
+
+                    _downloadList.Add(downloader);
 
                     AlbumDetailsViewModel album1 = album;
-                    reader.DownloadCompleted += dledAlbum =>
+
+                    downloader.DownloadCompleted += dledAlbum =>
                         {
                             _downloadCounter++;
 
                             SetAlbumDetails(dledAlbum, album1);
-
 
                             //TODO: don't like how we are doing progress reporting
                             var totalUnlinkedCount = _albums.Where(x => x.LinkStatus != LinkStatus.Unlinked).Count();
@@ -51,7 +65,7 @@ namespace ZuneSocialTagger.GUIV2.Models
                             }
                         };
 
-                    reader.DownloadAsync();
+                    downloader.DownloadAsync();
                 }
             }
         }
@@ -62,10 +76,12 @@ namespace ZuneSocialTagger.GUIV2.Models
                 album.LinkStatus = LinkStatus.Unavailable;
             else
             {
-                album.LinkStatus =
-                    ZuneTypeConverters.GetAlbumLinkStatus(dledAlbum.AlbumTitle,
-                                             dledAlbum.AlbumArtist,
-                                             album.ZuneAlbumMetaData);
+                Album metaData = album.ZuneAlbumMetaData;
+
+                album.LinkStatus = SharedMethods.GetAlbumLinkStatus(dledAlbum.AlbumTitle,
+                                                                    dledAlbum.AlbumArtist,
+                                                                    metaData.AlbumTitle,
+                                                                    metaData.AlbumArtist);
 
                 album.WebAlbumMetaData = new Album
                 {

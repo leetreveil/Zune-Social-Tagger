@@ -1,15 +1,12 @@
 using System;
-using System.IO;
 using Caliburn.PresentationFramework;
 using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
-using ZuneSocialTagger.GUIV2.Properties;
+using ZuneSocialTagger.GUIV2.Views;
 using Screen = Caliburn.PresentationFramework.Screens.Screen;
 using System.Threading;
-using ZuneSocialTagger.Core;
-using Album = ZuneSocialTagger.Core.ZuneDatabase.Album;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -17,14 +14,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         private readonly IUnityContainer _container;
         private readonly IZuneWizardModel _model;
-        private readonly IZuneDatabaseReader _dbReader;
+        private IZuneDbAdapter _dbReader;
         private bool _isLoading;
         private int _loadingProgress;
         private BindableCollection<AlbumDetailsViewModel> _albums;
+        private AlbumDownloaderWithProgressReporting _downloader;
 
         public WebAlbumListViewModel(IUnityContainer container,
                                          IZuneWizardModel model,
-                                         IZuneDatabaseReader dbReader)
+                                         IZuneDbAdapter dbReader)
         {
             _container = container;
             _model = model;
@@ -37,7 +35,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.SortViewModel = new SortViewModel();
             this.SortViewModel.SortClicked += SortViewModel_SortClicked;
 
-            LoadAlbumsFromCache();
+            LoadAlbumsFromCacheOrZuneDatabase();
         }
 
         #region View Binding Properties
@@ -95,99 +93,81 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         #endregion
 
-        private void LoadAlbumsFromCache()
-        {
-            this.IsLoading = true;
-            this.Albums.Clear();
-            this.SortViewModel.SortOrder = SortOrder.NotSorted;
-
-            ThreadPool.QueueUserWorkItem(_ =>
-                 {
-                     try
-                     {
-                         using (var fs = new FileStream("zunesoccache.xml", FileMode.Open))
-                         {
-                             var deserAlbums = fs.XmlDeserializeFromStream<BindableCollection<AlbumDetailsViewModel>>();
-
-                             int counter = 0;
-                             foreach (var albumDetailsViewModel in deserAlbums)
-                             {
-                                 var newAlbum = new AlbumDetailsViewModel(_container, _model, _dbReader)
-                                                    {
-                                                        LinkStatus = albumDetailsViewModel.LinkStatus,
-                                                        WebAlbumMetaData = albumDetailsViewModel.WebAlbumMetaData,
-                                                        ZuneAlbumMetaData = albumDetailsViewModel.ZuneAlbumMetaData
-                                                    };
-
-                                 this.Albums.Add(newAlbum);
-
-                                 UpdateLinkTotals();
-                                 ReportProgress(counter, deserAlbums.Count);
-
-                                 //add handler to be notified when the LinkStatus enum changes
-                                 newAlbum.PropertyChanged += album_PropertyChanged;
-
-                                 counter++;
-                             }
-
-                             ResetLoadingProgress();
-                             this.SortViewModel.SortOrder = Settings.Default.SortOrder;
-                         }
-
-                     }
-                     catch
-                     {
-                         //if there is any problems loading the cache then fallback to loading the database
-                         LoadAlbumsFromZuneDatabase();
-                     }
-                 });
-        }
-
         public void LoadFromZuneWebsite()
         {
             this.IsLoading = true;
 
-            var downloader = new AlbumDownloaderWithProgressReporting(this.Albums);
+            foreach (var album in this.Albums)
+            {
+                album.WebAlbumMetaData = null;
 
-            downloader.ProgressChanged += downloader_ProgressChanged;
-            downloader.FinishedDownloadingAlbums += downloader_FinishedDownloadingAlbums;
-            downloader.Start();
+                if (album.LinkStatus != LinkStatus.Unlinked)
+                    album.LinkStatus = LinkStatus.Unknown;
+            }
+
+            _downloader = new AlbumDownloaderWithProgressReporting(this.Albums);
+
+            _downloader.ProgressChanged += downloader_ProgressChanged;
+            _downloader.FinishedDownloadingAlbums += downloader_FinishedDownloadingAlbums;
+            _downloader.Start();
         }
 
-        public void LoadAlbumsFromZuneDatabase()
+        public void CancelDownloading()
+        {
+            ResetLoadingProgress();
+
+            if (_downloader != null)
+                _downloader.StopDownloading();
+        }
+
+        public void LoadAlbumsFromCacheOrZuneDatabase()
         {
             this.IsLoading = true;
             this.Albums.Clear();
             this.SortViewModel.SortOrder = SortOrder.NotSorted;
 
-            _dbReader.Initialize();
+            bool initialized = _dbReader.Initialize();
 
-            ThreadPool.QueueUserWorkItem(delegate
-             {
-                 foreach (Album newAlbum in _dbReader.ReadAlbums())
-                 {
-                     var album = new AlbumDetailsViewModel(_container, _model, _dbReader);
+            if (!initialized)
+            {
+                //fall back to the actual zune database if the cache could not be loaded
+                if (_dbReader.GetType() == typeof (CachedZuneDatabaseReader))
+                    LoadDatabase();
+                else
+                    ZuneMessageBox.Show("Error loading zune database", ErrorMode.Error);
+            }
+            else
+            {
+                ThreadPool.QueueUserWorkItem(delegate
+                {
+                    foreach (AlbumDetailsViewModel newAlbum in _dbReader.ReadAlbums())
+                    {
+                        //add handler to be notified when the LinkStatus enum changes
+                        newAlbum.PropertyChanged += album_PropertyChanged;
 
-                     album.ZuneAlbumMetaData = newAlbum;
+                        if (newAlbum.ZuneAlbumMetaData.AlbumMediaId == Guid.Empty)
+                            newAlbum.LinkStatus = LinkStatus.Unlinked;
 
-                     if (album.ZuneAlbumMetaData.AlbumMediaId == Guid.Empty)
-                         album.LinkStatus = LinkStatus.Unlinked;
+                        this.Albums.Add(newAlbum);
+                    }
 
-                     //add handler to be notified when the LinkStatus enum changes
-                     album.PropertyChanged += album_PropertyChanged;
-
-                     this.Albums.Add(album);
-
-                     UpdateLinkTotals();
-                 }
-
-                 this.IsLoading = false;
-             });
+                    this.IsLoading = false;
+                });
+            }
         }
 
-        private void SortViewModel_SortClicked(SortOrder sortOrder)
+        public void LoadDatabase()
         {
-            PerformSort(sortOrder);
+            _dbReader = new ZuneDbAdapter(_container.Resolve<IZuneDatabaseReader>(),_container);
+            _dbReader.ProgressChanged +=_dbReader_ProgressChanged;
+            _dbReader.FinishedReadingAlbums +=_dbReader_FinishedReadingAlbums;
+
+            LoadAlbumsFromCacheOrZuneDatabase();
+        }
+
+        public void SwitchToClassicMode()
+        {
+            _model.CurrentPage = _container.Resolve<SelectAudioFilesViewModel>();
         }
 
         private void PerformSort(SortOrder sortOrder)
@@ -222,6 +202,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                              throw new ArgumentOutOfRangeException();
                      }
                  });
+        }
+
+        private void SortViewModel_SortClicked(SortOrder sortOrder)
+        {
+            PerformSort(sortOrder);
         }
 
         private void album_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -18,7 +18,8 @@ namespace ZuneSocialTagger.GUIV2
         {
             _container = new UnityContainer();
             _container.RegisterType<IZuneWizardModel, ZuneWizardModel>(new ContainerControlledLifetimeManager());
-
+            _container.RegisterType<IZuneDatabaseReader, TestZuneDatabaseReader>(); 
+            _container.RegisterType<IZuneDbAdapter, CachedZuneDatabaseReader>();
 
             //setting the SelectAutoFilesViewModel to be a singleton, 
             //the database wont be loaded each time the viewmodel is constructed now
@@ -30,8 +31,8 @@ namespace ZuneSocialTagger.GUIV2
 
             _container.RegisterType<ExpandedAlbumDetailsViewModel, ExpandedAlbumDetailsViewModel>(
                 new ContainerControlledLifetimeManager());
-            
-            _container.RegisterType<IZuneDatabaseReader, TestZuneDatabaseReader>();
+
+
             _container.RegisterInstance(_container);
         }
 

@@ -24,7 +24,7 @@ namespace ZuneSocialTagger.GUIV2
             _model = model;
             _container = container;
 
-            _model.CurrentPage = _container.Resolve<SelectAudioFilesViewModel>();
+            _model.CurrentPage = _container.Resolve<WebAlbumListViewModel>();
 
             CheckForUpdates();
 
@@ -33,6 +33,8 @@ namespace ZuneSocialTagger.GUIV2
 
         void ApplicationModel_WasShutdown(object sender, EventArgs e)
         {
+            //TODO: attempt to seriailze data if application was forcibly shut down
+
             var selectAudioFilesViewModel = _container.Resolve<WebAlbumListViewModel>();
             var albums = selectAudioFilesViewModel.Albums;
             try
@@ -119,10 +121,10 @@ namespace ZuneSocialTagger.GUIV2
                             if (updateManager.CheckForUpdate())
                                 this.UpdateAvailable = true;
                         }
-                        catch (Exception){}
+                        catch {}
                     });
                 }
-                catch (Exception e)
+                catch
                 {
                     //TODO: log that we could not check for updates
                 }

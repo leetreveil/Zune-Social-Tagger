@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Input;
 using Caliburn.Core;
+using Caliburn.PresentationFramework;
 using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core;
-using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Views;
@@ -19,22 +19,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         private readonly IUnityContainer _container;
         private readonly IZuneWizardModel _model;
-        private readonly IZuneDatabaseReader _dbReader;
+        private readonly IZuneDbAdapter _dbReader;
         private Album _zuneAlbumMetaData;
         private Album _webAlbumMetaData;
         private LinkStatus _linkStatus;
 
         public AlbumDetailsViewModel(IUnityContainer container,
-                                         IZuneWizardModel model,
-                                         IZuneDatabaseReader dbReader)
+                                         IZuneDbAdapter dbReader)
         {
             _container = container;
-            _model = model;
+            _model = _container.Resolve<IZuneWizardModel>();
             _dbReader = dbReader;
         }
 
-        public AlbumDetailsViewModel()
+        private AlbumDetailsViewModel()
         {
+            //used for serialization purposes
         }
 
         public Album ZuneAlbumMetaData
@@ -67,96 +67,70 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        private IZuneTagContainer TryGetContainer(Track track)
-        {
-            try
-            {
-                return ZuneTagContainerFactory.GetContainer(track.FilePath);
-            }
-            catch (NotSupportedException ex)
-            {
-                ZuneMessageBox.Show(ex.Message, ErrorMode.Error);
-                return null;
-            }
-        }
-
         public void LinkAlbum()
         {
-            var doesAlbumExist = _dbReader.DoesAlbumExist(this.ZuneAlbumMetaData.MediaId);
+            if (!DoesAlbumExistInDbAndDisplayError()) return;
 
-            if (!doesAlbumExist)
-                ShowCouldNotFindAlbumError();
-            else
+            Album albumDetails = this.ZuneAlbumMetaData;
+
+            IEnumerable<Track> tracksForAlbum = _dbReader.GetTracksForAlbum(albumDetails.MediaId);
+
+            IZuneWizardModel model  = _container.Resolve<IZuneWizardModel>();
+
+            model.Rows = new BindableCollection<DetailRow>();
+
+            foreach (var track in tracksForAlbum)
             {
-                Album albumDetails = this.ZuneAlbumMetaData;
-
-                IEnumerable<Track> tracksForAlbum = _dbReader.GetTracksForAlbum(albumDetails.MediaId);
-
-                _model.Rows.Clear();
-
-                foreach (var track in tracksForAlbum)
+                try
                 {
-                    IZuneTagContainer container = TryGetContainer(track);
+                    //TODO: do we really want to not be able to link an album if just one track cant be read?
+                    IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(track.FilePath);
 
-                    if (container != null)
-                    {
-                        _model.Rows.Add(new DetailRow(track.FilePath, container));
-                    }
-                    else
-                    {
-                        return;
-                    }
+                    model.Rows.Add(new DetailRow(track.FilePath, container));
                 }
-
-                var searchViewModel = _container.Resolve<SearchViewModel>();
-
-                searchViewModel.SearchHeader.SearchBar.SearchText = albumDetails.AlbumArtist + " " +
-                                                                    albumDetails.AlbumTitle;
-
-                searchViewModel.SearchHeader.AlbumDetails = new ExpandedAlbumDetailsViewModel
-                                                                {
-                                                                    Artist = albumDetails.AlbumArtist,
-                                                                    Title = albumDetails.AlbumTitle,
-                                                                    ArtworkUrl = albumDetails.ArtworkUrl,
-                                                                    SongCount = albumDetails.TrackCount.ToString(),
-                                                                    Year = albumDetails.ReleaseYear.ToString()
-                                                                };
-
-                _model.CurrentPage = searchViewModel;
+                catch (NotSupportedException ex)
+                {
+                    ZuneMessageBox.Show(ex.Message, ErrorMode.Error);
+                    return;
+                }
             }
-        }
 
+            var searchViewModel = _container.Resolve<SearchViewModel>();
+
+            searchViewModel.SearchHeader.SearchBar.SearchText = albumDetails.AlbumArtist + " " +
+                                                                albumDetails.AlbumTitle;
+
+            searchViewModel.SearchHeader.AlbumDetails = new ExpandedAlbumDetailsViewModel
+                                                            {
+                                                                Artist = albumDetails.AlbumArtist,
+                                                                Title = albumDetails.AlbumTitle,
+                                                                ArtworkUrl = albumDetails.ArtworkUrl,
+                                                                SongCount = albumDetails.TrackCount.ToString(),
+                                                                Year = albumDetails.ReleaseYear.ToString()
+                                                            };
+
+            model.CurrentPage = searchViewModel;
+        }
 
         public void DelinkAlbum()
         {
-            var doesAlbumExist = _dbReader.DoesAlbumExist(this.ZuneAlbumMetaData.MediaId);
+            if (!DoesAlbumExistInDbAndDisplayError()) return;
 
-            if (!doesAlbumExist)
-                ShowCouldNotFindAlbumError();
+            Mouse.OverrideCursor = Cursors.Wait;
 
-            else
+            //TODO: fix bug where application crashes when removing an album that is currently playing
+
+            var tracksForAlbum = _dbReader.GetTracksForAlbum(this.ZuneAlbumMetaData.MediaId).ToList();
+
+            //_dbReader.RemoveAlbumFromDatabase(this.ZuneAlbumMetaData.MediaId);
+
+            foreach (var track in tracksForAlbum)
             {
-                Mouse.OverrideCursor = Cursors.Wait;
-
-                //TODO: fix bug where application crashes when removing an album that is currently playing
-
-                var tracksForAlbum = _dbReader.GetTracksForAlbum(this.ZuneAlbumMetaData.MediaId).ToList();
-
-                //_dbReader.RemoveAlbumFromDatabase(this.ZuneAlbumMetaData.MediaId);
-
-                foreach (var track in tracksForAlbum)
+                try
                 {
-                    IZuneTagContainer container = TryGetContainer(track);
+                    IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(track.FilePath);
 
-                    if (container != null)
-                    {
-                        _model.Rows.Add(new DetailRow(track.FilePath, container));
-                    }
-                    else
-                    {
-                        Mouse.OverrideCursor = null;
-                        return;
-                    }
+                    _model.Rows.Add(new DetailRow(track.FilePath, container));
 
                     container.RemoveZuneAttribute("WM/WMContentID");
                     container.RemoveZuneAttribute("WM/WMCollectionID");
@@ -171,67 +145,76 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                     container.WriteToFile(track.FilePath);
                 }
+                catch (NotSupportedException ex)
+                {
+                    ZuneMessageBox.Show(ex.Message, ErrorMode.Error);
+                    return;
+                }
 
-
-                //foreach (var track in tracksForAlbum)
-                //    _dbReader.AddTrackToDatabase(track.FilePath);
-
-                Mouse.OverrideCursor = null;
-
-                //TODO: change this to an information message box because it is not an error
-                ZuneMessageBox.Show("Album should now be de-linked. You may need to " +
-                                    "remove then re-add the album for the changes to take effect.", ErrorMode.Warning);
             }
+
+            //foreach (var track in tracksForAlbum)
+            //    _dbReader.AddTrackToDatabase(track.FilePath);
+
+            Mouse.OverrideCursor = null;
+
+            //TODO: change this to an information message box because it is not an error
+            ZuneMessageBox.Show("Album should now be de-linked. You may need to " +
+                                "remove then re-add the album for the changes to take effect.", ErrorMode.Warning);
         }
 
         public void RefreshAlbum()
         {
-            var doesAlbumExist = _dbReader.DoesAlbumExist(this.ZuneAlbumMetaData.MediaId);
+            if (!DoesAlbumExistInDbAndDisplayError()) return;
 
-            if (!doesAlbumExist)
-                ShowCouldNotFindAlbumError();
-            else
-            {
-                ThreadPool.QueueUserWorkItem(_ =>
+            ThreadPool.QueueUserWorkItem(_ =>
+             {
+                 Album albumMetaData = _dbReader.GetAlbum(this.ZuneAlbumMetaData.MediaId).ZuneAlbumMetaData;
+
+                 this.LinkStatus = LinkStatus.Unknown;
+
+
+                 string url = String.Concat(Urls.Album, albumMetaData.AlbumMediaId);
+
+                 if (albumMetaData.AlbumMediaId != Guid.Empty)
                  {
-                     Album albumDetails = _dbReader.GetAlbum(this.ZuneAlbumMetaData.MediaId);
+                     var downloader = new AlbumDetailsDownloader(url);
 
-                     this.LinkStatus = LinkStatus.Unknown;
-
-                     string url = String.Concat("http://catalog.zune.net/v3.0/en-US/music/album/",
-                                                albumDetails.AlbumMediaId);
-
-                     if (albumDetails.AlbumMediaId != Guid.Empty)
-                     {
-                         var downloader = new AlbumDetailsDownloader(url);
-
-                         downloader.DownloadCompleted += alb =>
+                     downloader.DownloadCompleted += alb =>
                          {
-                             this.LinkStatus = ZuneTypeConverters.GetAlbumLinkStatus(alb.AlbumTitle,
-                                                                        alb.AlbumArtist,
-                                                                        albumDetails);
+                             this.LinkStatus = SharedMethods.GetAlbumLinkStatus(alb.AlbumTitle,
+                                                                                alb.AlbumArtist,
+                                                                                albumMetaData.AlbumTitle,
+                                                                                albumMetaData.AlbumArtist);
 
                              this.WebAlbumMetaData = new Album
-                             {
-                                 AlbumArtist = alb.AlbumArtist,
-                                 AlbumTitle = alb.AlbumTitle,
-                                 ArtworkUrl = alb.ArtworkUrl
-                             };
+                                                         {
+                                                             AlbumArtist = alb.AlbumArtist,
+                                                             AlbumTitle = alb.AlbumTitle,
+                                                             ArtworkUrl = alb.ArtworkUrl
+                                                         };
                          };
 
-                         downloader.DownloadAsync();
-                     }
-                     else
-                     {
-                         this.LinkStatus = LinkStatus.Unlinked;
-                     }
-                 });
-            }
+                     downloader.DownloadAsync();
+                 }
+                 else
+                 {
+                     this.LinkStatus = LinkStatus.Unlinked;
+                 }
+             });
         }
 
-        private void ShowCouldNotFindAlbumError()
+        private bool DoesAlbumExistInDbAndDisplayError()
         {
-            ZuneMessageBox.Show("Could not find album, you may need to refresh the database.", ErrorMode.Error);
+            bool doesAlbumExist = _dbReader.DoesAlbumExist(this.ZuneAlbumMetaData.MediaId);
+
+            if (!doesAlbumExist)
+            {
+                SharedMethods.ShowCouldNotFindAlbumError();
+                return false;
+            }
+
+            return true;
         }
     }
 }

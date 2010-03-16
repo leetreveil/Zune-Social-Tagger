@@ -118,13 +118,14 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
 
             <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}"
                     Margin="0,0,10,0"
-                    cm:Message.Attach="[Event Click] = [Action LoadAlbumsFromZuneDatabase]"
+                    cm:Message.Attach="[Event Click] = [Action LoadDatabase]"
                     Content="REFRESH" />
 
             <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}"
@@ -133,8 +134,13 @@
                     cm:Message.Attach="[Event Click] = [Action LoadFromZuneWebsite]"
                     Content="SCAN ALL" />
 
-            <Button HorizontalAlignment="Right"
+            <Button Margin="0,0,10,0"
                     Grid.Column="2"
+                    cm:Message.Attach="[Event Click] = [Action CancelDownloading]"
+                    Content="STOP" />
+
+            <Button HorizontalAlignment="Right"
+                    Grid.Column="3"
                     cm:Message.Attach="[Event Click] = [Action SwitchToClassicMode]"
                     Content="SWITCH TO CLASSIC MODE" />
 

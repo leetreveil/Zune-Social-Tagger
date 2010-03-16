@@ -9,12 +9,22 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
     {
         private List<Album> _deserializedAlbums;
 
+        public event Action FinishedReadingAlbums = delegate { };
+        public event Action<int, int> ProgressChanged = delegate { };
+
         public bool Initialize()
         {
-            using (var fs = new FileStream(@"ZuneDatabase\testzunedatabase.xml", FileMode.Open))
-                _deserializedAlbums = fs.XmlDeserializeFromStream<List<Album>>();
+            try
+            {
+                using (var fs = new FileStream(@"ZuneDatabase\testzunedatabase.xml", FileMode.Open))
+                    _deserializedAlbums = fs.XmlDeserializeFromStream<List<Album>>();
 
                 return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public IEnumerable<Album> ReadAlbums()
@@ -47,9 +57,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
            return albumDetails.Tracks.Select(track => new Track() {FilePath = track.FilePath});
         }
-
-        public event Action FinishedReadingAlbums = delegate { };
-        public event Action<int, int> ProgressChanged = delegate { };
 
         public Album GetAlbumByAlbumTitle(string albumTitle)
         {
