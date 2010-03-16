@@ -47,16 +47,16 @@ namespace ZuneSocialTagger.Core.ID3Tagger
         public MetaData ReadMetaData()
         {
             return new MetaData
-                       {
-                           AlbumArtist = GetValue(ID3Frames.AlbumArtist),
-                           ContributingArtists = GetValue(ID3Frames.ContributingArtists).Split('/'),
-                           AlbumName = GetValue(ID3Frames.AlbumName),
-                           Title = GetValue(ID3Frames.Title),
-                           Year = GetValue(ID3Frames.Year),
-                           DiscNumber = GetValue(ID3Frames.DiscNumber),
-                           Genre = GetValue(ID3Frames.Genre),
-                           TrackNumber = GetValue(ID3Frames.TrackNumber)
-                       };
+               {
+                   AlbumArtist = GetValue(ID3Frames.AlbumArtist),
+                   ContributingArtists = GetValue(ID3Frames.ContributingArtists).Split('/'),
+                   AlbumName = GetValue(ID3Frames.AlbumName),
+                   Title = GetValue(ID3Frames.Title),
+                   Year = GetValue(ID3Frames.Year),
+                   DiscNumber = GetValue(ID3Frames.DiscNumber),
+                   Genre = GetValue(ID3Frames.Genre),
+                   TrackNumber = GetValue(ID3Frames.TrackNumber)
+               };
         }
 
 

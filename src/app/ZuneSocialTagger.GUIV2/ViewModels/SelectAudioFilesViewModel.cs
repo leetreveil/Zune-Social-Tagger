@@ -51,7 +51,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                     _model.Rows.Add(new DetailRow(file,container));
 
-                    //TODO: fix tracks that come in as 4/10 etc to just 4
                     _model.Rows =  _model.Rows.OrderBy(SharedMethods.SortByTrackNumber()).ToBindableCollection();
                 }
                 catch(AudioFileReadException ex)

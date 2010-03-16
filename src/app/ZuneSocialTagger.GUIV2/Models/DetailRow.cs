@@ -22,10 +22,28 @@ namespace ZuneSocialTagger.GUIV2.Models
         {
             FilePath = filePath;
             Container = container;
-            MetaData = container.ReadMetaData();
+            this.MetaData = container.ReadMetaData();
 
-            if (MetaData.TrackNumber == string.Empty)
-                MetaData.TrackNumber = "0";
+            this.MetaData.TrackNumber = TrackNumberCleaner(this.MetaData.TrackNumber);
+
+            //use the first contributing artist if the album artist does not exist
+            if (string.IsNullOrEmpty(this.MetaData.AlbumArtist))
+                this.MetaData.AlbumArtist = this.MetaData.ContributingArtists.First();
+        }
+
+        private string TrackNumberCleaner(string trackNumber)
+        {
+            if (trackNumber == string.Empty)
+            {
+                return "0";
+            }
+
+            if (trackNumber.Contains('/'))
+            {
+                return trackNumber.Split('/').First();
+            }
+
+            return trackNumber;
         }
 
         /// <summary>
