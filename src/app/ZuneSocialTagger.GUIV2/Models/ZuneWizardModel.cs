@@ -13,7 +13,7 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public ZuneWizardModel()
         {
-            this.Rows = new BindableCollection<DetailRow>();
+           // this.Rows = new BindableCollection<DetailRow>();
             this.SearchHeader = new SearchHeaderViewModel();
             this.FoundAlbums = new ObservableCollection<Album>();
         }

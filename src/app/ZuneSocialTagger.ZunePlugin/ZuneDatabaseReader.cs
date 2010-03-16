@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MicrosoftZuneInterop;
 using MicrosoftZuneLibrary;
+using ZuneSocialTagger.Core.ZuneDatabase;
 
-namespace ZuneSocialTagger.Core.ZuneDatabase
+namespace ZuneSocialTagger.ZunePlugin
 {
     public class ZuneDatabaseReader : IZuneDatabaseReader
     {
@@ -14,24 +16,33 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
         public bool Initialize()
         {
-            //Just copying what the zune software does internally here to initialize the database
-            _zuneLibrary = new ZuneLibrary();
-
-            bool dbRebult;
-
-            //anything other than 0 means an error occured reading the database
-            int num = _zuneLibrary.Initialize(null, out dbRebult);
-
-            if (num == 0)
+            try
             {
-                int phase2;
-                _zuneLibrary.Phase2Initialization(out phase2);
-                _zuneLibrary.CleanupTransientMedia();
-            }
-            else
-                return false;
+                //Just copying what the zune software does internally here to initialize the database
+                _zuneLibrary = new ZuneLibrary();
 
-            return true;
+                bool dbRebult;
+
+                //anything other than 0 means an error occured reading the database
+                int num = _zuneLibrary.Initialize(null, out dbRebult);
+
+                if (num == 0)
+                {
+                    int phase2;
+                    _zuneLibrary.Phase2Initialization(out phase2);
+                    _zuneLibrary.CleanupTransientMedia();
+                }
+                else
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private static T GetFieldValue<T>(int mediaId, EListType listType, int atom, T defaultValue)
@@ -112,7 +123,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
             var album = new Album
                             {
-                                AlbumMediaId = albumMediaId,
+                                AlbumMediaId = new Guid(albumMediaId),
                                 DateAdded = dateAdded,
                                 AlbumTitle = albumMetadata.AlbumTitle,
                                 AlbumArtist = albumMetadata.AlbumArtist,
@@ -120,7 +131,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
                                 MediaId = albumMetadata.MediaId,
                                 ReleaseYear = albumMetadata.ReleaseYear,
                                 TrackCount = (int) albumMetadata.TrackCount,
-                                Tracks = GetTracksForAlbum(albumMetadata.MediaId)
+                                Tracks = GetTracksForAlbum(albumMetadata.MediaId).ToList()
                             };
 
             albumMetadata.Dispose();
@@ -147,7 +158,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
                 yield return new Track
                                  {
                                      FilePath = filePath,
-                                     MediaId = mediaId
+                                     MediaId = new Guid(mediaId)
                                  };
             }
 

@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Caliburn.PresentationFramework;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Views;
 using Screen = Caliburn.PresentationFramework.Screens.Screen;
@@ -10,7 +10,7 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SelectAudioFilesViewModel : Screen
+    public class SelectAudioFilesViewModel : Screen, IFirstPage
     {
         private readonly IServiceLocator _locator;
         private readonly IZuneWizardModel _model;
@@ -20,7 +20,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             _locator = locator;
             _model = model;
+
+            this.CanSwitchToNewMode = true;
         }
+
+        public bool CanSwitchToNewMode { get; set; }
 
         public void SwitchToNewMode()
         {
@@ -37,6 +41,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void ReadFiles(IEnumerable<string> files)
         {
+            _model.Rows = new BindableCollection<DetailRow>();
+
             foreach (var file in files)
             {
                 try
@@ -45,6 +51,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                     _model.Rows.Add(new DetailRow(file,container));
 
+                    //TODO: fix tracks that come in as 4/10 etc to just 4
                     _model.Rows =  _model.Rows.OrderBy(SharedMethods.SortByTrackNumber()).ToBindableCollection();
                 }
                 catch(AudioFileReadException ex)

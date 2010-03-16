@@ -34,9 +34,26 @@ namespace ZuneSocialTagger.GUIV2
 
             this.WasShutdown += ApplicationModel_WasShutdown;
 
-            InitializeDatabase();
+            ZuneDllPreDbLoadCheck();
+        }
 
-            _model.CurrentPage = _locator.GetInstance<WebAlbumListViewModel>();
+        private void ZuneDllPreDbLoadCheck()
+        {
+            if (File.Exists("ZuneDBApi.dll"))
+            {
+                InitializeDatabase();
+                _container.RegisterType<IFirstPage, WebAlbumListViewModel>(new ContainerControlledLifetimeManager());
+                _model.CurrentPage = (Screen) _locator.GetInstance<IFirstPage>();
+            }
+            else
+            {
+                _container.RegisterType<IFirstPage, SelectAudioFilesViewModel>(new ContainerControlledLifetimeManager());
+
+                var firstPage = (SelectAudioFilesViewModel) _locator.GetInstance<IFirstPage>();
+                firstPage.CanSwitchToNewMode = false;
+
+                _model.CurrentPage = firstPage;
+            }
         }
 
         private void InitializeDatabase()
@@ -54,7 +71,9 @@ namespace ZuneSocialTagger.GUIV2
                     InitializeDatabase();
                 }
                 else
+                {
                     ZuneMessageBox.Show("Error loading zune database", ErrorMode.Error);
+                }
             }
         }
 

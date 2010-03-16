@@ -67,7 +67,6 @@
     <Compile Include="ZuneDatabase\IZuneDatabaseReader.cs" />
     <Compile Include="ZuneDatabase\TestZuneDatabaseReader.cs" />
     <Compile Include="ZuneDatabase\Track.cs" />
-    <None Include="ZuneDatabase\ZuneDatabaseReader.cs" />
     <Compile Include="ZuneIds.cs" />
     <Compile Include="ID3Tagger\ZuneMP3TagContainer.cs" />
     <Compile Include="ZuneTagContainerFactory.cs" />

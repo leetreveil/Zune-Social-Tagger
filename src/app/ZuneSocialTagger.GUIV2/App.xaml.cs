@@ -6,6 +6,7 @@ using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.ViewModels;
 using Caliburn.PresentationFramework.ApplicationModel;
+using ZuneSocialTagger.ZunePlugin;
 
 
 namespace ZuneSocialTagger.GUIV2
@@ -26,13 +27,13 @@ namespace ZuneSocialTagger.GUIV2
             var adapter = new UnityAdapter(container);
 
             container.RegisterType<IZuneWizardModel, ZuneWizardModel>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IZuneDatabaseReader, TestZuneDatabaseReader>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IZuneDatabaseReader, ZuneDatabaseReader>(new ContainerControlledLifetimeManager());
             container.RegisterType<IZuneDbAdapter, CachedZuneDatabaseReader>(new ContainerControlledLifetimeManager());
 
-            //setting the SelectAutoFilesViewModel to be a singleton, 
-            //the database wont be loaded each time the viewmodel is constructed now
-            container.RegisterType<WebAlbumListViewModel, WebAlbumListViewModel>(
-                new ContainerControlledLifetimeManager());
+            ////setting the SelectAutoFilesViewModel to be a singleton, 
+            ////the database wont be loaded each time the viewmodel is constructed now
+            //container.RegisterType<IFirstPage, WebAlbumListViewModel>(
+            //    new ContainerControlledLifetimeManager());
 
             container.RegisterInstance(container);
 

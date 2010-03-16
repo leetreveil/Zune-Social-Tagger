@@ -10,8 +10,6 @@ namespace ZuneSocialTagger.GUIV2.Models
     {
         BindableCollection<DetailRow> Rows { get; set; }
         Screen CurrentPage { get; set; }
-       // string SearchText { get; set; }
-        //ExpandedAlbumDetailsViewModel SelectedAlbumDetails { get; set; }
         SearchHeaderViewModel SearchHeader { get; set; }
         ObservableCollection<Album> FoundAlbums { get; set; }
     }

@@ -145,6 +145,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
     <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
+    <Compile Include="Models\IFirstPage.cs" />
     <Compile Include="ViewModels\SearchHeaderViewModel.cs" />
     <Compile Include="Models\SortOrder.cs" />
     <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />
@@ -444,6 +445,10 @@
     <ProjectReference Include="..\ZuneSocialTagger.Core\ZuneSocialTagger.Core2010.csproj">
       <Project>{C5F5D93F-50BC-4BE1-9594-5D3D3CB5BCE6}</Project>
       <Name>ZuneSocialTagger.Core2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZuneSocialTagger.ZunePlugin\ZuneSocialTagger.ZunePlugin2010.csproj">
+      <Project>{F59D6D41-BE5A-41B6-939E-7FD89DE89C71}</Project>
+      <Name>ZuneSocialTagger.ZunePlugin2010</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

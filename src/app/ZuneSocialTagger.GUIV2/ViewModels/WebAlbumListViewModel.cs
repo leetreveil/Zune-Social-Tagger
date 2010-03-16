@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class WebAlbumListViewModel : Screen
+    public class WebAlbumListViewModel : Screen, IFirstPage
     {
         private readonly IServiceLocator _locator;
         private readonly IZuneWizardModel _model;

@@ -35,7 +35,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         
         public void MoveBack()
         {
-            _model.CurrentPage = _locator.GetInstance<WebAlbumListViewModel>();
+            _model.CurrentPage = (Screen) _locator.GetInstance<IFirstPage>();
         }
     }
 }
