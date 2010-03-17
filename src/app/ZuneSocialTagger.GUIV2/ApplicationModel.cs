@@ -34,47 +34,63 @@ namespace ZuneSocialTagger.GUIV2
 
             this.WasShutdown += ApplicationModel_WasShutdown;
 
-            ZuneDllPreDbLoadCheck();
+            InitializeDatabase();
         }
 
-        private void ZuneDllPreDbLoadCheck()
-        {
-            if (File.Exists("ZuneDBApi.dll"))
-            {
-                InitializeDatabase();
-                _container.RegisterType<IFirstPage, WebAlbumListViewModel>(new ContainerControlledLifetimeManager());
-                _model.CurrentPage = (Screen) _locator.GetInstance<IFirstPage>();
-            }
-            else
-            {
-                _container.RegisterType<IFirstPage, SelectAudioFilesViewModel>(new ContainerControlledLifetimeManager());
+        public string MessageText { get { return "Haggis"; } }
 
-                var firstPage = (SelectAudioFilesViewModel) _locator.GetInstance<IFirstPage>();
-                firstPage.CanSwitchToNewMode = false;
-
-                _model.CurrentPage = firstPage;
-            }
-        }
+        public ErrorMode ErrorMode { get { return ErrorMode.Error; } }
 
         private void InitializeDatabase()
         {
-            bool initialized = _adapter.Initialize();
-
-            if (!initialized)
+            if (_adapter.CanInitialize)
             {
-                //fall back to the actual zune database if the cache could not be loaded
-                if (_adapter.GetType() == typeof(CachedZuneDatabaseReader))
-                {
-                    _container.RegisterType<IZuneDbAdapter, ZuneDbAdapter>();
+                //since the adapter is initally set to the cache this should always be true
+                bool initalized = _adapter.Initialize();
 
-                    _adapter = _locator.GetInstance<IZuneDbAdapter>();
-                    InitializeDatabase();
+                if (!initalized)
+                {
+                    //fall back to the actual zune database if the cache could not be loaded
+                    if (_adapter.GetType() == typeof(CachedZuneDatabaseReader))
+                    {
+                        _container.RegisterType<IZuneDbAdapter, ZuneDbAdapter>();
+                        _adapter = _locator.GetInstance<IZuneDbAdapter>();
+
+                        InitializeDatabase();
+                    }
+                    else
+                    {
+                        //if we are loading the actual database but there is an initalizing error...
+                        ZuneMessageBox.Show("Error loading zune database", ErrorMode.Error);
+                        ShowSelectAudioFilesView();
+                    }
                 }
                 else
                 {
-                    ZuneMessageBox.Show("Error loading zune database", ErrorMode.Error);
+                    ShowAlbumListView();
                 }
             }
+            else
+            {
+                //ZuneMessageBox.Show("ZuneDBApi.dll was not found", ErrorMode.Error);
+                ShowSelectAudioFilesView();
+            }
+        }
+
+        private void ShowSelectAudioFilesView()
+        {
+            _container.RegisterType<IFirstPage, SelectAudioFilesViewModel>(new ContainerControlledLifetimeManager());
+
+            var firstPage = (SelectAudioFilesViewModel)_locator.GetInstance<IFirstPage>();
+            firstPage.CanSwitchToNewMode = false;
+
+            _model.CurrentPage = firstPage;
+        }
+
+        private void ShowAlbumListView()
+        {
+            _container.RegisterType<IFirstPage, WebAlbumListViewModel>(new ContainerControlledLifetimeManager());
+            _model.CurrentPage = (Screen)_locator.GetInstance<IFirstPage>();
         }
 
         void ApplicationModel_WasShutdown(object sender, EventArgs e)

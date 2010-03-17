@@ -9,6 +9,11 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
     {
         private List<Album> _deserializedAlbums;
 
+        public bool CanInitialize
+        {
+            get { return true; }
+        }
+
         public event Action FinishedReadingAlbums = delegate { };
         public event Action<int, int> ProgressChanged = delegate { };
 
@@ -77,6 +82,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         {
             throw new NotImplementedException();
         }
+
 
         public void Dispose()
         {

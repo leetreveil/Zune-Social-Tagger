@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using ZuneSocialTagger.GUIV2.Views;
+using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {

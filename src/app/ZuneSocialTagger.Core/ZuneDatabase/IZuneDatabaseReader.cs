@@ -22,5 +22,11 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         bool DoesAlbumExist(int index);
         void RemoveAlbumFromDatabase(int albumId );
         void AddTrackToDatabase(string filePath);
+
+        /// <summary>
+        /// Put file system depedency checks in here
+        /// </summary>
+        /// <returns></returns>
+        bool CanInitialize { get; }
     }
 }

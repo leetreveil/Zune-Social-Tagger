@@ -23,6 +23,11 @@ namespace ZuneSocialTagger.GUIV2.Models
             _locator = locator;
         }
 
+        public bool CanInitialize
+        {
+            get { return true; }
+        }
+
         public bool Initialize()
         {
             try

@@ -1,3 +1,4 @@
+using ZuneSocialTagger.GUIV2.ViewModels;
 using ZuneSocialTagger.GUIV2.Views;
 
 namespace ZuneSocialTagger.GUIV2

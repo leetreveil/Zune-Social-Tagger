@@ -12,6 +12,7 @@
     <converters:LinkStatusToImageConverter x:Key="LinkStatusToImageConverter" />
     <converters:PathToImageThumbnailConverter x:Key="PathToImageThumbnailConverter" />
     <converters:SortOrderToTextConverter x:Key="SortOrderToTextConverter" />
+    <converters:ErrorModeToImageConverter x:Key="ErrorModeToImageConverter" />
     <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
 
 
@@ -143,6 +144,11 @@
             <DiscreteStringKeyFrame KeyTime="00:00:00.6000000"
                                     Value="Loading..." />
         </StringAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Storyboard x:Key="SizeFadeInOut" Storyboard.TargetProperty="Height" Storyboard.TargetName="WarningBox" >       
+        <DoubleAnimation BeginTime="0:0:2.0" Duration="0:0:0.2"  From="0" To="16" />
+        <DoubleAnimation BeginTime="0:0:10.0" Duration="0:0:0.2" From="16" To="0" />
     </Storyboard>
 
     <Storyboard x:Key="SearchingAnim">

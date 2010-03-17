@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using MicrosoftZuneInterop;
 using MicrosoftZuneLibrary;
@@ -186,6 +187,14 @@ namespace ZuneSocialTagger.ZunePlugin
         public void AddTrackToDatabase(string filePath)
         {
             _zuneLibrary.AddMedia(filePath);
+        }
+
+        public bool CanInitialize
+        {
+            get
+            {
+                return File.Exists("ZuneDBApi.dll");
+            }
         }
 
         public void Dispose()

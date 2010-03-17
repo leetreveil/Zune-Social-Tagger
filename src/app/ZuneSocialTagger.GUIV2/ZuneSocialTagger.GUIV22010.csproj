@@ -125,7 +125,11 @@
     <Compile Include="ApplicationView.xaml.cs">
       <DependentUpon>ApplicationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\InlineZuneMessage.xaml.cs">
+      <DependentUpon>InlineZuneMessage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\AlbumCountToStringConverter.cs" />
+    <Compile Include="Converters\ErrorModeToImageConverter.cs" />
     <Compile Include="Converters\LinkStatusToImageConverter.cs" />
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\PathToImageThumbnailConverter.cs" />
@@ -153,6 +157,7 @@
     <Compile Include="Views\AlbumDetailsView.xaml.cs">
       <DependentUpon>AlbumDetailsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ErrorMode.cs" />
     <Compile Include="Views\ExpandedAlbumDetailsView.xaml.cs">
       <DependentUpon>ExpandedAlbumDetailsView.xaml</DependentUpon>
     </Compile>
@@ -286,6 +291,10 @@
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\InlineZuneMessage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources.xaml">
       <Generator>MSBuild:Compile</Generator>

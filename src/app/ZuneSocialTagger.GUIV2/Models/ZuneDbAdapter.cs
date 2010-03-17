@@ -24,6 +24,11 @@ namespace ZuneSocialTagger.GUIV2.Models
             zuneDatabaseReader.FinishedReadingAlbums += () => this.FinishedReadingAlbums.Invoke();
         }
 
+        public bool CanInitialize
+        {
+            get { return _zuneDatabaseReader.CanInitialize; }
+        }
+
         public bool Initialize()
         {
             return _zuneDatabaseReader.Initialize();
