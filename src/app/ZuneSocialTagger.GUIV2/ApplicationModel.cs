@@ -8,7 +8,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using leetreveil.AutoUpdate.Framework;
-using Microsoft.Practices.Unity;
+using Ninject;
 using ZuneSocialTagger.GUIV2.Properties;
 using ZuneSocialTagger.GUIV2.ViewModels;
 using ZuneSocialTagger.GUIV2.Models;
@@ -20,11 +20,11 @@ namespace ZuneSocialTagger.GUIV2
     public class ApplicationModel : ViewModelBase
     {
         private IZuneDbAdapter _adapter;
-        private readonly IUnityContainer _container;
+        private readonly IKernel _container;
         private bool _updateAvailable;
         private ViewModelBase _currentPage;
 
-        public ApplicationModel(IZuneDbAdapter adapter, IUnityContainer container)
+        public ApplicationModel(IZuneDbAdapter adapter, IKernel container)
         {
             _adapter = adapter;
             _container = container;
@@ -40,28 +40,28 @@ namespace ZuneSocialTagger.GUIV2
         private void SetupViewSwitching(Type viewType)
         {
             if (viewType == typeof(IFirstPage))
-                this.CurrentPage = (ViewModelBase) _container.Resolve<IFirstPage>();
+                this.CurrentPage = (ViewModelBase)_container.Get<IFirstPage>();
 
             if (viewType == typeof(WebAlbumListViewModel))
-                this.CurrentPage = _container.Resolve<WebAlbumListViewModel>();
+                this.CurrentPage = _container.Get<WebAlbumListViewModel>();
 
-            if (viewType == typeof (SelectAudioFilesViewModel))
-                this.CurrentPage = _container.Resolve<SelectAudioFilesViewModel>();
+            if (viewType == typeof(SelectAudioFilesViewModel))
+                this.CurrentPage = _container.Get<SelectAudioFilesViewModel>();
 
-            if (viewType == typeof (SearchViewModel))
-                this.CurrentPage = _container.Resolve<SearchViewModel>();
+            if (viewType == typeof(SearchViewModel))
+                this.CurrentPage = _container.Get<SearchViewModel>();
 
-            if (viewType == typeof (SearchResultsViewModel))
-                this.CurrentPage = _container.Resolve<SearchResultsViewModel>();
+            if (viewType == typeof(SearchResultsViewModel))
+                this.CurrentPage = _container.Get<SearchResultsViewModel>();
 
-            if (viewType == typeof (DetailsViewModel))
-                this.CurrentPage = _container.Resolve<DetailsViewModel>();
+            if (viewType == typeof(DetailsViewModel))
+                this.CurrentPage = _container.Get<DetailsViewModel>();
         }
-        
+
         private void SetupCommandBindings()
         {
-           this.ShowAboutSettingsCommand = new RelayCommand(ShowAboutSettings);
-           this.UpdateCommand = new RelayCommand(ShowUpdate);
+            this.ShowAboutSettingsCommand = new RelayCommand(ShowAboutSettings);
+            this.UpdateCommand = new RelayCommand(ShowUpdate);
         }
 
         public string MessageText { get { return "Haggis"; } }
@@ -80,8 +80,8 @@ namespace ZuneSocialTagger.GUIV2
                     //fall back to the actual zune database if the cache could not be loaded
                     if (_adapter.GetType() == typeof(CachedZuneDatabaseReader))
                     {
-                        _container.RegisterType<IZuneDbAdapter, ZuneDbAdapter>();
-                        _adapter = _container.Resolve<IZuneDbAdapter>();
+                        _container.Rebind<IZuneDbAdapter>().To<ZuneDbAdapter>().InSingletonScope();
+                        _adapter = _container.Get<IZuneDbAdapter>();
 
                         InitializeDatabase();
                     }
@@ -106,9 +106,9 @@ namespace ZuneSocialTagger.GUIV2
 
         private void ShowSelectAudioFilesViewWithError()
         {
-            _container.RegisterType<IFirstPage, SelectAudioFilesViewModel>(new ContainerControlledLifetimeManager());
+            _container.Rebind<IFirstPage>().To<SelectAudioFilesViewModel>().InSingletonScope();
 
-            var firstPage = _container.Resolve<SelectAudioFilesViewModel>();
+            var firstPage = _container.Get<SelectAudioFilesViewModel>();
             firstPage.CanSwitchToNewMode = false;
 
             this.CurrentPage = firstPage;
@@ -116,10 +116,10 @@ namespace ZuneSocialTagger.GUIV2
 
         private void ShowAlbumListView()
         {
-            _container.RegisterType<IFirstPage, WebAlbumListViewModel>(new ContainerControlledLifetimeManager());
-            
-            var webAlbumListViewModel = _container.Resolve<WebAlbumListViewModel>();
-            
+            _container.Rebind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
+
+            var webAlbumListViewModel = _container.Get<WebAlbumListViewModel>();
+
             this.CurrentPage = webAlbumListViewModel;
         }
 
@@ -127,15 +127,15 @@ namespace ZuneSocialTagger.GUIV2
         {
             //TODO: attempt to seriailze data if application was forcibly shut down
 
-            var albumListViewModel = _container.Resolve<WebAlbumListViewModel>();
+            var albumListViewModel = _container.Get<WebAlbumListViewModel>();
 
             List<AlbumDetails> albums = (from album in albumListViewModel.Albums
-                        select new AlbumDetails
-                                   {
-                                       LinkStatus = album.LinkStatus,
-                                       WebAlbumMetaData = album.WebAlbumMetaData,
-                                       ZuneAlbumMetaData = album.ZuneAlbumMetaData
-                                   }).ToList();
+                                         select new AlbumDetails
+                                                    {
+                                                        LinkStatus = album.LinkStatus,
+                                                        WebAlbumMetaData = album.WebAlbumMetaData,
+                                                        ZuneAlbumMetaData = album.ZuneAlbumMetaData
+                                                    }).ToList();
 
             try
             {
@@ -175,9 +175,9 @@ namespace ZuneSocialTagger.GUIV2
         public bool UpdateAvailable
         {
             get { return _updateAvailable; }
-            set 
+            set
             {
-                _updateAvailable = value; 
+                _updateAvailable = value;
                 RaisePropertyChanged("UpdateAvailable");
             }
         }
@@ -221,7 +221,7 @@ namespace ZuneSocialTagger.GUIV2
                             if (updateManager.CheckForUpdate())
                                 this.UpdateAvailable = true;
                         }
-                        catch {}
+                        catch { }
                     });
                 }
                 catch

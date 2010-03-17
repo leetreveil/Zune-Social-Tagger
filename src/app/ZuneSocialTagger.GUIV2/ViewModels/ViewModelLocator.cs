@@ -1,9 +1,9 @@
 using System;
 using GalaSoft.MvvmLight;
 using leetreveil.AutoUpdate.Framework;
-using Microsoft.Practices.Unity;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
+using Ninject;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -12,26 +12,24 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     /// </summary>
     public class ViewModelLocator
     {
-        static readonly UnityContainer Container = new UnityContainer();
+        static readonly StandardKernel Container = new StandardKernel();
 
         static ViewModelLocator()
         {
-            Container.RegisterInstance(Container);
-
             if (ViewModelBase.IsInDesignModeStatic)
             {
                 //bind to design database
             }
             else
             {
-                Container.RegisterType<IZuneWizardModel, ZuneWizardModel>(new ContainerControlledLifetimeManager());
-                Container.RegisterType<IZuneDatabaseReader, TestZuneDatabaseReader>(new ContainerControlledLifetimeManager());
-                Container.RegisterType<IZuneDbAdapter, CachedZuneDatabaseReader>(new ContainerControlledLifetimeManager());
+                Container.Bind<IZuneWizardModel>().To<ZuneWizardModel>().InSingletonScope();
+                Container.Bind<IZuneDatabaseReader>().To<TestZuneDatabaseReader>().InSingletonScope();
+                Container.Bind<IZuneDbAdapter>().To<CachedZuneDatabaseReader>().InSingletonScope();
             }
 
-            Container.RegisterType<ApplicationModel>(new ContainerControlledLifetimeManager());
-            Container.RegisterType<WebAlbumListViewModel>(new ContainerControlledLifetimeManager());
-            Container.RegisterType<SearchHeaderViewModel>(new ContainerControlledLifetimeManager());
+            Container.Bind<ApplicationModel>().ToSelf().InSingletonScope();
+            Container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
+            Container.Bind<SearchHeaderViewModel>().ToSelf().InSingletonScope();
         }
 
         public ApplicationModel Application
@@ -40,7 +38,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 try
                 {
-                    return Container.Resolve<ApplicationModel>();
+                    return Container.Get<ApplicationModel>();
                 }
                 catch (Exception e)
                 {
@@ -53,7 +51,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             get
             {
-                return Container.Resolve<SelectAudioFilesViewModel>();
+                return Container.Get<SelectAudioFilesViewModel>();
             }
         }
 
@@ -61,7 +59,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             get
             {
-                return Container.Resolve<WebAlbumListViewModel>();
+                return Container.Get<WebAlbumListViewModel>();
             }
         }
 
@@ -69,7 +67,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             get
             {
-                return Container.Resolve<SearchViewModel>();
+                return Container.Get<SearchViewModel>();
             }
         }
 
