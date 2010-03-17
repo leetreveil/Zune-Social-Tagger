@@ -4,7 +4,8 @@
     xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2" 
     Style="{DynamicResource DefaultWindowStyle}"  
     WindowStartupLocation="CenterScreen"
-    FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" Topmost="True" Height="205" Width="400">
+    FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U" 
+    Topmost="True" Height="205" Width="400">
 
     <Window.Resources>
         <ResourceDictionary Source="../Resources.xaml" />

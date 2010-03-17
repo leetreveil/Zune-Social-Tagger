@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Xml.Serialization;
-using Caliburn.PresentationFramework.Screens;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using leetreveil.AutoUpdate.Framework;
-using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using ZuneSocialTagger.GUIV2.Properties;
 using ZuneSocialTagger.GUIV2.ViewModels;
@@ -14,27 +17,51 @@ using ZuneSocialTagger.GUIV2.Views;
 
 namespace ZuneSocialTagger.GUIV2
 {
-    public class ApplicationModel : Screen
+    public class ApplicationModel : ViewModelBase
     {
-        private readonly IZuneWizardModel _model;
         private IZuneDbAdapter _adapter;
         private readonly IUnityContainer _container;
-        private readonly IServiceLocator _locator;
         private bool _updateAvailable;
+        private ViewModelBase _currentPage;
 
-        public ApplicationModel(IServiceLocator locator, IZuneWizardModel model,
-                                IZuneDbAdapter adapter,IUnityContainer container)
+        public ApplicationModel(IZuneDbAdapter adapter, IUnityContainer container)
         {
-            _locator = locator;
-            _model = model;
             _adapter = adapter;
             _container = container;
 
             CheckForUpdates();
-
-            this.WasShutdown += ApplicationModel_WasShutdown;
-
+            SetupCommandBindings();
             InitializeDatabase();
+
+            //register for changes to the current view model so we can switch between views
+            Messenger.Default.Register<Type>(this,SetupViewSwitching);
+        }
+
+        private void SetupViewSwitching(Type viewType)
+        {
+            if (viewType == typeof(IFirstPage))
+                this.CurrentPage = (ViewModelBase) _container.Resolve<IFirstPage>();
+
+            if (viewType == typeof(WebAlbumListViewModel))
+                this.CurrentPage = _container.Resolve<WebAlbumListViewModel>();
+
+            if (viewType == typeof (SelectAudioFilesViewModel))
+                this.CurrentPage = _container.Resolve<SelectAudioFilesViewModel>();
+
+            if (viewType == typeof (SearchViewModel))
+                this.CurrentPage = _container.Resolve<SearchViewModel>();
+
+            if (viewType == typeof (SearchResultsViewModel))
+                this.CurrentPage = _container.Resolve<SearchResultsViewModel>();
+
+            if (viewType == typeof (DetailsViewModel))
+                this.CurrentPage = _container.Resolve<DetailsViewModel>();
+        }
+        
+        private void SetupCommandBindings()
+        {
+           this.ShowAboutSettingsCommand = new RelayCommand(ShowAboutSettings);
+           this.UpdateCommand = new RelayCommand(ShowUpdate);
         }
 
         public string MessageText { get { return "Haggis"; } }
@@ -54,7 +81,7 @@ namespace ZuneSocialTagger.GUIV2
                     if (_adapter.GetType() == typeof(CachedZuneDatabaseReader))
                     {
                         _container.RegisterType<IZuneDbAdapter, ZuneDbAdapter>();
-                        _adapter = _locator.GetInstance<IZuneDbAdapter>();
+                        _adapter = _container.Resolve<IZuneDbAdapter>();
 
                         InitializeDatabase();
                     }
@@ -62,7 +89,7 @@ namespace ZuneSocialTagger.GUIV2
                     {
                         //if we are loading the actual database but there is an initalizing error...
                         ZuneMessageBox.Show("Error loading zune database", ErrorMode.Error);
-                        ShowSelectAudioFilesView();
+                        ShowSelectAudioFilesViewWithError();
                     }
                 }
                 else
@@ -73,32 +100,42 @@ namespace ZuneSocialTagger.GUIV2
             else
             {
                 //ZuneMessageBox.Show("ZuneDBApi.dll was not found", ErrorMode.Error);
-                ShowSelectAudioFilesView();
+                ShowSelectAudioFilesViewWithError();
             }
         }
 
-        private void ShowSelectAudioFilesView()
+        private void ShowSelectAudioFilesViewWithError()
         {
             _container.RegisterType<IFirstPage, SelectAudioFilesViewModel>(new ContainerControlledLifetimeManager());
 
-            var firstPage = (SelectAudioFilesViewModel)_locator.GetInstance<IFirstPage>();
+            var firstPage = _container.Resolve<SelectAudioFilesViewModel>();
             firstPage.CanSwitchToNewMode = false;
 
-            _model.CurrentPage = firstPage;
+            this.CurrentPage = firstPage;
         }
 
         private void ShowAlbumListView()
         {
             _container.RegisterType<IFirstPage, WebAlbumListViewModel>(new ContainerControlledLifetimeManager());
-            _model.CurrentPage = (Screen)_locator.GetInstance<IFirstPage>();
+            
+            var webAlbumListViewModel = _container.Resolve<WebAlbumListViewModel>();
+            
+            this.CurrentPage = webAlbumListViewModel;
         }
 
-        void ApplicationModel_WasShutdown(object sender, EventArgs e)
+        public void ShuttingDown()
         {
             //TODO: attempt to seriailze data if application was forcibly shut down
 
-            var albumListViewModel = _locator.GetInstance<WebAlbumListViewModel>();
-            var albums = albumListViewModel.Albums;
+            var albumListViewModel = _container.Resolve<WebAlbumListViewModel>();
+
+            List<AlbumDetails> albums = (from album in albumListViewModel.Albums
+                        select new AlbumDetails
+                                   {
+                                       LinkStatus = album.LinkStatus,
+                                       WebAlbumMetaData = album.WebAlbumMetaData,
+                                       ZuneAlbumMetaData = album.ZuneAlbumMetaData
+                                   }).ToList();
 
             try
             {
@@ -117,18 +154,20 @@ namespace ZuneSocialTagger.GUIV2
             Settings.Default.Save();
         }
 
-        public void ShowUpdateView()
+        public void ShowUpdate()
         {
-            //TODO: dont like this stuff...
-            new UpdateView(new UpdateViewModel(UpdateManager.Instance.NewUpdate.Version)).Show();
+            new UpdateView().Show();
         }
 
         public void CloseApplication()
         {
-            base.Close();
+            //base.Close();
         }
 
-        public void ShowAboutSettingsView()
+        public RelayCommand UpdateCommand { get; private set; }
+        public RelayCommand ShowAboutSettingsCommand { get; private set; }
+
+        public void ShowAboutSettings()
         {
             new AboutView().Show();
         }
@@ -139,22 +178,20 @@ namespace ZuneSocialTagger.GUIV2
             set 
             {
                 _updateAvailable = value; 
-                NotifyOfPropertyChange(() => UpdateAvailable); 
+                RaisePropertyChanged("UpdateAvailable");
             }
         }
 
-        public IZuneWizardModel Model
+        public ViewModelBase CurrentPage
         {
-            get { return _model; }
-        }
-
-        public Screen CurrentPage
-        {
-            get { return _model.CurrentPage; }
+            get
+            {
+                return _currentPage;
+            }
             set
             {
-                _model.CurrentPage = value;
-                NotifyOfPropertyChange(() => CurrentPage);
+                _currentPage = value;
+                RaisePropertyChanged("CurrentPage");
             }
         }
 

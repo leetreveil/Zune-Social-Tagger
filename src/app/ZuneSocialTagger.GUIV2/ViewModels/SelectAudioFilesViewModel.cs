@@ -1,34 +1,37 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Forms;
-using Caliburn.PresentationFramework;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.GUIV2.Models;
-using ZuneSocialTagger.GUIV2.Views;
-using Screen = Caliburn.PresentationFramework.Screens.Screen;
 using ZuneSocialTagger.Core;
-using Microsoft.Practices.ServiceLocation;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SelectAudioFilesViewModel : Screen, IFirstPage
+    public class SelectAudioFilesViewModel : ViewModelBase, IFirstPage
     {
-        private readonly IServiceLocator _locator;
         private readonly IZuneWizardModel _model;
 
-        public SelectAudioFilesViewModel(IServiceLocator locator,
-                                         IZuneWizardModel model)
+        public SelectAudioFilesViewModel(IZuneWizardModel model)
         {
-            _locator = locator;
             _model = model;
 
             this.CanSwitchToNewMode = true;
+
+            this.SelectFilesCommand = new RelayCommand(SelectFiles);
+            this.SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);
         }
 
         public bool CanSwitchToNewMode { get; set; }
+        public RelayCommand SelectFilesCommand { get; private set; }
+        public RelayCommand SwitchToNewModeCommand { get; private set; }
+
 
         public void SwitchToNewMode()
         {
-            _model.CurrentPage = _locator.GetInstance<WebAlbumListViewModel>();
+            Messenger.Default.Send(typeof(WebAlbumListViewModel));
         }
 
         public void SelectFiles()
@@ -41,7 +44,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void ReadFiles(IEnumerable<string> files)
         {
-            _model.Rows = new BindableCollection<DetailRow>();
+            _model.Rows = new ObservableCollection<DetailRow>();
 
             foreach (var file in files)
             {
@@ -51,7 +54,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                     _model.Rows.Add(new DetailRow(file,container));
 
-                    _model.Rows =  _model.Rows.OrderBy(SharedMethods.SortByTrackNumber()).ToBindableCollection();
+                    _model.Rows = _model.Rows.OrderBy(SharedMethods.SortByTrackNumber()).ToAsyncObservableCollection();
                 }
                 catch(AudioFileReadException ex)
                 {
@@ -62,10 +65,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             MetaData ftMetaData = _model.Rows.First().MetaData;
 
-            _model.SearchHeader.SearchBar.SearchText = ftMetaData.AlbumArtist + " " +
-                                                       ftMetaData.AlbumName;
+            _model.SearchText = ftMetaData.AlbumArtist + " " + ftMetaData.AlbumName;
 
-            _model.SearchHeader.AlbumDetails = new ExpandedAlbumDetailsViewModel
+            _model.FileAlbumDetails = new ExpandedAlbumDetailsViewModel
             {
                 Artist = ftMetaData.AlbumArtist,
                 Title = ftMetaData.AlbumName,
@@ -73,10 +75,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 Year = ftMetaData.Year
             };
 
-            _model.CurrentPage = _locator.GetInstance<SearchViewModel>();
+            Messenger.Default.Send(typeof(SearchViewModel));
         }
-
-
-
     }
 }

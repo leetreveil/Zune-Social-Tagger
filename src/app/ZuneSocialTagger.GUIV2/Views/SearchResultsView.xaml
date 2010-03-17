@@ -5,7 +5,6 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
     xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views" 
-    xmlns:cm="clr-namespace:Caliburn.PresentationFramework;assembly=Caliburn.PresentationFramework" 
     x:Class="ZuneSocialTagger.GUIV2.Views.SearchResultsView"
 	x:Name="UserControl" 
     FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U">
@@ -39,7 +38,7 @@
             <TextBlock Grid.Row="1" Width="60" x:Name="tbLoading" Visibility="{Binding Path=IsLoading, Converter = {StaticResource BoolToVisConverter}}" 
                        Grid.Column="2" VerticalAlignment="Bottom" FontSize="13.333" Foreground="#FF8A8D90" HorizontalAlignment="Right" />
             
-			<ListView Grid.Row="2" x:Name="lvAlbums" cm:Message.Attach="[Event SelectionChanged] = Action[LoadAlbum(lvAlbums.SelectedItem)]" 
+			<ListView Grid.Row="2" x:Name="lvAlbums" SelectionChanged="lvAlbums_SelectionChanged"
                       SelectedIndex="0" Background="Transparent" BorderBrush="Transparent" IsSynchronizedWithCurrentItem="True" 
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Albums}" 
                       Margin="0,0,36,0" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U" 
@@ -64,13 +63,12 @@
             <views:SearchResultsDetailView Grid.Row="2" Grid.Column="2" DataContext="{Binding SearchResultsDetailViewModel}"/>
             
             <StackPanel Margin="0,25,0,0" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right"  Orientation="Horizontal">
+
+                <Button Content="BACK" Margin="0,0,10,0" Command="{Binding MoveBackCommand}"/>
                 
-                <Button Content="BACK" Margin="0,0,10,0"
-                        cm:Message.Attach="[Event Click] = [Action MoveBack]"/>
+                <Button Content="NEXT" IsEnabled="{Binding Path=IsLoading, Converter={StaticResource NotConverter}}" 
+                        Command="{Binding MoveNextCommand}"/>
                 
-                <Button Content="NEXT" 
-                       IsEnabled="{Binding Path=IsLoading, Converter={StaticResource NotConverter}}" 
-                        cm:Message.Attach="[Event Click] = [Action MoveNext]"/>
             </StackPanel>
 
 		</Grid>

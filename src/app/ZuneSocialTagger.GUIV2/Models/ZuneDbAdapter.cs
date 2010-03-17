@@ -1,26 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
 using ZuneSocialTagger.Core.ZuneDatabase;
-using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
     public class ZuneDbAdapter : IZuneDbAdapter
     {
         private readonly IZuneDatabaseReader _zuneDatabaseReader;
-        private readonly IServiceLocator _locator;
 
         public event Action FinishedReadingAlbums = delegate { };
         public event Action<int, int> ProgressChanged = delegate { };
 
-        public ZuneDbAdapter(IZuneDatabaseReader zuneDatabaseReader, IServiceLocator locator)
+        public ZuneDbAdapter(IZuneDatabaseReader zuneDatabaseReader)
         {
             _zuneDatabaseReader = zuneDatabaseReader;
-            _locator = locator;
 
-            zuneDatabaseReader.ProgressChanged += (arg1, arg2) => this.ProgressChanged.Invoke(arg1,arg2);
+            zuneDatabaseReader.ProgressChanged += (arg1, arg2) => this.ProgressChanged.Invoke(arg1, arg2);
             zuneDatabaseReader.FinishedReadingAlbums += () => this.FinishedReadingAlbums.Invoke();
         }
 
@@ -34,15 +30,15 @@ namespace ZuneSocialTagger.GUIV2.Models
             return _zuneDatabaseReader.Initialize();
         }
 
-        public IEnumerable<AlbumDetailsViewModel> ReadAlbums()
+        public IEnumerable<AlbumDetails> ReadAlbums()
         {
             return from album in _zuneDatabaseReader.ReadAlbums()
-                   select ToAlbumDetailsViewModel(album);
+                   select ToAlbumDetails(album);
         }
 
-        public AlbumDetailsViewModel GetAlbum(int index)
+        public AlbumDetails GetAlbum(int index)
         {
-            return ToAlbumDetailsViewModel(_zuneDatabaseReader.GetAlbum(index));
+            return ToAlbumDetails(_zuneDatabaseReader.GetAlbum(index));
         }
 
         public IEnumerable<Track> GetTracksForAlbum(int albumId)
@@ -59,13 +55,12 @@ namespace ZuneSocialTagger.GUIV2.Models
         {
         }
 
-        private AlbumDetailsViewModel ToAlbumDetailsViewModel(Album album)
+        private static AlbumDetails ToAlbumDetails(Album album)
         {
-            var albumDetailsViewModel = _locator.GetInstance<AlbumDetailsViewModel>();
-
-            albumDetailsViewModel.ZuneAlbumMetaData = album;
-
-            return albumDetailsViewModel;
+            return new AlbumDetails
+                       {
+                           ZuneAlbumMetaData = album
+                       };
         }
     }
 }

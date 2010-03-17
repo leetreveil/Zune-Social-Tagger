@@ -1,49 +1,55 @@
 using System;
-using Caliburn.PresentationFramework;
-using Microsoft.Practices.ServiceLocation;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using ZuneSocialTagger.Core;
+using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
-using Screen = Caliburn.PresentationFramework.Screens.Screen;
 using System.Threading;
+using Album = ZuneSocialTagger.Core.ZuneDatabase.Album;
+using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class WebAlbumListViewModel : Screen, IFirstPage
+    public class WebAlbumListViewModel : ViewModelBase, IFirstPage
     {
-        private readonly IServiceLocator _locator;
-        private readonly IZuneWizardModel _model;
         private IZuneDbAdapter _dbAdapter;
+        private readonly IZuneWizardModel _model;
         private bool _isLoading;
         private int _loadingProgress;
-        private BindableCollection<AlbumDetailsViewModel> _albums;
+        private AsyncObservableCollection<AlbumDetailsViewModel> _albums;
         private AlbumDownloaderWithProgressReporting _downloader;
 
-        public WebAlbumListViewModel(IServiceLocator locator, IZuneWizardModel model, IZuneDbAdapter dbAdapter)
+        public WebAlbumListViewModel(IZuneDbAdapter dbAdapter,IZuneWizardModel model)
         {
-            _locator = locator;
-            _model = model;
-
             _dbAdapter = dbAdapter;
+            _model = model;
             _dbAdapter.FinishedReadingAlbums += DbAdapterFinishedReadingAlbums;
             _dbAdapter.ProgressChanged += DbAdapterProgressChanged;
 
-            this.Albums = new BindableCollection<AlbumDetailsViewModel>();
+            this.Albums = new AsyncObservableCollection<AlbumDetailsViewModel>();
 
             this.SortViewModel = new SortViewModel();
             this.SortViewModel.SortClicked += SortViewModel_SortClicked;
+
+            SetupCommandBindings();
 
             LoadAlbumsFromCacheOrZuneDatabase();
         }
 
         #region View Binding Properties
 
-        public BindableCollection<AlbumDetailsViewModel> Albums
+        public AsyncObservableCollection<AlbumDetailsViewModel> Albums
         {
             get { return _albums; }
             set
             {
                 _albums = value;
-                NotifyOfPropertyChange(() => this.Albums);
+                RaisePropertyChanged("Albums");
             }
         }
 
@@ -55,7 +61,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             set
             {
                 _isLoading = value;
-                NotifyOfPropertyChange(() => this.IsLoading);
+                RaisePropertyChanged("IsLoading");
             }
         }
 
@@ -65,7 +71,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             set
             {
                 _loadingProgress = value;
-                NotifyOfPropertyChange(() => this.LoadingProgress);
+                RaisePropertyChanged("LoadingProgress");
             }
         }
 
@@ -87,6 +93,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             get { return this.Albums.Where(x => x.LinkStatus == LinkStatus.AlbumOrArtistMismatch).Count(); }
         }
+
+        public RelayCommand LoadDatabaseCommand { get; private set; }
+        public RelayCommand LoadFromZuneWebsiteCommand { get; private set; }
+        public RelayCommand CancelDownloadingCommand { get; private set; }
+        public RelayCommand SwitchToClassicModeCommand { get; private set; }
 
         #endregion
 
@@ -125,15 +136,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             ThreadPool.QueueUserWorkItem(delegate
             {
-                foreach (AlbumDetailsViewModel newAlbum in _dbAdapter.ReadAlbums())
+                foreach (AlbumDetails newAlbum in _dbAdapter.ReadAlbums())
                 {
                     //add handler to be notified when the LinkStatus enum changes
-                    newAlbum.PropertyChanged += album_PropertyChanged;
+                    //newAlbum.PropertyChanged += album_PropertyChanged;
 
                     if (newAlbum.ZuneAlbumMetaData.AlbumMediaId == Guid.Empty)
                         newAlbum.LinkStatus = LinkStatus.Unlinked;
 
-                    this.Albums.Add(newAlbum);
+                    this.Albums.Add(new AlbumDetailsViewModel(newAlbum));
                 }
 
                 this.IsLoading = false;
@@ -141,18 +152,169 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
            
         }
 
-        //public void LoadDatabase()
-        //{
-        //    _dbAdapter = new ZuneDbAdapter(_locator.GetInstance<IZuneDatabaseReader>(),_locator);
-        //    _dbAdapter.ProgressChanged +=DbAdapterProgressChanged;
-        //    _dbAdapter.FinishedReadingAlbums +=DbAdapterFinishedReadingAlbums;
+        public void LoadDatabase()
+        {
+            //_dbAdapter = new ZuneDbAdapter(_locator.GetInstance<IZuneDatabaseReader>(), _locator);
+            //_dbAdapter.ProgressChanged += DbAdapterProgressChanged;
+            //_dbAdapter.FinishedReadingAlbums += DbAdapterFinishedReadingAlbums;
 
-        //    LoadAlbumsFromCacheOrZuneDatabase();
-        //}
+            //LoadAlbumsFromCacheOrZuneDatabase();
+        }
+
+        public void LinkAlbum(Album albumDetails)
+        {
+            if (!DoesAlbumExistInDbAndDisplayError(albumDetails)) return;
+
+            IEnumerable<Track> tracksForAlbum = _dbAdapter.GetTracksForAlbum(albumDetails.MediaId);
+
+            _model.Rows = new ObservableCollection<DetailRow>();
+
+            foreach (var track in tracksForAlbum)
+            {
+                try
+                {
+                    //TODO: do we really want to not be able to link an album if just one track cant be read?
+                    IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(track.FilePath);
+
+                    _model.Rows.Add(new DetailRow(track.FilePath, container));
+                }
+                catch (AudioFileReadException ex)
+                {
+                    ZuneMessageBox.Show(ex.Message, ErrorMode.Error);
+                    return;
+                }
+            }
+
+            _model.SearchText = albumDetails.AlbumArtist + " " + albumDetails.AlbumTitle;
+
+            _model.FileAlbumDetails = new ExpandedAlbumDetailsViewModel
+            {
+                Artist = albumDetails.AlbumArtist,
+                Title = albumDetails.AlbumTitle,
+                ArtworkUrl = albumDetails.ArtworkUrl,
+                SongCount = albumDetails.TrackCount.ToString(),
+                Year = albumDetails.ReleaseYear.ToString()
+            };
+
+            //tell the application to switch to the search view
+            Messenger.Default.Send(typeof(SearchViewModel));
+        }
+
+        public void DelinkAlbum(Album albumDetails)
+        {
+            if (!DoesAlbumExistInDbAndDisplayError(albumDetails)) return;
+
+            Mouse.OverrideCursor = Cursors.Wait;
+
+            //TODO: fix bug where application crashes when removing an album that is currently playing
+
+            var tracksForAlbum = _dbAdapter.GetTracksForAlbum(albumDetails.MediaId).ToList();
+
+            //_dbReader.RemoveAlbumFromDatabase(this.ZuneAlbumMetaData.MediaId);
+
+            foreach (var track in tracksForAlbum)
+            {
+                try
+                {
+                    IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(track.FilePath);
+
+                    _model.Rows.Add(new DetailRow(track.FilePath, container));
+
+                    container.RemoveZuneAttribute("WM/WMContentID");
+                    container.RemoveZuneAttribute("WM/WMCollectionID");
+                    container.RemoveZuneAttribute("WM/WMCollectionGroupID");
+                    container.RemoveZuneAttribute("ZuneCollectionID");
+                    container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
+                    container.RemoveZuneAttribute("ZuneCollectionID");
+                    container.RemoveZuneAttribute("ZuneUserEditedFields");
+                    container.RemoveZuneAttribute(ZuneIds.Album);
+                    container.RemoveZuneAttribute(ZuneIds.Artist);
+                    container.RemoveZuneAttribute(ZuneIds.Track);
+
+                    container.WriteToFile(track.FilePath);
+                }
+                catch (AudioFileReadException ex)
+                {
+                    ZuneMessageBox.Show(ex.Message, ErrorMode.Error);
+                    return;
+                }
+
+            }
+
+            //foreach (var track in tracksForAlbum)
+            //    _dbReader.AddTrackToDatabase(track.FilePath);
+
+            Mouse.OverrideCursor = null;
+
+            //TODO: change this to an information message box because it is not an error
+            ZuneMessageBox.Show("Album should now be de-linked. You may need to " +
+                                "remove then re-add the album for the changes to take effect.", ErrorMode.Warning);
+        }
+
+        public void RefreshAlbum(AlbumDetailsViewModel albumDetails)
+        {
+            if (!DoesAlbumExistInDbAndDisplayError(albumDetails.ZuneAlbumMetaData)) return;
+
+            ThreadPool.QueueUserWorkItem(_ =>
+             {
+                 Album albumMetaData = _dbAdapter.GetAlbum(albumDetails.ZuneAlbumMetaData.MediaId).ZuneAlbumMetaData;
+
+                 albumDetails.LinkStatus = LinkStatus.Unknown;
+
+                 string url = String.Concat(Urls.Album, albumMetaData.AlbumMediaId);
+
+                 if (albumMetaData.AlbumMediaId != Guid.Empty)
+                 {
+                     var downloader = new AlbumDetailsDownloader(url);
+
+                     downloader.DownloadCompleted += alb =>
+                         {
+                             albumDetails.LinkStatus = SharedMethods.GetAlbumLinkStatus(alb.AlbumTitle,
+                                                                                alb.AlbumArtist,
+                                                                                albumMetaData.AlbumTitle,
+                                                                                albumMetaData.AlbumArtist);
+
+                             albumDetails.WebAlbumMetaData = new Album
+                                                         {
+                                                             AlbumArtist = alb.AlbumArtist,
+                                                             AlbumTitle = alb.AlbumTitle,
+                                                             ArtworkUrl = alb.ArtworkUrl
+                                                         };
+                         };
+
+                     downloader.DownloadAsync();
+                 }
+                 else
+                 {
+                     albumDetails.LinkStatus = LinkStatus.Unlinked;
+                 }
+             });
+        }
+
+        private bool DoesAlbumExistInDbAndDisplayError(Album selectedAlbum)
+        {
+            bool doesAlbumExist = _dbAdapter.DoesAlbumExist(selectedAlbum.MediaId);
+
+            if (!doesAlbumExist)
+            {
+                SharedMethods.ShowCouldNotFindAlbumError();
+                return false;
+            }
+
+            return true;
+        }
 
         public void SwitchToClassicMode()
         {
-            _model.CurrentPage = _locator.GetInstance<SelectAudioFilesViewModel>();
+            Messenger.Default.Send(typeof(SelectAudioFilesViewModel));
+        }
+
+        private void SetupCommandBindings()
+        {
+            this.LoadDatabaseCommand = new RelayCommand(LoadDatabase);
+            this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
+            this.CancelDownloadingCommand = new RelayCommand(CancelDownloading);
+            this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
         }
 
         private void PerformSort(SortOrder sortOrder)
@@ -166,22 +328,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                              this.Albums =
                                  this.Albums.OrderByDescending(
                                      x => x.ZuneAlbumMetaData.DateAdded).
-                                     ToBindableCollection();
+                                     ToAsyncObservableCollection();
                              break;
                          case SortOrder.Album:
                              this.Albums =
                                  this.Albums.OrderBy(x => x.ZuneAlbumMetaData.AlbumTitle).
-                                     ToBindableCollection();
+                                     ToAsyncObservableCollection();
                              break;
                          case SortOrder.Artist:
                              this.Albums =
                                  this.Albums.OrderBy(x => x.ZuneAlbumMetaData.AlbumArtist).
-                                     ToBindableCollection();
+                                     ToAsyncObservableCollection();
                              break;
                          case SortOrder.LinkStatus:
                              this.Albums =
                                  this.Albums.OrderByDescending(x => x.LinkStatus).
-                                     ToBindableCollection();
+                                     ToAsyncObservableCollection();
                              break;
                          default:
                              throw new ArgumentOutOfRangeException();
@@ -239,9 +401,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void UpdateLinkTotals()
         {
-            this.NotifyOfPropertyChange(() => this.LinkedTotal);
-            this.NotifyOfPropertyChange(() => this.UnlinkedTotal);
-            this.NotifyOfPropertyChange(() => this.AlbumOrArtistMismatchTotal);
+            this.RaisePropertyChanged("LinkedTotal");
+            this.RaisePropertyChanged("UnlinkedTotal");
+            this.RaisePropertyChanged("AlbumOrArtistMismatchTotal");
         }
     }
 }

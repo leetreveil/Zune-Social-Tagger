@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using Caliburn.Core;
+using GalaSoft.MvvmLight.Command;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -13,13 +13,17 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private string _title;
         private string _year;
 
+        public ExpandedAlbumDetailsViewModel()
+        {
+            this.CopyArtworkToClipboardCommand = new RelayCommand(CopyArtworkToClipboard);
+        }
+
+        public RelayCommand CopyArtworkToClipboardCommand { get; private set; }
+
         public string Year
         {
             get { return string.IsNullOrEmpty(_year) ? "Unknown Year" : _year; }
-            set
-            {
-                _year = value;
-            }
+            set { _year = value; }
         }
 
         public string Title
@@ -48,17 +52,20 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void CopyArtworkToClipboard()
         {
-            //TODO: find a better way to copy the artwork, this is very very smelly
-
-            //image.UriSource = new Uri("pack://application:,,,/Assets/blankartwork.png");
-            var image = new BitmapImage();
-
-            image.BeginInit();
-            image.UriSource = new Uri(this.ArtworkUrl);
-            image.EndInit();
-
             if (ArtworkUrl != @"../Assets/blankartwork.png")
-                Clipboard.SetImage(image);
+            {
+                try
+                {
+                    var image = new BitmapImage();
+
+                    image.BeginInit();
+                    image.UriSource = new Uri(this.ArtworkUrl, UriKind.RelativeOrAbsolute);
+                    image.EndInit();
+
+                    Clipboard.SetImage(image);
+                }
+                catch{ }
+            }
         }
     }
 }

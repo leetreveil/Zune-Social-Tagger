@@ -13,7 +13,11 @@
     <Window.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
     </Window.Resources>
-    
+
+    <Window.DataContext>
+        <Binding Source="{StaticResource Locator}" Path="Success" />
+    </Window.DataContext>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

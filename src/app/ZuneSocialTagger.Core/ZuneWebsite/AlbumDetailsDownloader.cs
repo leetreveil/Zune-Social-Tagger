@@ -6,7 +6,6 @@ using System.Xml;
 using System.Xml.Linq;
 using System.ServiceModel.Syndication;
 using System.IO;
-using System.Diagnostics;
 
 namespace ZuneSocialTagger.Core.ZuneWebsite
 {

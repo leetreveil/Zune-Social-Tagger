@@ -1,22 +1,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Caliburn.Core;
+using GalaSoft.MvvmLight.Command;
 using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SortViewModel : PropertyChangedBase
+    public class SortViewModel : NotifyPropertyChangedImpl
     {
         private SortOrder _sortOrder;
 
         public SortViewModel()
         {
+            this.SortCommand = new RelayCommand(Sort);
             this.SortOrder = SortOrder.NotSorted;
             SetSortState();
         }
 
         public event Action<SortOrder> SortClicked = delegate { };
+
+        public RelayCommand SortCommand { get; private set; }
 
         public SortOrder SortOrder
         {

@@ -1,41 +1,43 @@
-using Microsoft.Practices.ServiceLocation;
+using System;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.GUIV2.Models;
-using Caliburn.PresentationFramework.Screens;
-using Caliburn.PresentationFramework;
-using Album = ZuneSocialTagger.Core.Album;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SearchViewModel : Screen
+    public class SearchViewModel : ViewModelBase
     {
-        private readonly IServiceLocator _locator;
-        private readonly IZuneWizardModel _model;
-
-        public SearchViewModel(IServiceLocator locator, IZuneWizardModel model)
+        public SearchViewModel(IZuneWizardModel model, SearchHeaderViewModel searchHeaderViewModel)
         {
-            _locator = locator;
-            _model = model;
+            this.SearchHeader = searchHeaderViewModel;
+            model.FoundAlbums = this.SearchHeader.SearchBar.SearchResults;
 
-            this.SearchHeader = model.SearchHeader;
-            this.SearchHeader.SearchBar.StartedSearching += SearchBar_StartedSearching;
+            this.SearchHeader.AlbumDetails = model.FileAlbumDetails;
+            this.SearchHeader.SearchBar.SearchText = model.SearchText;
+            this.SearchHeader.SearchBar.StartedSearching +=SearchBar_StartedSearching;
+
+            this.MoveBackCommand = new RelayCommand(MoveBack);
+            this.SearchCommand = new RelayCommand(Search);
         }
 
-        private void SearchBar_StartedSearching(BindableCollection<Album> albums)
-        {
-            _model.FoundAlbums = albums;
-            _model.CurrentPage = _locator.GetInstance<SearchResultsViewModel>();
-        }
-
+        public RelayCommand MoveBackCommand { get; set; }
+        public RelayCommand SearchCommand { get; private set; }
         public SearchHeaderViewModel SearchHeader { get; set; }
 
         public void Search()
         {
-            this.SearchHeader.SearchBar.Search();
+            throw new NotImplementedException();
         }
-        
+
         public void MoveBack()
         {
-            _model.CurrentPage = (Screen) _locator.GetInstance<IFirstPage>();
+            Messenger.Default.Send(typeof(IFirstPage));
+        }
+
+        private void SearchBar_StartedSearching()
+        {
+            Messenger.Default.Send(typeof(SearchResultsViewModel));
         }
     }
 }

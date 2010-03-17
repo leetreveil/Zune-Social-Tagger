@@ -11,8 +11,12 @@
     <Window.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
     </Window.Resources>
-    
-	<Grid>
+
+    <Window.DataContext>
+        <Binding Source="{StaticResource Locator}" Path="About" />
+    </Window.DataContext>
+
+    <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition/>
 			<RowDefinition Height="Auto" />
@@ -45,7 +49,10 @@
 		<Button Content="CLOSE"  Grid.Row="2"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click" />
         
-        <CheckBox Grid.Row="2" IsChecked="{Binding UpdateEnabled}" 
+        <CheckBox x:Name="cbCheck" Command="{Binding Path=SetCanUpdateCommand}"
+                  CommandParameter="{Binding ElementName=cbCheck,Path=IsChecked}"
+                  IsChecked="{Binding UpdateEnabled,Mode=OneWay}"
+                  Grid.Row="2" 
                   VerticalAlignment="Bottom" Content="Check for updates" Height="14.4"
                   HorizontalAlignment="Left" Width="119" />
     </Grid>

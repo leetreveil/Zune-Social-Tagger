@@ -2,9 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Caliburn.PresentationFramework;
-using Microsoft.Practices.ServiceLocation;
-using ZuneSocialTagger.GUIV2.ViewModels;
 using ZuneSocialTagger.Core;
 using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
 
@@ -12,16 +9,10 @@ namespace ZuneSocialTagger.GUIV2.Models
 {
     public class CachedZuneDatabaseReader : IZuneDbAdapter
     {
-        private BindableCollection<AlbumDetailsViewModel> _deserializedAlbums;
-        private IServiceLocator _locator;
+        private List<AlbumDetails> _deserializedAlbums;
 
         public event Action FinishedReadingAlbums = delegate { };
         public event Action<int, int> ProgressChanged = delegate { };
-
-        public CachedZuneDatabaseReader(IServiceLocator locator)
-        {
-            _locator = locator;
-        }
 
         public bool CanInitialize
         {
@@ -33,7 +24,7 @@ namespace ZuneSocialTagger.GUIV2.Models
             try
             {
                 using (var fs = new FileStream(@"zunesoccache.xml", FileMode.Open))
-                    _deserializedAlbums = fs.XmlDeserializeFromStream<BindableCollection<AlbumDetailsViewModel>>();
+                    _deserializedAlbums = fs.XmlDeserializeFromStream<List<AlbumDetails>>();
             }
             catch
             {
@@ -43,14 +34,14 @@ namespace ZuneSocialTagger.GUIV2.Models
             return true;
         }
 
-        public IEnumerable<AlbumDetailsViewModel> ReadAlbums()
+        public IEnumerable<AlbumDetails> ReadAlbums()
         {
             int counter = 0;
 
             foreach (var album in _deserializedAlbums)
             {
                 counter++;
-                yield return Construct(album);
+                yield return album;
 
                 ProgressChanged.Invoke(counter, _deserializedAlbums.Count);
             }
@@ -58,25 +49,13 @@ namespace ZuneSocialTagger.GUIV2.Models
             FinishedReadingAlbums.Invoke();
         }
 
-
-        private AlbumDetailsViewModel Construct(AlbumDetailsViewModel albumDetailsViewModel)
-        {
-            var detailsViewModel = _locator.GetInstance<AlbumDetailsViewModel>();
-
-            detailsViewModel.ZuneAlbumMetaData = albumDetailsViewModel.ZuneAlbumMetaData;
-            detailsViewModel.LinkStatus = albumDetailsViewModel.LinkStatus;
-            detailsViewModel.WebAlbumMetaData = albumDetailsViewModel.WebAlbumMetaData;   
-  
-            return detailsViewModel;
-        }
-
-        public AlbumDetailsViewModel GetAlbum(int index)
+        public AlbumDetails GetAlbum(int index)
         {
             if (_deserializedAlbums != null && _deserializedAlbums.Count > 0)
             {
                 return (from album in _deserializedAlbums
                         where album.ZuneAlbumMetaData.MediaId == index
-                        select Construct(album)).First();
+                        select album).First();
             }
 
             return null;

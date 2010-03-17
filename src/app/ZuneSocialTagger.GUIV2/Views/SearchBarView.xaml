@@ -4,7 +4,6 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
-    xmlns:cm="clr-namespace:Caliburn.PresentationFramework;assembly=Caliburn.PresentationFramework" 
     x:Class="ZuneSocialTagger.GUIV2.Views.SearchBarView">
 
     <UserControl.Resources>
@@ -20,9 +19,8 @@
     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1">
 		<TextBlock Foreground="#FF8A8D90" Text="SEARCH" FontFamily="Assets/Fonts/#Zegoe Caps" FontSize="10.667" Margin="0,0,0,3"/>
         
-        <TextBox Text="{Binding Path=SearchText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="309" 
-                 Grid.Column="1" Style="{DynamicResource TextBoxSearchStyle}"
-                 cm:Message.Attach="[Gesture Key: Enter] = [Action Search]" />
+        <TextBox KeyUp="TextBox_KeyUp" Text="{Binding Path=SearchText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="309" 
+                 Grid.Column="1" Style="{DynamicResource SearchBoxStyle}"/>
         
         <TextBlock x:Name="tbSearching" Visibility="{Binding Path=IsSearching,Converter = {StaticResource BoolToVisConverter}}" 
                    Foreground="#FF8A8D90" HorizontalAlignment="Right" Width="62" FontSize="13.333"/>

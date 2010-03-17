@@ -2,31 +2,42 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.Models;
-using Caliburn.PresentationFramework.Screens;
-using ZuneSocialTagger.GUIV2.Views;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    class DetailsViewModel : Screen
+    class DetailsViewModel : ViewModelBase
     {
-        private readonly IServiceLocator _locator;
         private readonly IZuneWizardModel _model;
 
-        public DetailsViewModel(IServiceLocator locator, 
-                                IZuneWizardModel model, 
-                                ExpandedAlbumDetailsViewModel albumDetailsFromWebsite,
+        public DetailsViewModel(IZuneWizardModel model, ExpandedAlbumDetailsViewModel albumDetailsFromWebsite,
                                 ExpandedAlbumDetailsViewModel albumDetailsFromFile)
         {
-            _locator = locator;
             _model = model;
 
             this.AlbumDetailsFromWebsite = albumDetailsFromWebsite;
             this.AlbumDetailsFromFile = albumDetailsFromFile;
+
+            this.MoveToStartCommand = new RelayCommand(MoveToStart);
+            this.MoveBackCommand = new RelayCommand(MoveBack);
+            this.SaveCommand = new RelayCommand(Save);
         }
+
+        public ObservableCollection<DetailRow> Rows
+        {
+            get { return _model.Rows; }
+        }
+
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
+
+        public RelayCommand MoveToStartCommand { get; private set; }
+        public RelayCommand MoveBackCommand { get; private set; }
+        public RelayCommand SaveCommand { get; private set; }
 
         public void Save()
         {
@@ -72,30 +83,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 //usually occurs when a file is readonly
                 ZuneMessageBox.Show("One or more files could not be written to. Have you checked the files are not marked read-only?",ErrorMode.Error);
             else
-                new SuccessView(_locator.GetInstance<SuccessViewModel>()).Show();
+                throw new NotImplementedException("show success view model");
 
             Mouse.OverrideCursor = null;
 
-            _model.CurrentPage = _locator.GetInstance<WebAlbumListViewModel>();
+            Messenger.Default.Send(typeof(IFirstPage));
         }
 
         public void MoveBack()
         {
-            _model.CurrentPage = _locator.GetInstance<SearchResultsViewModel>();
+            Messenger.Default.Send(typeof(SearchResultsViewModel));
         }
 
         public void MoveToStart()
         {
-            _model.CurrentPage = (Screen) _locator.GetInstance<IFirstPage>();
+            Messenger.Default.Send(typeof(IFirstPage));
         }
-
-        public ObservableCollection<DetailRow> Rows 
-        {
-            get { return _model.Rows; }
-        } 
-
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
 
         public bool UpdateAlbumInfo
         {

@@ -2,13 +2,15 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:cm="clr-namespace:Caliburn.PresentationFramework;assembly=Caliburn.PresentationFramework" 
-             mc:Ignorable="d" >
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" >
 
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
+
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource Locator}" Path="SelectAudioFiles" />
+    </UserControl.DataContext>
 
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
@@ -17,15 +19,13 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-
-
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" 
                    Height="30" Text="Choose the album you want linking to the zune social" />
         
-        <Button cm:Message.Attach="[Event Click] = [Action SelectFiles]" 
+        <Button Command="{Binding SelectFilesCommand}"
                 HorizontalAlignment="Center" Grid.Row="1" Content="SELECT AUDIO FILES"/>
         
-        <Button cm:Message.Attach="[Event Click] = [Action SwitchToNewMode]" 
+        <Button Command="{Binding SwitchToNewModeCommand}"
                 HorizontalAlignment="Right" Grid.Row="2" Content="SWITCH TO NEW MODE"/>
     </Grid>
 </UserControl>

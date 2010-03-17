@@ -18,8 +18,7 @@
             </Grid.ColumnDefinitions>
 
 
-            <StackPanel DataContext="{Binding ZuneAlbumMetaData}"
-                                            Orientation="Horizontal">
+            <StackPanel DataContext="{Binding ZuneAlbumMetaData}" Orientation="Horizontal">
                 <StackPanel Orientation="Horizontal">
                     
                     <Image Height="50"  Width="50"
@@ -47,12 +46,9 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                    <StackPanel DataContext="{Binding WebAlbumMetaData}"
-                                                                        Orientation="Horizontal">
-                                            <Image Width="16"
-                                                                       Height="16"
-                                                                       Source="../Assets/yes.png"
-                                                                       Margin="0,0,10,0" />
+                                    <StackPanel DataContext="{Binding WebAlbumMetaData}" Orientation="Horizontal">
+                                                                       <Image Width="16" Height="16" Source="../Assets/yes.png"
+                                                                            Margin="0,0,10,0" />
                                             <Control Template="{DynamicResource AlbumDetails}" />
                                         </StackPanel>
                                     </ControlTemplate>

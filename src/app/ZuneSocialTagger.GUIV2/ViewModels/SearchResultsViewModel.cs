@@ -2,37 +2,41 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Threading;
-using Caliburn.PresentationFramework.Screens;
 using Album = ZuneSocialTagger.Core.Album;
 using AlbumDocumentReader = ZuneSocialTagger.Core.ZuneWebsite.AlbumDocumentReader;
 
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SearchResultsViewModel : Screen
+    public class SearchResultsViewModel : ViewModelBase
     {
-        private readonly IServiceLocator _locator;
         private readonly IZuneWizardModel _model;
         private bool _isLoading;
         private SearchResultsDetailViewModel _searchResultsDetailViewModel;
         private ExpandedAlbumDetailsViewModel _albumDetails;
 
-        public SearchResultsViewModel(IServiceLocator locator, IZuneWizardModel model)
+        public SearchResultsViewModel(IZuneWizardModel model, SearchHeaderViewModel searchHeaderViewModel)
         {
-            _locator = locator;
             _model = model;
 
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
-            this.SearchHeader = _model.SearchHeader;
+            this.SearchHeader = searchHeaderViewModel;
             this.Albums = _model.FoundAlbums;
+
+            this.MoveNextCommand = new RelayCommand(MoveNext);
+            this.MoveBackCommand = new RelayCommand(MoveBack);
         }
 
         public ObservableCollection<Album> Albums { get; set; }
+        public RelayCommand MoveNextCommand { get; private set; }
+        public RelayCommand MoveBackCommand { get; private set; }
 
         public SearchResultsDetailViewModel SearchResultsDetailViewModel
         {
@@ -40,7 +44,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             set
             {
                     _searchResultsDetailViewModel = value;
-                   NotifyOfPropertyChange(() => SearchResultsDetailViewModel);
+                   RaisePropertyChanged("SearchResultsDetailViewModel");
             }
         }
 
@@ -55,7 +59,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             set
             {
                 _isLoading = value;
-                NotifyOfPropertyChange(() => IsLoading);
+                RaisePropertyChanged("IsLoading");
             }
         }
 
@@ -63,16 +67,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void MoveBack()
         {
-            _model.CurrentPage = _locator.GetInstance<SearchViewModel>();
+            Messenger.Default.Send(typeof(SearchViewModel));
         }
 
         public void MoveNext()
         {
-            var detailsViewModel = _locator.GetInstance<DetailsViewModel>();
-            detailsViewModel.AlbumDetailsFromWebsite = _albumDetails;
-            detailsViewModel.AlbumDetailsFromFile = this.SearchHeader.AlbumDetails;
-
-            _model.CurrentPage = detailsViewModel;
+            Messenger.Default.Send(typeof(DetailsViewModel));
         }
 
         public void LoadAlbum(Album album)

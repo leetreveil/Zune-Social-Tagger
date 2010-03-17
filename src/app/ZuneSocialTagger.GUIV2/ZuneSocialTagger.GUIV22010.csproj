@@ -57,14 +57,8 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Core">
-      <HintPath>..\..\..\libs\caliburn\Caliburn.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Caliburn.PresentationFramework">
-      <HintPath>..\..\..\libs\caliburn\Caliburn.PresentationFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="Caliburn.Unity">
-      <HintPath>..\..\..\libs\unity\Caliburn.Unity.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight">
+      <HintPath>..\..\..\libs\mvvmlight3\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
     <Reference Include="leetreveil.AutoUpdate.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -72,9 +66,6 @@
     </Reference>
     <Reference Include="Microsoft.Practices.ObjectBuilder2">
       <HintPath>..\..\..\libs\unity\Microsoft.Practices.ObjectBuilder2.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\..\..\libs\serviceLocation\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\..\libs\unity\Microsoft.Practices.Unity.dll</HintPath>
@@ -99,9 +90,6 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UIAutomationProvider">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -129,15 +117,16 @@
       <DependentUpon>InlineZuneMessage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\AlbumCountToStringConverter.cs" />
-    <Compile Include="Converters\ErrorModeToImageConverter.cs" />
     <Compile Include="Converters\LinkStatusToImageConverter.cs" />
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\PathToImageThumbnailConverter.cs" />
     <Compile Include="Converters\SortOrderToTextConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
+    <Compile Include="Models\AsyncObservableCollection.cs" />
     <Compile Include="Models\CachedZuneDatabaseReader.cs" />
     <Compile Include="Models\ExtensionMethods.cs" />
     <Compile Include="Models\IZuneDbAdapter.cs" />
+    <Compile Include="NotifyPropertyChangedImpl.cs" />
     <Compile Include="Models\SharedMethods.cs" />
     <Compile Include="Models\AlbumDownloaderWithProgressReporting.cs" />
     <Compile Include="Models\LinkStatus.cs" />
@@ -147,6 +136,7 @@
     <Compile Include="Models\ZuneWizardModel.cs" />
     <Compile Include="Models\AlbumDetails.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
     <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
     <Compile Include="Models\IFirstPage.cs" />
@@ -154,6 +144,7 @@
     <Compile Include="Models\SortOrder.cs" />
     <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />
     <Compile Include="ViewModels\SortViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\AlbumDetailsView.xaml.cs">
       <DependentUpon>AlbumDetailsView.xaml</DependentUpon>
     </Compile>

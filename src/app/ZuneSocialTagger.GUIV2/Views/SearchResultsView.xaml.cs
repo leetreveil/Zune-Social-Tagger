@@ -1,4 +1,6 @@
 using System.Windows.Controls;
+using ZuneSocialTagger.Core;
+using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -10,6 +12,13 @@ namespace ZuneSocialTagger.GUIV2.Views
         public SearchResultsView()
         {
             this.InitializeComponent();
+        }
+
+        private void lvAlbums_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var searchResultsViewModel = (SearchResultsViewModel) this.DataContext;
+
+            searchResultsViewModel.LoadAlbum((Album) lvAlbums.SelectedItem);
         }
     }
 }

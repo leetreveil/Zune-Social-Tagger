@@ -1,18 +1,17 @@
-using Caliburn.PresentationFramework;
+using System.Collections.ObjectModel;
 using ZuneSocialTagger.Core;
-using Caliburn.PresentationFramework.Screens;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SearchResultsDetailViewModel : Screen
+    public class SearchResultsDetailViewModel : NotifyPropertyChangedImpl
     {
         private string _selectedAlbumTitle;
 
-        public BindableCollection<Track> SelectedAlbumSongs { get; set; }
+        public ObservableCollection<Track> SelectedAlbumSongs { get; set; }
 
         public SearchResultsDetailViewModel()
         {
-            this.SelectedAlbumSongs = new BindableCollection<Track>();
+            this.SelectedAlbumSongs = new ObservableCollection<Track>();
         }
 
         public string SelectedAlbumTitle

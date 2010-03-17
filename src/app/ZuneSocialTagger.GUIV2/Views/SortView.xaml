@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:cm="clr-namespace:Caliburn.PresentationFramework;assembly=Caliburn.PresentationFramework" 
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -16,10 +15,10 @@
             <TextBlock Text="SORTED BY " FontFamily="Assets/Fonts/#Zegoe Caps" FontWeight="Bold" 
                        FontSize="12" Foreground="#FFA2ABAA" />
 
-            <Button cm:Message.Attach="[Event Click] = [Action Sort]" 
+            <Button Command="{Binding SortCommand}"
                     FontFamily="Assets/Fonts/#Zegoe Caps" FontWeight="Bold" 
                     FontSize="12" Style="{StaticResource AboutSettingsButton}" 
-                    Content="{Binding Path=SortOrder,Converter={StaticResource SortOrderToTextConverter}}"/>
+                    Content="{Binding Path=SortOrder, Converter={StaticResource SortOrderToTextConverter}}"/>
             
         </StackPanel>
 

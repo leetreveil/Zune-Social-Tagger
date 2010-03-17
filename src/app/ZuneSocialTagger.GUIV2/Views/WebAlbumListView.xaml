@@ -1,6 +1,5 @@
 ﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:cm="clr-namespace:Caliburn.PresentationFramework;assembly=Caliburn.PresentationFramework" 
              x:Class="ZuneSocialTagger.GUIV2.Views.WebAlbumListView"
              xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views" >
 
@@ -125,23 +124,23 @@
 
             <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}"
                     Margin="0,0,10,0"
-                    cm:Message.Attach="[Event Click] = [Action LoadDatabase]"
+                    Command="{Binding LoadDatabaseCommand}"
                     Content="REFRESH" />
 
             <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}"
                     Margin="0,0,10,0"
                     Grid.Column="1"
-                    cm:Message.Attach="[Event Click] = [Action LoadFromZuneWebsite]"
+                    Command="{Binding LoadFromZuneWebsiteCommand}"
                     Content="SCAN ALL" />
 
             <Button Margin="0,0,10,0"
                     Grid.Column="2"
-                    cm:Message.Attach="[Event Click] = [Action CancelDownloading]"
+                    Command="{Binding CancelDownloadingCommand}"
                     Content="STOP" />
 
             <Button HorizontalAlignment="Right"
                     Grid.Column="3"
-                    cm:Message.Attach="[Event Click] = [Action SwitchToClassicMode]"
+                    Command="{Binding SwitchToClassicModeCommand}"
                     Content="SWITCH TO CLASSIC MODE" />
 
         </Grid>

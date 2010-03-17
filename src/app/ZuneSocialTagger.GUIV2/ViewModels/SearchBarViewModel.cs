@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Caliburn.PresentationFramework;
-using Caliburn.PresentationFramework.Screens;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
+using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SearchBarViewModel : Screen
+    public class SearchBarViewModel : NotifyPropertyChangedImpl
     {
         private bool _canSearch;
         private bool _isSearching;
@@ -16,12 +15,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public SearchBarViewModel()
         {
-            SearchResults = new BindableCollection<Album>();
+            SearchResults = new AsyncObservableCollection<Album>();
         }
 
-        public BindableCollection<Album> SearchResults { get; set; }
+        public AsyncObservableCollection<Album> SearchResults { get; set; }
 
-        public event Action<BindableCollection<Album>> StartedSearching = delegate { };
+        public event Action StartedSearching = delegate { };
 
         public string SearchText
         {
@@ -60,7 +59,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         /// </summary>
         public void Search()
         {
-            StartedSearching.Invoke(this.SearchResults);
+            StartedSearching.Invoke();
             SearchFor(this.SearchText);
         }
 
