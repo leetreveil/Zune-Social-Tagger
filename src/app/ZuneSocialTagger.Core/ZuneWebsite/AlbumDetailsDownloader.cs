@@ -19,7 +19,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         private SyndicationFeed _feed;
         private readonly WebClient _client;
 
-        public event Action<AlbumMetaData> DownloadCompleted = delegate { };
+        public event Action<AlbumMetaData,DownloadState> DownloadCompleted = delegate { };
 
         public AlbumDetailsDownloader(string url)
         {
@@ -41,27 +41,27 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
 
         void _client_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
         {
-            if (e.Error == null)
-            {
-                try
-                {
-                    _reader = XmlReader.Create(new MemoryStream(e.Result));
-
-                    this.DownloadCompleted.Invoke(this.Read());
-                }
-                catch
-                {
-                    this.DownloadCompleted.Invoke(null);
-                }
-            }
-            //if (e.Cancelled)
-            //{
-            //    Debug.WriteLine("cancelled");
-            //    this.DownloadCompleted.Invoke(null);
-            //}
+            if (e.Cancelled)
+                this.DownloadCompleted.Invoke(null, DownloadState.Cancelled);
             else
             {
-                this.DownloadCompleted.Invoke(null);
+                if (e.Error == null)
+                {
+                    try
+                    {
+                        _reader = XmlReader.Create(new MemoryStream(e.Result));
+
+                        this.DownloadCompleted.Invoke(this.Read(), DownloadState.Success);
+                    }
+                    catch
+                    {
+                        this.DownloadCompleted.Invoke(null, DownloadState.Error);
+                    }
+                }
+                else
+                {
+                    this.DownloadCompleted.Invoke(null, DownloadState.Error);
+                }
             }
         }
 

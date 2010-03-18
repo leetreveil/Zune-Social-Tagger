@@ -16,39 +16,41 @@ namespace ZuneSocialTagger.GUIV2.Models
         public event Action FinishedDownloadingAlbums = delegate { };
         public event Action<int, int> ProgressChanged = delegate { };
 
-        private List<AlbumDetailsDownloader> _downloadList;
+        private Dictionary<AlbumDetailsDownloader, LinkStatus> _downloadList;
 
         public AlbumDownloaderWithProgressReporting(IEnumerable<AlbumDetailsViewModel> albums)
         {
             _albums = albums;
-            _downloadList = new List<AlbumDetailsDownloader>();
+            _downloadList = new Dictionary<AlbumDetailsDownloader,LinkStatus>();
         }
 
         public void StopDownloading()
         {
             ThreadPool.QueueUserWorkItem(_ =>
              {
-                 foreach (var downloader in _downloadList)
-                     downloader.Cancel();
+                 //only stop the download of albums that are not unlinked
+                 foreach (var downloader in _downloadList.Where(x=> x.Value != LinkStatus.Unlinked))
+                     downloader.Key.Cancel();
              });
         }
 
         public void Start()
         {
-            foreach (var album in _albums)
+            //only download albums that we do not know the details of
+            foreach (var album in _albums.Where(x => x.LinkStatus == LinkStatus.Unknown))
             {
                 string fullUrlToAlbumXmlDetails =
                     String.Concat(Urls.Album, album.ZuneAlbumMetaData.AlbumMediaId);
 
-                if (album.LinkStatus == LinkStatus.Unknown)
-                {
-                    var downloader = new AlbumDetailsDownloader(fullUrlToAlbumXmlDetails);
+                var downloader = new AlbumDetailsDownloader(fullUrlToAlbumXmlDetails);
 
-                    _downloadList.Add(downloader);
+                AlbumDetailsViewModel album1 = album;
 
-                    AlbumDetailsViewModel album1 = album;
+                _downloadList.Add(downloader,album1.LinkStatus);
 
-                    downloader.DownloadCompleted += dledAlbum =>
+                downloader.DownloadCompleted += (dledAlbum, state) =>
+                    {
+                        if (state != DownloadState.Cancelled)
                         {
                             _downloadCounter++;
 
@@ -63,10 +65,10 @@ namespace ZuneSocialTagger.GUIV2.Models
                             {
                                 this.FinishedDownloadingAlbums.Invoke();
                             }
-                        };
+                        }
+                    };
 
-                    downloader.DownloadAsync();
-                }
+                downloader.DownloadAsync();
             }
         }
 
@@ -82,13 +84,12 @@ namespace ZuneSocialTagger.GUIV2.Models
                                                                     dledAlbum.AlbumArtist,
                                                                     metaData.AlbumTitle,
                                                                     metaData.AlbumArtist);
-
                 album.WebAlbumMetaData = new Album
-                {
-                    AlbumArtist = dledAlbum.AlbumArtist,
-                    AlbumTitle = dledAlbum.AlbumTitle,
-                    ArtworkUrl = dledAlbum.ArtworkUrl
-                };
+                                             {
+                                                 AlbumArtist = dledAlbum.AlbumArtist,
+                                                 AlbumTitle = dledAlbum.AlbumTitle,
+                                                 ArtworkUrl = dledAlbum.ArtworkUrl
+                                             };
             }
         }
     }

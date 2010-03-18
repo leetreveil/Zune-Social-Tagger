@@ -267,7 +267,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                  {
                      var downloader = new AlbumDetailsDownloader(url);
 
-                     downloader.DownloadCompleted += alb =>
+                     downloader.DownloadCompleted += (alb,state) =>
                          {
                              albumDetails.LinkStatus = SharedMethods.GetAlbumLinkStatus(alb.AlbumTitle,
                                                                                 alb.AlbumArtist,

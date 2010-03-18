@@ -78,6 +78,7 @@
     <Compile Include="ZuneWebsite\AlbumDocumentReader.cs" />
     <Compile Include="ZuneWebsite\AlbumMetaData.cs" />
     <Compile Include="ZuneWebsite\AlbumSearch.cs" />
+    <Compile Include="ZuneWebsite\DownloadState.cs" />
     <Compile Include="ZuneWebsite\Urls.cs" />
   </ItemGroup>
   <ItemGroup>

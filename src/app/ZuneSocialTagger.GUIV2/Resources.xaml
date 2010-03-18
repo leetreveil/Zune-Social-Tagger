@@ -3,7 +3,8 @@
                     xmlns:ctrls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
                     xmlns:converters="clr-namespace:ZuneSocialTagger.GUIV2.Converters"
                     xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" 
-                    xmlns:vm="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels" xmlns:v="clr-namespace:ZuneSocialTagger.GUIV2.Views">
+                    xmlns:vm="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels" 
+                    xmlns:v="clr-namespace:ZuneSocialTagger.GUIV2.Views">
 
 
     <DataTemplate DataType="{x:Type vm:SelectAudioFilesViewModel}">
