@@ -50,5 +50,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 NotifyOfPropertyChange(() => this.LinkStatus);
             }
         }
+
+        public bool HasDownloaded { get; set; }
     }
 }

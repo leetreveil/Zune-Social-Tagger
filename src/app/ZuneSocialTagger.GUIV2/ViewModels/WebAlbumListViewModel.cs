@@ -105,14 +105,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             this.IsLoading = true;
 
-            foreach (var album in this.Albums)
-            {
-                album.WebAlbumMetaData = null;
-
-                if (album.LinkStatus != LinkStatus.Unlinked)
-                    album.LinkStatus = LinkStatus.Unknown;
-            }
-
             _downloader = new AlbumDownloaderWithProgressReporting(this.Albums);
 
             _downloader.ProgressChanged += downloader_ProgressChanged;

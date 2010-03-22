@@ -25,7 +25,6 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         {
             _url = url;
             _client = new WebClient();
-
             _client.DownloadDataCompleted += _client_DownloadDataCompleted;
         }
 

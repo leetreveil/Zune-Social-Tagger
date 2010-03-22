@@ -18,7 +18,15 @@ namespace ZuneSocialTagger.GUIV2.Views
         {
             var searchResultsViewModel = (SearchResultsViewModel) this.DataContext;
 
-            searchResultsViewModel.LoadAlbum((Album) lvAlbums.SelectedItem);
+            if (searchResultsViewModel != null)
+            {
+                var selectedItem = (Album)lvAlbums.SelectedItem;
+
+                if (selectedItem != null)
+                {
+                    searchResultsViewModel.LoadAlbum(selectedItem);
+                }
+            }
         }
     }
 }

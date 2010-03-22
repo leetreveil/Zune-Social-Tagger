@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using ZuneSocialTagger.Core.ZuneWebsite;
@@ -36,6 +37,8 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public void Start()
         {
+            bool hasBeenCancelled = false;
+
             //only download albums that we do not know the details of
             foreach (var album in _albums.Where(x => x.LinkStatus == LinkStatus.Unknown))
             {
@@ -48,23 +51,36 @@ namespace ZuneSocialTagger.GUIV2.Models
 
                 _downloadList.Add(downloader,album1.LinkStatus);
 
+                bool cancelled = hasBeenCancelled;
+
                 downloader.DownloadCompleted += (dledAlbum, state) =>
                     {
                         if (state != DownloadState.Cancelled)
                         {
-                            _downloadCounter++;
-
-                            SetAlbumDetails(dledAlbum, album1);
-
-                            //TODO: don't like how we are doing progress reporting
-                            var totalUnlinkedCount = _albums.Where(x => x.LinkStatus != LinkStatus.Unlinked).Count();
-
-                            this.ProgressChanged.Invoke(_downloadCounter, totalUnlinkedCount);
-
-                            if (_downloadCounter == totalUnlinkedCount)
+                            if (!cancelled)
                             {
-                                this.FinishedDownloadingAlbums.Invoke();
+                                _downloadCounter++;
+
+                                SetAlbumDetails(dledAlbum, album1);
+
+                                //TODO: don't like how we are doing progress reporting
+                                var totalNotDownloaded = _albums.Where(x => !x.HasDownloaded).Count();
+
+                                this.ProgressChanged.Invoke(_downloadCounter, totalNotDownloaded);
+
+                                if (_downloadCounter == totalNotDownloaded)
+                                {
+                                    this.FinishedDownloadingAlbums.Invoke();
+                                }
                             }
+                        }
+                        else
+                        {
+                            //only raise event once because the network will raise the download completed event on all albums that have been cancelled
+                            if (!cancelled)
+                                this.FinishedDownloadingAlbums.Invoke();
+
+                            cancelled = true;
                         }
                     };
 
@@ -79,6 +95,8 @@ namespace ZuneSocialTagger.GUIV2.Models
             else
             {
                 Album metaData = album.ZuneAlbumMetaData;
+
+                album.HasDownloaded = true;
 
                 album.LinkStatus = SharedMethods.GetAlbumLinkStatus(dledAlbum.AlbumTitle,
                                                                     dledAlbum.AlbumArtist,

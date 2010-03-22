@@ -39,23 +39,8 @@ namespace ZuneSocialTagger.GUIV2
 
         private void SetupViewSwitching(Type viewType)
         {
-            if (viewType == typeof(IFirstPage))
-                this.CurrentPage = (ViewModelBase)_container.Get<IFirstPage>();
-
-            if (viewType == typeof(WebAlbumListViewModel))
-                this.CurrentPage = _container.Get<WebAlbumListViewModel>();
-
-            if (viewType == typeof(SelectAudioFilesViewModel))
-                this.CurrentPage = _container.Get<SelectAudioFilesViewModel>();
-
-            if (viewType == typeof(SearchViewModel))
-                this.CurrentPage = _container.Get<SearchViewModel>();
-
-            if (viewType == typeof(SearchResultsViewModel))
-                this.CurrentPage = _container.Get<SearchResultsViewModel>();
-
-            if (viewType == typeof(DetailsViewModel))
-                this.CurrentPage = _container.Get<DetailsViewModel>();
+            //TODO: remove all this IFirstPage bollocks and just use a setting variable to remember which page is first
+            this.CurrentPage = (ViewModelBase) _container.Get(viewType);
         }
 
         private void SetupCommandBindings()
@@ -134,7 +119,8 @@ namespace ZuneSocialTagger.GUIV2
                                                     {
                                                         LinkStatus = album.LinkStatus,
                                                         WebAlbumMetaData = album.WebAlbumMetaData,
-                                                        ZuneAlbumMetaData = album.ZuneAlbumMetaData
+                                                        ZuneAlbumMetaData = album.ZuneAlbumMetaData,
+                                                        HasDownloaded = album.HasDownloaded
                                                     }).ToList();
 
             try

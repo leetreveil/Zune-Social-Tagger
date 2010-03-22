@@ -91,7 +91,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                      IEnumerable<Track> tracks = reader.Read();
 
-                     _albumDetails = SetAlbumDetails(tracks);
+                     SetAlbumDetails(tracks);
                      AddSelectedSongs(tracks);
 
 
@@ -101,6 +101,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                  {
                      this.SearchResultsDetailViewModel.SelectedAlbumTitle =
                             "Could not get album details";
+
+                     this.IsLoading = false;
                  }
              });
 
@@ -125,6 +127,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel
                                                     {
                                                         SelectedAlbumTitle = tracks.First().MetaData.AlbumName
+                              
                                                     };
 
             foreach (var track in tracks)
