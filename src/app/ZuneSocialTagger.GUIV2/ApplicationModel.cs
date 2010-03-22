@@ -55,38 +55,47 @@ namespace ZuneSocialTagger.GUIV2
 
         private void InitializeDatabase()
         {
-            if (_adapter.CanInitialize)
+            try
             {
-                //since the adapter is initally set to the cache this should always be true
-                bool initalized = _adapter.Initialize();
-
-                if (!initalized)
+                if (_adapter.CanInitialize)
                 {
-                    //fall back to the actual zune database if the cache could not be loaded
-                    if (_adapter.GetType() == typeof(CachedZuneDatabaseReader))
-                    {
-                        _container.Rebind<IZuneDbAdapter>().To<ZuneDbAdapter>().InSingletonScope();
-                        _adapter = _container.Get<IZuneDbAdapter>();
+                    //since the adapter is initally set to the cache this should always be true
+                    bool initalized = _adapter.Initialize();
 
-                        InitializeDatabase();
+                    if (!initalized)
+                    {
+                        //fall back to the actual zune database if the cache could not be loaded
+                        if (_adapter.GetType() == typeof(CachedZuneDatabaseReader))
+                        {
+                            _container.Rebind<IZuneDbAdapter>().To<ZuneDbAdapter>().InSingletonScope();
+                            _adapter = _container.Get<IZuneDbAdapter>();
+
+                            InitializeDatabase();
+                        }
+                        else
+                        {
+                            //if we are loading the actual database but there is an initalizing error...
+                            ZuneMessageBox.Show("Error loading zune database", ErrorMode.Error);
+                            ShowSelectAudioFilesViewWithError();
+                        }
                     }
                     else
                     {
-                        //if we are loading the actual database but there is an initalizing error...
-                        ZuneMessageBox.Show("Error loading zune database", ErrorMode.Error);
-                        ShowSelectAudioFilesViewWithError();
+                        ShowAlbumListView();
                     }
                 }
                 else
                 {
-                    ShowAlbumListView();
+                    //ZuneMessageBox.Show("ZuneDBApi.dll was not found", ErrorMode.Error);
+                    ShowSelectAudioFilesViewWithError();
                 }
             }
-            else
+            catch (NotSupportedException e)
             {
-                //ZuneMessageBox.Show("ZuneDBApi.dll was not found", ErrorMode.Error);
-                ShowSelectAudioFilesViewWithError();
+                //TODO: display file version error message!
+                ZuneMessageBox.Show(e.Message,ErrorMode.Warning);
             }
+
         }
 
         private void ShowSelectAudioFilesViewWithError()

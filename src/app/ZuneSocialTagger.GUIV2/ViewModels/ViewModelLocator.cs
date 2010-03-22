@@ -4,6 +4,7 @@ using leetreveil.AutoUpdate.Framework;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
 using Ninject;
+using ZuneSocialTagger.ZunePlugin;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -23,7 +24,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             else
             {
                 Container.Bind<IZuneWizardModel>().To<ZuneWizardModel>().InSingletonScope();
-                Container.Bind<IZuneDatabaseReader>().To<TestZuneDatabaseReader>().InSingletonScope();
+                Container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
                 Container.Bind<IZuneDbAdapter>().To<CachedZuneDatabaseReader>().InSingletonScope();
             }
 

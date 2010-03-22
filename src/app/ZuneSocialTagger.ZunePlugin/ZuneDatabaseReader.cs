@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using MicrosoftZuneInterop;
@@ -174,7 +175,7 @@ namespace ZuneSocialTagger.ZunePlugin
 
             for (int i = 0; i < zuneQueryList.Count; i++)
             {
-                ZuneQueryItem track = new ZuneQueryItem(zuneQueryList, i);
+                var track = new ZuneQueryItem(zuneQueryList, i);
 
                 _zuneLibrary.DeleteMedia(new[] {track.ID}, EMediaTypes.eMediaTypeAudio, false);
             }
@@ -193,10 +194,28 @@ namespace ZuneSocialTagger.ZunePlugin
         {
             get
             {
-                return File.Exists("ZuneDBApi.dll");
+                //The version that this program was written to support, in future versions methods could change
+                //so updates will probably be needed
+                Version supportedVersion = new Version(4, 2, 202, 0);
+
+                if (File.Exists("ZuneDBApi.dll"))
+                {
+                    FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo("ZuneDBApi.dll");
+
+                    var fileVersion = new Version(fileVersionInfo.ProductVersion);
+
+                    if (fileVersion == supportedVersion)
+                    {
+                        throw new NotSupportedException("Zune Social Tagger was not designed to work with this version of the Zune software, proceed with caution and please wait for an update!");
+                    }
+
+                    return true;
+                }
+
+                return false;
             }
         }
-
+        
         public void Dispose()
         {
             _zuneLibrary.Dispose();
