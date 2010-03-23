@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -124,14 +125,21 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void AddSelectedSongs(IEnumerable<Track> tracks)
         {
+            Dispatcher dispatcher = UIDispatcher.GetDispatcher();
+
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel
                                                     {
                                                         SelectedAlbumTitle = tracks.First().MetaData.AlbumName
                               
                                                     };
 
-            foreach (var track in tracks)
-                this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(track);
+
+            dispatcher.Invoke(new Action(() =>
+                 {
+                     foreach (var track in tracks)
+                         this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(track);
+                 }));
+
 
             foreach (var row in _model.Rows)
             {

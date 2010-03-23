@@ -24,7 +24,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             else
             {
                 Container.Bind<IZuneWizardModel>().To<ZuneWizardModel>().InSingletonScope();
-                Container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
+                Container.Bind<IZuneDatabaseReader>().To<TestZuneDatabaseReader>().InSingletonScope();
                 Container.Bind<IZuneDbAdapter>().To<CachedZuneDatabaseReader>().InSingletonScope();
             }
 

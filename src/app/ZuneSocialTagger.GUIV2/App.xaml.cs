@@ -11,6 +11,8 @@ namespace ZuneSocialTagger.GUIV2
         public App()
         {
             new ViewModelLocator();
+
+            UIDispatcher.SetDispatcher(Dispatcher);
         }
     }
 
