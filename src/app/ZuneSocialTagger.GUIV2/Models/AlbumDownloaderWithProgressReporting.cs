@@ -51,13 +51,11 @@ namespace ZuneSocialTagger.GUIV2.Models
 
                 _downloadList.Add(downloader,album1.LinkStatus);
 
-                bool cancelled = hasBeenCancelled;
-
                 downloader.DownloadCompleted += (dledAlbum, state) =>
                     {
                         if (state != DownloadState.Cancelled)
                         {
-                            if (!cancelled)
+                            if (!hasBeenCancelled)
                             {
                                 _downloadCounter++;
 
@@ -74,13 +72,13 @@ namespace ZuneSocialTagger.GUIV2.Models
                                 }
                             }
                         }
-                        else
+
+                        if (state == DownloadState.Cancelled)
                         {
-                            //only raise event once because the network will raise the download completed event on all albums that have been cancelled
-                            if (!cancelled)
+                            if (!hasBeenCancelled)
                                 this.FinishedDownloadingAlbums.Invoke();
 
-                            cancelled = true;
+                            hasBeenCancelled = true;
                         }
                     };
 

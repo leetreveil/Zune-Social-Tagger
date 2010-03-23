@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading;
 using Album = ZuneSocialTagger.Core.ZuneDatabase.Album;
 using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -21,6 +22,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private readonly IZuneWizardModel _model;
         private bool _isLoading;
         private int _loadingProgress;
+        private string _scanAllText;
+        private bool _isDownloadingAlbumDetails;
         private AsyncObservableCollection<AlbumDetailsViewModel> _albums;
         private AlbumDownloaderWithProgressReporting _downloader;
 
@@ -35,6 +38,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             this.SortViewModel = new SortViewModel();
             this.SortViewModel.SortClicked += SortViewModel_SortClicked;
+
+            this.ScanAllText = "SCAN ALL";
 
             SetupCommandBindings();
 
@@ -62,6 +67,17 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 _isLoading = value;
                 RaisePropertyChanged("IsLoading");
+            }
+        }
+
+        public bool IsDownloadingAlbumDetails
+        {
+            get { return _isDownloadingAlbumDetails; }
+            set
+            {
+                _isDownloadingAlbumDetails = value;
+                this.ScanAllText = IsDownloadingAlbumDetails ? "STOP" : "SCAN ALL";
+                RaisePropertyChanged("IsDownloadingAlbumDetails");
             }
         }
 
@@ -94,6 +110,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return this.Albums.Where(x => x.LinkStatus == LinkStatus.AlbumOrArtistMismatch).Count(); }
         }
 
+        public string ScanAllText
+        {
+            get { return _scanAllText; }
+            set
+            {
+                _scanAllText = value;
+                RaisePropertyChanged("ScanAllText");
+            }
+        }
+
         public RelayCommand LoadDatabaseCommand { get; private set; }
         public RelayCommand LoadFromZuneWebsiteCommand { get; private set; }
         public RelayCommand CancelDownloadingCommand { get; private set; }
@@ -103,19 +129,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void LoadFromZuneWebsite()
         {
-            this.IsLoading = true;
+            if (this.IsDownloadingAlbumDetails)
+                CancelDownloading();
+            else
+            {
+                this.IsDownloadingAlbumDetails = true;
 
-            _downloader = new AlbumDownloaderWithProgressReporting(this.Albums);
+                _downloader = new AlbumDownloaderWithProgressReporting(this.Albums);
 
-            _downloader.ProgressChanged += downloader_ProgressChanged;
-            _downloader.FinishedDownloadingAlbums += downloader_FinishedDownloadingAlbums;
-            _downloader.Start();
+                _downloader.ProgressChanged += downloader_ProgressChanged;
+                _downloader.FinishedDownloadingAlbums += downloader_FinishedDownloadingAlbums;
+                _downloader.Start();
+            }
         }
 
         public void CancelDownloading()
         {
-            ResetLoadingProgress();
-
             if (_downloader != null)
                 _downloader.StopDownloading();
         }
@@ -373,6 +402,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void downloader_FinishedDownloadingAlbums()
         {
+            Debug.WriteLine("hit count");
             ResetLoadingProgress();
         }
 
@@ -388,7 +418,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private void ResetLoadingProgress()
         {
             this.LoadingProgress = 0;
-            this.IsLoading = false;
+            this.IsDownloadingAlbumDetails = false;
         }
 
         private void UpdateLinkTotals()

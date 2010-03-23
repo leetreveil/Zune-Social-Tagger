@@ -130,16 +130,10 @@
                     Command="{Binding LoadDatabaseCommand}"
                     Content="REFRESH" />
 
-            <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}"
-                    Margin="0,0,10,0"
+            <Button Margin="0,0,10,0"
                     Grid.Column="1"
                     Command="{Binding LoadFromZuneWebsiteCommand}"
-                    Content="SCAN ALL" />
-
-            <Button Margin="0,0,10,0"
-                    Grid.Column="2"
-                    Command="{Binding CancelDownloadingCommand}"
-                    Content="STOP" />
+                    Content="{Binding ScanAllText}" />
 
             <Button HorizontalAlignment="Right"
                     Grid.Column="3"
