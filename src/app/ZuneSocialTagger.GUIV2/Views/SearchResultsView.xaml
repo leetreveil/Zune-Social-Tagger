@@ -20,7 +20,7 @@
     </UserControl.Triggers>
 
     <Border x:Name="LayoutRoot">
-		<Grid Height="350">
+		<Grid MaxHeight="400">
 			<Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="10"/>
@@ -37,14 +37,15 @@
 
             <TextBlock Grid.Row="1" Width="60" x:Name="tbLoading" Visibility="{Binding Path=IsLoading, Converter = {StaticResource BoolToVisConverter}}" 
                        Grid.Column="2" VerticalAlignment="Bottom" FontSize="13.333" Foreground="#FF8A8D90" HorizontalAlignment="Right" />
-            
-			<ListView Grid.Row="2" x:Name="lvAlbums" SelectionChanged="lvAlbums_SelectionChanged"
+
+
+            <ListView Grid.Row="2" x:Name="lvAlbums" SelectionChanged="lvAlbums_SelectionChanged"
                       SelectedIndex="0" Background="Transparent" BorderBrush="Transparent" IsSynchronizedWithCurrentItem="True" 
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Albums}" 
                       Margin="0,0,36,0" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U" 
                       ItemContainerStyle="{DynamicResource SelectedItemHighlight}" >
-				<ListView.ItemTemplate>
-					<DataTemplate>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="10">
                             <Image Source="{Binding ArtworkUrl}" Width="60" Height="60" />
                             <StackPanel VerticalAlignment="Center" Margin="5">
@@ -57,9 +58,27 @@
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>
-				</ListView.ItemTemplate>
-			</ListView>
-			
+                </ListView.ItemTemplate>
+
+
+                <ListView.Style>
+                    <Style TargetType="ListView">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Albums.Count}" Value="0">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <TextBlock FontSize="18.667" Text="NO RESULTS"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.Style>
+            </ListView>
+
+
             <views:SearchResultsDetailView Grid.Row="2" Grid.Column="2" DataContext="{Binding SearchResultsDetailViewModel}"/>
             
             <StackPanel Margin="0,25,0,0" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right"  Orientation="Horizontal">

@@ -111,6 +111,7 @@
       <DependentUpon>ApplicationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ErrorModeToImageSourceConverter.cs" />
+    <Compile Include="Converters\GreaterThanZeroToBoolConverter.cs" />
     <Compile Include="Models\StoryboardManager.cs" />
     <Compile Include="Views\InlineZuneMessageView.xaml.cs">
       <DependentUpon>InlineZuneMessageView.xaml</DependentUpon>
