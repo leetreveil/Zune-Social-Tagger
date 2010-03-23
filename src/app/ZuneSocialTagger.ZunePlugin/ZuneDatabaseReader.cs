@@ -204,7 +204,7 @@ namespace ZuneSocialTagger.ZunePlugin
 
                     var fileVersion = new Version(fileVersionInfo.ProductVersion);
 
-                    if (fileVersion == supportedVersion)
+                    if (fileVersion != supportedVersion)
                     {
                         throw new NotSupportedException("Zune Social Tagger was not designed to work with this version of the Zune software, proceed with caution and please wait for an update!");
                     }

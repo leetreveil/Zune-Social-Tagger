@@ -31,10 +31,13 @@ namespace ZuneSocialTagger.GUIV2
 
             CheckForUpdates();
             SetupCommandBindings();
-            InitializeDatabase();
 
             //register for changes to the current view model so we can switch between views
-            Messenger.Default.Register<Type>(this,SetupViewSwitching);
+            Messenger.Default.Register<Type>(this, SetupViewSwitching);
+
+            this.InlineZuneMessage = new InlineZuneMessageViewModel();
+
+            InitializeDatabase();
         }
 
         private void SetupViewSwitching(Type viewType)
@@ -49,9 +52,7 @@ namespace ZuneSocialTagger.GUIV2
             this.UpdateCommand = new RelayCommand(ShowUpdate);
         }
 
-        public string MessageText { get { return "Haggis"; } }
-
-        public ErrorMode ErrorMode { get { return ErrorMode.Error; } }
+        public InlineZuneMessageViewModel InlineZuneMessage { get; set; }
 
         private void InitializeDatabase()
         {
@@ -75,7 +76,6 @@ namespace ZuneSocialTagger.GUIV2
                         else
                         {
                             //if we are loading the actual database but there is an initalizing error...
-                            ZuneMessageBox.Show("Error loading zune database", ErrorMode.Error);
                             ShowSelectAudioFilesViewWithError();
                         }
                     }
@@ -92,8 +92,7 @@ namespace ZuneSocialTagger.GUIV2
             }
             catch (NotSupportedException e)
             {
-                //TODO: display file version error message!
-                ZuneMessageBox.Show(e.Message,ErrorMode.Warning);
+                this.InlineZuneMessage.ShowMessage(ErrorMode.Warning,e.Message);
             }
 
         }
@@ -106,6 +105,8 @@ namespace ZuneSocialTagger.GUIV2
             firstPage.CanSwitchToNewMode = false;
 
             this.CurrentPage = firstPage;
+
+            this.InlineZuneMessage.ShowMessage(ErrorMode.Error,"Error loading zune database");
         }
 
         private void ShowAlbumListView()

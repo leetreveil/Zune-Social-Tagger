@@ -4,7 +4,8 @@
                     xmlns:converters="clr-namespace:ZuneSocialTagger.GUIV2.Converters"
                     xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" 
                     xmlns:vm="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels" 
-                    xmlns:v="clr-namespace:ZuneSocialTagger.GUIV2.Views">
+                    xmlns:v="clr-namespace:ZuneSocialTagger.GUIV2.Views" 
+                    xmlns:StoryboardManager="clr-namespace:ZuneSocialTagger.GUIV2.Models">
 
 
     <DataTemplate DataType="{x:Type vm:SelectAudioFilesViewModel}">
@@ -34,6 +35,7 @@
     <converters:LinkStatusToImageConverter x:Key="LinkStatusToImageConverter" />
     <converters:PathToImageThumbnailConverter x:Key="PathToImageThumbnailConverter" />
     <converters:SortOrderToTextConverter x:Key="SortOrderToTextConverter" />
+    <converters:ErrorModeToImageSourceConverter x:Key="ErrorModeToImageSourceConverter"/>
     <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
 
 
@@ -167,9 +169,12 @@
         </StringAnimationUsingKeyFrames>
     </Storyboard>
 
-    <Storyboard x:Key="SizeFadeInOut" Storyboard.TargetProperty="Height" Storyboard.TargetName="WarningBox" >       
-        <DoubleAnimation BeginTime="0:0:2.0" Duration="0:0:0.2"  From="0" To="16" />
-        <DoubleAnimation BeginTime="0:0:10.0" Duration="0:0:0.2" From="16" To="0" />
+    <Storyboard x:Key="SizeFadeInOut" StoryboardManager:StoryboardManager.ID="SizeFadeInOutAnimation" 
+                Storyboard.TargetProperty="ScaleY" Storyboard.TargetName="WarningBoxScaleTransform" >   
+        
+        <DoubleAnimation BeginTime="0:0:0.0" Duration="0:0:0.2"  From="0" To="1" />
+        <DoubleAnimation BeginTime="0:0:8.0" Duration="0:0:0.2" To="0" From="1" />
+        
     </Storyboard>
 
     <Storyboard x:Key="SearchingAnim">

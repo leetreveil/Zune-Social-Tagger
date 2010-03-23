@@ -110,8 +110,10 @@
     <Compile Include="ApplicationView.xaml.cs">
       <DependentUpon>ApplicationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\InlineZuneMessage.xaml.cs">
-      <DependentUpon>InlineZuneMessage.xaml</DependentUpon>
+    <Compile Include="Converters\ErrorModeToImageSourceConverter.cs" />
+    <Compile Include="Models\StoryboardManager.cs" />
+    <Compile Include="Views\InlineZuneMessageView.xaml.cs">
+      <DependentUpon>InlineZuneMessageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\AlbumCountToStringConverter.cs" />
     <Compile Include="Converters\LinkStatusToImageConverter.cs" />
@@ -137,6 +139,7 @@
     <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
     <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
     <Compile Include="Models\IFirstPage.cs" />
+    <Compile Include="ViewModels\InlineZuneMessageViewModel.cs" />
     <Compile Include="ViewModels\SearchHeaderViewModel.cs" />
     <Compile Include="Models\SortOrder.cs" />
     <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />
@@ -280,7 +283,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\InlineZuneMessage.xaml">
+    <Page Include="Views\InlineZuneMessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -447,6 +450,9 @@
       <Project>{F59D6D41-BE5A-41B6-939E-7FD89DE89C71}</Project>
       <Name>ZuneSocialTagger.ZunePlugin2010</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

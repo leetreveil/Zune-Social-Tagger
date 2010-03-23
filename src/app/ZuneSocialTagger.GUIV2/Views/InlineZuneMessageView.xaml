@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="ZuneSocialTagger.GUIV2.Views.InlineZuneMessageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" >
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Resources.xaml" />
+    </UserControl.Resources>
+    
+    <StackPanel Visibility="{Binding Path=Visibile, Converter={StaticResource BoolToVisConverter}}" 
+                    x:Name="WarningBox" Orientation="Horizontal" HorizontalAlignment="Left" >
+
+
+        <StackPanel.RenderTransform>
+            <ScaleTransform x:Name="WarningBoxScaleTransform" ScaleY="0" />
+        </StackPanel.RenderTransform>
+        
+        <Image Source="{Binding Path=ErrorMode,Converter={StaticResource ErrorModeToImageSourceConverter}}"
+               Margin="0,0,10,0" Width="16" Height="16"  />
+
+        <TextBlock VerticalAlignment="Center" Text="{Binding MessageText}" Width="550" TextWrapping="Wrap" />
+
+    </StackPanel>
+
+
+ 
+</UserControl>
