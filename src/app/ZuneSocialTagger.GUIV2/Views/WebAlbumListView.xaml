@@ -59,7 +59,10 @@
                   IsTextSearchEnabled="True"
                   MaxHeight="400"
                   TextSearch.TextPath="ZuneAlbumMetaData.AlbumTitle"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                  Background="Transparent"
+                  BorderThickness="0">
                   
 
             <ListView.ContextMenu>
@@ -97,11 +100,11 @@
                 </ContextMenu>
             </ListView.ContextMenu>
             
-            <ListView.ItemTemplate>
+            <!--<ListView.ItemTemplate>
                 <DataTemplate>
                     <views:AlbumDetailsView />
                 </DataTemplate>
-            </ListView.ItemTemplate>
+            </ListView.ItemTemplate>-->
 
         </ListView>
 
