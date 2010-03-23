@@ -27,7 +27,7 @@
                 <Button Content="BACK" Margin="0,0,10,0" Command="{Binding MoveBackCommand}"/>
 
                 <Button Content="SEARCH"
-                    IsEnabled="{Binding SearchBar.IsAbleToSearch}" Command="{Binding SearchCommand}"/>
+                    IsEnabled="{Binding SearchHeader.SearchBar.IsAbleToSearch}" Command="{Binding SearchCommand}"/>
                 
             </StackPanel>
 

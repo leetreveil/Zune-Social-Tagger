@@ -27,7 +27,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void Search()
         {
-            throw new NotImplementedException();
+            this.SearchHeader.SearchBar.Search();
         }
 
         public void MoveBack()

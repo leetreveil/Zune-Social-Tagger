@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using GalaSoft.MvvmLight.Command;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
@@ -16,7 +17,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public SearchBarViewModel()
         {
             SearchResults = new AsyncObservableCollection<Album>();
+
+            this.SearchCommand = new RelayCommand(Search);
         }
+
+        public RelayCommand SearchCommand { get; private set; }
 
         public AsyncObservableCollection<Album> SearchResults { get; set; }
 
