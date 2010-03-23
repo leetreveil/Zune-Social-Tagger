@@ -135,7 +135,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 this.IsDownloadingAlbumDetails = true;
 
-                _downloader = new AlbumDownloaderWithProgressReporting(this.Albums);
+                _downloader = new AlbumDownloaderWithProgressReporting(
+                    this.Albums.Where(x=> x.WebAlbumMetaData == null && x.LinkStatus != LinkStatus.Unlinked));
 
                 _downloader.ProgressChanged += downloader_ProgressChanged;
                 _downloader.FinishedDownloadingAlbums += downloader_FinishedDownloadingAlbums;

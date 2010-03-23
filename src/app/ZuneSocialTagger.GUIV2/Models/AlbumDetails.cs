@@ -7,6 +7,5 @@ namespace ZuneSocialTagger.GUIV2.Models
         public Album ZuneAlbumMetaData { get; set; }
         public Album WebAlbumMetaData { get; set; }
         public LinkStatus LinkStatus { get; set; }
-        public bool HasDownloaded { get; set; }
     }
 }

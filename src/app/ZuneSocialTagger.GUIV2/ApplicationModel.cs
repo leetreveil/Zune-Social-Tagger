@@ -130,7 +130,6 @@ namespace ZuneSocialTagger.GUIV2
                                                         LinkStatus = album.LinkStatus,
                                                         WebAlbumMetaData = album.WebAlbumMetaData,
                                                         ZuneAlbumMetaData = album.ZuneAlbumMetaData,
-                                                        HasDownloaded = album.HasDownloaded
                                                     }).ToList();
 
             try
