@@ -1,4 +1,5 @@
 using ZuneSocialTagger.GUIV2.Models;
+using System;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -6,7 +7,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         private string _messageText;
         private ErrorMode _errorMode;
-        private bool _visibility;
+
+        public event Action DoShowMessage = delegate { };
 
         public string MessageText
         {
@@ -28,22 +30,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-
-        public bool Visibile
-        {
-            get { return _visibility; }
-            set
-            {
-                _visibility = value;
-                NotifyOfPropertyChange(() => this.Visibile);
-            }
-        }
-
         public void ShowMessage(ErrorMode errorMode, string message)
         {
             this.ErrorMode = errorMode;
             this.MessageText = message;
-            this.Visibile = true;
+
+            DoShowMessage.Invoke();
         }
     }
 }

@@ -38,9 +38,16 @@ namespace ZuneSocialTagger.GUIV2
             //register for database switch messages
             Messenger.Default.Register<string>(this, SwitchToDatabase);
 
+            Messenger.Default.Register<ErrorMessage>(this, DisplayErrorMessage);
+
             this.InlineZuneMessage = new InlineZuneMessageViewModel();
 
             InitializeDatabase();
+        }
+
+        private void DisplayErrorMessage(ErrorMessage message)
+        {
+            this.InlineZuneMessage.ShowMessage(message.ErrorMode, message.Message);
         }
 
         private void SwitchToDatabase(string message)

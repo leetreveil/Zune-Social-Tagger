@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
@@ -10,6 +11,16 @@ namespace ZuneSocialTagger.GUIV2.Models
 
             foreach (var @object in enumerable)
                 collection.Add(@object);
+
+            return collection;
+        }
+
+        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
+        {
+            var collection = new ObservableCollection<T>();
+
+            foreach (var item in enumerable)
+                collection.Add(item);
 
             return collection;
         }

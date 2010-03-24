@@ -10,7 +10,7 @@ using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    class DetailsViewModel : ViewModelBase
+    public class DetailsViewModel : ViewModelBase
     {
         private readonly IZuneWizardModel _model;
 
@@ -19,8 +19,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             _model = model;
 
-            this.AlbumDetailsFromWebsite = albumDetailsFromWebsite;
-            this.AlbumDetailsFromFile = albumDetailsFromFile;
+            this.AlbumDetailsFromWebsite = model.WebAlbumDetails;
+            this.AlbumDetailsFromFile = model.FileAlbumDetails;
 
             this.MoveToStartCommand = new RelayCommand(MoveToStart);
             this.MoveBackCommand = new RelayCommand(MoveBack);

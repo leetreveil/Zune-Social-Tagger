@@ -21,6 +21,11 @@ namespace ZuneSocialTagger.GUIV2.Models
         /// </summary>
         public ExpandedAlbumDetailsViewModel FileAlbumDetails { get; set; }
 
+        /// <summary>
+        /// The Details of the selected album from the zune website
+        /// </summary>
+        public ExpandedAlbumDetailsViewModel WebAlbumDetails { get; set; }
+
         public string SearchText { get; set; }
     }
 }

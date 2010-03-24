@@ -13,6 +13,10 @@
         <ResourceDictionary Source="../Resources.xaml "/>
     </UserControl.Resources>
 
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource Locator}" Path="SearchResultsView" />
+    </UserControl.DataContext>
+
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded">
             <BeginStoryboard Storyboard="{StaticResource LoadingAnim}"/>

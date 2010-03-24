@@ -14,6 +14,8 @@ namespace ZuneSocialTagger.GUIV2.Models
         /// </summary>
         ExpandedAlbumDetailsViewModel FileAlbumDetails { get; set; }
 
+        ExpandedAlbumDetailsViewModel WebAlbumDetails { get; set; }
+
         string SearchText { get; set; }
     }
 }

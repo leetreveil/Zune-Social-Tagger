@@ -64,11 +64,27 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
+        public SearchResultsViewModel SearchResultsView
+        {
+            get
+            {
+                return Container.Get<SearchResultsViewModel>();
+            }
+        }
+
         public SearchViewModel SearchView
         {
             get
             {
                 return Container.Get<SearchViewModel>();
+            }
+        }
+
+        public DetailsViewModel DetailsView 
+        {
+            get
+            {
+                return Container.Get<DetailsViewModel>();
             }
         }
 

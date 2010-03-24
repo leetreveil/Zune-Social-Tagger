@@ -21,7 +21,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private readonly IZuneWizardModel _model;
         private bool _isLoading;
         private SearchResultsDetailViewModel _searchResultsDetailViewModel;
-        private ExpandedAlbumDetailsViewModel _albumDetails;
 
         public SearchResultsViewModel(IZuneWizardModel model, SearchHeaderViewModel searchHeaderViewModel)
         {
@@ -92,7 +91,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                      IEnumerable<Track> tracks = reader.Read();
 
-                     SetAlbumDetails(tracks);
+                     _model.WebAlbumDetails =  SetAlbumDetails(tracks);
                      AddSelectedSongs(tracks);
 
 
@@ -125,16 +124,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void AddSelectedSongs(IEnumerable<Track> tracks)
         {
-            Dispatcher dispatcher = UIDispatcher.GetDispatcher();
-
-            this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel
+             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel
                                                     {
                                                         SelectedAlbumTitle = tracks.First().MetaData.AlbumName
                               
                                                     };
 
-
-            dispatcher.Invoke(new Action(() =>
+            UIDispatcher.GetDispatcher().Invoke(new Action(() =>
                  {
                      foreach (var track in tracks)
                          this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(track);

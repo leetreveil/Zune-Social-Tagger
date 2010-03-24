@@ -3,26 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" >
+             mc:Ignorable="d" x:Name="WarningBox" >
 
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
     
-    <StackPanel Visibility="{Binding Path=Visibile, Converter={StaticResource BoolToVisConverter}}" 
-                    x:Name="WarningBox" Orientation="Horizontal" HorizontalAlignment="Left" >
-
-
-        <StackPanel.RenderTransform>
-            <ScaleTransform x:Name="WarningBoxScaleTransform" ScaleY="0" />
-        </StackPanel.RenderTransform>
+    <Grid>
         
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
+
+
         <Image Source="{Binding Path=ErrorMode,Converter={StaticResource ErrorModeToImageSourceConverter}}"
                Margin="0,0,10,0" Width="16" Height="16"  />
 
-        <TextBlock VerticalAlignment="Center" Text="{Binding MessageText}" Width="550" TextWrapping="Wrap" />
+        <Viewbox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" >
+            <TextBlock Text="{Binding MessageText}"  />
+        </Viewbox>
 
-    </StackPanel>
+        <Button Grid.Column="2" Click="Button_Click" Margin="10,0,0,0" Content="OK" Style="{StaticResource UpdateButton}" />
+    </Grid>
 
 
  

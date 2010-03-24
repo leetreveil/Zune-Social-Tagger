@@ -7,8 +7,12 @@
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
-	
-	<Grid x:Name="LayoutRoot">
+
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource Locator}" Path="DetailsView" />
+    </UserControl.DataContext>
+
+    <Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
