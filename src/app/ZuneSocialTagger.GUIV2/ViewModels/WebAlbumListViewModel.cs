@@ -352,30 +352,26 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                      switch (sortOrder)
                      {
                          case SortOrder.DateAdded:
-                             this.Albums =
-                                 this.Albums.OrderByDescending(
-                                     x => x.ZuneAlbumMetaData.DateAdded).
-                                     ToAsyncObservableCollection();
+                             DoSort(x=> x.ZuneAlbumMetaData.DateAdded);
                              break;
                          case SortOrder.Album:
-                             this.Albums =
-                                 this.Albums.OrderBy(x => x.ZuneAlbumMetaData.AlbumTitle).
-                                     ToAsyncObservableCollection();
+                             DoSort(x => x.ZuneAlbumMetaData.AlbumTitle);
                              break;
                          case SortOrder.Artist:
-                             this.Albums =
-                                 this.Albums.OrderBy(x => x.ZuneAlbumMetaData.AlbumArtist).
-                                     ToAsyncObservableCollection();
+                             DoSort(x => x.ZuneAlbumMetaData.AlbumArtist);
                              break;
                          case SortOrder.LinkStatus:
-                             this.Albums =
-                                 this.Albums.OrderByDescending(x => x.LinkStatus).
-                                     ToAsyncObservableCollection();
+                             DoSort(x => x.LinkStatus);
                              break;
                          default:
                              throw new ArgumentOutOfRangeException();
                      }
                  });
+        }
+
+        private void DoSort<T>(Func<AlbumDetailsViewModel,T> sortKey)
+        {
+            this.Albums = this.Albums.OrderBy(sortKey).ToAsyncObservableCollection();
         }
 
         private void SortViewModel_SortClicked(SortOrder sortOrder)
@@ -398,6 +394,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private void DbAdapterFinishedReadingAlbums()
         {
             ResetLoadingProgress();
+            PerformSort(SortOrder.DateAdded);
             this.SortViewModel.Sort(SortOrder.DateAdded);
         }
 
@@ -408,7 +405,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void downloader_FinishedDownloadingAlbums()
         {
-            Debug.WriteLine("hit count");
             ResetLoadingProgress();
         }
 
