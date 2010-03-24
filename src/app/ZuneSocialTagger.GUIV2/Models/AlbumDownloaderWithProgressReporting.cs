@@ -48,7 +48,7 @@ namespace ZuneSocialTagger.GUIV2.Models
             int albumCount = _albums.Count();
 
             //only download albums that we do not know the details of
-            foreach (var album in _albums.Where(x => x.LinkStatus == LinkStatus.Unknown))
+            foreach (var album in _albums)
             {
                 string fullUrlToAlbumXmlDetails =
                     String.Concat(Urls.Album, album.ZuneAlbumMetaData.AlbumMediaId);
@@ -71,6 +71,9 @@ namespace ZuneSocialTagger.GUIV2.Models
                                 SetAlbumDetails(dledAlbum, album1);
 
                                 //TODO: don't like how we are doing progress reporting
+
+                                Debug.WriteLine(_downloadCounter);
+                                Debug.WriteLine(albumCount);
 
                                 this.ProgressChanged.Invoke(_downloadCounter, albumCount);
 

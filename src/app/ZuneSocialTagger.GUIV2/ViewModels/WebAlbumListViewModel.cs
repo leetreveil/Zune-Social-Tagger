@@ -160,6 +160,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 foreach (AlbumDetails newAlbum in _dbAdapter.ReadAlbums())
                 {
+                    Thread.Sleep(1000);
                     //add handler to be notified when the LinkStatus enum changes
                     //newAlbum.PropertyChanged += album_PropertyChanged;
 
@@ -172,15 +173,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 this.IsLoading = false;
             });
            
-        }
-
-        public void LoadDatabase()
-        {
-            //_dbAdapter = new ZuneDbAdapter(_locator.GetInstance<IZuneDatabaseReader>(), _locator);
-            //_dbAdapter.ProgressChanged += DbAdapterProgressChanged;
-            //_dbAdapter.FinishedReadingAlbums += DbAdapterFinishedReadingAlbums;
-
-            //LoadAlbumsFromCacheOrZuneDatabase();
         }
 
         public void LinkAlbum(Album albumDetails)
@@ -333,7 +325,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void SetupCommandBindings()
         {
-            this.LoadDatabaseCommand = new RelayCommand(LoadDatabase);
+            this.LoadDatabaseCommand = new RelayCommand(LoadAlbumsFromCacheOrZuneDatabase);
             this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
             this.CancelDownloadingCommand = new RelayCommand(CancelDownloading);
             this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
