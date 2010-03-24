@@ -35,9 +35,22 @@ namespace ZuneSocialTagger.GUIV2
             //register for changes to the current view model so we can switch between views
             Messenger.Default.Register<Type>(this, SetupViewSwitching);
 
+            //register for database switch messages
+            Messenger.Default.Register<string>(this, SwitchToDatabase);
+
             this.InlineZuneMessage = new InlineZuneMessageViewModel();
 
             InitializeDatabase();
+        }
+
+        private void SwitchToDatabase(string message)
+        {
+            if (message == "SWITCHTODB")
+            {
+                _container.Rebind<IZuneDbAdapter>().To<ZuneDbAdapter>().InSingletonScope();
+                _adapter = _container.Get<IZuneDbAdapter>();
+                InitializeDatabase();
+            }
         }
 
         private void SetupViewSwitching(Type viewType)
@@ -111,7 +124,7 @@ namespace ZuneSocialTagger.GUIV2
 
         private void ShowAlbumListView()
         {
-            _container.Rebind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
+            _container.Rebind<IFirstPage>().To<WebAlbumListViewModel>();
 
             var webAlbumListViewModel = _container.Get<WebAlbumListViewModel>();
 

@@ -43,7 +43,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             SetupCommandBindings();
 
-            LoadAlbumsFromCacheOrZuneDatabase();
+            ReadDatabase();
         }
 
         #region View Binding Properties
@@ -150,17 +150,31 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 _downloader.StopDownloading();
         }
 
-        public void LoadAlbumsFromCacheOrZuneDatabase()
+        public void RefreshDatabase()
         {
             this.IsLoading = true;
             this.Albums.Clear();
             this.SortViewModel.SortOrder = SortOrder.NotSorted;
 
-            ThreadPool.QueueUserWorkItem(delegate
+            if (_dbAdapter.GetType() == typeof(CachedZuneDatabaseReader))
+            {
+                //if we are using the cache then we want to switch to the real database to refresh
+                //send message to the app model and tell it to switch the database
+                Messenger.Default.Send<string>("SWITCHTODB");
+            }
+            else
+            {
+                ReadDatabase();
+            }
+        }
+
+        private bool ReadDatabase()
+        {
+            return ThreadPool.QueueUserWorkItem(delegate
             {
                 foreach (AlbumDetails newAlbum in _dbAdapter.ReadAlbums())
                 {
-                    Thread.Sleep(1000);
+                    Debug.WriteLine(newAlbum.ZuneAlbumMetaData.AlbumTitle);
                     //add handler to be notified when the LinkStatus enum changes
                     //newAlbum.PropertyChanged += album_PropertyChanged;
 
@@ -172,7 +186,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                 this.IsLoading = false;
             });
-           
         }
 
         public void LinkAlbum(Album albumDetails)
@@ -325,7 +338,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void SetupCommandBindings()
         {
-            this.LoadDatabaseCommand = new RelayCommand(LoadAlbumsFromCacheOrZuneDatabase);
+            this.LoadDatabaseCommand = new RelayCommand(RefreshDatabase);
             this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
             this.CancelDownloadingCommand = new RelayCommand(CancelDownloading);
             this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
