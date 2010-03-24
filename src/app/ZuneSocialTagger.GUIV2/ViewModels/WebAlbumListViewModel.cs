@@ -28,14 +28,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private ObservableCollection<AlbumDetailsViewModel> _albums;
         private AlbumDownloaderWithProgressReporting _downloader;
 
-        public WebAlbumListViewModel(IZuneDbAdapter dbAdapter,IZuneWizardModel model)
+        public WebAlbumListViewModel(IZuneDbAdapter dbAdapter, IZuneWizardModel model)
         {
             _dbAdapter = dbAdapter;
             _model = model;
             _dbAdapter.FinishedReadingAlbums += DbAdapterFinishedReadingAlbums;
             _dbAdapter.ProgressChanged += DbAdapterProgressChanged;
 
-            this.Albums = new ObservableCollection<AlbumDetailsViewModel>();
+            //this.Albums = new ObservableCollection<AlbumDetailsViewModel>();
 
             this.SortViewModel = new SortViewModel();
             this.SortViewModel.SortClicked += SortViewModel_SortClicked;
@@ -51,12 +51,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public ObservableCollection<AlbumDetailsViewModel> Albums
         {
-            get { return _albums; }
-            set
-            {
-                _albums = value;
-                RaisePropertyChanged("Albums");
-            }
+            get { return _model.AlbumsFromDatabase; }
         }
 
         public SortViewModel SortViewModel { get; set; }
@@ -171,26 +166,27 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private bool ReadDatabase()
         {
-            return ThreadPool.QueueUserWorkItem(delegate
-            {
-                foreach (AlbumDetails newAlbum in _dbAdapter.ReadAlbums())
-                {
-                    //Debug.WriteLine(newAlbum.ZuneAlbumMetaData.AlbumTitle);
+            return true;
+            //return ThreadPool.QueueUserWorkItem(delegate
+            //{
+            //    foreach (AlbumDetails newAlbum in _dbAdapter.ReadAlbums())
+            //    {
+            //        //Debug.WriteLine(newAlbum.ZuneAlbumMetaData.AlbumTitle);
 
-                    //add handler to be notified when the LinkStatus enum changes
-                    //newAlbum.PropertyChanged += album_PropertyChanged;
+            //        //add handler to be notified when the LinkStatus enum changes
+            //        //newAlbum.PropertyChanged += album_PropertyChanged;
 
-                    if (newAlbum.ZuneAlbumMetaData.AlbumMediaId == Guid.Empty)
-                        newAlbum.LinkStatus = LinkStatus.Unlinked;
+            //        if (newAlbum.ZuneAlbumMetaData.AlbumMediaId == Guid.Empty)
+            //            newAlbum.LinkStatus = LinkStatus.Unlinked;
 
-                    UIDispatcher.GetDispatcher().Invoke(new Action(() =>
-                    {
-                        this.Albums.Add(new AlbumDetailsViewModel(newAlbum));
-                    }));
-                }
+            //        UIDispatcher.GetDispatcher().Invoke(new Action(() =>
+            //        {
+            //            _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
+            //        }));
+            //    }
 
-                this.IsLoading = false;
-            });
+            //    this.IsLoading = false;
+            //});
         }
 
         public void LinkAlbum(Album albumDetails)
@@ -385,7 +381,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void DoSort<T>(Func<AlbumDetailsViewModel,T> sortKey)
         {
-            this.Albums = this.Albums.OrderBy(sortKey).ToObservableCollection() ;
+           // this.Albums = this.Albums.OrderBy(sortKey).ToObservableCollection() ;
         }
 
         private void SortViewModel_SortClicked(SortOrder sortOrder)
@@ -408,8 +404,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private void DbAdapterFinishedReadingAlbums()
         {
             ResetLoadingProgress();
-            PerformSort(SortOrder.DateAdded);
-            this.SortViewModel.Sort(SortOrder.DateAdded);
+            //PerformSort(SortOrder.DateAdded);
+            //this.SortViewModel.Sort(SortOrder.DateAdded);
         }
 
         private void ReportProgress(int current, int total)

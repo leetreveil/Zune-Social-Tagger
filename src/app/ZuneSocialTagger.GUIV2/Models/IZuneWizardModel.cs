@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.ViewModels;
+using System.Collections.Generic;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
@@ -17,5 +18,7 @@ namespace ZuneSocialTagger.GUIV2.Models
         ExpandedAlbumDetailsViewModel WebAlbumDetails { get; set; }
 
         string SearchText { get; set; }
+
+        ObservableCollection<AlbumDetailsViewModel> AlbumsFromDatabase { get; set; }
     }
 }

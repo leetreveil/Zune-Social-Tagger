@@ -54,7 +54,8 @@
 
         <ContentControl Margin="0,20,0,0" Content="{Binding CurrentPage}" Grid.Row="2" Grid.ColumnSpan="2"/>
 
-        <Controls:InlineZuneMessageView Margin="0,10,0,0" MaxWidth="600" Height="16" HorizontalAlignment="Left" 
+        <Controls:InlineZuneMessageView Visibility="Collapsed"
+                                        Margin="0,10,0,0" MaxWidth="600" Height="16" HorizontalAlignment="Left" 
                                         DataContext="{Binding InlineZuneMessage}" 
                                         Grid.ColumnSpan="2" 
                                         Grid.Row="3" />

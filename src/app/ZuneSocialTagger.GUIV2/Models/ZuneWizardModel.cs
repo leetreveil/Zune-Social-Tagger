@@ -2,15 +2,18 @@
 using GalaSoft.MvvmLight;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.ViewModels;
+using System.Collections.Generic;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
     public class ZuneWizardModel : ViewModelBase, IZuneWizardModel
     {
+        private ObservableCollection<AlbumDetailsViewModel> _albumsFromDatabase;
+
         public ZuneWizardModel()
         {
-           // this.Rows = new BindableCollection<DetailRow>();
             this.FoundAlbums = new ObservableCollection<Album>();
+            this.AlbumsFromDatabase = new ObservableCollection<AlbumDetailsViewModel>();
         }
 
         public ObservableCollection<DetailRow> Rows { get; set; }
@@ -27,5 +30,15 @@ namespace ZuneSocialTagger.GUIV2.Models
         public ExpandedAlbumDetailsViewModel WebAlbumDetails { get; set; }
 
         public string SearchText { get; set; }
+
+        public ObservableCollection<AlbumDetailsViewModel> AlbumsFromDatabase
+        {
+            get { return _albumsFromDatabase; }
+            set
+            {
+                _albumsFromDatabase = value;
+                RaisePropertyChanged("AlbumsFromDatabase");
+            }
+        }
     }
 }

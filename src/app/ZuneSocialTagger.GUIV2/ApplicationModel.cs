@@ -23,9 +23,11 @@ namespace ZuneSocialTagger.GUIV2
         private readonly IKernel _container;
         private bool _updateAvailable;
         private ViewModelBase _currentPage;
+        private readonly IZuneWizardModel _model;
 
-        public ApplicationModel(IZuneDbAdapter adapter, IKernel container)
+        public ApplicationModel(IZuneWizardModel model, IZuneDbAdapter adapter, IKernel container)
         {
+            _model = model;
             _adapter = adapter;
             _container = container;
 
@@ -133,9 +135,31 @@ namespace ZuneSocialTagger.GUIV2
         {
             _container.Rebind<IFirstPage>().To<WebAlbumListViewModel>();
 
+            ReadDatabase();
+
             var webAlbumListViewModel = _container.Get<WebAlbumListViewModel>();
 
             this.CurrentPage = webAlbumListViewModel;
+        }
+
+        private void ReadDatabase()
+        {
+            ThreadPool.QueueUserWorkItem(delegate
+            {
+                foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
+                {
+                    //add handler to be notified when the LinkStatus enum changes
+                    //newAlbum.PropertyChanged += album_PropertyChanged;
+
+                    if (newAlbum.ZuneAlbumMetaData.AlbumMediaId == Guid.Empty)
+                        newAlbum.LinkStatus = LinkStatus.Unlinked;
+
+                    UIDispatcher.GetDispatcher().Invoke(new Action(delegate
+                    {
+                        _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
+                    }));
+                }
+            });
         }
 
         public void ShuttingDown()

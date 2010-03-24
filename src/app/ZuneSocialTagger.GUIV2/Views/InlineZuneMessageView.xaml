@@ -17,7 +17,6 @@
             <ColumnDefinition Width="30"/>
         </Grid.ColumnDefinitions>
 
-
         <Image Source="{Binding Path=ErrorMode,Converter={StaticResource ErrorModeToImageSourceConverter}}"
                Margin="0,0,10,0" Width="16" Height="16"  />
 
