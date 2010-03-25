@@ -29,7 +29,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
 
             Container.Bind<ApplicationModel>().ToSelf().InSingletonScope();
-            Container.Bind<WebAlbumListViewModel>().ToSelf();
+            Container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
             Container.Bind<SearchHeaderViewModel>().ToSelf().InSingletonScope();
         }
 

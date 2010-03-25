@@ -57,10 +57,16 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         private static AlbumDetails ToAlbumDetails(Album album)
         {
-            return new AlbumDetails
-                       {
-                           ZuneAlbumMetaData = album
-                       };
+            AlbumDetails albumDetails = new AlbumDetails();
+
+            if (album.AlbumMediaId == Guid.Empty)
+                albumDetails.LinkStatus = LinkStatus.Unlinked;
+            else
+                albumDetails.LinkStatus = LinkStatus.Unknown;
+
+            albumDetails.ZuneAlbumMetaData = album;
+
+            return albumDetails;
         }
     }
 }

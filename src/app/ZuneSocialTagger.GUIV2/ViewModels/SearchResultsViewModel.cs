@@ -127,7 +127,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
              this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel
                                                     {
                                                         SelectedAlbumTitle = tracks.First().MetaData.AlbumName
-                              
                                                     };
 
             UIDispatcher.GetDispatcher().Invoke(new Action(() =>

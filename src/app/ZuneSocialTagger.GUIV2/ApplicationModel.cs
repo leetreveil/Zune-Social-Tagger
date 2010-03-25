@@ -25,6 +25,10 @@ namespace ZuneSocialTagger.GUIV2
         private ViewModelBase _currentPage;
         private readonly IZuneWizardModel _model;
 
+        public RelayCommand UpdateCommand { get; private set; }
+        public RelayCommand ShowAboutSettingsCommand { get; private set; }
+        public InlineZuneMessageViewModel InlineZuneMessage { get; set; }
+
         public ApplicationModel(IZuneWizardModel model, IZuneDbAdapter adapter, IKernel container)
         {
             _model = model;
@@ -40,6 +44,7 @@ namespace ZuneSocialTagger.GUIV2
             //register for database switch messages
             Messenger.Default.Register<string>(this, SwitchToDatabase);
 
+            //register for error messages to be displayed
             Messenger.Default.Register<ErrorMessage>(this, DisplayErrorMessage);
 
             this.InlineZuneMessage = new InlineZuneMessageViewModel();
@@ -58,13 +63,13 @@ namespace ZuneSocialTagger.GUIV2
             {
                 _container.Rebind<IZuneDbAdapter>().To<ZuneDbAdapter>().InSingletonScope();
                 _adapter = _container.Get<IZuneDbAdapter>();
+
                 InitializeDatabase();
             }
         }
 
         private void SetupViewSwitching(Type viewType)
         {
-            //TODO: remove all this IFirstPage bollocks and just use a setting variable to remember which page is first
             this.CurrentPage = (ViewModelBase) _container.Get(viewType);
         }
 
@@ -73,8 +78,6 @@ namespace ZuneSocialTagger.GUIV2
             this.ShowAboutSettingsCommand = new RelayCommand(ShowAboutSettings);
             this.UpdateCommand = new RelayCommand(ShowUpdate);
         }
-
-        public InlineZuneMessageViewModel InlineZuneMessage { get; set; }
 
         private void InitializeDatabase()
         {
@@ -108,7 +111,6 @@ namespace ZuneSocialTagger.GUIV2
                 }
                 else
                 {
-                    //ZuneMessageBox.Show("ZuneDBApi.dll was not found", ErrorMode.Error);
                     ShowSelectAudioFilesViewWithError();
                 }
             }
@@ -116,12 +118,11 @@ namespace ZuneSocialTagger.GUIV2
             {
                 this.InlineZuneMessage.ShowMessage(ErrorMode.Warning,e.Message);
             }
-
         }
 
         private void ShowSelectAudioFilesViewWithError()
         {
-            _container.Rebind<IFirstPage>().To<SelectAudioFilesViewModel>().InSingletonScope();
+            _container.Rebind<SelectAudioFilesViewModel>().ToSelf().InSingletonScope();
 
             var firstPage = _container.Get<SelectAudioFilesViewModel>();
             firstPage.CanSwitchToNewMode = false;
@@ -133,7 +134,7 @@ namespace ZuneSocialTagger.GUIV2
 
         private void ShowAlbumListView()
         {
-            _container.Rebind<IFirstPage>().To<WebAlbumListViewModel>();
+            _container.Rebind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
 
             ReadDatabase();
 
@@ -146,19 +147,13 @@ namespace ZuneSocialTagger.GUIV2
         {
             ThreadPool.QueueUserWorkItem(delegate
             {
-                foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
-                {
-                    //add handler to be notified when the LinkStatus enum changes
-                    //newAlbum.PropertyChanged += album_PropertyChanged;
-
-                    if (newAlbum.ZuneAlbumMetaData.AlbumMediaId == Guid.Empty)
-                        newAlbum.LinkStatus = LinkStatus.Unlinked;
-
                     UIDispatcher.GetDispatcher().Invoke(new Action(delegate
                     {
-                        _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
+                        foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
+                        {
+                                _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
+                        }
                     }));
-                }
             });
         }
 
@@ -202,9 +197,6 @@ namespace ZuneSocialTagger.GUIV2
         {
             //base.Close();
         }
-
-        public RelayCommand UpdateCommand { get; private set; }
-        public RelayCommand ShowAboutSettingsCommand { get; private set; }
 
         public void ShowAboutSettings()
         {

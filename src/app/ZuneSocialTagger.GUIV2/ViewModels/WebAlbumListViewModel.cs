@@ -17,7 +17,7 @@ using System.IO;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class WebAlbumListViewModel : ViewModelBase, IFirstPage
+    public class WebAlbumListViewModel : ViewModelBase
     {
         private IZuneDbAdapter _dbAdapter;
         private readonly IZuneWizardModel _model;
@@ -25,7 +25,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private int _loadingProgress;
         private string _scanAllText;
         private bool _isDownloadingAlbumDetails;
-        private ObservableCollection<AlbumDetailsViewModel> _albums;
         private AlbumDownloaderWithProgressReporting _downloader;
 
         public WebAlbumListViewModel(IZuneDbAdapter dbAdapter, IZuneWizardModel model)
@@ -44,7 +43,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             SetupCommandBindings();
 
-            ReadDatabase();
+            this.IsDownloadingAlbumDetails = true;
         }
 
         #region View Binding Properties
@@ -52,6 +51,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public ObservableCollection<AlbumDetailsViewModel> Albums
         {
             get { return _model.AlbumsFromDatabase; }
+            set 
+            { 
+                _model.AlbumsFromDatabase = value;
+                RaisePropertyChanged("Albums");
+            }
         }
 
         public SortViewModel SortViewModel { get; set; }
@@ -149,44 +153,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public void RefreshDatabase()
         {
             this.IsLoading = true;
+            this.IsDownloadingAlbumDetails = true;
             this.Albums.Clear();
             this.SortViewModel.SortOrder = SortOrder.NotSorted;
 
-            if (_dbAdapter.GetType() == typeof(CachedZuneDatabaseReader))
-            {
-                //if we are using the cache then we want to switch to the real database to refresh
-                //send message to the app model and tell it to switch the database
-                Messenger.Default.Send<string>("SWITCHTODB");
-            }
-            else
-            {
-                ReadDatabase();
-            }
-        }
-
-        private bool ReadDatabase()
-        {
-            return true;
-            //return ThreadPool.QueueUserWorkItem(delegate
-            //{
-            //    foreach (AlbumDetails newAlbum in _dbAdapter.ReadAlbums())
-            //    {
-            //        //Debug.WriteLine(newAlbum.ZuneAlbumMetaData.AlbumTitle);
-
-            //        //add handler to be notified when the LinkStatus enum changes
-            //        //newAlbum.PropertyChanged += album_PropertyChanged;
-
-            //        if (newAlbum.ZuneAlbumMetaData.AlbumMediaId == Guid.Empty)
-            //            newAlbum.LinkStatus = LinkStatus.Unlinked;
-
-            //        UIDispatcher.GetDispatcher().Invoke(new Action(() =>
-            //        {
-            //            _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
-            //        }));
-            //    }
-
-            //    this.IsLoading = false;
-            //});
+            Messenger.Default.Send<string>("SWITCHTODB");
         }
 
         public void LinkAlbum(Album albumDetails)
@@ -381,7 +352,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void DoSort<T>(Func<AlbumDetailsViewModel,T> sortKey)
         {
-           // this.Albums = this.Albums.OrderBy(sortKey).ToObservableCollection() ;
+           this.Albums = this.Albums.OrderBy(sortKey).ToObservableCollection();
         }
 
         private void SortViewModel_SortClicked(SortOrder sortOrder)
@@ -403,9 +374,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void DbAdapterFinishedReadingAlbums()
         {
+            Debug.WriteLine("hit");
             ResetLoadingProgress();
-            //PerformSort(SortOrder.DateAdded);
-            //this.SortViewModel.Sort(SortOrder.DateAdded);
+            PerformSort(SortOrder.DateAdded);
+            this.SortViewModel.Sort(SortOrder.DateAdded);
         }
 
         private void ReportProgress(int current, int total)
@@ -431,6 +403,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             this.LoadingProgress = 0;
             this.IsDownloadingAlbumDetails = false;
+            this.IsLoading = false;
         }
 
         private void UpdateLinkTotals()

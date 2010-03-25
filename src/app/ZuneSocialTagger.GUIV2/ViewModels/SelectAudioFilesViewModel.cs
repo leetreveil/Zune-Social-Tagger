@@ -10,7 +10,7 @@ using ZuneSocialTagger.Core;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SelectAudioFilesViewModel : ViewModelBase, IFirstPage
+    public class SelectAudioFilesViewModel : ViewModelBase
     {
         private readonly IZuneWizardModel _model;
 
@@ -54,7 +54,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                     _model.Rows.Add(new DetailRow(file,container));
 
-                    _model.Rows = _model.Rows.OrderBy(SharedMethods.SortByTrackNumber()).ToAsyncObservableCollection();
+                    _model.Rows = _model.Rows.OrderBy(SharedMethods.SortByTrackNumber()).ToObservableCollection();
                 }
                 catch(AudioFileReadException ex)
                 {

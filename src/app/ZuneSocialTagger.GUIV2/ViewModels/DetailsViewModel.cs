@@ -87,7 +87,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             Mouse.OverrideCursor = null;
 
-            Messenger.Default.Send(typeof(IFirstPage));
+            //Messenger.Default.Send(typeof(IFirstPage));
         }
 
         public void MoveBack()
@@ -97,7 +97,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void MoveToStart()
         {
-            Messenger.Default.Send(typeof(IFirstPage));
+            //Messenger.Default.Send(typeof(IFirstPage));
         }
 
         public bool UpdateAlbumInfo

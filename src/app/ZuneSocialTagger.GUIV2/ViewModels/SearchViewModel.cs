@@ -32,7 +32,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void MoveBack()
         {
-            Messenger.Default.Send(typeof(IFirstPage));
+            //Messenger.Default.Send(typeof(IFirstPage));
         }
 
         private void SearchBar_StartedSearching()

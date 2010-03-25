@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.Command;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
+using System.Collections.ObjectModel;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -16,14 +17,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public SearchBarViewModel()
         {
-            SearchResults = new AsyncObservableCollection<Album>();
+            SearchResults = new ObservableCollection<Album>();
 
             this.SearchCommand = new RelayCommand(Search);
         }
 
         public RelayCommand SearchCommand { get; private set; }
 
-        public AsyncObservableCollection<Album> SearchResults { get; set; }
+        public ObservableCollection<Album> SearchResults { get; set; }
 
         public event Action StartedSearching = delegate { };
 
@@ -77,8 +78,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                  {
                      IEnumerable<Album> results = AlbumSearch.SearchFor(searchString);
 
-                     foreach (Album result in results)
-                         SearchResults.Add(result);
+                     UIDispatcher.GetDispatcher().Invoke(new Action(delegate
+                     {
+                         foreach (Album result in results)
+                             SearchResults.Add(result);
+                     }));
 
                      IsSearching = false;
                  });

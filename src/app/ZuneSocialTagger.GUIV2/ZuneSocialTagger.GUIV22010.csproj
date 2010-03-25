@@ -123,7 +123,6 @@
     <Compile Include="Converters\PathToImageThumbnailConverter.cs" />
     <Compile Include="Converters\SortOrderToTextConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
-    <Compile Include="Models\AsyncObservableCollection.cs" />
     <Compile Include="Models\CachedZuneDatabaseReader.cs" />
     <Compile Include="Models\ExtensionMethods.cs" />
     <Compile Include="Models\IZuneDbAdapter.cs" />
@@ -140,7 +139,6 @@
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
     <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
-    <Compile Include="Models\IFirstPage.cs" />
     <Compile Include="ViewModels\InlineZuneMessageViewModel.cs" />
     <Compile Include="ViewModels\SearchHeaderViewModel.cs" />
     <Compile Include="Models\SortOrder.cs" />

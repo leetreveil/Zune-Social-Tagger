@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
-    public class ZuneWizardModel : ViewModelBase, IZuneWizardModel
+    public class ZuneWizardModel : NotifyPropertyChangedImpl, IZuneWizardModel
     {
         private ObservableCollection<AlbumDetailsViewModel> _albumsFromDatabase;
 
@@ -37,7 +37,7 @@ namespace ZuneSocialTagger.GUIV2.Models
             set
             {
                 _albumsFromDatabase = value;
-                RaisePropertyChanged("AlbumsFromDatabase");
+                NotifyOfPropertyChange(() => this.AlbumsFromDatabase);
             }
         }
     }
