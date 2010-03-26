@@ -21,6 +21,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private readonly IZuneWizardModel _model;
         private bool _isLoading;
         private SearchResultsDetailViewModel _searchResultsDetailViewModel;
+        private bool _showNoResultsMessage;
 
         public SearchResultsViewModel(IZuneWizardModel model, SearchHeaderViewModel searchHeaderViewModel)
         {
@@ -30,8 +31,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.SearchHeader = searchHeaderViewModel;
             this.Albums = _model.FoundAlbums;
 
+            this.SearchHeader.SearchBar.FinishedSearching += new Action(SearchBar_FinishedSearching);
+
             this.MoveNextCommand = new RelayCommand(MoveNext);
             this.MoveBackCommand = new RelayCommand(MoveBack);
+        }
+
+        void SearchBar_FinishedSearching()
+        {
+            if (this.SearchHeader.SearchBar.SearchResults.Count == 0)
+                ShowNoResultsMessage = true;
         }
 
         public ObservableCollection<Album> Albums { get; set; }
@@ -45,6 +54,17 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                     _searchResultsDetailViewModel = value;
                    RaisePropertyChanged("SearchResultsDetailViewModel");
+            }
+        }
+
+
+        public bool ShowNoResultsMessage
+        {
+            get { return _showNoResultsMessage; }
+            set
+            {
+                _showNoResultsMessage = value;
+                RaisePropertyChanged("ShowNoResultsMessage");
             }
         }
 

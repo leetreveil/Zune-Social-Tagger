@@ -10,10 +10,10 @@ using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
 using System.Threading;
+using ZuneSocialTagger.GUIV2.Properties;
 using Album = ZuneSocialTagger.Core.ZuneDatabase.Album;
 using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
 using System.Diagnostics;
-using System.IO;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -248,7 +248,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    Messenger.Default.Send<ErrorMessage>(new ErrorMessage(ErrorMode.Error, ex.Message));
+                    Messenger.Default.Send(new ErrorMessage(ErrorMode.Error, ex.Message));
                     break;
                 }
             }
@@ -370,10 +370,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void DbAdapterFinishedReadingAlbums()
         {
-            Debug.WriteLine("hit");
             ResetLoadingProgress();
-            PerformSort(SortOrder.DateAdded);
-            this.SortViewModel.Sort(SortOrder.DateAdded);
+
+            SortOrder savedSortOrder = Settings.Default.SortOrder;
+            PerformSort(savedSortOrder);
+            this.SortViewModel.Sort(savedSortOrder);
         }
 
         private void ReportProgress(int current, int total)

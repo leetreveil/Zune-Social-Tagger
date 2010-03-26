@@ -64,7 +64,7 @@
                 <ListView.Style>
                     <Style TargetType="ListView">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Albums.Count}" Value="0">
+                            <DataTrigger Binding="{Binding ShowNoResultsMessage}" Value="True">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>

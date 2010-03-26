@@ -82,9 +82,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 _currentPage = value;
 
                 if (_currentPage.GetType() == typeof (SelectAudioFilesViewModel))
+                {
                     _container.Rebind<IFirstPage>().To<SelectAudioFilesViewModel>().InSingletonScope();
+                    Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
+                }
 
-                //anytime the view gets switch we want to rebind and load the database
+                //anytime the view gets switched we want to rebind and load the database
                 if (_currentPage.GetType() == typeof (WebAlbumListViewModel))
                 {
                     _container.Rebind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
@@ -94,6 +97,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                         InitializeDatabase();
                         ReadDatabase();
                     }
+
+                    Settings.Default.FirstViewToLoad = FirstViews.WebAlbumListViewModel;
                 }
 
                 RaisePropertyChanged("CurrentPage");
@@ -148,6 +153,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                         }
                         else
                         {
+                            InlineZuneMessage.ShowMessage(ErrorMode.Warning, "Error loading zune database");
                             return DbLoadResult.Failed;
                         }
                     }
@@ -226,33 +232,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void ShuttingDown()
         {
-            var albumListViewModel = _container.Get<WebAlbumListViewModel>();
-            WriteCacheToFile(albumListViewModel);
-            SaveSettings(albumListViewModel);
-        }
-
-        private void SaveSettings(WebAlbumListViewModel albumListViewModel)
-        {
-            //save which ever view is set to the first one to the settings
-            var firstPage = _container.Get<IFirstPage>();
-
-            if (firstPage.GetType() == typeof (WebAlbumListViewModel))
-                Settings.Default.FirstViewToLoad = FirstViews.WebAlbumListViewModel;
-
-            if (firstPage.GetType() == typeof (SelectAudioFilesViewModel))
-                Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
-
-            //remember the sort order so it can be sorted the same way next time
-            SortOrder sortOrder = albumListViewModel.SortViewModel.SortOrder;
-            Settings.Default.SortOrder = sortOrder;
+            WriteCacheToFile();
             Settings.Default.Save();
         }
 
-        private void WriteCacheToFile(WebAlbumListViewModel albumListViewModel)
+        private void WriteCacheToFile()
         {
-            //TODO: attempt to seriailze data if application was forcibly shut down
-
-            List<AlbumDetails> albums = (from album in albumListViewModel.Albums
+            List<AlbumDetails> albums = (from album in _model.AlbumsFromDatabase
                                          select new AlbumDetails
                                                     {
                                                         LinkStatus = album.LinkStatus,
@@ -269,10 +255,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     using (var fs = new FileStream("zunesoccache.xml", FileMode.Create))
                         xSer.Serialize(fs, albums);
                 }
-                catch (Exception exception)
-                {
-                    Debug.WriteLine(exception);
-                }
+                catch{}
             }
         }
 

@@ -27,6 +27,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public ObservableCollection<Album> SearchResults { get; set; }
 
         public event Action StartedSearching = delegate { };
+        public event Action FinishedSearching = delegate { };
 
         public string SearchText
         {
@@ -85,6 +86,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                      }));
 
                      IsSearching = false;
+
+                     FinishedSearching.Invoke();
                  });
         }
     }

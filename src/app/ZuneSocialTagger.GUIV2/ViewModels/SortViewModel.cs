@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GalaSoft.MvvmLight.Command;
 using ZuneSocialTagger.GUIV2.Models;
+using ZuneSocialTagger.GUIV2.Properties;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -34,6 +35,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public void Sort(SortOrder sortOrder)
         {
             this.SortOrder = sortOrder;
+            Settings.Default.SortOrder = this.SortOrder;
         }
 
         public void Sort()
@@ -54,6 +56,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             int index = sortOrders.IndexOf(this.SortOrder);
 
             this.SortOrder = index == sortOrders.Count - 1 ? sortOrders[0] : sortOrders[index + 1];
+
+            Settings.Default.SortOrder = this.SortOrder;
+
+            var xub = Settings.Default.SortOrder;
         }
     }
 }
