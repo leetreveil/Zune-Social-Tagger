@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using GalaSoft.MvvmLight;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.ViewModels;
-using System.Collections.Generic;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {

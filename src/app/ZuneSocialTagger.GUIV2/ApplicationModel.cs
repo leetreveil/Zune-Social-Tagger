@@ -53,7 +53,9 @@ namespace ZuneSocialTagger.GUIV2
             if (Settings.Default.FirstViewToLoad == FirstViews.SelectAudioFilesViewModel)
                 ShowSelectAudioFilesView();
             else
-                InitializeDatabase();
+            {
+                this.CurrentPage = _container.Get<WebAlbumListViewModel>();
+            }
         }
 
         private void DisplayErrorMessage(ErrorMessage message)
@@ -68,7 +70,7 @@ namespace ZuneSocialTagger.GUIV2
                 _container.Rebind<IZuneDbAdapter>().To<ZuneDbAdapter>().InSingletonScope();
                 _adapter = _container.Get<IZuneDbAdapter>();
 
-                InitializeDatabase();
+                this.CurrentPage = _container.Get<WebAlbumListViewModel>();
             }
         }
 
@@ -83,7 +85,13 @@ namespace ZuneSocialTagger.GUIV2
             this.UpdateCommand = new RelayCommand(ShowUpdate);
         }
 
-        private void InitializeDatabase()
+        public enum DbLoadResult
+        {
+            Success,
+            Failed
+        }
+
+        private DbLoadResult InitializeDatabase()
         {
             try
             {
@@ -104,21 +112,13 @@ namespace ZuneSocialTagger.GUIV2
                         }
                         else
                         {
-                            //if we are loading the actual database but there is an initalizing error...
-                            //then we go to the old view and display an error
-                            ShowSelectAudioFilesViewWithError();
+                            return DbLoadResult.Failed;
                         }
                     }
                     else
                     {
-                        //if everything was fine then just load the main view
-                        ShowAlbumListView();
+                        return DbLoadResult.Success;
                     }
-                }
-                else
-                {
-                    //
-                    ShowSelectAudioFilesViewWithError();
                 }
             }
             catch (NotSupportedException e)
@@ -126,12 +126,18 @@ namespace ZuneSocialTagger.GUIV2
                 //if the version of the dll is not the version that this software supports
                 //we should display an error but still attempt to load the database because it might work
                 this.InlineZuneMessage.ShowMessage(ErrorMode.Warning,e.Message);
+
+                return DbLoadResult.Success;
             }
             catch(FileNotFoundException e)
             {
                 //if ZuneDBApi.dll cannot be found this will be thrown
                 this.InlineZuneMessage.ShowMessage(ErrorMode.Error,e.Message);
+
+                return DbLoadResult.Failed;
             }
+
+            return DbLoadResult.Failed;
         }
 
         private void ShowSelectAudioFilesViewWithError()
@@ -151,7 +157,6 @@ namespace ZuneSocialTagger.GUIV2
         private void ShowAlbumListView()
         {
             ReadDatabase();
-
             var webAlbumListViewModel = _container.Get<WebAlbumListViewModel>();
 
             this.CurrentPage = webAlbumListViewModel;
@@ -161,13 +166,23 @@ namespace ZuneSocialTagger.GUIV2
         {
             ThreadPool.QueueUserWorkItem(delegate
             {
-                    UIDispatcher.GetDispatcher().Invoke(new Action(()=>
+                    //UIDispatcher.GetDispatcher().Invoke(new Action(()=>
+                    //{
+                    //    foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
+                    //    {
+                    //        _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
+                    //    }
+                    //}));
+
+                    foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
                     {
-                        foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
-                        {
-                                _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
-                        }
-                    }));
+                        Thread.Sleep(500);
+
+                        AlbumDetails album = newAlbum;
+
+                        UIDispatcher.GetDispatcher().Invoke(new Action(() => _model.AlbumsFromDatabase.Add(
+                            new AlbumDetailsViewModel(album))));
+                    }
             });
         }
 
@@ -257,7 +272,15 @@ namespace ZuneSocialTagger.GUIV2
                     _container.Rebind<IFirstPage>().To<SelectAudioFilesViewModel>().InSingletonScope();
 
                 if (_currentPage.GetType() == typeof(WebAlbumListViewModel))
+                {
                     _container.Rebind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
+
+                    if (_model.AlbumsFromDatabase.Count == 0)
+                    {
+                        InitializeDatabase();
+                        ReadDatabase();
+                    }
+                }
 
                 RaisePropertyChanged("CurrentPage");
             }

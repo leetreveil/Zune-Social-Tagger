@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.Core;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -22,6 +23,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             this.SelectFilesCommand = new RelayCommand(SelectFiles);
             this.SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);
+
+            Debug.WriteLine("Hit");
         }
 
         public bool CanSwitchToNewMode { get; set; }

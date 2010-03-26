@@ -1,10 +1,8 @@
-using System;
 using GalaSoft.MvvmLight;
 using leetreveil.AutoUpdate.Framework;
+using Ninject;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
-using Ninject;
-using ZuneSocialTagger.ZunePlugin;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -13,7 +11,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     /// </summary>
     public class ViewModelLocator
     {
-        static readonly StandardKernel Container = new StandardKernel();
+        private static readonly StandardKernel Container = new StandardKernel();
 
         static ViewModelLocator()
         {
@@ -37,80 +35,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public ApplicationModel Application
         {
-            get
-            {
-                try
-                {
-                    return Container.Get<ApplicationModel>();
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
-            }
-        }
-
-        public SelectAudioFilesViewModel SelectAudioFiles
-        {
-            get
-            {
-                return Container.Get<SelectAudioFilesViewModel>();
-            }
-        }
-
-        public WebAlbumListViewModel WebAlbumListView
-        {
-            get
-            {
-                return Container.Get<WebAlbumListViewModel>();
-            }
-        }
-
-        public SearchResultsViewModel SearchResultsView
-        {
-            get
-            {
-                return Container.Get<SearchResultsViewModel>();
-            }
-        }
-
-        public SearchViewModel SearchView
-        {
-            get
-            {
-                return Container.Get<SearchViewModel>();
-            }
-        }
-
-        public DetailsViewModel DetailsView 
-        {
-            get
-            {
-                return Container.Get<DetailsViewModel>();
-            }
+            get { return Container.Get<ApplicationModel>(); }
         }
 
         public UpdateViewModel Update
         {
-            get
-            {
-                return new UpdateViewModel(UpdateManager.Instance.NewUpdate.Version);
-            }
+            get { return new UpdateViewModel(UpdateManager.Instance.NewUpdate.Version); }
         }
 
         public AboutViewModel About
         {
-            get
-            {
-                return new AboutViewModel();
-            }
+            get { return new AboutViewModel(); }
         }
+
         public SuccessViewModel Success
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
     }
 }

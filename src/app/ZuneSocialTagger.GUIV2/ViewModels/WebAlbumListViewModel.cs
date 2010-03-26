@@ -19,7 +19,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class WebAlbumListViewModel : ViewModelBase,IFirstPage
     {
-        private IZuneDbAdapter _dbAdapter;
+        private readonly IZuneDbAdapter _dbAdapter;
         private readonly IZuneWizardModel _model;
         private bool _isLoading;
         private int _loadingProgress;
@@ -40,8 +40,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.ScanAllText = "SCAN ALL";
 
             SetupCommandBindings();
-
-            this.IsDownloadingAlbumDetails = true;
         }
 
         #region View Binding Properties

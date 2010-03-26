@@ -7,10 +7,6 @@
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
 
-    <UserControl.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="WebAlbumListView" />
-    </UserControl.DataContext>
-
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition />

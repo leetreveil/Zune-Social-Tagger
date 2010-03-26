@@ -9,10 +9,6 @@
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
 
-    <UserControl.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="SearchView" />
-    </UserControl.DataContext>
-
     <Grid>
 
             <Grid.RowDefinitions>
