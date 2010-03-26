@@ -212,25 +212,25 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             ThreadPool.QueueUserWorkItem(_ =>
              {
-                 UIDispatcher.GetDispatcher().Invoke(new Action(() =>
-                 {
-                     foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
-                     {
-                         _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
-                     }
-                 }));
-
-                 ////TODO: remember to remove this in production code!!!
-                 //foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
+                 //UIDispatcher.GetDispatcher().Invoke(new Action(() =>
                  //{
-                 //    Thread.Sleep(50);
+                 //    foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
+                 //    {
+                 //        _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
+                 //    }
+                 //}));
 
-                 //    AlbumDetails album = newAlbum;
+                 //TODO: remember to remove this in production code!!!
+                 foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
+                 {
+                     Thread.Sleep(50);
 
-                 //    UIDispatcher.GetDispatcher().Invoke(
-                 //        new Action(() => _model.AlbumsFromDatabase.Add(
-                 //            new AlbumDetailsViewModel(album))));
-                 //}
+                     AlbumDetails album = newAlbum;
+
+                     UIDispatcher.GetDispatcher().Invoke(
+                         new Action(() => _model.AlbumsFromDatabase.Add(
+                             new AlbumDetailsViewModel(album))));
+                 }
              });
         }
 

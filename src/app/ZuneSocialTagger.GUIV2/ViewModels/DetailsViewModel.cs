@@ -14,8 +14,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         private readonly IZuneWizardModel _model;
 
-        public DetailsViewModel(IZuneWizardModel model, ExpandedAlbumDetailsViewModel albumDetailsFromWebsite,
-                                ExpandedAlbumDetailsViewModel albumDetailsFromFile)
+        public DetailsViewModel(IZuneWizardModel model)
         {
             _model = model;
 
@@ -66,7 +65,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                         if (Properties.Settings.Default.UpdateAlbumInfo)
                             container.AddMetaData(row.SelectedSong.MetaData);
 
-                        //TODO: convert TrackNumbers that are imported as 1/1 to just 1 or 1/12 to just 1
                         container.WriteToFile(row.FilePath);
                     }
 
@@ -81,13 +79,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             if (uaeExceptions.Count > 0)
                 //usually occurs when a file is readonly
-                ZuneMessageBox.Show("One or more files could not be written to. Have you checked the files are not marked read-only?",ErrorMode.Error);
+                Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,"One or more files could not be written to. Have you checked the files are not marked read-only?"));
             else
                 throw new NotImplementedException("show success view model");
 
             Mouse.OverrideCursor = null;
 
-            //Messenger.Default.Send(typeof(IFirstPage));
+            Messenger.Default.Send(typeof(IFirstPage));
         }
 
         public void MoveBack()
@@ -97,7 +95,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void MoveToStart()
         {
-            //Messenger.Default.Send(typeof(IFirstPage));
+            Messenger.Default.Send(typeof(IFirstPage));
         }
 
         public bool UpdateAlbumInfo

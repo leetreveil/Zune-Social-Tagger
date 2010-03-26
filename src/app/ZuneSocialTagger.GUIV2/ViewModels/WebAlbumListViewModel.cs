@@ -13,7 +13,6 @@ using System.Threading;
 using ZuneSocialTagger.GUIV2.Properties;
 using Album = ZuneSocialTagger.Core.ZuneDatabase.Album;
 using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
-using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -21,11 +20,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         private readonly IZuneDbAdapter _dbAdapter;
         private readonly IZuneWizardModel _model;
-        private bool _isLoading;
+        private bool _canShowScanAllButton;
         private int _loadingProgress;
         private string _scanAllText;
         private bool _isDownloadingAlbumDetails;
         private AlbumDownloaderWithProgressReporting _downloader;
+        private bool _canShowProgressBar;
+        private bool _canShowReloadButton;
 
         public event Action FinishedLoading = delegate { };
 
@@ -43,6 +44,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.ScanAllText = "SCAN ALL";
 
             SetupCommandBindings();
+
+            this.CanShowReloadButton = true;
+            this.CanShowScanAllButton = true;
         }
 
         public void ViewHasFinishedLoading()
@@ -62,26 +66,36 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        public SortViewModel SortViewModel { get; set; }
-
-        public bool IsLoading
+        public bool CanShowProgressBar
         {
-            get { return _isLoading; }
+            get { return _canShowProgressBar; }
             set
             {
-                _isLoading = value;
-                RaisePropertyChanged("IsLoading");
+                _canShowProgressBar = value;
+                this.ScanAllText = CanShowProgressBar ? "STOP" : "SCAN ALL";
+                RaisePropertyChanged("CanShowProgressBar");
             }
         }
 
-        public bool IsDownloadingAlbumDetails
+        public bool CanShowReloadButton
         {
-            get { return _isDownloadingAlbumDetails; }
+            get{ return _canShowReloadButton; }
             set
             {
-                _isDownloadingAlbumDetails = value;
-                this.ScanAllText = IsDownloadingAlbumDetails ? "STOP" : "SCAN ALL";
-                RaisePropertyChanged("IsDownloadingAlbumDetails");
+                _canShowReloadButton = value;
+                RaisePropertyChanged("CanShowReloadButton");
+            }
+        }
+
+        public SortViewModel SortViewModel { get; set; }
+
+        public bool CanShowScanAllButton
+        {
+            get { return _canShowScanAllButton; }
+            set
+            {
+                _canShowScanAllButton = value;
+                RaisePropertyChanged("CanShowScanAllButton");
             }
         }
 
@@ -136,11 +150,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void LoadFromZuneWebsite()
         {
-            if (this.IsDownloadingAlbumDetails)
+            if (this.CanShowProgressBar)
                 CancelDownloading();
             else
             {
-                this.IsDownloadingAlbumDetails = true;
+                this.CanShowReloadButton = false;
+                this.CanShowProgressBar = true;
 
                 //check if we have already downloaded all the albums
                 if (this.Albums.Where(x => x.LinkStatus != LinkStatus.Unlinked).All(x => x.WebAlbumMetaData != null))
@@ -173,8 +188,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void RefreshDatabase()
         {
-            this.IsLoading = true;
-            this.IsDownloadingAlbumDetails = true;
             this.Albums.Clear();
             this.SortViewModel.SortOrder = SortOrder.NotSorted;
 
@@ -229,8 +242,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             foreach (var item in containers)
             {
-                var detailRow = new DetailRow(item.Key,item.Value);
-
                 item.Value.RemoveZuneAttribute("WM/WMContentID");
                 item.Value.RemoveZuneAttribute("WM/WMCollectionID");
                 item.Value.RemoveZuneAttribute("WM/WMCollectionGroupID");
@@ -383,7 +394,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         void _dbAdapter_StartedReadingAlbums()
         {
-            this.IsLoading = true;
+            this.CanShowReloadButton = false;
+            this.CanShowProgressBar = true;
+            this.CanShowScanAllButton = false;
         }
 
         private void DbAdapterProgressChanged(int arg1, int arg2)
@@ -394,6 +407,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void DbAdapterFinishedReadingAlbums()
         {
+            this.CanShowReloadButton = true;
+            this.CanShowProgressBar = false;
+            this.CanShowScanAllButton = true;
             ResetLoadingProgress();
 
             SortOrder savedSortOrder = Settings.Default.SortOrder;
@@ -408,6 +424,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void downloader_FinishedDownloadingAlbums()
         {
+            this.CanShowProgressBar = false;
+            this.CanShowReloadButton = true;
             ResetLoadingProgress();
         }
 
@@ -423,8 +441,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private void ResetLoadingProgress()
         {
             this.LoadingProgress = 0;
-            this.IsDownloadingAlbumDetails = false;
-            this.IsLoading = false;
         }
 
         private void UpdateLinkTotals()
