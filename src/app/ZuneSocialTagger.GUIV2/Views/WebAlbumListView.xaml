@@ -100,12 +100,6 @@
                 </ContextMenu>
             </ListView.ContextMenu>
             
-            <!--<ListView.ItemTemplate>
-                <DataTemplate>
-                    <views:AlbumDetailsView />
-                </DataTemplate>
-            </ListView.ItemTemplate>-->
-
         </ListView>
 
         <!---->
@@ -128,12 +122,14 @@
             </Grid.ColumnDefinitions>
 
 
-            <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}"
+            <Button ToolTip="Reload the zune database"
+                    IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}"
                     Margin="0,0,10,0"
                     Command="{Binding LoadDatabaseCommand}"
-                    Content="REFRESH" />
+                    Content="RELOAD" />
 
-            <Button IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}"
+            <Button ToolTip="Download the details for every album in the list"
+                    IsEnabled="{Binding Path=IsLoading,Converter={StaticResource NotConverter}}"
                     Margin="0,0,10,0"
                     Grid.Column="1"
                     Command="{Binding LoadFromZuneWebsiteCommand}"
