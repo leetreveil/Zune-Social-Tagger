@@ -10,6 +10,7 @@ namespace ZuneSocialTagger.GUIV2.Models
         private readonly IZuneDatabaseReader _zuneDatabaseReader;
 
         public event Action FinishedReadingAlbums = delegate { };
+        public event Action StartedReadingAlbums = delegate { };
         public event Action<int, int> ProgressChanged = delegate { };
 
         public ZuneDbAdapter(IZuneDatabaseReader zuneDatabaseReader)
@@ -32,6 +33,8 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public IEnumerable<AlbumDetails> ReadAlbums()
         {
+            this.StartedReadingAlbums.Invoke();
+
             return from album in _zuneDatabaseReader.ReadAlbums()
                    select ToAlbumDetails(album);
         }
@@ -57,13 +60,9 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         private static AlbumDetails ToAlbumDetails(Album album)
         {
-            AlbumDetails albumDetails = new AlbumDetails();
+            var albumDetails = new AlbumDetails();
 
-            if (album.AlbumMediaId == Guid.Empty)
-                albumDetails.LinkStatus = LinkStatus.Unlinked;
-            else
-                albumDetails.LinkStatus = LinkStatus.Unknown;
-
+            albumDetails.LinkStatus = album.AlbumMediaId == Guid.Empty ? LinkStatus.Unlinked : LinkStatus.Unknown;
             albumDetails.ZuneAlbumMetaData = album;
 
             return albumDetails;

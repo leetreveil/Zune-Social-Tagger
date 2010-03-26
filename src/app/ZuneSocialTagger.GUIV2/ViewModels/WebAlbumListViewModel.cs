@@ -33,6 +33,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _model = model;
             _dbAdapter.FinishedReadingAlbums += DbAdapterFinishedReadingAlbums;
             _dbAdapter.ProgressChanged += DbAdapterProgressChanged;
+            _dbAdapter.StartedReadingAlbums += _dbAdapter_StartedReadingAlbums;
 
             this.SortViewModel = new SortViewModel();
             this.SortViewModel.SortClicked += SortViewModel_SortClicked;
@@ -356,10 +357,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             PerformSort(sortOrder);
         }
 
-        private void album_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void _dbAdapter_StartedReadingAlbums()
         {
-            if (e.PropertyName == "LinkStatus")
-                UpdateLinkTotals();
+            this.IsLoading = true;
         }
 
         private void DbAdapterProgressChanged(int arg1, int arg2)

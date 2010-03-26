@@ -11,7 +11,7 @@
     </Window.Resources>
     
     <Window.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="ApplicationView" />
+        <Binding Source="{StaticResource Locator}" Path="Application" />
     </Window.DataContext>
 
     <Grid>

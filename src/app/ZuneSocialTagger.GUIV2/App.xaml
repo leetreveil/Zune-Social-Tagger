@@ -4,5 +4,5 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     x:Class="ZuneSocialTagger.GUIV2.App"
-    mc:Ignorable="d" StartupUri="ApplicationView.xaml" >
+    mc:Ignorable="d" StartupUri="Views/ApplicationView.xaml" >
 </Application>

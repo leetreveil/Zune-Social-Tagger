@@ -1,4 +1,3 @@
-using GalaSoft.MvvmLight;
 using leetreveil.AutoUpdate.Framework;
 using Ninject;
 using ZuneSocialTagger.Core.ZuneDatabase;
@@ -16,21 +15,10 @@ namespace ZuneSocialTagger.GUIV2
 
         static ViewModelLocator()
         {
-            if (ViewModelBase.IsInDesignModeStatic)
-            {
-                //bind to design database
-            }
-            else
-            {
-                Container.Bind<IZuneWizardModel>().To<ZuneWizardModel>().InSingletonScope();
-                Container.Bind<IZuneDatabaseReader>().To<TestZuneDatabaseReader>().InSingletonScope();
-                Container.Bind<IZuneDbAdapter>().To<CachedZuneDatabaseReader>().InSingletonScope();
-            }
-
+            Container.Bind<IZuneWizardModel>().To<ZuneWizardModel>().InSingletonScope();
+            Container.Bind<IZuneDatabaseReader>().To<TestZuneDatabaseReader>().InSingletonScope();
+            Container.Bind<IZuneDbAdapter>().To<CachedZuneDatabaseReader>().InSingletonScope();
             Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
-
-            //by default we register WebAlbumListViewModel as the default view but this can be changed in the future
-            Container.Bind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
             Container.Bind<SearchHeaderViewModel>().ToSelf().InSingletonScope();
         }
 

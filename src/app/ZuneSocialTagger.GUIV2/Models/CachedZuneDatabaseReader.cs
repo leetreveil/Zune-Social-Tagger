@@ -12,6 +12,7 @@ namespace ZuneSocialTagger.GUIV2.Models
         private List<AlbumDetails> _deserializedAlbums;
 
         public event Action FinishedReadingAlbums = delegate { };
+        public event Action StartedReadingAlbums = delegate { };
         public event Action<int, int> ProgressChanged = delegate { };
 
         public bool CanInitialize
@@ -36,6 +37,8 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public IEnumerable<AlbumDetails> ReadAlbums()
         {
+            StartedReadingAlbums.Invoke();
+
             int counter = 0;
 
             foreach (var album in _deserializedAlbums)

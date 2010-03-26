@@ -12,6 +12,7 @@ namespace ZuneSocialTagger.GUIV2.Models
         AlbumDetails GetAlbum(int index);
         IEnumerable<Track> GetTracksForAlbum(int albumId);
         event Action FinishedReadingAlbums;
+        event Action StartedReadingAlbums;
         event Action<int, int> ProgressChanged;
         bool DoesAlbumExist(int index);
     }

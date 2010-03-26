@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Views
@@ -14,8 +13,7 @@ namespace ZuneSocialTagger.GUIV2.Views
         public WebAlbumListView()
         {
             this.InitializeComponent();
-
-            _model = (WebAlbumListViewModel)this.DataContext;
+            this.DataContextChanged += delegate { _model = (WebAlbumListViewModel) this.DataContext; };
         }
 
         private void LinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)

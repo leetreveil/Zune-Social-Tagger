@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -9,24 +10,29 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using leetreveil.AutoUpdate.Framework;
 using Ninject;
-using ZuneSocialTagger.GUIV2.Properties;
 using ZuneSocialTagger.GUIV2.Models;
+using ZuneSocialTagger.GUIV2.Properties;
 using ZuneSocialTagger.GUIV2.Views;
-using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class ApplicationViewModel : ViewModelBase
     {
-        private IZuneDbAdapter _adapter;
-        private readonly IKernel _container;
-        private bool _updateAvailable;
-        private ViewModelBase _currentPage;
-        private readonly IZuneWizardModel _model;
+        #region DbLoadResult enum
 
-        public RelayCommand UpdateCommand { get; private set; }
-        public RelayCommand ShowAboutSettingsCommand { get; private set; }
-        public InlineZuneMessageViewModel InlineZuneMessage { get; set; }
+        public enum DbLoadResult
+        {
+            Success,
+            Failed
+        }
+
+        #endregion
+
+        private readonly IKernel _container;
+        private readonly IZuneWizardModel _model;
+        private IZuneDbAdapter _adapter;
+        private ViewModelBase _currentPage;
+        private bool _updateAvailable;
 
         public ApplicationViewModel(IZuneWizardModel model, IZuneDbAdapter adapter, IKernel container)
         {
@@ -46,19 +52,57 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             //register for error messages to be displayed
             Messenger.Default.Register<ErrorMessage>(this, DisplayErrorMessage);
 
-            this.InlineZuneMessage = new InlineZuneMessageViewModel();
+            InlineZuneMessage = new InlineZuneMessageViewModel();
 
             if (Settings.Default.FirstViewToLoad == FirstViews.SelectAudioFilesViewModel)
-                ShowSelectAudioFilesView();
+                this.CurrentPage = _container.Get<SelectAudioFilesViewModel>();
             else
-            {
                 this.CurrentPage = _container.Get<WebAlbumListViewModel>();
+        }
+
+        public RelayCommand UpdateCommand { get; private set; }
+        public RelayCommand ShowAboutSettingsCommand { get; private set; }
+        public InlineZuneMessageViewModel InlineZuneMessage { get; set; }
+
+        public bool UpdateAvailable
+        {
+            get { return _updateAvailable; }
+            set
+            {
+                _updateAvailable = value;
+                RaisePropertyChanged("UpdateAvailable");
+            }
+        }
+
+        public ViewModelBase CurrentPage
+        {
+            get { return _currentPage; }
+            private set
+            {
+                _currentPage = value;
+
+                if (_currentPage.GetType() == typeof (SelectAudioFilesViewModel))
+                    _container.Rebind<IFirstPage>().To<SelectAudioFilesViewModel>().InSingletonScope();
+
+                //anytime the view gets switch we want to rebind and load the database
+                if (_currentPage.GetType() == typeof (WebAlbumListViewModel))
+                {
+                    _container.Rebind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
+
+                    if (_model.AlbumsFromDatabase.Count == 0)
+                    {
+                        InitializeDatabase();
+                        ReadDatabase();
+                    }
+                }
+
+                RaisePropertyChanged("CurrentPage");
             }
         }
 
         private void DisplayErrorMessage(ErrorMessage message)
         {
-            this.InlineZuneMessage.ShowMessage(message.ErrorMode, message.Message);
+            InlineZuneMessage.ShowMessage(message.ErrorMode, message.Message);
         }
 
         private void SwitchToDatabase(string message)
@@ -74,19 +118,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void SwitchToView(Type viewType)
         {
-            this.CurrentPage = (ViewModelBase) _container.Get(viewType);
+            CurrentPage = (ViewModelBase) _container.Get(viewType);
         }
 
         private void SetupCommandBindings()
         {
-            this.ShowAboutSettingsCommand = new RelayCommand(ShowAboutSettings);
-            this.UpdateCommand = new RelayCommand(ShowUpdate);
-        }
-
-        public enum DbLoadResult
-        {
-            Success,
-            Failed
+            ShowAboutSettingsCommand = new RelayCommand(ShowAboutSettings);
+            UpdateCommand = new RelayCommand(ShowUpdate);
         }
 
         private DbLoadResult InitializeDatabase()
@@ -101,7 +139,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     if (!initalized)
                     {
                         //fall back to the actual zune database if the cache could not be loaded
-                        if (_adapter.GetType() == typeof(CachedZuneDatabaseReader))
+                        if (_adapter.GetType() == typeof (CachedZuneDatabaseReader))
                         {
                             _container.Rebind<IZuneDbAdapter>().To<ZuneDbAdapter>().InSingletonScope();
                             _adapter = _container.Get<IZuneDbAdapter>();
@@ -123,14 +161,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 //if the version of the dll is not the version that this software supports
                 //we should display an error but still attempt to load the database because it might work
-                this.InlineZuneMessage.ShowMessage(ErrorMode.Warning,e.Message);
+                InlineZuneMessage.ShowMessage(ErrorMode.Warning, e.Message);
 
                 return DbLoadResult.Success;
             }
-            catch(FileNotFoundException e)
+            catch (FileNotFoundException e)
             {
                 //if ZuneDBApi.dll cannot be found this will be thrown
-                this.InlineZuneMessage.ShowMessage(ErrorMode.Error,e.Message);
+                InlineZuneMessage.ShowMessage(ErrorMode.Error, e.Message);
 
                 return DbLoadResult.Failed;
             }
@@ -141,7 +179,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private void ShowSelectAudioFilesViewWithError()
         {
             ShowSelectAudioFilesView();
-            this.InlineZuneMessage.ShowMessage(ErrorMode.Error,"Error loading zune database");
+            InlineZuneMessage.ShowMessage(ErrorMode.Error, "Error loading zune database");
         }
 
         private void ShowSelectAudioFilesView()
@@ -162,26 +200,28 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void ReadDatabase()
         {
-            ThreadPool.QueueUserWorkItem(delegate
-            {
-                    //UIDispatcher.GetDispatcher().Invoke(new Action(()=>
-                    //{
-                    //    foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
-                    //    {
-                    //        _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
-                    //    }
-                    //}));
+            ThreadPool.QueueUserWorkItem(_ =>
+                 {
+                     //UIDispatcher.GetDispatcher().Invoke(new Action(()=>
+                     //{
+                     //    foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
+                     //    {
+                     //        _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
+                     //    }
+                     //}));
 
-                    foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
-                    {
-                        Thread.Sleep(500);
+                     //TODO: remember to remove this in production code!!!
+                     foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
+                     {
+                         Thread.Sleep(50);
 
-                        AlbumDetails album = newAlbum;
+                         AlbumDetails album = newAlbum;
 
-                        UIDispatcher.GetDispatcher().Invoke(new Action(() => _model.AlbumsFromDatabase.Add(
-                            new AlbumDetailsViewModel(album))));
-                    }
-            });
+                         UIDispatcher.GetDispatcher().Invoke(
+                             new Action(() => _model.AlbumsFromDatabase.Add(
+                                 new AlbumDetailsViewModel(album))));
+                     }
+                 });
         }
 
         public void ShuttingDown()
@@ -203,7 +243,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
 
             //remember the sort order so it can be sorted the same way next time
-            var sortOrder = albumListViewModel.SortViewModel.SortOrder;
+            SortOrder sortOrder = albumListViewModel.SortViewModel.SortOrder;
             Settings.Default.SortOrder = sortOrder;
             Settings.Default.Save();
         }
@@ -246,55 +286,17 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             new AboutView().Show();
         }
 
-        public bool UpdateAvailable
-        {
-            get { return _updateAvailable; }
-            set
-            {
-                _updateAvailable = value;
-                RaisePropertyChanged("UpdateAvailable");
-            }
-        }
-
-        public ViewModelBase CurrentPage
-        {
-            get
-            {
-                return _currentPage;
-            }
-            set
-            {
-                _currentPage = value;
-
-                if (_currentPage.GetType() == typeof (SelectAudioFilesViewModel))
-                    _container.Rebind<IFirstPage>().To<SelectAudioFilesViewModel>().InSingletonScope();
-
-                if (_currentPage.GetType() == typeof(WebAlbumListViewModel))
-                {
-                    _container.Rebind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
-
-                    if (_model.AlbumsFromDatabase.Count == 0)
-                    {
-                        InitializeDatabase();
-                        ReadDatabase();
-                    }
-                }
-
-                RaisePropertyChanged("CurrentPage");
-            }
-        }
-
         private void CheckForUpdates()
         {
             string updaterPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                                  Settings.Default.UpdateExeName);
+                                              Settings.Default.UpdateExeName);
 
             if (Settings.Default.CheckForUpdates)
             {
                 try
                 {
                     //do update checking stuff here
-                    var updateManager = UpdateManager.Instance;
+                    UpdateManager updateManager = UpdateManager.Instance;
 
                     updateManager.UpdateExePath = updaterPath;
                     updateManager.AppFeedUrl = Settings.Default.UpdateFeedUrl;
@@ -304,14 +306,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     updateManager.CleanUp();
 
                     ThreadPool.QueueUserWorkItem(state =>
-                    {
-                        try
-                        {
-                            if (updateManager.CheckForUpdate())
-                                this.UpdateAvailable = true;
-                        }
-                        catch { }
-                    });
+                                                     {
+                                                         try
+                                                         {
+                                                             if (updateManager.CheckForUpdate())
+                                                                 UpdateAvailable = true;
+                                                         }
+                                                         catch
+                                                         {
+                                                         }
+                                                     });
                 }
                 catch
                 {

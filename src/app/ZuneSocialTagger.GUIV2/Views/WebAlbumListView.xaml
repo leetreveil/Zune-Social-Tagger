@@ -108,9 +108,10 @@
 
         </ListView>
 
-        <!--Visibility="{Binding Path=IsDownloadingAlbumDetails,Converter={StaticResource BoolToVisConverter}}"-->
+        <!---->
         
-        <ProgressBar Margin="0,10,0,0"
+        <ProgressBar Visibility="{Binding Path=IsLoading,Converter={StaticResource BoolToVisConverter}}"
+                     Margin="0,10,0,0"
                      Width="Auto"
                      Style="{StaticResource GradientProgressbar}"
                      Height="5"
