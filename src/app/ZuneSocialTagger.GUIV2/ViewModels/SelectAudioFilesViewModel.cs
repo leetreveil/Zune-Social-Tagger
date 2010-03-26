@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -7,13 +8,14 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.Core;
-using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SelectAudioFilesViewModel : ViewModelBase, IFirstPage
     {
         private readonly IZuneWizardModel _model;
+
+        public event Action FinishedLoading = delegate { };
 
         public SelectAudioFilesViewModel(IZuneWizardModel model)
         {
@@ -22,9 +24,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.CanSwitchToNewMode = true;
 
             this.SelectFilesCommand = new RelayCommand(SelectFiles);
-            this.SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);
+            this.SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);    
+        }
 
-            Debug.WriteLine("Hit");
+        public void ViewHasFinishedLoading()
+        {
+            FinishedLoading.Invoke();
         }
 
         public bool CanSwitchToNewMode { get; set; }

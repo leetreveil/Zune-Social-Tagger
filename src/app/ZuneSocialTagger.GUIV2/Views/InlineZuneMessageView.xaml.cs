@@ -1,11 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Animation;
-using System.Diagnostics;
 using ZuneSocialTagger.GUIV2.ViewModels;
 using System.Timers;
 using System;
-using System.Threading;
+using Timer = System.Timers.Timer;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -14,34 +12,28 @@ namespace ZuneSocialTagger.GUIV2.Views
     /// </summary>
     public partial class InlineZuneMessageView : UserControl
     {
-        System.Timers.Timer t = new System.Timers.Timer();
+        Timer timer = new Timer();
 
         public InlineZuneMessageView()
         {
             InitializeComponent();
 
-            this.DataContextChanged += new DependencyPropertyChangedEventHandler(InlineZuneMessageView_DataContextChanged);
-            t.Elapsed += new ElapsedEventHandler(t_Elapsed);
+            var model = (InlineZuneMessageViewModel) this.DataContext;
+            model.DoShowMessage +=model_DoShowMessage;
+
+            timer.Elapsed += TimerElapsed;
         }
 
-        void InlineZuneMessageView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue.GetType() == typeof(InlineZuneMessageViewModel))
-            {
-                var model = (InlineZuneMessageViewModel)this.DataContext;
-                model.DoShowMessage += new System.Action(model_DoShowMessage); 
-            }
-        }
 
         void model_DoShowMessage()
         {
-            t.Interval = 10000;
-            t.Start();
+            timer.Interval = 10000;
+            timer.Start();
 
             this.WarningBox.Visibility = Visibility.Visible;
         }
 
-        void t_Elapsed(object sender, ElapsedEventArgs e)
+        void TimerElapsed(object sender, ElapsedEventArgs e)
         {
             Dispatcher.Invoke(new Action(delegate { this.WarningBox.Visibility = Visibility.Collapsed; }));
         }

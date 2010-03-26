@@ -14,6 +14,7 @@ namespace ZuneSocialTagger.GUIV2.Views
         {
             this.InitializeComponent();
             this.DataContextChanged += delegate { _model = (WebAlbumListViewModel) this.DataContext; };
+            this.Loaded += delegate { _model.ViewHasFinishedLoading(); };
         }
 
         private void LinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)

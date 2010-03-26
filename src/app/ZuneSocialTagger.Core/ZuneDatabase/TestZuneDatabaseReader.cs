@@ -11,7 +11,11 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
         public bool CanInitialize
         {
-            get { return true; }
+            get
+            {
+                //throw new FileNotFoundException();
+                return true;
+            }
         }
 
         public event Action FinishedReadingAlbums = delegate { };

@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -19,9 +9,18 @@ namespace ZuneSocialTagger.GUIV2.Views
     /// </summary>
     public partial class SelectAudioFilesView : UserControl
     {
+        private SelectAudioFilesViewModel _model;
+
         public SelectAudioFilesView()
         {
             InitializeComponent();
+            this.DataContextChanged += delegate { _model = (SelectAudioFilesViewModel) this.DataContext; };
+            this.Loaded += SelectAudioFilesView_Loaded;
+        }
+
+        void SelectAudioFilesView_Loaded(object sender, RoutedEventArgs e)
+        {
+            _model.ViewHasFinishedLoading();
         }
     }
 }

@@ -27,6 +27,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private bool _isDownloadingAlbumDetails;
         private AlbumDownloaderWithProgressReporting _downloader;
 
+        public event Action FinishedLoading = delegate { };
+
         public WebAlbumListViewModel(IZuneDbAdapter dbAdapter, IZuneWizardModel model)
         {
             _dbAdapter = dbAdapter;
@@ -41,6 +43,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.ScanAllText = "SCAN ALL";
 
             SetupCommandBindings();
+        }
+
+        public void ViewHasFinishedLoading()
+        {
+            FinishedLoading.Invoke();
         }
 
         #region View Binding Properties

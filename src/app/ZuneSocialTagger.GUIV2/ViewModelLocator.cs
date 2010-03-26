@@ -20,6 +20,7 @@ namespace ZuneSocialTagger.GUIV2
             Container.Bind<IZuneDbAdapter>().To<CachedZuneDatabaseReader>().InSingletonScope();
             Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
             Container.Bind<SearchHeaderViewModel>().ToSelf().InSingletonScope();
+            Container.Bind<InlineZuneMessageViewModel>().ToSelf().InSingletonScope();
         }
 
         public ApplicationViewModel Application
@@ -40,6 +41,11 @@ namespace ZuneSocialTagger.GUIV2
         public SuccessViewModel Success
         {
             get { return null; }
+        }
+
+        public InlineZuneMessageViewModel InlineZuneMessageView
+        {
+            get { return Container.Get<InlineZuneMessageViewModel>(); }
         }
     }
 }
