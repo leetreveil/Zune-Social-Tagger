@@ -17,5 +17,8 @@
     <Setting Name="SortOrder" Type="ZuneSocialTagger.GUIV2.Models.SortOrder" Scope="User">
       <Value Profile="(Default)">DateAdded</Value>
     </Setting>
+    <Setting Name="FirstViewToLoad" Type="ZuneSocialTagger.GUIV2.Models.FirstViews" Scope="User">
+      <Value Profile="(Default)">WebAlbumListViewModel</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

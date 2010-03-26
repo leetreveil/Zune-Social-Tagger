@@ -17,7 +17,7 @@ using System.IO;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class WebAlbumListViewModel : ViewModelBase
+    public class WebAlbumListViewModel : ViewModelBase,IFirstPage
     {
         private IZuneDbAdapter _dbAdapter;
         private readonly IZuneWizardModel _model;
@@ -33,8 +33,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _model = model;
             _dbAdapter.FinishedReadingAlbums += DbAdapterFinishedReadingAlbums;
             _dbAdapter.ProgressChanged += DbAdapterProgressChanged;
-
-            //this.Albums = new ObservableCollection<AlbumDetailsViewModel>();
 
             this.SortViewModel = new SortViewModel();
             this.SortViewModel.SortClicked += SortViewModel_SortClicked;

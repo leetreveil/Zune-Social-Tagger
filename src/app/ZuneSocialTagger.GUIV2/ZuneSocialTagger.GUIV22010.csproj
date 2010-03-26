@@ -112,6 +112,8 @@
     </Compile>
     <Compile Include="Converters\ErrorModeToImageSourceConverter.cs" />
     <Compile Include="Models\ErrorMessage.cs" />
+    <Compile Include="Models\FirstViews.cs" />
+    <Compile Include="Models\IFirstPage.cs" />
     <Compile Include="Models\StoryboardManager.cs" />
     <Compile Include="UIDispatcher.cs" />
     <Compile Include="Views\InlineZuneMessageView.xaml.cs">

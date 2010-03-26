@@ -83,5 +83,17 @@ namespace ZuneSocialTagger.GUIV2.Properties {
                 this["SortOrder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("WebAlbumListViewModel")]
+        public global::ZuneSocialTagger.GUIV2.Models.FirstViews FirstViewToLoad {
+            get {
+                return ((global::ZuneSocialTagger.GUIV2.Models.FirstViews)(this["FirstViewToLoad"]));
+            }
+            set {
+                this["FirstViewToLoad"] = value;
+            }
+        }
     }
 }

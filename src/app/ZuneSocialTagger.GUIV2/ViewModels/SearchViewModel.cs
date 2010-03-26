@@ -1,4 +1,3 @@
-using System;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -15,7 +14,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             this.SearchHeader.AlbumDetails = model.FileAlbumDetails;
             this.SearchHeader.SearchBar.SearchText = model.SearchText;
-            this.SearchHeader.SearchBar.StartedSearching +=SearchBar_StartedSearching;
+
+            //when the user starts searching we want to move to the next page immediately
+            this.SearchHeader.SearchBar.StartedSearching +=
+                () => Messenger.Default.Send(typeof (SearchResultsViewModel));
 
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.SearchCommand = new RelayCommand(Search);
@@ -32,12 +34,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void MoveBack()
         {
-            //Messenger.Default.Send(typeof(IFirstPage));
-        }
-
-        private void SearchBar_StartedSearching()
-        {
-            Messenger.Default.Send(typeof(SearchResultsViewModel));
+            Messenger.Default.Send(typeof(IFirstPage));
         }
     }
 }

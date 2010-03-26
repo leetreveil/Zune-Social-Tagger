@@ -78,7 +78,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                  {
                      IEnumerable<Album> results = AlbumSearch.SearchFor(searchString);
 
-                     UIDispatcher.GetDispatcher().Invoke(new Action(delegate
+                     UIDispatcher.GetDispatcher().Invoke(new Action(()=>
                      {
                          foreach (Album result in results)
                              SearchResults.Add(result);

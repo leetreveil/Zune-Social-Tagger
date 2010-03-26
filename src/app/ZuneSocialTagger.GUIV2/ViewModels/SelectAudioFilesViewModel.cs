@@ -10,7 +10,7 @@ using ZuneSocialTagger.Core;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SelectAudioFilesViewModel : ViewModelBase
+    public class SelectAudioFilesViewModel : ViewModelBase, IFirstPage
     {
         private readonly IZuneWizardModel _model;
 

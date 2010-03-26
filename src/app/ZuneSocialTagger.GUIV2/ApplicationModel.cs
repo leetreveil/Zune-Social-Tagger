@@ -13,6 +13,7 @@ using ZuneSocialTagger.GUIV2.Properties;
 using ZuneSocialTagger.GUIV2.ViewModels;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Views;
+using System.Diagnostics;
 
 
 namespace ZuneSocialTagger.GUIV2
@@ -39,7 +40,7 @@ namespace ZuneSocialTagger.GUIV2
             SetupCommandBindings();
 
             //register for changes to the current view model so we can switch between views
-            Messenger.Default.Register<Type>(this, SetupViewSwitching);
+            Messenger.Default.Register<Type>(this, SwitchToView);
 
             //register for database switch messages
             Messenger.Default.Register<string>(this, SwitchToDatabase);
@@ -49,7 +50,10 @@ namespace ZuneSocialTagger.GUIV2
 
             this.InlineZuneMessage = new InlineZuneMessageViewModel();
 
-            InitializeDatabase();
+            if (Settings.Default.FirstViewToLoad == FirstViews.SelectAudioFilesViewModel)
+                ShowSelectAudioFilesView();
+            else
+                InitializeDatabase();
         }
 
         private void DisplayErrorMessage(ErrorMessage message)
@@ -68,7 +72,7 @@ namespace ZuneSocialTagger.GUIV2
             }
         }
 
-        private void SetupViewSwitching(Type viewType)
+        private void SwitchToView(Type viewType)
         {
             this.CurrentPage = (ViewModelBase) _container.Get(viewType);
         }
@@ -85,7 +89,7 @@ namespace ZuneSocialTagger.GUIV2
             {
                 if (_adapter.CanInitialize)
                 {
-                    //since the adapter is initally set to the cache this should always be true
+                    //since the adapter is initally set to the cache this should always be true if the cache exists
                     bool initalized = _adapter.Initialize();
 
                     if (!initalized)
@@ -101,41 +105,51 @@ namespace ZuneSocialTagger.GUIV2
                         else
                         {
                             //if we are loading the actual database but there is an initalizing error...
+                            //then we go to the old view and display an error
                             ShowSelectAudioFilesViewWithError();
                         }
                     }
                     else
                     {
+                        //if everything was fine then just load the main view
                         ShowAlbumListView();
                     }
                 }
                 else
                 {
+                    //
                     ShowSelectAudioFilesViewWithError();
                 }
             }
             catch (NotSupportedException e)
             {
+                //if the version of the dll is not the version that this software supports
+                //we should display an error but still attempt to load the database because it might work
                 this.InlineZuneMessage.ShowMessage(ErrorMode.Warning,e.Message);
+            }
+            catch(FileNotFoundException e)
+            {
+                //if ZuneDBApi.dll cannot be found this will be thrown
+                this.InlineZuneMessage.ShowMessage(ErrorMode.Error,e.Message);
             }
         }
 
         private void ShowSelectAudioFilesViewWithError()
         {
-            _container.Rebind<SelectAudioFilesViewModel>().ToSelf().InSingletonScope();
+            ShowSelectAudioFilesView();
+            this.InlineZuneMessage.ShowMessage(ErrorMode.Error,"Error loading zune database");
+        }
 
+        private void ShowSelectAudioFilesView()
+        {
             var firstPage = _container.Get<SelectAudioFilesViewModel>();
             firstPage.CanSwitchToNewMode = false;
 
             this.CurrentPage = firstPage;
-
-            this.InlineZuneMessage.ShowMessage(ErrorMode.Error,"Error loading zune database");
         }
 
         private void ShowAlbumListView()
         {
-            _container.Rebind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
-
             ReadDatabase();
 
             var webAlbumListViewModel = _container.Get<WebAlbumListViewModel>();
@@ -147,7 +161,7 @@ namespace ZuneSocialTagger.GUIV2
         {
             ThreadPool.QueueUserWorkItem(delegate
             {
-                    UIDispatcher.GetDispatcher().Invoke(new Action(delegate
+                    UIDispatcher.GetDispatcher().Invoke(new Action(()=>
                     {
                         foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
                         {
@@ -159,9 +173,31 @@ namespace ZuneSocialTagger.GUIV2
 
         public void ShuttingDown()
         {
-            //TODO: attempt to seriailze data if application was forcibly shut down
-
             var albumListViewModel = _container.Get<WebAlbumListViewModel>();
+            WriteCacheToFile(albumListViewModel);
+            SaveSettings(albumListViewModel);
+        }
+
+        private void SaveSettings(WebAlbumListViewModel albumListViewModel)
+        {
+            //save which ever view is set to the first one to the settings
+            var firstPage = _container.Get<IFirstPage>();
+
+            if (firstPage.GetType() == typeof (WebAlbumListViewModel))
+                Settings.Default.FirstViewToLoad = FirstViews.WebAlbumListViewModel;
+
+            if (firstPage.GetType() == typeof (SelectAudioFilesViewModel))
+                Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
+
+            //remember the sort order so it can be sorted the same way next time
+            var sortOrder = albumListViewModel.SortViewModel.SortOrder;
+            Settings.Default.SortOrder = sortOrder;
+            Settings.Default.Save();
+        }
+
+        private void WriteCacheToFile(WebAlbumListViewModel albumListViewModel)
+        {
+            //TODO: attempt to seriailze data if application was forcibly shut down
 
             List<AlbumDetails> albums = (from album in albumListViewModel.Albums
                                          select new AlbumDetails
@@ -171,31 +207,25 @@ namespace ZuneSocialTagger.GUIV2
                                                         ZuneAlbumMetaData = album.ZuneAlbumMetaData,
                                                     }).ToList();
 
-            try
+            if (albums.Count > 0)
             {
-                var xSer = new XmlSerializer(albums.GetType());
+                try
+                {
+                    var xSer = new XmlSerializer(albums.GetType());
 
-                using (var fs = new FileStream("zunesoccache.xml", FileMode.Create))
-                    xSer.Serialize(fs, albums);
+                    using (var fs = new FileStream("zunesoccache.xml", FileMode.Create))
+                        xSer.Serialize(fs, albums);
+                }
+                catch (Exception exception)
+                {
+                    Debug.WriteLine(exception);
+                }
             }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-            }
-
-            var sortOrder = albumListViewModel.SortViewModel.SortOrder;
-            Settings.Default.SortOrder = sortOrder;
-            Settings.Default.Save();
         }
 
         public void ShowUpdate()
         {
             new UpdateView().Show();
-        }
-
-        public void CloseApplication()
-        {
-            //base.Close();
         }
 
         public void ShowAboutSettings()
@@ -222,6 +252,13 @@ namespace ZuneSocialTagger.GUIV2
             set
             {
                 _currentPage = value;
+
+                if (_currentPage.GetType() == typeof (SelectAudioFilesViewModel))
+                    _container.Rebind<IFirstPage>().To<SelectAudioFilesViewModel>().InSingletonScope();
+
+                if (_currentPage.GetType() == typeof(WebAlbumListViewModel))
+                    _container.Rebind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
+
                 RaisePropertyChanged("CurrentPage");
             }
         }

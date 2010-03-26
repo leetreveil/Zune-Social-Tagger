@@ -29,7 +29,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
 
             Container.Bind<ApplicationModel>().ToSelf().InSingletonScope();
-            Container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
+
+            //by default we register WebAlbumListViewModel as the default view but this can be changed in the future
+            Container.Bind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
             Container.Bind<SearchHeaderViewModel>().ToSelf().InSingletonScope();
         }
 

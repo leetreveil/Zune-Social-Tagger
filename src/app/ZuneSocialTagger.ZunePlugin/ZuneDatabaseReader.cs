@@ -196,23 +196,21 @@ namespace ZuneSocialTagger.ZunePlugin
             {
                 //The version that this program was written to support, in future versions methods could change
                 //so updates will probably be needed
-                Version supportedVersion = new Version(4, 2, 202, 0);
+                var supportedVersion = new Version(4, 2, 202, 0);
 
-                if (File.Exists("ZuneDBApi.dll"))
-                {
-                    FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo("ZuneDBApi.dll");
+                if (!File.Exists("ZuneDBApi.dll"))
+                    throw new FileNotFoundException(
+                        "Could not find ZuneDBApi.dll. Are you sure Zune Social tagger is running in the Zune application folder?");
 
-                    var fileVersion = new Version(fileVersionInfo.ProductVersion);
+                var fileVersionInfo = FileVersionInfo.GetVersionInfo("ZuneDBApi.dll");
 
-                    if (fileVersion != supportedVersion)
-                    {
-                        throw new NotSupportedException("Zune Social Tagger was not designed to work with this version of the Zune software, proceed with caution and please wait for an update!");
-                    }
+                var fileVersion = new Version(fileVersionInfo.ProductVersion);
 
-                    return true;
-                }
+                if (fileVersion != supportedVersion)
+                    throw new NotSupportedException(
+                        "Zune Social Tagger was not designed to work with this version of the Zune software, proceed with caution and please wait for an update!");
 
-                return false;
+                return true;
             }
         }
         
