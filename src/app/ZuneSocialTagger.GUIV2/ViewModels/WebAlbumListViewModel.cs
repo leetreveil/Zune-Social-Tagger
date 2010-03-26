@@ -90,7 +90,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public int LinkedTotal
         {
-            get { return this.Albums.Where(x => x.LinkStatus == LinkStatus.Linked).Count(); }
+            get
+            {
+                return this.Albums.Where(x => x.LinkStatus == LinkStatus.Linked).Count();
+            }
         }
 
         public int UnlinkedTotal
@@ -132,8 +135,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 this.IsDownloadingAlbumDetails = true;
 
+                //check if we have already downloaded all the albums
+                if (this.Albums.Where(x => x.LinkStatus != LinkStatus.Unlinked).All(x => x.WebAlbumMetaData != null))
+                {
+                    foreach (var album in this.Albums)
+                    {
+                        if (album.LinkStatus != LinkStatus.Unlinked)
+                        {
+                            album.WebAlbumMetaData = null;
+                            album.LinkStatus = LinkStatus.Unknown;
+                        }
+                    }
+                    UpdateLinkTotals();
+                }
+
                 _downloader = new AlbumDownloaderWithProgressReporting(
-                    this.Albums.Where(x=> x.WebAlbumMetaData == null && x.LinkStatus != LinkStatus.Unlinked));
+                    this.Albums.Where(x => x.WebAlbumMetaData == null && x.LinkStatus != LinkStatus.Unlinked));
 
                 _downloader.ProgressChanged += downloader_ProgressChanged;
                 _downloader.FinishedDownloadingAlbums += downloader_FinishedDownloadingAlbums;
