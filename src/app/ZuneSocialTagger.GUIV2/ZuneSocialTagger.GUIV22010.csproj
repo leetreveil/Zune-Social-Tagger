@@ -106,15 +106,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ApplicationModel.cs" />
-    <Compile Include="ApplicationView.xaml.cs">
+    <Compile Include="ViewModels\ApplicationViewModel.cs" />
+    <Compile Include="Views\ApplicationView.xaml.cs">
       <DependentUpon>ApplicationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ErrorModeToImageSourceConverter.cs" />
     <Compile Include="Models\ErrorMessage.cs" />
     <Compile Include="Models\FirstViews.cs" />
     <Compile Include="Models\IFirstPage.cs" />
-    <Compile Include="Models\StoryboardManager.cs" />
     <Compile Include="UIDispatcher.cs" />
     <Compile Include="Views\InlineZuneMessageView.xaml.cs">
       <DependentUpon>InlineZuneMessageView.xaml</DependentUpon>
@@ -146,7 +145,7 @@
     <Compile Include="Models\SortOrder.cs" />
     <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />
     <Compile Include="ViewModels\SortViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="ViewModelLocator.cs" />
     <Compile Include="Views\AlbumDetailsView.xaml.cs">
       <DependentUpon>AlbumDetailsView.xaml</DependentUpon>
     </Compile>
@@ -279,7 +278,7 @@
     <Resource Include="Assets\magnifyingglassblack.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ApplicationView.xaml">
+    <Page Include="Views\ApplicationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>

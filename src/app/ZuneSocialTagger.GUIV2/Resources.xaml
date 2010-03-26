@@ -5,7 +5,7 @@
                     xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" 
                     xmlns:vm="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels" 
                     xmlns:v="clr-namespace:ZuneSocialTagger.GUIV2.Views" 
-                    xmlns:StoryboardManager="clr-namespace:ZuneSocialTagger.GUIV2.Models">
+                    xmlns:GUIV2="clr-namespace:ZuneSocialTagger.GUIV2">
     
     <Style x:Key="ListViewItemFocusVisual">
         <Setter Property="Control.Template">
@@ -129,7 +129,7 @@
         <v:SearchResultsView/>
     </DataTemplate>
 
-    <vm:ViewModelLocator x:Key="Locator" />
+    <GUIV2:ViewModelLocator x:Key="Locator" />
     <converters:TextToVisibilityConverter x:Key="TextToVisConverter" />
     <converters:AlbumCountToStringConverter x:Key="AlbumCountToStringConverter" />
     <converters:NotConverter x:Key="NotConverter" />
@@ -270,13 +270,13 @@
         </StringAnimationUsingKeyFrames>
     </Storyboard>
 
-    <Storyboard x:Key="SizeFadeInOut" StoryboardManager:StoryboardManager.ID="SizeFadeInOutAnimation" 
+    <!--<Storyboard x:Key="SizeFadeInOut" StoryboardManager:StoryboardManager.ID="SizeFadeInOutAnimation" 
                 Storyboard.TargetProperty="ScaleY" Storyboard.TargetName="WarningBoxScaleTransform" >   
         
         <DoubleAnimation BeginTime="0:0:0.0" Duration="0:0:0.2"  From="0" To="1" />
         <DoubleAnimation BeginTime="0:0:8.0" Duration="0:0:0.2" To="0" From="1" />
         
-    </Storyboard>
+    </Storyboard>-->
 
     <Storyboard x:Key="SearchingAnim">
         <StringAnimationUsingKeyFrames RepeatBehavior="Forever"

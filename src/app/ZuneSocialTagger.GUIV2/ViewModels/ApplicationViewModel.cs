@@ -10,15 +10,13 @@ using GalaSoft.MvvmLight.Messaging;
 using leetreveil.AutoUpdate.Framework;
 using Ninject;
 using ZuneSocialTagger.GUIV2.Properties;
-using ZuneSocialTagger.GUIV2.ViewModels;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Views;
 using System.Diagnostics;
 
-
-namespace ZuneSocialTagger.GUIV2
+namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class ApplicationModel : ViewModelBase
+    public class ApplicationViewModel : ViewModelBase
     {
         private IZuneDbAdapter _adapter;
         private readonly IKernel _container;
@@ -30,7 +28,7 @@ namespace ZuneSocialTagger.GUIV2
         public RelayCommand ShowAboutSettingsCommand { get; private set; }
         public InlineZuneMessageViewModel InlineZuneMessage { get; set; }
 
-        public ApplicationModel(IZuneWizardModel model, IZuneDbAdapter adapter, IKernel container)
+        public ApplicationViewModel(IZuneWizardModel model, IZuneDbAdapter adapter, IKernel container)
         {
             _model = model;
             _adapter = adapter;

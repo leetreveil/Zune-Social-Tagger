@@ -1,16 +1,17 @@
-﻿<Window x:Class="ZuneSocialTagger.GUIV2.ApplicationView"
+﻿<Window x:Class="ZuneSocialTagger.GUIV2.Views.ApplicationView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Controls="clr-namespace:ZuneSocialTagger.GUIV2.Views" SizeToContent="Height" Title="Zune Social Tagger" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Controls="clr-namespace:ZuneSocialTagger.GUIV2.Views" SizeToContent="Height" Title="Zune Social Tagger" 
     WindowStartupLocation="CenterScreen"
     Style="{DynamicResource DefaultWindowStyle}" 
     MouseDown="Window_MouseDown" >
 
     <Window.Resources>
-        <ResourceDictionary Source="Resources.xaml" />
+        <ResourceDictionary Source="../Resources.xaml" />
     </Window.Resources>
     
     <Window.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="Application" />
+        <Binding Source="{StaticResource Locator}" Path="ApplicationView" />
     </Window.DataContext>
 
     <Grid>

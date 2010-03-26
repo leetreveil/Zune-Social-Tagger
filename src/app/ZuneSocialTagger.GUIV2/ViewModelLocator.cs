@@ -3,8 +3,9 @@ using leetreveil.AutoUpdate.Framework;
 using Ninject;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
+using ZuneSocialTagger.GUIV2.ViewModels;
 
-namespace ZuneSocialTagger.GUIV2.ViewModels
+namespace ZuneSocialTagger.GUIV2
 {
     /// <summary>
     /// Handles the creation and lifetime of view models, views should databind to properties set here
@@ -26,16 +27,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 Container.Bind<IZuneDbAdapter>().To<CachedZuneDatabaseReader>().InSingletonScope();
             }
 
-            Container.Bind<ApplicationModel>().ToSelf().InSingletonScope();
+            Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
 
             //by default we register WebAlbumListViewModel as the default view but this can be changed in the future
             Container.Bind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
             Container.Bind<SearchHeaderViewModel>().ToSelf().InSingletonScope();
         }
 
-        public ApplicationModel Application
+        public ApplicationViewModel Application
         {
-            get { return Container.Get<ApplicationModel>(); }
+            get { return Container.Get<ApplicationViewModel>(); }
         }
 
         public UpdateViewModel Update
