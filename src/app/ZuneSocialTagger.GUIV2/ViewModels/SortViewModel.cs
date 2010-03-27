@@ -15,7 +15,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             this.SortCommand = new RelayCommand(Sort);
             this.SortOrder = SortOrder.NotSorted;
-            SetSortState();
         }
 
         public event Action<SortOrder> SortClicked = delegate { };
@@ -42,6 +41,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             SetSortState();
             SortClicked.Invoke(this.SortOrder);
+            Settings.Default.SortOrder = this.SortOrder;
         }
 
         /// <summary>
@@ -57,9 +57,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             this.SortOrder = index == sortOrders.Count - 1 ? sortOrders[0] : sortOrders[index + 1];
 
-            Settings.Default.SortOrder = this.SortOrder;
-
-            var xub = Settings.Default.SortOrder;
         }
     }
 }

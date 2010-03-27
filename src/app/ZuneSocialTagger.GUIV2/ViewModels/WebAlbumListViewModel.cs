@@ -46,6 +46,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             this.CanShowReloadButton = true;
             this.CanShowScanAllButton = true;
+
+            this.SortViewModel.SortOrder = Settings.Default.SortOrder;
         }
 
         public void ViewHasFinishedLoading()
