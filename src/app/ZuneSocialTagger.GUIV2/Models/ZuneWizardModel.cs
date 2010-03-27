@@ -38,5 +38,7 @@ namespace ZuneSocialTagger.GUIV2.Models
                 NotifyOfPropertyChange(() => this.AlbumsFromDatabase);
             }
         }
+
+        public int SelectedItemInListView { get; set; }
     }
 }

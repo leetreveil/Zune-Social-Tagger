@@ -57,6 +57,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         #region View Binding Properties
 
+        public int SelectedIndex
+        {
+            get { return _model.SelectedItemInListView; }
+            set { _model.SelectedItemInListView = value; }
+        }
+
         public ObservableCollection<AlbumDetailsViewModel> Albums
         {
             get { return _model.AlbumsFromDatabase; }
