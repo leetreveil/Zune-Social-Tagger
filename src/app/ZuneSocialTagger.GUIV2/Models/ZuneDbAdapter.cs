@@ -55,6 +55,7 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public void Dispose()
         {
+            _zuneDatabaseReader.Dispose();
         }
 
         private static AlbumDetails ToAlbumDetails(Album album)

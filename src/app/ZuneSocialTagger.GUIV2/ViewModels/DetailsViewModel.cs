@@ -7,6 +7,8 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.Models;
+using ZuneSocialTagger.GUIV2.Properties;
+using ZuneSocialTagger.GUIV2.Views;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -81,11 +83,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 //usually occurs when a file is readonly
                 Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,"One or more files could not be written to. Have you checked the files are not marked read-only?"));
             else
-                throw new NotImplementedException("show success view model");
+               new SuccessView(new SuccessViewModel(_model.WebAlbumDetails,_model.FileAlbumDetails)).Show();
 
             Mouse.OverrideCursor = null;
-
-            Messenger.Default.Send(typeof(IFirstPage));
         }
 
         public void MoveBack()
@@ -100,15 +100,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public bool UpdateAlbumInfo
         {
-            get { return Properties.Settings.Default.UpdateAlbumInfo; }
+            get { return Settings.Default.UpdateAlbumInfo; }
             set
             {
                 if (value != UpdateAlbumInfo)
                 {
-                    Properties.Settings.Default.UpdateAlbumInfo = value;
-                    Properties.Settings.Default.Save();
+                    Settings.Default.UpdateAlbumInfo = value;
                 }
-
             }
         }
     }

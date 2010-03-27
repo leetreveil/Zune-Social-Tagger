@@ -21,7 +21,8 @@
         <Button Command="{Binding SelectFilesCommand}"
                 HorizontalAlignment="Center" Grid.Row="1" Content="SELECT AUDIO FILES"/>
         
-        <Button Command="{Binding SwitchToNewModeCommand}"
+        <Button IsEnabled="{Binding CanSwitchToNewMode}"
+                Command="{Binding SwitchToNewModeCommand}"
                 HorizontalAlignment="Right" Grid.Row="2" Content="SWITCH TO NEW MODE"/>
     </Grid>
 </UserControl>

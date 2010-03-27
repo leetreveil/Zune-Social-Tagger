@@ -28,7 +28,7 @@ namespace ZuneSocialTagger.ZunePlugin
                 //anything other than 0 means an error occured reading the database
                 int num = _zuneLibrary.Initialize(null, out dbRebult);
 
-                if (num == 0)
+                if (num > -1)
                 {
                     int phase2;
                     _zuneLibrary.Phase2Initialization(out phase2);
@@ -118,14 +118,14 @@ namespace ZuneSocialTagger.ZunePlugin
             AlbumMetadata albumMetadata = _zuneLibrary.GetAlbumMetadata(index);
 
             var albumMediaId = GetFieldValue(index, EListType.eAlbumList,
-                                             ZuneQueryList.AtomNameToAtom("ZuneMediaID"), "");
+                                             ZuneQueryList.AtomNameToAtom("ZuneMediaID"), Guid.Empty);
 
             var dateAdded = GetFieldValue(index, EListType.eAlbumList,
                                           ZuneQueryList.AtomNameToAtom("DateAdded"), new DateTime());
 
             var album = new Album
                             {
-                                AlbumMediaId = new Guid(albumMediaId),
+                                AlbumMediaId = albumMediaId,
                                 DateAdded = dateAdded,
                                 AlbumTitle = albumMetadata.AlbumTitle,
                                 AlbumArtist = albumMetadata.AlbumArtist,
@@ -146,22 +146,21 @@ namespace ZuneSocialTagger.ZunePlugin
             ZuneQueryList zuneQueryList = _zuneLibrary.GetTracksByAlbum(0, albumId,
                                                                         EQuerySortType.eQuerySortOrderAscending,
                                                                         (uint) SchemaMap.kiIndex_AlbumID);
-
             for (int i = 0; i < zuneQueryList.Count; i++)
             {
-                ZuneQueryItem track = new ZuneQueryItem(zuneQueryList, i);
+                var track = new ZuneQueryItem(zuneQueryList, i);
 
                 string filePath =
                     (string) track.GetFieldValue(typeof (string), (uint) ZuneQueryList.AtomNameToAtom("SourceURL"));
 
-                string mediaId =
-                    (string) track.GetFieldValue(typeof (string), (uint) ZuneQueryList.AtomNameToAtom("ZuneMediaID"));
+                Guid mediaId = GetFieldValue(track.ID, EListType.eTrackList, 
+                    ZuneQueryList.AtomNameToAtom("ZuneMediaID"), Guid.Empty);
 
                 yield return new Track
-                                 {
-                                     FilePath = filePath,
-                                     MediaId = new Guid(mediaId)
-                                 };
+                 {
+                     FilePath = filePath,
+                     MediaId = mediaId
+                 };
             }
 
             zuneQueryList.Dispose();

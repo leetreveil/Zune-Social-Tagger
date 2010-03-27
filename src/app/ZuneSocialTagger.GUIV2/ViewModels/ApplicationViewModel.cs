@@ -53,20 +53,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             //register for error messages to be displayed
             Messenger.Default.Register<ErrorMessage>(this, DisplayErrorMessage);
 
-            if (Settings.Default.FirstViewToLoad == FirstViews.SelectAudioFilesViewModel)
-            {
-                var selectAudioFilesViewModel = _container.Get<SelectAudioFilesViewModel>();
-                selectAudioFilesViewModel.FinishedLoading += FirstViewHasFinishedLoading;
-                this.CurrentPage = selectAudioFilesViewModel;
-                SetupView();
-            }
-            else
-            {
-                var webAlbumListViewModel = _container.Get<WebAlbumListViewModel>();
-                webAlbumListViewModel.FinishedLoading += FirstViewHasFinishedLoading;
-                this.CurrentPage = webAlbumListViewModel;
-                SetupView();
-            }
+            var webAlbumListViewModel = _container.Get<IFirstPage>();
+            webAlbumListViewModel.FinishedLoading += FirstViewHasFinishedLoading;
+            this.CurrentPage = (ViewModelBase)webAlbumListViewModel;
+            SetupView();
         }
 
         void FirstViewHasFinishedLoading()
@@ -121,6 +111,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     if (result == DbLoadResult.Failed)
                     {
                         var selectAudioFilesViewModel = _container.Get<SelectAudioFilesViewModel>();
+                        selectAudioFilesViewModel.CanSwitchToNewMode = false;
                         selectAudioFilesViewModel.FinishedLoading += FirstViewHasFinishedLoading;
                         this.CurrentPage = selectAudioFilesViewModel;
                         Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
@@ -215,25 +206,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             ThreadPool.QueueUserWorkItem(_ =>
              {
-                 UIDispatcher.GetDispatcher().Invoke(new Action(() =>
-                 {
+
                      foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
                      {
-                         _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
+                         AlbumDetails album = newAlbum;
+                         UIDispatcher.GetDispatcher().Invoke(new Action(() => _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(album))));
                      }
-                 }));
-
-                 ////TODO: remember to remove this in production code!!!
-                 //foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
-                 //{
-                 //    Thread.Sleep(50);
-
-                 //    AlbumDetails album = newAlbum;
-
-                 //    UIDispatcher.GetDispatcher().Invoke(
-                 //        new Action(() => _model.AlbumsFromDatabase.Add(
-                 //            new AlbumDetailsViewModel(album))));
-                 //}
              });
         }
 

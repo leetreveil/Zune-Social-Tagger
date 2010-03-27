@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using GalaSoft.MvvmLight.Command;
+using ZuneSocialTagger.GUIV2.Properties;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -24,16 +25,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public void SetCanUpdate(bool update)
         {
             if (update == UpdateEnabled) return;
-
-            Properties.Settings.Default.CheckForUpdates = update;
-            Properties.Settings.Default.Save();
+            Settings.Default.CheckForUpdates = update;
         }
 
         public bool UpdateEnabled
         {
             get
             {
-                return Properties.Settings.Default.CheckForUpdates;
+                return Settings.Default.CheckForUpdates;
             }
         }
     }
