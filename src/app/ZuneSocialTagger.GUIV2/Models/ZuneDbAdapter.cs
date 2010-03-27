@@ -16,9 +16,8 @@ namespace ZuneSocialTagger.GUIV2.Models
         public ZuneDbAdapter(IZuneDatabaseReader zuneDatabaseReader)
         {
             _zuneDatabaseReader = zuneDatabaseReader;
-
-            zuneDatabaseReader.ProgressChanged += (arg1, arg2) => this.ProgressChanged.Invoke(arg1, arg2);
-            zuneDatabaseReader.FinishedReadingAlbums += () => this.FinishedReadingAlbums.Invoke();
+            _zuneDatabaseReader.ProgressChanged += (arg1, arg2) => this.ProgressChanged.Invoke(arg1, arg2);
+            _zuneDatabaseReader.FinishedReadingAlbums += () => this.FinishedReadingAlbums.Invoke();
         }
 
         public bool CanInitialize

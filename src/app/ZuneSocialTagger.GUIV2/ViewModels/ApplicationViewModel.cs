@@ -58,12 +58,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 var selectAudioFilesViewModel = _container.Get<SelectAudioFilesViewModel>();
                 selectAudioFilesViewModel.FinishedLoading += FirstViewHasFinishedLoading;
                 this.CurrentPage = selectAudioFilesViewModel;
+                SetupView();
             }
             else
             {
                 var webAlbumListViewModel = _container.Get<WebAlbumListViewModel>();
                 webAlbumListViewModel.FinishedLoading += FirstViewHasFinishedLoading;
                 this.CurrentPage = webAlbumListViewModel;
+                SetupView();
             }
         }
 
@@ -94,7 +96,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             private set
             {
                 _currentPage = value;
-                SetupView();
                 RaisePropertyChanged("CurrentPage");
             }
         }
@@ -122,9 +123,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                         var selectAudioFilesViewModel = _container.Get<SelectAudioFilesViewModel>();
                         selectAudioFilesViewModel.FinishedLoading += FirstViewHasFinishedLoading;
                         this.CurrentPage = selectAudioFilesViewModel;
+                        Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
                     }
                     else
                     {
+                        var webAlbumListViewModel = _container.Get<WebAlbumListViewModel>();
+                        webAlbumListViewModel.FinishedLoading += FirstViewHasFinishedLoading;
+                        this.CurrentPage = webAlbumListViewModel;
                         Settings.Default.FirstViewToLoad = FirstViews.WebAlbumListViewModel;
                         ReadDatabase();
                     }
@@ -142,6 +147,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _container.Rebind<IZuneDbAdapter>().To<ZuneDbAdapter>().InSingletonScope();
             _adapter = _container.Get<IZuneDbAdapter>();
             this.CurrentPage = _container.Get<WebAlbumListViewModel>();
+            SetupView();
         }
 
         private void SwitchToView(Type viewType)
@@ -209,25 +215,25 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             ThreadPool.QueueUserWorkItem(_ =>
              {
-                 UIDispatcher.GetDispatcher().Invoke(new Action(() =>
-                 {
-                     foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
-                     {
-                         _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
-                     }
-                 }));
-
-                 ////TODO: remember to remove this in production code!!!
-                 //foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
+                 //UIDispatcher.GetDispatcher().Invoke(new Action(() =>
                  //{
-                 //    Thread.Sleep(50);
+                 //    foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
+                 //    {
+                 //        _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
+                 //    }
+                 //}));
 
-                 //    AlbumDetails album = newAlbum;
+                 //TODO: remember to remove this in production code!!!
+                 foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
+                 {
+                     Thread.Sleep(50);
 
-                 //    UIDispatcher.GetDispatcher().Invoke(
-                 //        new Action(() => _model.AlbumsFromDatabase.Add(
-                 //            new AlbumDetailsViewModel(album))));
-                 //}
+                     AlbumDetails album = newAlbum;
+
+                     UIDispatcher.GetDispatcher().Invoke(
+                         new Action(() => _model.AlbumsFromDatabase.Add(
+                             new AlbumDetailsViewModel(album))));
+                 }
              });
         }
 
