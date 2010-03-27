@@ -20,5 +20,8 @@
     <Setting Name="FirstViewToLoad" Type="ZuneSocialTagger.GUIV2.Models.FirstViews" Scope="User">
       <Value Profile="(Default)">WebAlbumListViewModel</Value>
     </Setting>
+    <Setting Name="AppDataFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

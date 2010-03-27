@@ -1,4 +1,7 @@
-﻿using ZuneSocialTagger.GUIV2.ViewModels;
+﻿using System;
+using System.IO;
+using ZuneSocialTagger.GUIV2.Properties;
+using ZuneSocialTagger.GUIV2.ViewModels;
 
 
 namespace ZuneSocialTagger.GUIV2
@@ -11,8 +14,16 @@ namespace ZuneSocialTagger.GUIV2
         public App()
         {
             new ViewModelLocator();
-
             UIDispatcher.SetDispatcher(Dispatcher);
+
+            string pathToZuneSocAppDataFolder = Path.Combine(Environment.GetFolderPath(
+                                                             Environment.SpecialFolder.ApplicationData), "Zune Social Tagger");
+
+            if (!Directory.Exists(pathToZuneSocAppDataFolder))
+                Directory.CreateDirectory(pathToZuneSocAppDataFolder);
+
+
+            Settings.Default.AppDataFolder = pathToZuneSocAppDataFolder;
         }
     }
 

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using ZuneSocialTagger.Core;
 using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
+using ZuneSocialTagger.GUIV2.Properties;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
@@ -24,7 +25,7 @@ namespace ZuneSocialTagger.GUIV2.Models
         {
             try
             {
-                using (var fs = new FileStream(@"zunesoccache.xml", FileMode.Open))
+                using (var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.xml"), FileMode.Open))
                     _deserializedAlbums = fs.XmlDeserializeFromStream<List<AlbumDetails>>();
             }
             catch

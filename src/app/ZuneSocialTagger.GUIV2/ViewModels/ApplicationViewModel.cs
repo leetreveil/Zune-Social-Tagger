@@ -237,7 +237,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 {
                     var xSer = new XmlSerializer(albums.GetType());
 
-                    using (var fs = new FileStream("zunesoccache.xml", FileMode.Create))
+                    using (var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.xml"), FileMode.Create))
                         xSer.Serialize(fs, albums);
                 }
                 catch{}
@@ -256,6 +256,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void CheckForUpdates()
         {
+            //TODO: move the updater exe copying into the zune social tagger appdata folder
             string updaterPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                               Settings.Default.UpdateExeName);
 
