@@ -23,7 +23,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private bool _canShowScanAllButton;
         private int _loadingProgress;
         private string _scanAllText;
-        private bool _isDownloadingAlbumDetails;
         private AlbumDownloaderWithProgressReporting _downloader;
         private bool _canShowProgressBar;
         private bool _canShowReloadButton;
@@ -188,10 +187,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void RefreshDatabase()
         {
-            this.Albums.Clear();
-            this.SortViewModel.SortOrder = SortOrder.NotSorted;
+            string msg = "Are you sure? All downloaded album details will be reset and the database will be reloaded.";
 
-            Messenger.Default.Send<string>("SWITCHTODB");
+            ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning,msg),ZuneMessageBoxButton.OKCancel,()=>
+            {
+                this.Albums.Clear();
+                this.SortViewModel.SortOrder = SortOrder.NotSorted;
+
+                Messenger.Default.Send("SWITCHTODB");
+            });
         }
 
         public void LinkAlbum(Album albumDetails)

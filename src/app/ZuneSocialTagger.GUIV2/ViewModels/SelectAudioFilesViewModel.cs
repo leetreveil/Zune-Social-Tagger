@@ -59,14 +59,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 try
                 {
                     IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(file);
-
                     _model.Rows.Add(new DetailRow(file,container));
-
                     _model.Rows = _model.Rows.OrderBy(SharedMethods.SortByTrackNumber()).ToObservableCollection();
                 }
                 catch(AudioFileReadException ex)
                 {
-                    ZuneMessageBox.Show(ex.Message, ErrorMode.Error);
+                    Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,ex.Message));
                     return;
                 }
             }

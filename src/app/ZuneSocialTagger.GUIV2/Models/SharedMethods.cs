@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Models
@@ -50,7 +51,7 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public static void ShowCouldNotFindAlbumError()
         {
-            ZuneMessageBox.Show("Could not find album, you may need to refresh the database.", ErrorMode.Error);
+            Messenger.Default.Send(new ErrorMessage(ErrorMode.Error, "Could not find album, you may need to refresh the database."));
         }
     }
 }
