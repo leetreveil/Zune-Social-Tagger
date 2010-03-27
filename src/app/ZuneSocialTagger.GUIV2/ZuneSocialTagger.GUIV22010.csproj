@@ -75,6 +75,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.ServiceModel.Web">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -107,6 +108,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\ZuneMessageBoxButtonToVisibiltyConverter.cs" />
+    <Compile Include="Models\ProcessWatcher.cs" />
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="Views\ApplicationView.xaml.cs">
       <DependentUpon>ApplicationView.xaml</DependentUpon>

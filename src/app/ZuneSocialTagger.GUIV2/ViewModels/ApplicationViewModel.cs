@@ -123,14 +123,36 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                         this.CurrentPage = webAlbumListViewModel;
                         Settings.Default.FirstViewToLoad = FirstViews.WebAlbumListViewModel;
                         ReadDatabase();
+                        CheckIfZuneSoftwareIsRunning();
+                        WatchForProcessStartAndStop();
                     }
                 }
             }
         }
 
+        private void CheckIfZuneSoftwareIsRunning()
+        {
+            if (Process.GetProcessesByName("Zune").Length == 0)
+                _dbErrorMessage = new ErrorMessage(ErrorMode.Warning,
+                    "The Zune Software is not running, you will not be able to refresh any albums until it has started.");
+        }
+
+        private void WatchForProcessStartAndStop()
+        {
+            var processWatcher = new ProcessWatcher("Zune.exe");
+            processWatcher.ProcessEnded += processWatcher_ProcessEnded;
+            processWatcher.WatchForProcessEnd();
+        }
+
+        void processWatcher_ProcessEnded(string obj)
+        {
+            DisplayErrorMessage(new ErrorMessage(ErrorMode.Warning,
+                 "The Zune Software is not running, you will not be able to refresh any albums until it has started.")); 
+        }
+
         private void DisplayErrorMessage(ErrorMessage message)
         {
-            InlineZuneMessage.ShowMessage(message.ErrorMode, message.Message);
+            UIDispatcher.GetDispatcher().Invoke(new Action(() => InlineZuneMessage.ShowMessage(message.ErrorMode, message.Message)));
         }
 
         private void SwitchToDatabase(string message)

@@ -102,8 +102,6 @@
             </ListView.ContextMenu>
             
         </ListView>
-
-        <!---->
         
         <ProgressBar Visibility="{Binding Path=CanShowProgressBar,Converter={StaticResource BoolToVisConverter}}"
                      Margin="0,10,0,0"
@@ -123,11 +121,11 @@
             </Grid.ColumnDefinitions>
 
 
-            <Button ToolTip="Reload the zune database"
+            <Button ToolTip="Refresh the zune database"
                     IsEnabled="{Binding Path=CanShowReloadButton}"
                     Margin="0,0,10,0"
                     Command="{Binding LoadDatabaseCommand}"
-                    Content="RELOAD" />
+                    Content="REFRESH" />
 
             <Button ToolTip="Download the details for every album in the list"
                     IsEnabled="{Binding Path=CanShowScanAllButton}"
