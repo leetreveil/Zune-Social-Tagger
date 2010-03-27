@@ -172,24 +172,18 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                             _container.Rebind<IZuneDbAdapter>().To<ZuneDbAdapter>().InSingletonScope();
                             _adapter = _container.Get<IZuneDbAdapter>();
 
-                            InitializeDatabase();
+                            return InitializeDatabase();
                         }
-                        else
-                        {
-                            _dbErrorMessage = new ErrorMessage(ErrorMode.Error, "Error loading zune database");
-                            return DbLoadResult.Failed;
-                        }
+
+                        _dbErrorMessage = new ErrorMessage(ErrorMode.Error, "Error loading zune database");
+                        return DbLoadResult.Failed;
                     }
-                    else
-                    {
-                        return DbLoadResult.Success;
-                    }
+
+                    return DbLoadResult.Success;
                 }
-                else
-                {
-                    _dbErrorMessage = new ErrorMessage(ErrorMode.Error, "Failed to determine if the zune database can be loaded");
-                    return DbLoadResult.Failed;
-                }
+
+                _dbErrorMessage = new ErrorMessage(ErrorMode.Error, "Failed to determine if the zune database can be loaded");
+                return DbLoadResult.Failed;
             }
             catch (NotSupportedException e)
             {
@@ -204,33 +198,36 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 _dbErrorMessage = new ErrorMessage(ErrorMode.Error, e.Message);
                 return DbLoadResult.Failed;
             }
-
-            return DbLoadResult.Failed;
+            catch(Exception e)
+            {
+                _dbErrorMessage = new ErrorMessage(ErrorMode.Error,e.Message);
+                return DbLoadResult.Failed;
+            }
         }
 
         private void ReadDatabase()
         {
             ThreadPool.QueueUserWorkItem(_ =>
              {
-                 //UIDispatcher.GetDispatcher().Invoke(new Action(() =>
-                 //{
-                 //    foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
-                 //    {
-                 //        _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
-                 //    }
-                 //}));
-
-                 //TODO: remember to remove this in production code!!!
-                 foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
+                 UIDispatcher.GetDispatcher().Invoke(new Action(() =>
                  {
-                     Thread.Sleep(50);
+                     foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
+                     {
+                         _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(newAlbum));
+                     }
+                 }));
 
-                     AlbumDetails album = newAlbum;
+                 ////TODO: remember to remove this in production code!!!
+                 //foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
+                 //{
+                 //    Thread.Sleep(50);
 
-                     UIDispatcher.GetDispatcher().Invoke(
-                         new Action(() => _model.AlbumsFromDatabase.Add(
-                             new AlbumDetailsViewModel(album))));
-                 }
+                 //    AlbumDetails album = newAlbum;
+
+                 //    UIDispatcher.GetDispatcher().Invoke(
+                 //        new Action(() => _model.AlbumsFromDatabase.Add(
+                 //            new AlbumDetailsViewModel(album))));
+                 //}
              });
         }
 

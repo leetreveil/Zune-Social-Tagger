@@ -13,7 +13,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         {
             get
             {
-                //throw new FileNotFoundException();
                 return true;
             }
         }
