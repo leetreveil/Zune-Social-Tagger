@@ -256,9 +256,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void CheckForUpdates()
         {
-            //TODO: move the updater exe copying into the zune social tagger appdata folder
-            string updaterPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                                              Settings.Default.UpdateExeName);
+            string updaterPath = Path.Combine(Settings.Default.AppDataFolder,Settings.Default.UpdateExeName);
 
             if (Settings.Default.CheckForUpdates)
             {

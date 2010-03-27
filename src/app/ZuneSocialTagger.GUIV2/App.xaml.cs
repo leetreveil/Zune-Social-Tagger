@@ -14,14 +14,13 @@ namespace ZuneSocialTagger.GUIV2
         public App()
         {
             new ViewModelLocator();
-            UIDispatcher.SetDispatcher(Dispatcher);
+            UIDispatcher.SetDispatcher(this.Dispatcher);
 
             string pathToZuneSocAppDataFolder = Path.Combine(Environment.GetFolderPath(
                                                              Environment.SpecialFolder.ApplicationData), "Zune Social Tagger");
 
             if (!Directory.Exists(pathToZuneSocAppDataFolder))
                 Directory.CreateDirectory(pathToZuneSocAppDataFolder);
-
 
             Settings.Default.AppDataFolder = pathToZuneSocAppDataFolder;
         }
