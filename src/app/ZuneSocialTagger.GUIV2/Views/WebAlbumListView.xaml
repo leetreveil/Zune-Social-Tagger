@@ -137,7 +137,7 @@
             <Button HorizontalAlignment="Right"
                     Grid.Column="3"
                     Command="{Binding SwitchToClassicModeCommand}"
-                    Content="SWITCH TO CLASSIC MODE" />
+                    Content="SELECT FILES MANUALLY" />
 
         </Grid>
 

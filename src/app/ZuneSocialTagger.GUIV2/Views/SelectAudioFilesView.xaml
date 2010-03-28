@@ -23,6 +23,6 @@
         
         <Button IsEnabled="{Binding CanSwitchToNewMode}"
                 Command="{Binding SwitchToNewModeCommand}"
-                HorizontalAlignment="Right" Grid.Row="2" Content="SWITCH TO NEW MODE"/>
+                HorizontalAlignment="Right" Grid.Row="2" Content="ZUNE DATABASE VIEW"/>
     </Grid>
 </UserControl>
