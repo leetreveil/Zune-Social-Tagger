@@ -19,6 +19,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
         public event Action FinishedReadingAlbums = delegate { };
         public event Action<int, int> ProgressChanged = delegate { };
+        public event Action StartedReadingAlbums = delegate { };
 
         public bool Initialize()
         {
@@ -37,6 +38,8 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
         public IEnumerable<Album> ReadAlbums()
         {
+            this.StartedReadingAlbums.Invoke();
+
             int counter = 0;
 
             foreach (var album in _deserializedAlbums)

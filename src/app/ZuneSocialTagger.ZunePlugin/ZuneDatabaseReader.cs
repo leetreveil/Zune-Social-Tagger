@@ -15,6 +15,7 @@ namespace ZuneSocialTagger.ZunePlugin
 
         public event Action FinishedReadingAlbums = delegate { };
         public event Action<int, int> ProgressChanged = delegate { };
+        public event Action StartedReadingAlbums = delegate { };
 
         public bool Initialize()
         {
@@ -58,6 +59,8 @@ namespace ZuneSocialTagger.ZunePlugin
 
         public IEnumerable<Album> ReadAlbums()
         {
+            this.StartedReadingAlbums.Invoke();
+
             //querying all albums, creates a property bag inside this method to query the database
             //thats why we can pass null for the propertybag
             ZuneQueryList albums = _zuneLibrary.QueryDatabase(EQueryType.eQueryTypeAllAlbums, 0,

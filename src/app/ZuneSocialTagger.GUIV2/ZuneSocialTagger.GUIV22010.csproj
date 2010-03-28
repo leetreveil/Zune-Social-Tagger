@@ -130,14 +130,12 @@
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Models\CachedZuneDatabaseReader.cs" />
     <Compile Include="Models\ExtensionMethods.cs" />
-    <Compile Include="Models\IZuneDbAdapter.cs" />
     <Compile Include="NotifyPropertyChangedImpl.cs" />
     <Compile Include="Models\SharedMethods.cs" />
     <Compile Include="Models\AlbumDownloaderWithProgressReporting.cs" />
     <Compile Include="Models\LinkStatus.cs" />
     <Compile Include="Models\Song.cs" />
     <Compile Include="Models\IZuneWizardModel.cs" />
-    <Compile Include="Models\ZuneDbAdapter.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
     <Compile Include="Models\AlbumDetails.cs" />
     <Compile Include="Settings.cs" />

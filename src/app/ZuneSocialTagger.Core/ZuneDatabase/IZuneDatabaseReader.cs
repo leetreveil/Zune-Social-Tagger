@@ -9,6 +9,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         IEnumerable<Album> ReadAlbums();
         Album GetAlbum(int index);
         IEnumerable<Track> GetTracksForAlbum(int albumId);
+        event Action StartedReadingAlbums;
         event Action FinishedReadingAlbums;
         event Action<int, int> ProgressChanged;
 

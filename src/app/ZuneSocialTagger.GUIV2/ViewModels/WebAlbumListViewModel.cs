@@ -13,13 +13,14 @@ using System.Threading;
 using ZuneSocialTagger.GUIV2.Properties;
 using Album = ZuneSocialTagger.Core.ZuneDatabase.Album;
 using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
+using ZuneSocialTagger.Core.ZuneDatabase;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class WebAlbumListViewModel : ViewModelBase, IFirstPage
     {
-        private readonly IZuneDbAdapter _dbAdapter;
         private readonly IZuneWizardModel _model;
+        private readonly IZuneDatabaseReader _dbReader;
         private bool _canShowScanAllButton;
         private int _loadingProgress;
         private string _scanAllText;
@@ -29,13 +30,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public event Action FinishedLoading = delegate { };
 
-        public WebAlbumListViewModel(IZuneDbAdapter dbAdapter, IZuneWizardModel model)
+        public WebAlbumListViewModel(IZuneWizardModel model, IZuneDatabaseReader dbReader)
         {
-            _dbAdapter = dbAdapter;
             _model = model;
-            _dbAdapter.FinishedReadingAlbums += DbAdapterFinishedReadingAlbums;
-            _dbAdapter.ProgressChanged += DbAdapterProgressChanged;
-            _dbAdapter.StartedReadingAlbums += _dbAdapter_StartedReadingAlbums;
+            _dbReader = dbReader;
+            _dbReader.FinishedReadingAlbums += DbAdapterFinishedReadingAlbums;
+            _dbReader.ProgressChanged += DbAdapterProgressChanged;
+            _dbReader.StartedReadingAlbums += _dbAdapter_StartedReadingAlbums;
 
             this.SortViewModel = new SortViewModel();
             this.SortViewModel.SortClicked += SortViewModel_SortClicked;
@@ -214,7 +215,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             if (!DoesAlbumExistInDbAndDisplayError(albumDetails)) return;
 
-            IEnumerable<Track> tracksForAlbum = _dbAdapter.GetTracksForAlbum(albumDetails.MediaId);
+            IEnumerable<Track> tracksForAlbum = _dbReader.GetTracksForAlbum(albumDetails.MediaId);
 
             var containers = GetFileNamesAndContainers(tracksForAlbum);
 
@@ -251,7 +252,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             //TODO: fix bug where application crashes when removing an album that is currently playing
 
-            var tracksForAlbum = _dbAdapter.GetTracksForAlbum(albumDetails.MediaId).ToList();
+            var tracksForAlbum = _dbReader.GetTracksForAlbum(albumDetails.MediaId).ToList();
 
             //_dbReader.RemoveAlbumFromDatabase(this.ZuneAlbumMetaData.MediaId);
 
@@ -296,7 +297,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             ThreadPool.QueueUserWorkItem(_ =>
              {
-                 Album albumMetaData = _dbAdapter.GetAlbum(albumDetails.ZuneAlbumMetaData.MediaId).ZuneAlbumMetaData;
+                 Album albumMetaData = _dbReader.GetAlbum(albumDetails.ZuneAlbumMetaData.MediaId);
 
                  albumDetails.LinkStatus = LinkStatus.Unknown;
 
@@ -353,11 +354,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private bool DoesAlbumExistInDbAndDisplayError(Album selectedAlbum)
         {
-            bool doesAlbumExist = _dbAdapter.DoesAlbumExist(selectedAlbum.MediaId);
+            bool doesAlbumExist = _dbReader.DoesAlbumExist(selectedAlbum.MediaId);
 
             if (!doesAlbumExist)
             {
-                SharedMethods.ShowCouldNotFindAlbumError();
+                Messenger.Default.Send(new ErrorMessage(ErrorMode.Error, "Could not find album, you may need to refresh the database."));
                 return false;
             }
 

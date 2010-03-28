@@ -10,6 +10,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using leetreveil.AutoUpdate.Framework;
 using Ninject;
+using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Properties;
 using ZuneSocialTagger.GUIV2.Views;
@@ -30,15 +31,17 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private readonly IKernel _container;
         private readonly IZuneWizardModel _model;
-        private IZuneDbAdapter _adapter;
+        private readonly CachedZuneDatabaseReader _cache;
+        private readonly IZuneDatabaseReader _dbReader;
         private ViewModelBase _currentPage;
         private bool _updateAvailable;
         private ErrorMessage _dbErrorMessage;
 
-        public ApplicationViewModel(IZuneWizardModel model, IZuneDbAdapter adapter, IKernel container)
+        public ApplicationViewModel(IZuneWizardModel model, CachedZuneDatabaseReader cache,IZuneDatabaseReader dbReader, IKernel container)
         {
             _model = model;
-            _adapter = adapter;
+            _cache = cache;
+            _dbReader = dbReader;
             _container = container;
 
             CheckForUpdates();
@@ -101,7 +104,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             //anytime the view gets switched we want to rebind and load the database
             if (this.CurrentPage.GetType() == typeof(WebAlbumListViewModel))
             {
-                _container.Rebind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
+                //_container.Rebind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
 
                 if (_model.AlbumsFromDatabase.Count == 0)
                 {
@@ -157,8 +160,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void SwitchToDatabase(string message)
         {
-            _container.Rebind<IZuneDbAdapter>().To<ZuneDbAdapter>().InSingletonScope();
-            _adapter = _container.Get<IZuneDbAdapter>();
             this.CurrentPage = _container.Get<WebAlbumListViewModel>();
             SetupView();
         }
@@ -178,22 +179,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             try
             {
-                if (_adapter.CanInitialize)
+                if (_dbReader.CanInitialize)
                 {
                     //since the adapter is initally set to the cache this should always be true if the cache exists
-                    bool initalized = _adapter.Initialize();
+                    bool initalized = _dbReader.Initialize();
 
                     if (!initalized)
                     {
-                        //fall back to the actual zune database if the cache could not be loaded
-                        if (_adapter.GetType() == typeof (CachedZuneDatabaseReader))
-                        {
-                            _container.Rebind<IZuneDbAdapter>().To<ZuneDbAdapter>().InSingletonScope();
-                            _adapter = _container.Get<IZuneDbAdapter>();
-
-                            return InitializeDatabase();
-                        }
-
                         _dbErrorMessage = new ErrorMessage(ErrorMode.Error, "Error loading zune database");
                         return DbLoadResult.Failed;
                     }
@@ -226,14 +218,31 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void ReadDatabase()
         {
-            ThreadPool.QueueUserWorkItem(_ =>
-             {
-                     foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
-                     {
-                         AlbumDetails album = newAlbum;
-                         UIDispatcher.GetDispatcher().Invoke(new Action(() => _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(album))));
-                     }
-             });
+            //if we can read the cache then skip the database and just load that
+            if (_cache.CanInitialize && _cache.Initialize())
+            {
+                ThreadPool.QueueUserWorkItem(_ =>
+                {
+                    foreach (AlbumDetails newAlbum in _cache.ReadAlbums())
+                    {
+                        AlbumDetails album = newAlbum;
+                        UIDispatcher.GetDispatcher().Invoke(new Action(() => 
+                            _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(album))));
+                    }
+                });
+            }
+            else
+            {
+                ThreadPool.QueueUserWorkItem(_ =>
+                {
+                    foreach (Album newAlbum in _dbReader.ReadAlbums())
+                    {
+                        Album album = newAlbum;
+                        UIDispatcher.GetDispatcher().Invoke(new Action(() => 
+                            _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(SharedMethods.ToAlbumDetails(album)))));
+                    }
+                });
+            }
         }
 
         public void ShuttingDown()

@@ -18,7 +18,6 @@ namespace ZuneSocialTagger.GUIV2
         {
             Container.Bind<IZuneWizardModel>().To<ZuneWizardModel>().InSingletonScope();
             Container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
-            Container.Bind<IZuneDbAdapter>().To<CachedZuneDatabaseReader>().InSingletonScope();
             Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
             Container.Bind<SearchHeaderViewModel>().ToSelf().InSingletonScope();
             Container.Bind<InlineZuneMessageViewModel>().ToSelf().InSingletonScope();

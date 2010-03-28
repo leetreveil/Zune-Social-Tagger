@@ -8,7 +8,7 @@ using ZuneSocialTagger.GUIV2.Properties;
 
 namespace ZuneSocialTagger.GUIV2.Models
 {
-    public class CachedZuneDatabaseReader : IZuneDbAdapter
+    public class CachedZuneDatabaseReader
     {
         private List<AlbumDetails> _deserializedAlbums;
 

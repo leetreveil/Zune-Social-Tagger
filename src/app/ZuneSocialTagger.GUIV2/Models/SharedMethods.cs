@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using GalaSoft.MvvmLight.Messaging;
+using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Models
@@ -49,9 +50,14 @@ namespace ZuneSocialTagger.GUIV2.Models
             };
         }
 
-        public static void ShowCouldNotFindAlbumError()
+        public static AlbumDetails ToAlbumDetails(Album album)
         {
-            Messenger.Default.Send(new ErrorMessage(ErrorMode.Error, "Could not find album, you may need to refresh the database."));
+            var albumDetails = new AlbumDetails();
+
+            albumDetails.LinkStatus = album.AlbumMediaId == Guid.Empty ? LinkStatus.Unlinked : LinkStatus.Unknown;
+            albumDetails.ZuneAlbumMetaData = album;
+
+            return albumDetails;
         }
     }
 }

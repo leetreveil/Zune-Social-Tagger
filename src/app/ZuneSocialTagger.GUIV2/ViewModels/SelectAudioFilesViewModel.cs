@@ -81,6 +81,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 Year = ftMetaData.Year
             };
 
+            _model.SelectedAlbum = selectedAlbum;
+
             Messenger.Default.Send(typeof(SearchViewModel));
         }
     }
