@@ -199,7 +199,7 @@ namespace ZuneSocialTagger.ZunePlugin
 
                 if (!File.Exists("ZuneDBApi.dll"))
                     throw new FileNotFoundException(
-                        "Could not find ZuneDBApi.dll. Are you sure Zune Social tagger is running in the Zune application folder?");
+                        "Could not find ZuneDBApi.dll. Are you sure Zune Social Tagger is in the Zune application folder?");
 
                 var fileVersionInfo = FileVersionInfo.GetVersionInfo("ZuneDBApi.dll");
 

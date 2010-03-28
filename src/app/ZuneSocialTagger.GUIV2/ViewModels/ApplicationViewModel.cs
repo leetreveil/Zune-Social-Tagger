@@ -134,7 +134,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             if (Process.GetProcessesByName("Zune").Length == 0)
                 _dbErrorMessage = new ErrorMessage(ErrorMode.Warning,
-                    "The Zune Software is not running, you will not be able to refresh any albums until it has started.");
+                    "Any albums you link / delink will not show their changes until the zune software is running.");
         }
 
         private void WatchForProcessStartAndStop()
@@ -147,7 +147,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         void processWatcher_ProcessEnded(string obj)
         {
             DisplayErrorMessage(new ErrorMessage(ErrorMode.Warning,
-                 "The Zune Software is not running, you will not be able to refresh any albums until it has started.")); 
+                 "Any albums you link / delink will not show their changes until the zune software is running.")); 
         }
 
         private void DisplayErrorMessage(ErrorMessage message)
@@ -228,7 +228,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             ThreadPool.QueueUserWorkItem(_ =>
              {
-
                      foreach (AlbumDetails newAlbum in _adapter.ReadAlbums())
                      {
                          AlbumDetails album = newAlbum;
