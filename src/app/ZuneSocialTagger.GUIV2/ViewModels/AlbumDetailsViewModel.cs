@@ -50,5 +50,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 NotifyOfPropertyChange(() => this.LinkStatus);
             }
         }
+
+        /// <summary>
+        /// Set this boolean value when you want the view to refresh the details from the zune database
+        /// </summary>
+        public bool NeedsRefreshing { get; set; }
     }
 }

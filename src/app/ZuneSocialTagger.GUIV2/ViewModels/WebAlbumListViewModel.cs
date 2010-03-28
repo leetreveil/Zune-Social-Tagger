@@ -53,6 +53,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public void ViewHasFinishedLoading()
         {
             FinishedLoading.Invoke();
+
+            if (_model.SelectedAlbum != null && _model.SelectedAlbum.AlbumDetails.NeedsRefreshing)
+            {
+                RefreshAlbum(_model.SelectedAlbum.AlbumDetails);
+                _model.SelectedAlbum.AlbumDetails.NeedsRefreshing = false;
+            }
         }
 
         #region View Binding Properties
@@ -284,27 +290,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             RefreshAlbum(this.Albums.Where(x => x.ZuneAlbumMetaData == albumDetails).First());
         }
 
-        private Dictionary<string, IZuneTagContainer> GetFileNamesAndContainers(IEnumerable<Track> tracks)
-        {
-            var albumContainers = new Dictionary<string, IZuneTagContainer>();
-
-            foreach (var track in tracks)
-            {
-                try
-                {
-                    IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(track.FilePath);
-                    albumContainers.Add(track.FilePath, container);
-                }
-                catch (Exception ex)
-                {
-                    Messenger.Default.Send(new ErrorMessage(ErrorMode.Error, ex.Message));
-                    break;
-                }
-            }
-
-            return albumContainers;
-        }
-
         public void RefreshAlbum(AlbumDetailsViewModel albumDetails)
         {
             if (!DoesAlbumExistInDbAndDisplayError(albumDetails.ZuneAlbumMetaData)) return;
@@ -343,6 +328,27 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                      albumDetails.LinkStatus = LinkStatus.Unlinked;
                  }
              });
+        }
+
+        private Dictionary<string, IZuneTagContainer> GetFileNamesAndContainers(IEnumerable<Track> tracks)
+        {
+            var albumContainers = new Dictionary<string, IZuneTagContainer>();
+
+            foreach (var track in tracks)
+            {
+                try
+                {
+                    IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(track.FilePath);
+                    albumContainers.Add(track.FilePath, container);
+                }
+                catch (Exception ex)
+                {
+                    Messenger.Default.Send(new ErrorMessage(ErrorMode.Error, ex.Message));
+                    break;
+                }
+            }
+
+            return albumContainers;
         }
 
         private bool DoesAlbumExistInDbAndDisplayError(Album selectedAlbum)

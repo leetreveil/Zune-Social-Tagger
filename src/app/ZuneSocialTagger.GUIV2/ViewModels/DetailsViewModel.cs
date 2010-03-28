@@ -82,7 +82,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 //usually occurs when a file is readonly
                 Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,"One or more files could not be written to. Have you checked the files are not marked read-only?"));
             else
-               new SuccessView(new SuccessViewModel(_model.SelectedAlbum.WebAlbumMetaData,_model.SelectedAlbum.ZuneAlbumMetaData)).Show();
+            {
+                //must check that this is not null first because if we use the old mode of reading this will never get set
+                if (_model.SelectedAlbum.AlbumDetails != null)
+                    _model.SelectedAlbum.AlbumDetails.NeedsRefreshing = true;
+
+                new SuccessView(new SuccessViewModel(_model.SelectedAlbum.WebAlbumMetaData, _model.SelectedAlbum.ZuneAlbumMetaData)).Show();  
+            }
 
             Mouse.OverrideCursor = null;
         }
