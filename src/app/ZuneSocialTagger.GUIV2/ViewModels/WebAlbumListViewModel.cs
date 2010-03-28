@@ -195,48 +195,31 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             string msg = "Are you sure? All downloaded album details will be reset and the database will be reloaded.";
 
             ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning, msg), ZuneMessageBoxButton.OKCancel, () =>
-                                                                                                             {
-                                                                                                                 this.
-                                                                                                                     Albums
-                                                                                                                     .
-                                                                                                                     Clear
-                                                                                                                     ();
-                                                                                                                 this.
-                                                                                                                     SortViewModel
-                                                                                                                     .
-                                                                                                                     SortOrder
-                                                                                                                     =
-                                                                                                                     SortOrder
-                                                                                                                         .
-                                                                                                                         NotSorted;
-
-                                                                                                                 Messenger
-                                                                                                                     .
-                                                                                                                     Default
-                                                                                                                     .
-                                                                                                                     Send
-                                                                                                                     ("SWITCHTODB");
-                                                                                                             });
+                 {
+                     this.Albums.Clear();
+                     this.SortViewModel.SortOrder =SortOrder. NotSorted;
+                     Messenger.Default.Send("SWITCHTODB");
+                 });
         }
 
         public void LinkAlbum(Album albumDetails)
         {
+            var selectedAlbum = new SelectedAlbum();
+
             if (!DoesAlbumExistInDbAndDisplayError(albumDetails)) return;
 
             IEnumerable<Track> tracksForAlbum = _dbAdapter.GetTracksForAlbum(albumDetails.MediaId);
 
-            _model.Rows = new ObservableCollection<DetailRow>();
-
             var containers = GetFileNamesAndContainers(tracksForAlbum);
 
             foreach (var item in containers)
-                _model.Rows.Add(new DetailRow(item.Key, item.Value));
+                selectedAlbum.Tracks.Add(new Song(item.Key, item.Value));
 
             if (containers.Count > 0)
             {
                 _model.SearchText = albumDetails.AlbumArtist + " " + albumDetails.AlbumTitle;
 
-                _model.FileAlbumDetails = new ExpandedAlbumDetailsViewModel
+                selectedAlbum.ZuneAlbumMetaData = new ExpandedAlbumDetailsViewModel
                                               {
                                                   Artist = albumDetails.AlbumArtist,
                                                   Title = albumDetails.AlbumTitle,
@@ -244,6 +227,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                                                   SongCount = albumDetails.TrackCount.ToString(),
                                                   Year = albumDetails.ReleaseYear.ToString()
                                               };
+
+                selectedAlbum.AlbumDetails = this.Albums.Where(x => x.ZuneAlbumMetaData == albumDetails).First();
+
+                _model.SelectedAlbum = selectedAlbum;
 
                 //tell the application to switch to the search view
                 Messenger.Default.Send(typeof (SearchViewModel));
@@ -286,14 +273,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             Mouse.OverrideCursor = null;
 
-            //TODO: change this to an information message box because it is not an error
-
             if (containers.Count > 0)
-            {
-                Messenger.Default.Send<ErrorMessage>(new ErrorMessage(ErrorMode.Warning,
-                                                                      "Album should now be de-linked. You may need to " +
-                                                                      "remove then re-add the album for the changes to take effect."));
-            }
+                Messenger.Default.Send(new ErrorMessage(ErrorMode.Warning,
+                                                        "Album should now be de-linked. You may need to " +
+                                                        "remove then re-add the album for the changes to take effect."));
+
+            //force a refresh on the album to see if the de-link worked
+            //this probably wont work because the zunedatabase does not correctly change the albums
+            //details when delinking, but does when linking
+            RefreshAlbum(this.Albums.Where(x => x.ZuneAlbumMetaData == albumDetails).First());
         }
 
         private Dictionary<string, IZuneTagContainer> GetFileNamesAndContainers(IEnumerable<Track> tracks)
@@ -322,59 +310,39 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             if (!DoesAlbumExistInDbAndDisplayError(albumDetails.ZuneAlbumMetaData)) return;
 
             ThreadPool.QueueUserWorkItem(_ =>
-                                             {
-                                                 Album albumMetaData =
-                                                     _dbAdapter.GetAlbum(albumDetails.ZuneAlbumMetaData.MediaId).
-                                                         ZuneAlbumMetaData;
+             {
+                 Album albumMetaData = _dbAdapter.GetAlbum(albumDetails.ZuneAlbumMetaData.MediaId).ZuneAlbumMetaData;
 
-                                                 albumDetails.LinkStatus = LinkStatus.Unknown;
+                 albumDetails.LinkStatus = LinkStatus.Unknown;
 
-                                                 string url = String.Concat(Urls.Album, albumMetaData.AlbumMediaId);
+                 string url = String.Concat(Urls.Album, albumMetaData.AlbumMediaId);
 
-                                                 if (albumMetaData.AlbumMediaId != Guid.Empty)
-                                                 {
-                                                     var downloader = new AlbumDetailsDownloader(url);
+                 if (albumMetaData.AlbumMediaId != Guid.Empty)
+                 {
+                     var downloader = new AlbumDetailsDownloader(url);
 
-                                                     downloader.DownloadCompleted += (alb, state) =>
-                                                                                         {
-                                                                                             albumDetails.LinkStatus =
-                                                                                                 SharedMethods.
-                                                                                                     GetAlbumLinkStatus(
-                                                                                                         alb.AlbumTitle,
-                                                                                                         alb.AlbumArtist,
-                                                                                                         albumMetaData.
-                                                                                                             AlbumTitle,
-                                                                                                         albumMetaData.
-                                                                                                             AlbumArtist);
+                     downloader.DownloadCompleted += (alb, state) =>
+                         {
+                             albumDetails.LinkStatus = SharedMethods.GetAlbumLinkStatus(alb.AlbumTitle,
+                                                                                        alb.AlbumArtist,
+                                                                                        albumMetaData.AlbumTitle, 
+                                                                                        albumMetaData.AlbumArtist);
 
-                                                                                             albumDetails.
-                                                                                                 WebAlbumMetaData = new Album
-                                                                                                                        {
-                                                                                                                            AlbumArtist
-                                                                                                                                =
-                                                                                                                                alb
-                                                                                                                                .
-                                                                                                                                AlbumArtist,
-                                                                                                                            AlbumTitle
-                                                                                                                                =
-                                                                                                                                alb
-                                                                                                                                .
-                                                                                                                                AlbumTitle,
-                                                                                                                            ArtworkUrl
-                                                                                                                                =
-                                                                                                                                alb
-                                                                                                                                .
-                                                                                                                                ArtworkUrl
-                                                                                                                        };
-                                                                                         };
+                             albumDetails.WebAlbumMetaData = new Album
+                                                        {
+                                                            AlbumArtist=alb.AlbumArtist,
+                                                            AlbumTitle = alb.AlbumTitle,
+                                                            ArtworkUrl = alb.ArtworkUrl
+                                                        };
+                         };
 
-                                                     downloader.DownloadAsync();
-                                                 }
-                                                 else
-                                                 {
-                                                     albumDetails.LinkStatus = LinkStatus.Unlinked;
-                                                 }
-                                             });
+                     downloader.DownloadAsync();
+                 }
+                 else
+                 {
+                     albumDetails.LinkStatus = LinkStatus.Unlinked;
+                 }
+             });
         }
 
         private bool DoesAlbumExistInDbAndDisplayError(Album selectedAlbum)

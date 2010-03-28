@@ -14,18 +14,12 @@ namespace ZuneSocialTagger.GUIV2.Models
             this.AlbumsFromDatabase = new ObservableCollection<AlbumDetailsViewModel>();
         }
 
-        public ObservableCollection<DetailRow> Rows { get; set; }
+        /// <summary>
+        /// When searching, the results are populated here
+        /// </summary>
         public ObservableCollection<Album> FoundAlbums { get; set; }
 
-        /// <summary>
-        /// The details of the selected album from file
-        /// </summary>
-        public ExpandedAlbumDetailsViewModel FileAlbumDetails { get; set; }
-
-        /// <summary>
-        /// The Details of the selected album from the zune website
-        /// </summary>
-        public ExpandedAlbumDetailsViewModel WebAlbumDetails { get; set; }
+        public SelectedAlbum SelectedAlbum { get; set; }
 
         public string SearchText { get; set; }
 

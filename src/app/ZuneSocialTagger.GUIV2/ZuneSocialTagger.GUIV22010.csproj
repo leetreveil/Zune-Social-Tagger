@@ -41,7 +41,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\..\Program Files\Zune\</OutputPath>
     <DefineConstants>TRACE;DEBUG;6</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -109,6 +109,7 @@
     </Compile>
     <Compile Include="Converters\ZuneMessageBoxButtonToVisibiltyConverter.cs" />
     <Compile Include="Models\ProcessWatcher.cs" />
+    <Compile Include="Models\SelectedAlbum.cs" />
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="Views\ApplicationView.xaml.cs">
       <DependentUpon>ApplicationView.xaml</DependentUpon>
@@ -134,7 +135,7 @@
     <Compile Include="Models\SharedMethods.cs" />
     <Compile Include="Models\AlbumDownloaderWithProgressReporting.cs" />
     <Compile Include="Models\LinkStatus.cs" />
-    <Compile Include="Models\DetailRow.cs" />
+    <Compile Include="Models\Song.cs" />
     <Compile Include="Models\IZuneWizardModel.cs" />
     <Compile Include="Models\ZuneDbAdapter.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />

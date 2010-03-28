@@ -27,15 +27,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);    
         }
 
-        public void ViewHasFinishedLoading()
-        {
-            FinishedLoading.Invoke();
-        }
-
         public bool CanSwitchToNewMode { get; set; }
         public RelayCommand SelectFilesCommand { get; private set; }
         public RelayCommand SwitchToNewModeCommand { get; private set; }
 
+        public void ViewHasFinishedLoading()
+        {
+            FinishedLoading.Invoke();
+        }
 
         public void SwitchToNewMode()
         {
@@ -52,15 +51,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void ReadFiles(IEnumerable<string> files)
         {
-            _model.Rows = new ObservableCollection<DetailRow>();
+            var selectedAlbum = new SelectedAlbum();
 
             foreach (var file in files)
             {
                 try
                 {
                     IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(file);
-                    _model.Rows.Add(new DetailRow(file,container));
-                    _model.Rows = _model.Rows.OrderBy(SharedMethods.SortByTrackNumber()).ToObservableCollection();
+                    selectedAlbum.Tracks.Add(new Song(file,container));
                 }
                 catch(AudioFileReadException ex)
                 {
@@ -69,15 +67,17 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 }
             }
 
-            MetaData ftMetaData = _model.Rows.First().MetaData;
+            selectedAlbum.Tracks = selectedAlbum.Tracks.OrderBy(SharedMethods.SortByTrackNumber()).ToObservableCollection();
+
+            MetaData ftMetaData = selectedAlbum.Tracks.First().MetaData;
 
             _model.SearchText = ftMetaData.AlbumArtist + " " + ftMetaData.AlbumName;
 
-            _model.FileAlbumDetails = new ExpandedAlbumDetailsViewModel
+            selectedAlbum.ZuneAlbumMetaData = new ExpandedAlbumDetailsViewModel
             {
                 Artist = ftMetaData.AlbumArtist,
                 Title = ftMetaData.AlbumName,
-                SongCount = _model.Rows.Count.ToString(),
+                SongCount = selectedAlbum.Tracks.Count.ToString(),
                 Year = ftMetaData.Year
             };
 

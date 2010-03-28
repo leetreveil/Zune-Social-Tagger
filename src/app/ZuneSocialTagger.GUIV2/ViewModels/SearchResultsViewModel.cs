@@ -111,7 +111,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                      IEnumerable<Track> tracks = reader.Read();
 
-                     _model.WebAlbumDetails =  SetAlbumDetails(tracks);
+                     _model.SelectedAlbum.WebAlbumMetaData =  SetAlbumDetails(tracks);
                      AddSelectedSongs(tracks);
 
 
@@ -156,7 +156,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                  }));
 
 
-            foreach (var row in _model.Rows)
+            foreach (var row in _model.SelectedAlbum.Tracks)
             {
                 row.SongsFromWebsite = this.SearchResultsDetailViewModel.SelectedAlbumSongs;
                 row.Tracks = tracks;

@@ -8,7 +8,7 @@ namespace ZuneSocialTagger.GUIV2.Models
     /// <summary>
     /// Every row in the DetailsView has this information.
     /// </summary>
-    public class DetailRow
+    public class Song
     {
         private ObservableCollection<Track> _songsFromWebsite;
 
@@ -18,7 +18,7 @@ namespace ZuneSocialTagger.GUIV2.Models
         public Track SelectedSong { get; set; }
         public IEnumerable<Track> Tracks { get; set; }
 
-        public DetailRow(string filePath, IZuneTagContainer container)
+        public Song(string filePath, IZuneTagContainer container)
         {
             FilePath = filePath;
             Container = container;

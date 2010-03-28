@@ -20,22 +20,21 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             _model = model;
 
-            this.AlbumDetailsFromWebsite = model.WebAlbumDetails;
-            this.AlbumDetailsFromFile = model.FileAlbumDetails;
+            this.AlbumDetailsFromWebsite = _model.SelectedAlbum.WebAlbumMetaData;
+            this.AlbumDetailsFromFile = _model.SelectedAlbum.ZuneAlbumMetaData;
 
             this.MoveToStartCommand = new RelayCommand(MoveToStart);
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.SaveCommand = new RelayCommand(Save);
         }
 
-        public ObservableCollection<DetailRow> Rows
+        public ObservableCollection<Song> Rows
         {
-            get { return _model.Rows; }
+            get { return _model.SelectedAlbum.Tracks; }
         }
 
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
-
         public RelayCommand MoveToStartCommand { get; private set; }
         public RelayCommand MoveBackCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
@@ -46,7 +45,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             var uaeExceptions = new List<UnauthorizedAccessException>();
 
-            foreach (var row in _model.Rows)
+            foreach (var row in _model.SelectedAlbum.Tracks)
             {
                 try
                 {
@@ -64,7 +63,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                         container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, row.SelectedSong.ArtistMediaID));
                         container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, row.SelectedSong.MediaID));
 
-                        if (Properties.Settings.Default.UpdateAlbumInfo)
+                        if (Settings.Default.UpdateAlbumInfo)
                             container.AddMetaData(row.SelectedSong.MetaData);
 
                         container.WriteToFile(row.FilePath);
@@ -83,7 +82,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 //usually occurs when a file is readonly
                 Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,"One or more files could not be written to. Have you checked the files are not marked read-only?"));
             else
-               new SuccessView(new SuccessViewModel(_model.WebAlbumDetails,_model.FileAlbumDetails)).Show();
+               new SuccessView(new SuccessViewModel(_model.SelectedAlbum.WebAlbumMetaData,_model.SelectedAlbum.ZuneAlbumMetaData)).Show();
 
             Mouse.OverrideCursor = null;
         }

@@ -12,7 +12,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.SearchHeader = searchHeaderViewModel;
             model.FoundAlbums = this.SearchHeader.SearchBar.SearchResults;
 
-            this.SearchHeader.AlbumDetails = model.FileAlbumDetails;
+            this.SearchHeader.AlbumDetails = model.SelectedAlbum.ZuneAlbumMetaData;
             this.SearchHeader.SearchBar.SearchText = model.SearchText;
 
             //when the user starts searching we want to move to the next page immediately

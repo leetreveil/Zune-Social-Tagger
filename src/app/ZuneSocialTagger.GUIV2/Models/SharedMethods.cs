@@ -38,7 +38,7 @@ namespace ZuneSocialTagger.GUIV2.Models
            return LinkStatus.Linked;
         }
 
-        public static Func<DetailRow, int> SortByTrackNumber()
+        public static Func<Song, int> SortByTrackNumber()
         {
             return key =>
             {
