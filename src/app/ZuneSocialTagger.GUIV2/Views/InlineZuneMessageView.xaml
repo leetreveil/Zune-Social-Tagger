@@ -22,13 +22,16 @@
         </Grid.ColumnDefinitions>
 
         <Image Source="{Binding Path=ErrorMode,Converter={StaticResource ErrorModeToImageSourceConverter}}"
-               Margin="0,0,10,0" Width="16" Height="16"  />
+               Margin="0,0,10,0" Width="16" Height="16"
+               VerticalAlignment="Center"/>
 
-        <Viewbox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" >
-            <TextBlock Text="{Binding MessageText}"  />
+        <Viewbox Grid.Column="1" StretchDirection="DownOnly" VerticalAlignment="Center" HorizontalAlignment="Left" >
+            <TextBlock TextWrapping="Wrap" MaxWidth="550" TextTrimming="None" Text="{Binding MessageText}"  />
         </Viewbox>
 
-        <Button Grid.Column="2" Click="Button_Click" Margin="10,0,0,0" Content="OK" Style="{StaticResource UpdateButton}" />
+        <Button Height="16" Grid.Column="2" Click="Button_Click" 
+                Margin="10,0,0,0" Content="OK" Style="{StaticResource UpdateButton}"
+                VerticalAlignment="Center"/>
     </Grid>
 
 
