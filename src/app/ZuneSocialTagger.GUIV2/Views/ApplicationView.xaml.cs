@@ -17,6 +17,13 @@ namespace ZuneSocialTagger.GUIV2.Views
             Application.Current.Exit += Current_Exit;
 
            _viewModel = (ApplicationViewModel) this.DataContext;
+
+           this.Loaded += ApplicationView_Loaded;
+        }
+
+        void ApplicationView_Loaded(object sender, RoutedEventArgs e)
+        {
+           _viewModel.ApplicationViewHasLoaded();
         }
 
         void Current_Exit(object sender, ExitEventArgs e)

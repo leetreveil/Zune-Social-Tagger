@@ -1,4 +1,3 @@
-using System;
 namespace ZuneSocialTagger.GUIV2.Models
 {
     /// <summary>
@@ -6,7 +5,5 @@ namespace ZuneSocialTagger.GUIV2.Models
     /// </summary>
     public interface IFirstPage
     {
-        event Action FinishedLoading;
-        void ViewHasFinishedLoading();
     }
 }

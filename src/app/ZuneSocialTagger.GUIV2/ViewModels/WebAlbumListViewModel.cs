@@ -28,8 +28,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private bool _canShowProgressBar;
         private bool _canShowReloadButton;
 
-        public event Action FinishedLoading = delegate { };
-
         public WebAlbumListViewModel(IZuneWizardModel model, IZuneDatabaseReader dbReader,CachedZuneDatabaseReader cacheReader)
         {
             _model = model;
@@ -52,11 +50,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.CanShowScanAllButton = true;
 
             this.SortViewModel.SortOrder = Settings.Default.SortOrder;
-        }
-
-        public void ViewHasFinishedLoading()
-        {
-            FinishedLoading.Invoke();
 
             if (_model.SelectedAlbum != null && _model.SelectedAlbum.AlbumDetails.NeedsRefreshing)
             {

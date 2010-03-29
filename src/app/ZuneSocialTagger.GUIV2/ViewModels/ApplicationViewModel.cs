@@ -35,7 +35,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private readonly IZuneDatabaseReader _dbReader;
         private ViewModelBase _currentPage;
         private bool _updateAvailable;
-        private ErrorMessage _dbErrorMessage;
 
         public ApplicationViewModel(IZuneWizardModel model, CachedZuneDatabaseReader cache,IZuneDatabaseReader dbReader, IKernel container)
         {
@@ -55,26 +54,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             //register for error messages to be displayed
             Messenger.Default.Register<ErrorMessage>(this, DisplayErrorMessage);
-
-            if (Settings.Default.FirstViewToLoad == FirstViews.SelectAudioFilesViewModel)
-            {
-                this.CurrentPage = _container.Get<SelectAudioFilesViewModel>();
-            }
-            else
-            {
-                var webAlbumListViewModel = _container.Get<WebAlbumListViewModel>();
-                webAlbumListViewModel.FinishedLoading += FirstViewHasFinishedLoading;
-                this.CurrentPage = webAlbumListViewModel;    
-            }
-
-            SetupView();
         }
 
-        void FirstViewHasFinishedLoading()
+        public void ApplicationViewHasLoaded()
         {
-            //We can only show error messages on the ApplicationView once all other views have loaded
-            if (_dbErrorMessage != null)
-                this.DisplayErrorMessage(_dbErrorMessage);
+            if (Settings.Default.FirstViewToLoad == FirstViews.SelectAudioFilesViewModel)
+                this.CurrentPage = _container.Get<SelectAudioFilesViewModel>();
+            else
+                this.CurrentPage = _container.Get<WebAlbumListViewModel>();
+
+            InitDb();
         }
 
         public RelayCommand UpdateCommand { get; private set; }
@@ -114,7 +103,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        private void SetupView()
+        private void InitDb()
         {     
                 if (_model.AlbumsFromDatabase.Count == 0)
                 {
@@ -125,7 +114,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     {
                         var selectAudioFilesViewModel = _container.Get<SelectAudioFilesViewModel>();
                         selectAudioFilesViewModel.CanSwitchToNewMode = false;
-                        selectAudioFilesViewModel.FinishedLoading += FirstViewHasFinishedLoading;
                         this.CurrentPage = selectAudioFilesViewModel;
                         Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
                     }
@@ -136,7 +124,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 }
         }
 
-        private bool CheckIfZuneSoftwareIsRunning()
+        private static bool CheckIfZuneSoftwareIsRunning()
         {
             return Process.GetProcessesByName("Zune").Length != 0;
         }
@@ -184,32 +172,32 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                     if (!initalized)
                     {
-                        _dbErrorMessage = new ErrorMessage(ErrorMode.Error, "Error loading zune database");
+                        this.InlineZuneMessage.ShowMessage(ErrorMode.Error, "Error loading zune database");
                         return DbLoadResult.Failed;
                     }
 
                     return DbLoadResult.Success;
                 }
 
-                _dbErrorMessage = new ErrorMessage(ErrorMode.Error, "Failed to determine if the zune database can be loaded");
+                this.InlineZuneMessage.ShowMessage(ErrorMode.Error,"Failed to determine if the zune database can be loaded");
                 return DbLoadResult.Failed;
             }
             catch (NotSupportedException e)
             {
                 //if the version of the dll is not the version that this software supports
                 //we should display an error but still attempt to load the database because it might work
-                _dbErrorMessage = new ErrorMessage(ErrorMode.Error, e.Message);
+                this.InlineZuneMessage.ShowMessage(ErrorMode.Error, e.Message);
                 return DbLoadResult.Failed;
             }
             catch (FileNotFoundException e)
             {
                 //if ZuneDBApi.dll cannot be found this will be thrown
-                _dbErrorMessage = new ErrorMessage(ErrorMode.Error, e.Message);
+                this.InlineZuneMessage.ShowMessage(ErrorMode.Error, e.Message);
                 return DbLoadResult.Failed;
             }
             catch(Exception e)
             {
-                _dbErrorMessage = new ErrorMessage(ErrorMode.Error,e.Message);
+                this.InlineZuneMessage.ShowMessage(ErrorMode.Error, e.Message);
                 return DbLoadResult.Failed;
             }
         }

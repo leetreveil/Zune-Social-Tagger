@@ -22,7 +22,6 @@ namespace ZuneSocialTagger.GUIV2.Views
                                        lvAlbums.ScrollIntoView(lvAlbums.SelectedItem);
                                        var itemCont = (ListViewItem)lvAlbums.ItemContainerGenerator.ContainerFromItem(lvAlbums.SelectedItem);
                                        itemCont.Focus();
-                                       _model.ViewHasFinishedLoading();
                                    }
                                };
 

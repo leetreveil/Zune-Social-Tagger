@@ -15,8 +15,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
     {
         private readonly IZuneWizardModel _model;
 
-        public event Action FinishedLoading = delegate { };
-
         public SelectAudioFilesViewModel(IZuneWizardModel model)
         {
             _model = model;
@@ -30,11 +28,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public bool CanSwitchToNewMode { get; set; }
         public RelayCommand SelectFilesCommand { get; private set; }
         public RelayCommand SwitchToNewModeCommand { get; private set; }
-
-        public void ViewHasFinishedLoading()
-        {
-            FinishedLoading.Invoke();
-        }
 
         public void SwitchToNewMode()
         {
