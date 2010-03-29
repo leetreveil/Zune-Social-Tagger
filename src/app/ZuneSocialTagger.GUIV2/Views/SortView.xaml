@@ -10,7 +10,7 @@
     </UserControl.Resources>
     
     <Grid>
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Visibility="{Binding SortOrder,Converter={StaticResource SortOrderToVisibilityConverter}}" Orientation="Horizontal">
 
             <TextBlock Text="SORTED BY " FontFamily="Assets/Fonts/#Zegoe Caps" FontWeight="Bold" 
                        FontSize="12" Foreground="#FFA2ABAA" />

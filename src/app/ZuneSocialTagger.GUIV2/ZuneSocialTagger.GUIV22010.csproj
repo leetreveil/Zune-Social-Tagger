@@ -98,6 +98,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Converters\SortOrderToVisibilityConverter.cs" />
     <Compile Include="Converters\ZuneMessageBoxButtonToVisibiltyConverter.cs" />
     <Compile Include="Models\SelectedAlbum.cs" />
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
