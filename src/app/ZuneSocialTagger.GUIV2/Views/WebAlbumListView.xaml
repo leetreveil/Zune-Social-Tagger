@@ -38,8 +38,7 @@
                    Source="../Assets/no.png"
                    Margin="0,0,2,0" />
             
-            <TextBlock ToolTip=""
-                       Text="{Binding UnlinkedTotal}"
+            <TextBlock Text="{Binding UnlinkedTotal}"
                        Margin="0,0,10,0"
                        FontWeight="SemiBold" />
 

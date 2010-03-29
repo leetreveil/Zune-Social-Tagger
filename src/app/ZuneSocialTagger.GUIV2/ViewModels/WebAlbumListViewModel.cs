@@ -61,6 +61,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             if (_model.SelectedAlbum != null && _model.SelectedAlbum.AlbumDetails.NeedsRefreshing)
             {
                 RefreshAlbum(_model.SelectedAlbum.AlbumDetails);
+                UpdateLinkTotals();
                 _model.SelectedAlbum.AlbumDetails.NeedsRefreshing = false;
             }
         }
