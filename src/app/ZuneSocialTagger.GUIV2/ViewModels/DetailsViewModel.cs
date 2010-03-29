@@ -87,7 +87,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 if (_model.SelectedAlbum.AlbumDetails != null)
                     _model.SelectedAlbum.AlbumDetails.NeedsRefreshing = true;
 
-                new SuccessView(new SuccessViewModel(_model.SelectedAlbum.WebAlbumMetaData, _model.SelectedAlbum.ZuneAlbumMetaData)).Show();  
+                new SuccessView(new SuccessViewModel(_model.SelectedAlbum.WebAlbumMetaData, _model.SelectedAlbum.ZuneAlbumMetaData)).Show();
+
+                Messenger.Default.Send("ALBUMLINKED"); 
             }
 
             Mouse.OverrideCursor = null;

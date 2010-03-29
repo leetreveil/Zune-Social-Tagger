@@ -108,7 +108,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\ZuneMessageBoxButtonToVisibiltyConverter.cs" />
-    <Compile Include="Models\ProcessWatcher.cs" />
     <Compile Include="Models\SelectedAlbum.cs" />
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="Views\ApplicationView.xaml.cs">

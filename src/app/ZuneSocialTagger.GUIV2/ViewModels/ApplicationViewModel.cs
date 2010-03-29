@@ -132,30 +132,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     else
                     {
                         ReadDatabase(false);
-                        CheckIfZuneSoftwareIsRunning();
-                        WatchForProcessStartAndStop();
                     }
                 }
         }
 
-        private void CheckIfZuneSoftwareIsRunning()
+        private bool CheckIfZuneSoftwareIsRunning()
         {
-            if (Process.GetProcessesByName("Zune").Length == 0)
-                _dbErrorMessage = new ErrorMessage(ErrorMode.Warning,
-                    "Any albums you link / delink will not show their changes until the zune software is running.");
-        }
-
-        private void WatchForProcessStartAndStop()
-        {
-            var processWatcher = new ProcessWatcher("Zune.exe");
-            processWatcher.ProcessEnded += processWatcher_ProcessEnded;
-            processWatcher.WatchForProcessEnd();
-        }
-
-        void processWatcher_ProcessEnded(string obj)
-        {
-            DisplayErrorMessage(new ErrorMessage(ErrorMode.Warning,
-                 "Any albums you link / delink will not show their changes until the zune software is running.")); 
+            return Process.GetProcessesByName("Zune").Length != 0;
         }
 
         private void DisplayErrorMessage(ErrorMessage message)
@@ -165,9 +148,18 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void SwitchToDatabase(string message)
         {
-            ReadDatabase(true);
-            //this.CurrentPage = _container.Get<WebAlbumListViewModel>();
-            //SetupView();
+            if (message == "SWITCHTODB")
+            {
+                ReadDatabase(true);
+            }
+            else if(message == "ALBUMLINKED")
+            {
+                if (!CheckIfZuneSoftwareIsRunning())
+                {
+                    DisplayErrorMessage(new ErrorMessage(ErrorMode.Warning,
+                        "Any albums you link / delink will not show their changes until the zune software is running.")); 
+                }
+            }
         }
 
         private void SwitchToView(Type viewType)
