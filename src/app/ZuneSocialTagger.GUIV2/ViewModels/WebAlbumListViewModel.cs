@@ -49,7 +49,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.CanShowReloadButton = true;
             this.CanShowScanAllButton = true;
 
-            this.SortViewModel.SortOrder = Settings.Default.SortOrder;
+            //this.SortViewModel.SortOrder = Settings.Default.SortOrder;
 
             if (_model.SelectedAlbum != null && _model.SelectedAlbum.AlbumDetails.NeedsRefreshing)
             {
