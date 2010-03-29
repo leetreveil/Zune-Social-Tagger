@@ -17,11 +17,13 @@ namespace ZuneSocialTagger.GUIV2.Views
             this.DataContextChanged += delegate { _model = (WebAlbumListViewModel) this.DataContext; };
             this.Loaded += delegate
                                {
-                                   //int selectedIndex = this.lvAlbums.SelectedIndex;
-                                   lvAlbums.ScrollIntoView(lvAlbums.SelectedItem);
-                                   var itemCont = (ListViewItem) lvAlbums.ItemContainerGenerator.ContainerFromItem(lvAlbums.SelectedItem);
-                                   itemCont.Focus();
-                                   _model.ViewHasFinishedLoading();
+                                   if (lvAlbums.SelectedItem != null)
+                                   {
+                                       lvAlbums.ScrollIntoView(lvAlbums.SelectedItem);
+                                       var itemCont = (ListViewItem)lvAlbums.ItemContainerGenerator.ContainerFromItem(lvAlbums.SelectedItem);
+                                       itemCont.Focus();
+                                       _model.ViewHasFinishedLoading();
+                                   }
                                };
 
         }

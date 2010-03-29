@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ZuneSocialTagger.Core;
+using ZuneSocialTagger.GUIV2.ViewModels;
 using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
 using ZuneSocialTagger.GUIV2.Properties;
 
@@ -10,7 +11,7 @@ namespace ZuneSocialTagger.GUIV2.Models
 {
     public class CachedZuneDatabaseReader
     {
-        private List<AlbumDetails> _deserializedAlbums;
+        private List<AlbumDetailsXml> _deserializedAlbums;
 
         public event Action FinishedReadingAlbums = delegate { };
         public event Action StartedReadingAlbums = delegate { };
@@ -26,7 +27,7 @@ namespace ZuneSocialTagger.GUIV2.Models
             try
             {
                 using (var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.xml"), FileMode.Open))
-                    _deserializedAlbums = fs.XmlDeserializeFromStream<List<AlbumDetails>>();
+                    _deserializedAlbums = fs.XmlDeserializeFromStream<List<AlbumDetailsXml>>();
             }
             catch
             {
@@ -45,7 +46,7 @@ namespace ZuneSocialTagger.GUIV2.Models
             foreach (var album in _deserializedAlbums)
             {
                 counter++;
-                yield return album;
+                yield return ToAlbumDetails(album);
 
                 ProgressChanged.Invoke(counter, _deserializedAlbums.Count);
             }
@@ -57,9 +58,10 @@ namespace ZuneSocialTagger.GUIV2.Models
         {
             if (_deserializedAlbums != null && _deserializedAlbums.Count > 0)
             {
-                return (from album in _deserializedAlbums
-                        where album.ZuneAlbumMetaData.MediaId == index
-                        select album).First();
+                AlbumDetailsXml albumDetailsXml = (from album in _deserializedAlbums
+                                                   where album.ZuneAlbumMetaData.MediaId == index
+                                                   select album).First();
+                return ToAlbumDetails(albumDetailsXml);
             }
 
             return null;
@@ -85,6 +87,46 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public void Dispose()
         {
+        }
+
+        public static AlbumDetails ToAlbumDetails(AlbumDetailsXml albumDetailsXml)
+        {
+            return new AlbumDetails
+                       {
+                           LinkStatus = albumDetailsXml.LinkStatus,
+                           WebAlbumMetaData = ToAlbum(albumDetailsXml.WebAlbumMetaData),
+                           ZuneAlbumMetaData = ToAlbum(albumDetailsXml.ZuneAlbumMetaData)
+                       };
+        }
+
+        public static Track ToTrack(TrackXml track)
+        {
+            return new Track
+            {
+                FilePath = track.FilePath,
+                MediaId = track.MediaId
+            };
+        }
+
+        public static Core.ZuneDatabase.Album ToAlbum(AlbumXml album)
+        {
+            if (album != null)
+            {
+                return new Core.ZuneDatabase.Album()
+                {
+                    AlbumArtist = album.AlbumArtist,
+                    AlbumMediaId = album.AlbumMediaId,
+                    AlbumTitle = album.AlbumTitle,
+                    ArtworkUrl = album.ArtworkUrl,
+                    DateAdded = album.DateAdded,
+                    MediaId = album.MediaId,
+                    ReleaseYear = album.ReleaseYear,
+                    TrackCount = album.TrackCount,
+                    Tracks = album.Tracks.Select(ToTrack).ToList()
+                };
+            }
+
+            return null;
         }
     }
 }

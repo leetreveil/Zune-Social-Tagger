@@ -30,13 +30,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public event Action FinishedLoading = delegate { };
 
-        public WebAlbumListViewModel(IZuneWizardModel model, IZuneDatabaseReader dbReader)
+        public WebAlbumListViewModel(IZuneWizardModel model, IZuneDatabaseReader dbReader,CachedZuneDatabaseReader cacheReader)
         {
             _model = model;
+
             _dbReader = dbReader;
             _dbReader.FinishedReadingAlbums += DbAdapterFinishedReadingAlbums;
             _dbReader.ProgressChanged += DbAdapterProgressChanged;
             _dbReader.StartedReadingAlbums += _dbAdapter_StartedReadingAlbums;
+
+            cacheReader.FinishedReadingAlbums += cacheReader_FinishedReadingAlbums;
 
             this.SortViewModel = new SortViewModel();
             this.SortViewModel.SortClicked += SortViewModel_SortClicked;
@@ -433,9 +436,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.CanShowScanAllButton = true;
             ResetLoadingProgress();
 
-            SortOrder savedSortOrder = Settings.Default.SortOrder;
-            PerformSort(savedSortOrder);
-            this.SortViewModel.Sort(savedSortOrder);
+            PerformSort(Settings.Default.SortOrder);
+            this.SortViewModel.Sort(Settings.Default.SortOrder);
+        }
+
+        void cacheReader_FinishedReadingAlbums()
+        {
+            UpdateLinkTotals();
+            PerformSort(Settings.Default.SortOrder);
+            this.SortViewModel.Sort(Settings.Default.SortOrder);
         }
 
         private void ReportProgress(int current, int total)

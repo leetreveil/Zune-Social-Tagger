@@ -56,9 +56,17 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             //register for error messages to be displayed
             Messenger.Default.Register<ErrorMessage>(this, DisplayErrorMessage);
 
-            var webAlbumListViewModel = _container.Get<IFirstPage>();
-            webAlbumListViewModel.FinishedLoading += FirstViewHasFinishedLoading;
-            this.CurrentPage = (ViewModelBase)webAlbumListViewModel;
+            if (Settings.Default.FirstViewToLoad == FirstViews.SelectAudioFilesViewModel)
+            {
+                this.CurrentPage = _container.Get<SelectAudioFilesViewModel>();
+            }
+            else
+            {
+                var webAlbumListViewModel = _container.Get<WebAlbumListViewModel>();
+                webAlbumListViewModel.FinishedLoading += FirstViewHasFinishedLoading;
+                this.CurrentPage = webAlbumListViewModel;    
+            }
+
             SetupView();
         }
 
@@ -89,23 +97,25 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             private set
             {
                 _currentPage = value;
+
+                if (this.CurrentPage.GetType() == typeof(SelectAudioFilesViewModel))
+                {
+                    _container.Rebind<IFirstPage>().To<SelectAudioFilesViewModel>().InSingletonScope();
+                    Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
+                }
+
+                if (this.CurrentPage.GetType() == typeof(WebAlbumListViewModel))
+                {
+                    _container.Rebind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
+                    Settings.Default.FirstViewToLoad = FirstViews.WebAlbumListViewModel;
+                }
+
                 RaisePropertyChanged("CurrentPage");
             }
         }
 
         private void SetupView()
-        {
-            if (this.CurrentPage.GetType() == typeof (SelectAudioFilesViewModel))
-            {
-                _container.Rebind<IFirstPage>().To<SelectAudioFilesViewModel>().InSingletonScope();
-                Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
-            }
-
-            //anytime the view gets switched we want to rebind and load the database
-            if (this.CurrentPage.GetType() == typeof(WebAlbumListViewModel))
-            {
-                //_container.Rebind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
-
+        {     
                 if (_model.AlbumsFromDatabase.Count == 0)
                 {
                     DbLoadResult result = InitializeDatabase();
@@ -121,16 +131,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     }
                     else
                     {
-                        var webAlbumListViewModel = _container.Get<WebAlbumListViewModel>();
-                        webAlbumListViewModel.FinishedLoading += FirstViewHasFinishedLoading;
-                        this.CurrentPage = webAlbumListViewModel;
-                        Settings.Default.FirstViewToLoad = FirstViews.WebAlbumListViewModel;
-                        ReadDatabase();
+                        ReadDatabase(false);
                         CheckIfZuneSoftwareIsRunning();
                         WatchForProcessStartAndStop();
                     }
                 }
-            }
         }
 
         private void CheckIfZuneSoftwareIsRunning()
@@ -160,8 +165,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void SwitchToDatabase(string message)
         {
-            this.CurrentPage = _container.Get<WebAlbumListViewModel>();
-            SetupView();
+            ReadDatabase(true);
+            //this.CurrentPage = _container.Get<WebAlbumListViewModel>();
+            //SetupView();
         }
 
         private void SwitchToView(Type viewType)
@@ -216,33 +222,41 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        private void ReadDatabase()
+        private void ReadDatabase(bool loadDatabase)
         {
-            //if we can read the cache then skip the database and just load that
-            if (_cache.CanInitialize && _cache.Initialize())
+            if (!loadDatabase)
             {
-                ThreadPool.QueueUserWorkItem(_ =>
+                //if we can read the cache then skip the database and just load that
+                if (_cache.CanInitialize && _cache.Initialize())
                 {
-                    foreach (AlbumDetails newAlbum in _cache.ReadAlbums())
+                    ThreadPool.QueueUserWorkItem(_ =>
                     {
-                        AlbumDetails album = newAlbum;
-                        UIDispatcher.GetDispatcher().Invoke(new Action(() => 
-                            _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(album))));
-                    }
-                });
+                        foreach (AlbumDetails newAlbum in _cache.ReadAlbums())
+                        {
+                            AlbumDetails album = newAlbum;
+                            UIDispatcher.GetDispatcher().Invoke(new Action(() =>
+                                _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(album))));
+                        }
+                    });
+                }
+                else
+                    ReadActualDatabase();
             }
             else
+                ReadActualDatabase();
+        }
+
+        private void ReadActualDatabase()
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
             {
-                ThreadPool.QueueUserWorkItem(_ =>
+                foreach (Album newAlbum in _dbReader.ReadAlbums())
                 {
-                    foreach (Album newAlbum in _dbReader.ReadAlbums())
-                    {
-                        Album album = newAlbum;
-                        UIDispatcher.GetDispatcher().Invoke(new Action(() => 
-                            _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(SharedMethods.ToAlbumDetails(album)))));
-                    }
-                });
-            }
+                    Album album = newAlbum;
+                    UIDispatcher.GetDispatcher().Invoke(new Action(() =>
+                        _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(SharedMethods.ToAlbumDetails(album)))));
+                }
+            });
         }
 
         public void ShuttingDown()
@@ -253,14 +267,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void WriteCacheToFile()
         {
-            List<AlbumDetails> albums = (from album in _model.AlbumsFromDatabase
-                                         select new AlbumDetails
+            List<AlbumDetailsXml> albums = (from album in _model.AlbumsFromDatabase
+                                         select new AlbumDetailsXml
                                                     {
                                                         LinkStatus = album.LinkStatus,
-                                                        WebAlbumMetaData = album.WebAlbumMetaData,
-                                                        ZuneAlbumMetaData = album.ZuneAlbumMetaData,
+                                                        WebAlbumMetaData = AlbumXml.ToAlbumXml(album.WebAlbumMetaData),
+                                                        ZuneAlbumMetaData = AlbumXml.ToAlbumXml(album.ZuneAlbumMetaData),
                                                     }).ToList();
-
             if (albums.Count > 0)
             {
                 try
@@ -321,4 +334,60 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
     }
+
+    public class AlbumDetailsXml
+    {
+        public AlbumXml ZuneAlbumMetaData { get; set; }
+        public AlbumXml WebAlbumMetaData { get; set; }
+        public LinkStatus LinkStatus { get; set; }
+    }
+
+    public class AlbumXml
+    {
+        public string AlbumTitle { get; set; }
+        public string AlbumArtist { get; set; }
+        public string ArtworkUrl { get; set; }
+        public DateTime DateAdded { get; set; }
+        public Guid AlbumMediaId { get; set; }
+        public int MediaId { get; set; }
+        public int ReleaseYear { get; set; }
+        public int TrackCount { get; set; }
+        public List<TrackXml> Tracks { get; set; }
+
+        public static AlbumXml ToAlbumXml(Album album)
+        {
+            if (album != null)
+            {
+                return new AlbumXml
+                {
+                    AlbumArtist = album.AlbumArtist,
+                    AlbumMediaId = album.AlbumMediaId,
+                    AlbumTitle = album.AlbumTitle,
+                    ArtworkUrl = album.ArtworkUrl,
+                    DateAdded = album.DateAdded,
+                    MediaId = album.MediaId,
+                    ReleaseYear = album.ReleaseYear,
+                    TrackCount = album.TrackCount,
+                    Tracks = album.Tracks !=null ? album.Tracks.Select(TrackXml.ToTrackXml).ToList() : null
+                };
+            }
+
+            return null;
+        }
+    }
+
+        public class TrackXml
+        {
+            public string FilePath { get; set; }      
+            public Guid MediaId { get; set; }
+
+            public static TrackXml ToTrackXml(Track track)
+            {
+                return new TrackXml 
+                {
+                    FilePath = track.FilePath, 
+                    MediaId = track.MediaId
+                };
+            }
+        }
 }

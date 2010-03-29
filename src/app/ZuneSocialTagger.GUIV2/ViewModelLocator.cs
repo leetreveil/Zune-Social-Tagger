@@ -22,6 +22,7 @@ namespace ZuneSocialTagger.GUIV2
             Container.Bind<SearchHeaderViewModel>().ToSelf().InSingletonScope();
             Container.Bind<InlineZuneMessageViewModel>().ToSelf().InSingletonScope();
             Container.Bind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
+            Container.Bind<CachedZuneDatabaseReader>().ToSelf().InSingletonScope();
         }
 
         public ApplicationViewModel Application
