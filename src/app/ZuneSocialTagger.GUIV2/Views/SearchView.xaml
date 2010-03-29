@@ -1,28 +1,31 @@
 ﻿<UserControl
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views"
-	x:Class="ZuneSocialTagger.GUIV2.Views.SearchView" mc:Ignorable="d"
+	xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views" 
+    x:Class="ZuneSocialTagger.GUIV2.Views.SearchView"
 	FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U">
 
     <UserControl.Resources>
-        <ResourceDictionary Source="../Resources.xaml" >
-        </ResourceDictionary>
+        <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
-	
-	<Grid x:Name="LayoutRoot">
-			<Grid>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition/>
-					<ColumnDefinition/>
-				</Grid.ColumnDefinitions>
-				
-            <views:WebsiteAlbumMetaDataView VerticalAlignment="Top" DataContext="{Binding AlbumDetailsFromFile}" Grid.Column="0"  />
 
-            <StackPanel Grid.Column="1">
-                <views:SearchBar VerticalAlignment="Top" DataContext="{Binding SearchBarViewModel}" />
+    <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <views:SearchHeaderView VerticalAlignment="Top" DataContext="{Binding SearchHeader}" Grid.ColumnSpan="3" />
+
+            <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                
+                <Button Content="BACK" Margin="0,0,10,0" Command="{Binding MoveBackCommand}"/>
+
+                <Button Content="SEARCH"
+                    IsEnabled="{Binding SearchHeader.SearchBar.IsAbleToSearch}" Command="{Binding SearchCommand}"/>
+                
             </StackPanel>
+
         </Grid>
-	</Grid>
 </UserControl>

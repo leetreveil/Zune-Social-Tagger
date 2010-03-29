@@ -9,10 +9,19 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="UpdateFeedUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://github.com/leetreveil/Zune-Social-Tagger/raw/master/docs/zunesocupdatefeed.xml</Value>
+      <Value Profile="(Default)">http://github.com/leetreveil/Zune-Social-Tagger/raw/83cc55770640fb8e8131dfe949f696f6ef8a5dac/docs/zunesocupdatefeed.xml</Value>
     </Setting>
     <Setting Name="UpdateExeName" Type="System.String" Scope="User">
       <Value Profile="(Default)">socialtaggerupdater.exe</Value>
+    </Setting>
+    <Setting Name="SortOrder" Type="ZuneSocialTagger.GUIV2.Models.SortOrder" Scope="User">
+      <Value Profile="(Default)">DateAdded</Value>
+    </Setting>
+    <Setting Name="FirstViewToLoad" Type="ZuneSocialTagger.GUIV2.Models.FirstViews" Scope="User">
+      <Value Profile="(Default)">WebAlbumListViewModel</Value>
+    </Setting>
+    <Setting Name="AppDataFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

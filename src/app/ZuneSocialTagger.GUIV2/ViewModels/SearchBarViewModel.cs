@@ -1,40 +1,42 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
+using System.Threading;
+using GalaSoft.MvvmLight.Command;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
-using ZuneSocialTagger.GUIV2.Commands;
-using System.Threading;
+using ZuneSocialTagger.GUIV2.Models;
+using System.Collections.ObjectModel;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SearchBarViewModel : ViewModelBase
+    public class SearchBarViewModel : NotifyPropertyChangedImpl
     {
-        private string _searchText;
-        private bool _isSearching;
         private bool _canSearch;
-        private RelayCommand<string> _searchCommand;
-
-        public ObservableCollection<Album> SearchResults { get; set; }
-        public event EventHandler StartedSearching;
+        private bool _isSearching;
+        private string _searchText;
 
         public SearchBarViewModel()
         {
             SearchResults = new ObservableCollection<Album>();
+
+            this.SearchCommand = new RelayCommand(Search);
         }
+
+        public RelayCommand SearchCommand { get; private set; }
+
+        public ObservableCollection<Album> SearchResults { get; set; }
+
+        public event Action StartedSearching = delegate { };
+        public event Action FinishedSearching = delegate { };
 
         public string SearchText
         {
             get { return _searchText; }
             set
             {
-                if (value != _searchText)
-                {
-                    _searchText = value;
-                    CanSearch = !String.IsNullOrEmpty(_searchText);
-                    base.InvokePropertyChanged("SearchText");
-                }
+                _searchText = value;
+                IsAbleToSearch = !String.IsNullOrEmpty(_searchText);
+                NotifyOfPropertyChange(() => SearchText);
             }
         }
 
@@ -43,36 +45,19 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return _isSearching; }
             set
             {
-                if (value != _isSearching)
-                {
-                    _isSearching = value;
-                    this.CanSearch = !value;
-                    base.InvokePropertyChanged("IsSearching");
-                }
+                _isSearching = value;
+                IsAbleToSearch = !value;
+                NotifyOfPropertyChange(() => IsSearching);
             }
         }
 
-        public bool CanSearch
+        public bool IsAbleToSearch
         {
             get { return _canSearch; }
             set
             {
-                if (value != _canSearch)
-                {
-                    _canSearch = value;
-                    base.InvokePropertyChanged("CanSearch");
-                }
-            }
-        }
-
-        public ICommand SearchCommand
-        {
-            get
-            {
-                if (_searchCommand == null)
-                    _searchCommand = new RelayCommand<string>(searchStr => Search());
-
-                return _searchCommand;
+                _canSearch = value;
+                NotifyOfPropertyChange(() => IsAbleToSearch);
             }
         }
 
@@ -81,33 +66,29 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         /// </summary>
         public void Search()
         {
-            InvokeStartedSearching();
-            SearchFor(SearchText);
+            StartedSearching.Invoke();
+            SearchFor(this.SearchText);
         }
 
         private void SearchFor(string searchString)
         {
-            this.SearchResults.Clear();
-            this.IsSearching = true;
+            SearchResults.Clear();
+            IsSearching = true;
 
             ThreadPool.QueueUserWorkItem(_ =>
                  {
                      IEnumerable<Album> results = AlbumSearch.SearchFor(searchString);
 
-                     base.UIDispatcher.Invoke(new Action(() =>
+                     UIDispatcher.GetDispatcher().Invoke(new Action(()=>
                      {
-                         foreach (var result in results)
-                             this.SearchResults.Add(result);
-
-                         this.IsSearching = false;
+                         foreach (Album result in results)
+                             SearchResults.Add(result);
                      }));
-                 });
-        }
 
-        private void InvokeStartedSearching()
-        {
-            EventHandler searching = StartedSearching;
-            if (searching != null) searching(this, new EventArgs());
+                     IsSearching = false;
+
+                     FinishedSearching.Invoke();
+                 });
         }
     }
 }

@@ -1,24 +1,25 @@
-using ZuneSocialTagger.GUIV2.Models;
-
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SuccessViewModel
     {
-        private readonly ZuneWizardModel _model;
+        private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromWebsite;
+        private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
 
-        public SuccessViewModel(ZuneWizardModel model)
+        public SuccessViewModel(ExpandedAlbumDetailsViewModel albumDetailsFromWebsite,
+            ExpandedAlbumDetailsViewModel albumDetailsFromFile)
         {
-            _model = model;
+            _albumDetailsFromWebsite = albumDetailsFromWebsite;
+            _albumDetailsFromFile = albumDetailsFromFile;
         }
 
-        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromWebsite
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite
         {
-            get { return _model.AlbumDetailsFromWebsite; }
+            get { return _albumDetailsFromWebsite; }
         }
 
-        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile
         {
-            get { return _model.AlbumDetailsFromFile; }
+            get { return _albumDetailsFromFile; }
         }
     }
 }

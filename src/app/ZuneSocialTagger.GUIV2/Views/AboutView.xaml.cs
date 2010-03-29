@@ -22,8 +22,6 @@ namespace ZuneSocialTagger.GUIV2.Views
         public AboutView()
         {
             InitializeComponent();
-
-            this.DataContext = this;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -35,24 +33,6 @@ namespace ZuneSocialTagger.GUIV2.Views
         {
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
-        }
-
-        public string Version { get { return String.Format("Version {0}",Assembly.GetExecutingAssembly().GetName().Version); } }
-
-
-
-        public bool UpdateEnabled
-        {
-            get { return Properties.Settings.Default.CheckForUpdates; }
-            set
-            {
-                if (value != UpdateEnabled)
-                {
-                    Properties.Settings.Default.CheckForUpdates = value;
-                    Properties.Settings.Default.Save();
-                }
-
-            }
         }
     }
 }

@@ -1,193 +1,723 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-					xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ctrls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
                     xmlns:converters="clr-namespace:ZuneSocialTagger.GUIV2.Converters"
-					mc:Ignorable="d">
-					
+                    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" 
+                    xmlns:vm="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels" 
+                    xmlns:v="clr-namespace:ZuneSocialTagger.GUIV2.Views" 
+                    xmlns:GUIV2="clr-namespace:ZuneSocialTagger.GUIV2">
     
-    <converters:TextToVisibilityConverter x:Key="TextToVisConverter" />
-    <converters:AlbumCountToStringConverter x:Key="AlbumCountToStringConverter" />
-    <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
-
-    <Storyboard x:Key="LoadingAnim">
-        <StringAnimationUsingKeyFrames RepeatBehavior="Forever" BeginTime="00:00:00" Storyboard.TargetName="tbLoading" Storyboard.TargetProperty="(TextBlock.Text)">
-            <DiscreteStringKeyFrame KeyTime="00:00:00" Value="Loading"/>
-            <DiscreteStringKeyFrame KeyTime="00:00:00.2000000" Value="Loading."/>
-            <DiscreteStringKeyFrame KeyTime="00:00:00.4000000" Value="Loading.."/>
-            <DiscreteStringKeyFrame KeyTime="00:00:00.6000000" Value="Loading..."/>
-        </StringAnimationUsingKeyFrames>
-    </Storyboard>
-
-    <Style x:Key="DefaultWindowStyle" TargetType="{x:Type Window}">
-			<Setter Property="ResizeMode" Value="NoResize" />
-   			<Setter Property="WindowStyle" Value="None" />
-			<Setter Property="Width" Value="663" />
-            <Setter Property="Title" Value="Zune Social Tagger"/>
-        <Setter Property="Icon" Value="Assets/zuneicondark.ico"/>
-        <Setter Property="Template">
-    			<Setter.Value>
-    				<ControlTemplate TargetType="{x:Type Window}">
- 						<Border BorderBrush="#FFF0F0F0" BorderThickness="2">
-       						 <Grid>
-           						 <Grid.Background>
-                						<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                   							<GradientStop Color="White" Offset="0"/>
-                    						<GradientStop Color="#FFF0F0F0" Offset="1"/>
-               						 	</LinearGradientBrush>
-            					</Grid.Background>
-
-        
-
-                                <ContentPresenter Margin="20,20,20,20"/>
-                        </Grid>
-						</Border>
-    				</ControlTemplate>
-    			</Setter.Value>
-    		</Setter>
-    	</Style>
-
-   <Style x:Key="AboutSettingsButton" TargetType="{x:Type Button}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type Button}">
-					<Grid>
-                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
-					</Grid>
-					<ControlTemplate.Triggers>
-						<Trigger Property="IsFocused" Value="True"/>
-						<Trigger Property="IsDefaulted" Value="True"/>
-						<Trigger Property="IsMouseOver" Value="True">
-							<Setter Property="Foreground" Value="#7F8685"/>
-						</Trigger>
-						<Trigger Property="IsPressed" Value="True">
-							<Setter Property="Foreground" Value="#717776" />
-						</Trigger>
-						<Trigger Property="IsEnabled" Value="False"/>
-					</ControlTemplate.Triggers>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-		<Setter Property="FontFamily" Value="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U"/>
-		<Setter Property="FontSize" Value="10"/>
-		<Setter Property="Foreground" Value="#FFA2ABAA"/>
-	</Style>
-
-
-    <Style x:Key="UpdateButton" TargetType="{x:Type Button}">
-        <Setter Property="Template">
+    <Style x:Key="ListViewItemFocusVisual">
+        <Setter Property="Control.Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid>
-                        <Border BorderThickness="1" BorderBrush="#FFA2ABAA">
-                            <ContentPresenter Margin="2,2,2,0" VerticalAlignment="Center" HorizontalAlignment="Center" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                <ControlTemplate>
+                    <Rectangle Stroke="#8E6EA6F5" StrokeThickness="1" RadiusX="2" RadiusY="2"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <LinearGradientBrush x:Key="ListItemHoverFill" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#FFF1FBFF" Offset="0"/>
+        <GradientStop Color="#FFD5F1FE" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ListItemSelectedFill" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#FFD9F4FF" Offset="0"/>
+        <GradientStop Color="#FF9BDDFB" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ListItemSelectedInactiveFill" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#FFEEEDED" Offset="0"/>
+        <GradientStop Color="#FFDDDDDD" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ListItemSelectedHoverFill" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#FFEAF9FF" Offset="0"/>
+        <GradientStop Color="#FFC9EDFD" Offset="1"/>
+    </LinearGradientBrush>
+
+    <Style x:Key="ListViewItemStyle" TargetType="{x:Type ListViewItem}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ListViewItemFocusVisual}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Margin" Value="0,0,0,1"/>
+        <Setter Property="Padding" Value="5,2,5,2"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template" >
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                    <Border CornerRadius="2" SnapsToDevicePixels="True"
+          BorderThickness="{TemplateBinding BorderThickness}" 
+          BorderBrush="{TemplateBinding BorderBrush}" 
+          Background="{TemplateBinding Background}">
+                        <Border Name="InnerBorder" CornerRadius="1" BorderThickness="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition MaxHeight="11" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <Rectangle Name="UpperHighlight" Visibility="Collapsed" Fill="#75FFFFFF" />
+
+                                <v:AlbumDetailsView Grid.RowSpan="2" 
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Grid>
                         </Border>
-                    </Grid>
+                    </Border>
+
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True"/>
-                        <Trigger Property="IsDefaulted" Value="True"/>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Foreground" Value="#7F8685"/>
+                            <Setter Property="Background" Value="{StaticResource ListItemHoverFill}" />
+                            <Setter Property="BorderBrush" Value="#FFCCF0FF" />
+                            <Setter TargetName="UpperHighlight" Property="Visibility" Value="Visible" />
                         </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Foreground" Value="#717776" />
+
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ListItemSelectedFill}" />
+                            <Setter Property="BorderBrush" Value="#FF98DDFB" />
+                            <Setter TargetName="InnerBorder" Property="BorderBrush" Value="#80FFFFFF" />
+                            <Setter TargetName="UpperHighlight" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="UpperHighlight" Property="Fill" Value="#40FFFFFF" />
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="False"/>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="Selector.IsSelectionActive" Value="False" />
+                            </MultiTrigger.Conditions>
+
+                            <Setter Property="Background" Value="{StaticResource ListItemSelectedInactiveFill}" />
+                            <Setter Property="BorderBrush" Value="#FFCFCFCF" />
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True" />
+                            </MultiTrigger.Conditions>
+
+                            <Setter Property="Background" Value="{StaticResource ListItemSelectedHoverFill}" />
+                            <Setter Property="BorderBrush" Value="#FF98DDFB" />
+                        </MultiTrigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="FontFamily" Value="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U"/>
-        <Setter Property="FontSize" Value="10"/>
-        <Setter Property="Foreground" Value="#FFA2ABAA"/>
     </Style>
+    
 
-    <Style x:Key="CloseButton" TargetType="{x:Type Button}">
+    <DataTemplate DataType="{x:Type vm:SelectAudioFilesViewModel}">
+        <v:SelectAudioFilesView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WebAlbumListViewModel}">
+        <v:WebAlbumListView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:SearchViewModel}">
+        <v:SearchView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:DetailsViewModel}">
+        <v:DetailsView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:SearchResultsViewModel}">
+        <v:SearchResultsView/>
+    </DataTemplate>
+
+    <GUIV2:ViewModelLocator x:Key="Locator" />
+    <converters:TextToVisibilityConverter x:Key="TextToVisConverter" />
+    <converters:AlbumCountToStringConverter x:Key="AlbumCountToStringConverter" />
+    <converters:NotConverter x:Key="NotConverter" />
+    <converters:LinkStatusToImageConverter x:Key="LinkStatusToImageConverter" />
+    <converters:PathToImageThumbnailConverter x:Key="PathToImageThumbnailConverter" />
+    <converters:SortOrderToTextConverter x:Key="SortOrderToTextConverter" />
+    <converters:ErrorModeToImageSourceConverter x:Key="ErrorModeToImageSourceConverter"/>
+    <converters:ZuneMessageBoxButtonToVisibiltyConverter x:Key="ZuneMessageBoxButtonToVisibiltyConverter"/>
+    <converters:SortOrderToVisibilityConverter x:Key="SortOrderToVisibilityConverter"/>
+    <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+
+
+    <Style TargetType="{x:Type Button}">
+        <Setter Property="FontWeight"
+                Value="Bold" />
+        <Setter Property="Foreground"
+                Value="#373A3D" />
+        <Setter Property="Height"
+                Value="21" />
+        <Setter Property="FontSize"
+                Value="10" />
+        <Setter Property="FontFamily"
+                Value="Assets/Fonts/#Zegoe UI - U" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid>
 
-                            <Path x:Name="xPath" Stretch="Fill" Stroke="#A2ABAA" StrokeThickness="2">
+                        <Border x:Name="zuneBtnBorder"
+                                CornerRadius="4"
+                                BorderThickness="1"
+                                BorderBrush="#C2C2C2">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0.5,0"
+                                                     EndPoint="0.5,1">
+                                    <GradientStop Color="#F7F7F7"
+                                                  Offset="0" />
+                                    <GradientStop Color="#DFDFDF"
+                                                  Offset="1" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                        </Border>
+
+                        <ContentPresenter  Margin="15,0,15,0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                           RecognizesAccessKey="True" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused"
+                                 Value="True">
+                            <Setter TargetName="zuneBtnBorder"
+                                    Property="BorderBrush"
+                                    Value="#EF79BF" />
+                        </Trigger>
+                        <Trigger Property="IsDefaulted"
+                                 Value="True" />
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="zuneBtnBorder"
+                                    Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0.5,0"
+                                                         EndPoint="0.5,1">
+                                        <GradientStop Color="#EAEAEA"
+                                                      Offset="0" />
+                                        <GradientStop Color="#D4D4D4"
+                                                      Offset="1" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="zuneBtnBorder"
+                                    Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0.5,0"
+                                                         EndPoint="0.5,1">
+                                        <GradientStop Color="#F7F7F7"
+                                                      Offset="0" />
+                                        <GradientStop Color="#DFDFDF"
+                                                      Offset="1" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter Property="Foreground"
+                                    Value="#CECECE" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="GradientProgressbar"
+           TargetType="{x:Type ProgressBar}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ProgressBar}">
+                    <Grid>
+                        <Border Name="PART_Track" />
+                        <Border Name="PART_Indicator"
+                                HorizontalAlignment="Left">
+                            <Border.Background>
+                                <LinearGradientBrush>
+                                    <GradientStop Color="#F89C38"
+                                                  Offset="0" />
+                                    <GradientStop Color="#EC1293"
+                                                  Offset="1" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Storyboard x:Key="LoadingAnim">
+        <StringAnimationUsingKeyFrames RepeatBehavior="Forever"
+                                       BeginTime="00:00:00"
+                                       Storyboard.TargetName="tbLoading"
+                                       Storyboard.TargetProperty="(TextBlock.Text)">
+
+            <DiscreteStringKeyFrame KeyTime="00:00:00"
+                                    Value="Loading" />
+            <DiscreteStringKeyFrame KeyTime="00:00:00.2000000"
+                                    Value="Loading." />
+            <DiscreteStringKeyFrame KeyTime="00:00:00.4000000"
+                                    Value="Loading.." />
+            <DiscreteStringKeyFrame KeyTime="00:00:00.6000000"
+                                    Value="Loading..." />
+        </StringAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <!--<Storyboard x:Key="SizeFadeInOut" StoryboardManager:StoryboardManager.ID="SizeFadeInOutAnimation" 
+                Storyboard.TargetProperty="ScaleY" Storyboard.TargetName="WarningBoxScaleTransform" >   
+        
+        <DoubleAnimation BeginTime="0:0:0.0" Duration="0:0:0.2"  From="0" To="1" />
+        <DoubleAnimation BeginTime="0:0:8.0" Duration="0:0:0.2" To="0" From="1" />
+        
+    </Storyboard>-->
+
+    <Storyboard x:Key="SearchingAnim">
+        <StringAnimationUsingKeyFrames RepeatBehavior="Forever"
+                                       BeginTime="00:00:00"
+                                       Storyboard.TargetName="tbSearching"
+                                       Storyboard.TargetProperty="(TextBlock.Text)">
+            <DiscreteStringKeyFrame KeyTime="00:00:00"
+                                    Value="Searching" />
+            <DiscreteStringKeyFrame KeyTime="00:00:00.2000000"
+                                    Value="Searching." />
+            <DiscreteStringKeyFrame KeyTime="00:00:00.4000000"
+                                    Value="Searching.." />
+            <DiscreteStringKeyFrame KeyTime="00:00:00.6000000"
+                                    Value="Searching..." />
+        </StringAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <ControlTemplate x:Key="Gradient">
+        <Border Width="109"
+                Height="6"
+                HorizontalAlignment="Left">
+            <Border.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="#F89C38"
+                                  Offset="0" />
+                    <GradientStop Color="#EC1293"
+                                  Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="AlbumDetails">
+        <StackPanel Orientation="Horizontal">
+            <Image Height="50"
+                   Width="50"
+                   Source="{Binding ArtworkUrl}"
+                   Margin="0,0,10,0" />
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock ToolTip="{Binding AlbumTitle}"
+                           Text="{Binding AlbumTitle}" />
+                <TextBlock ToolTip="{Binding AlbumArtist}"
+                           Text="{Binding AlbumArtist}"
+                           Foreground="#FF8A8D90" />
+            </StackPanel>
+        </StackPanel>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="TextboxChromeStyle"
+                     TargetType="{x:Type ScrollViewer}">
+        <Grid x:Name="Grid"
+              Background="{TemplateBinding Background}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Button IsEnabled="{Binding IsAbleToSearch}"
+                    Style="{DynamicResource SearchButton}"
+                    Command="{Binding SearchCommand}"
+                    Grid.Column="1" />
+
+            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                    Margin="{TemplateBinding Padding}"
+                                    Content="{TemplateBinding Content}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    CanContentScroll="{TemplateBinding CanContentScroll}"
+                                    CanHorizontallyScroll="False"
+                                    CanVerticallyScroll="False" />
+        </Grid>
+    </ControlTemplate>
+
+
+    <Style x:Key="SearchButton"
+           TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Image x:Name="btnImage"
+                               Source="Assets/magnifyingglass.png" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsCancel"
+                                 Value="False" />
+                        <Trigger Property="IsFocused"
+                                 Value="True" />
+                        <Trigger Property="IsDefaulted"
+                                 Value="True" />
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="btnImage"
+                                    Property="Source"
+                                    Value="Assets/magnifyingglassblack.png" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="btnImage"
+                                    Property="Source"
+                                    Value="Assets/magnifyingglassblack.png" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="SearchBoxStyle"
+           BasedOn="{x:Null}"
+           TargetType="{x:Type TextBox}">
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="Background"
+                Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+        <Setter Property="BorderBrush"
+                Value="#CCCCCC" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Padding"
+                Value="1" />
+        <Setter Property="AllowDrop"
+                Value="true" />
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Microsoft_Windows_Themes:ListBoxChrome x:Name="Bd"
+                                                            SnapsToDevicePixels="true"
+                                                            Background="{TemplateBinding Background}"
+                                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                                            RenderFocused="{TemplateBinding IsKeyboardFocusWithin}"
+                                                            RenderMouseOver="{TemplateBinding IsMouseOver}">
+
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                      Template="{DynamicResource TextboxChromeStyle}" />
+                    </Microsoft_Windows_Themes:ListBoxChrome>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="DefaultWindowStyle"
+           TargetType="{x:Type Window}">
+        <Setter Property="ResizeMode"
+                Value="NoResize" />
+        <Setter Property="WindowStyle"
+                Value="None" />
+        <Setter Property="Width"
+                Value="663" />
+        <Setter Property="Title"
+                Value="Zune Social Tagger" />
+        <Setter Property="Icon"
+                Value="Assets/zuneicondark.ico" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Window}">
+                    <Border BorderBrush="#FFF0F0F0"
+                            BorderThickness="2">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1"
+                                                     StartPoint="0.5,0">
+                                    <GradientStop Color="White"
+                                                  Offset="0" />
+                                    <GradientStop Color="#FFF0F0F0"
+                                                  Offset="1" />
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <ContentPresenter Margin="20,20,20,20" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AboutSettingsButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          RecognizesAccessKey="True" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused"
+                                 Value="True" />
+                        <Trigger Property="IsDefaulted"
+                                 Value="True" />
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter Property="Foreground"
+                                    Value="#7F8685" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter Property="Foreground"
+                                    Value="#717776" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="False" />
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontSize"
+                Value="10" />
+        <Setter Property="Foreground"
+                Value="#FFA2ABAA" />
+    </Style>
+
+
+    <Style x:Key="UpdateButton"
+           TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Border BorderThickness="1"
+                                BorderBrush="#FFA2ABAA">
+                            <ContentPresenter Margin="2,0,2,0"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              RecognizesAccessKey="True" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused"
+                                 Value="True" />
+                        <Trigger Property="IsDefaulted"
+                                 Value="True" />
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter Property="Foreground"
+                                    Value="#7F8685" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter Property="Foreground"
+                                    Value="#717776" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="False" />
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontSize"
+                Value="10" />
+        <Setter Property="Foreground"
+                Value="#FFA2ABAA" />
+    </Style>
+
+    <Style x:Key="CloseButton"
+           TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+
+                        <Path x:Name="xPath"
+                              Stretch="Fill"
+                              Stroke="#A2ABAA"
+                              StrokeThickness="2">
                             <Path.Data>
                                 <PathGeometry>
                                     <PathGeometry.Figures>
                                         <PathFigure StartPoint="0,0">
-                                            <LineSegment Point="25,25"/>
+                                            <LineSegment Point="25,25" />
                                         </PathFigure>
                                         <PathFigure StartPoint="0,25">
-                                            <LineSegment Point="25,0"/>
+                                            <LineSegment Point="25,0" />
                                         </PathFigure>
                                     </PathGeometry.Figures>
                                 </PathGeometry>
                             </Path.Data>
                         </Path>
 
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          RecognizesAccessKey="True" />
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True"/>
-                        <Trigger Property="IsDefaulted" Value="True"/>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="xPath" Property="Stroke" Value="#7F8685" />
+                        <Trigger Property="IsFocused"
+                                 Value="True" />
+                        <Trigger Property="IsDefaulted"
+                                 Value="True" />
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="xPath"
+                                    Property="Stroke"
+                                    Value="#7F8685" />
                         </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="xPath" Property="Stroke" Value="#717776"/>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="xPath"
+                                    Property="Stroke"
+                                    Value="#717776" />
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="False"/>
+                        <Trigger Property="IsEnabled"
+                                 Value="False" />
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-	
-	        	<Style x:Key="MinimizeButton" TargetType="{x:Type Button}">
-        		<Setter Property="Template">
-        			<Setter.Value>
-        				<ControlTemplate TargetType="{x:Type Button}">
-        					<Grid>
-        						<Rectangle x:Name="rect" Fill="#A2ABAA"/>
-        						<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
-        					</Grid>
+
+    <Style x:Key="MinimizeButton"
+           TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Rectangle x:Name="rect"
+                                   Fill="#A2ABAA" />
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          RecognizesAccessKey="True" />
+                    </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True"/>
-                        <Trigger Property="IsDefaulted" Value="True"/>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="rect" Property="Fill" Value="#7F8685" />
+                        <Trigger Property="IsFocused"
+                                 Value="True" />
+                        <Trigger Property="IsDefaulted"
+                                 Value="True" />
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="rect"
+                                    Property="Fill"
+                                    Value="#7F8685" />
                         </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="rect" Property="Fill" Value="#717776"/>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="rect"
+                                    Property="Fill"
+                                    Value="#717776" />
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="False"/>
+                        <Trigger Property="IsEnabled"
+                                 Value="False" />
                     </ControlTemplate.Triggers>
-        				</ControlTemplate>
-        			</Setter.Value>
-        		</Setter>
-        	</Style>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 
-    <Style x:Key="SelectedItemHighlight" TargetType="{x:Type ListViewItem}">
+    <!--<Style x:Key="SelectedItemHighlight"
+           TargetType="{x:Type ListViewItem}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <Border x:Name="Bd" SnapsToDevicePixels="True" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    <Border x:Name="Bd"
+                            SnapsToDevicePixels="True"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" TargetName="Bd" Value="#D4D4D5"/>
+                        <Trigger Property="IsSelected"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    TargetName="Bd"
+                                    Value="#D4D4D5" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="True"/>
-                                <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                <Condition Property="IsSelected"
+                                           Value="True" />
+                                <Condition Property="Selector.IsSelectionActive"
+                                           Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                            <Setter Property="Background"
+                                    TargetName="Bd"
+                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
                         </MultiTrigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+
+    <Style x:Key="ListViewNoStyle"
+           TargetType="{x:Type ListView}">
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+                Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+                Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll"
+                Value="true" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border x:Name="Bd"
+                            SnapsToDevicePixels="true"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                        <ScrollViewer Padding="{TemplateBinding Padding}"
+                                      Focusable="false">
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </ScrollViewer>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter Property="Background"
+                                    TargetName="Bd"
+                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                        </Trigger>
+                        <Trigger Property="IsGrouping"
+                                 Value="true">
+                            <Setter Property="ScrollViewer.CanContentScroll"
+                                    Value="false" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -195,26 +725,48 @@
         </Setter>
     </Style>
 
-    <Style x:Key="ListViewNoStyle" TargetType="{x:Type ListView}">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-        <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Style x:Key="ListViewRowNoHighlight"
+           TargetType="{x:Type ListViewItem}">
+        <Setter Property="Focusable"
+                Value="False" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver"
+                     Value="True" />
+        </Style.Triggers>
+    </Style>
+
+
+    <Style x:Key="ListViewNoBorder"
+           TargetType="ListView">
+        <Setter Property="SnapsToDevicePixels"
+                Value="true" />
+        <Setter Property="OverridesDefaultStyle"
+                Value="true" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+                Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+                Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll"
+                Value="true" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListBox}">
-                    <Border x:Name="Bd" SnapsToDevicePixels="true" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}">
-                        <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="false">
-                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                <ControlTemplate TargetType="ListView">
+                    <Border Name="Border">
+                        <ScrollViewer Style="{DynamicResource
+                        {x:Static GridView.GridViewScrollViewerStyleKey}}">
+                            <ItemsPresenter />
                         </ScrollViewer>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                        <Trigger Property="IsGrouping"
+                                 Value="true">
+                            <Setter Property="ScrollViewer.CanContentScroll"
+                                    Value="false" />
                         </Trigger>
-                        <Trigger Property="IsGrouping" Value="true">
-                            <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

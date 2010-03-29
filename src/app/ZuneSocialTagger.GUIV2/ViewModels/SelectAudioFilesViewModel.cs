@@ -1,41 +1,42 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Forms;
-using System.Windows.Input;
-using ZuneSocialTagger.Core;
-using ZuneSocialTagger.GUIV2.Commands;
-using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
+using System.Windows.Forms;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using ZuneSocialTagger.GUIV2.Models;
+using ZuneSocialTagger.Core;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SelectAudioFilesViewModel : ZuneWizardPageViewModelBase
+    public class SelectAudioFilesViewModel : ViewModelBase, IFirstPage
     {
-        private readonly ZuneWizardModel _model;
-        private RelayCommand _fromFilesCommand;
+        private readonly IZuneWizardModel _model;
 
-        public SelectAudioFilesViewModel(ZuneWizardModel model)
+        public SelectAudioFilesViewModel(IZuneWizardModel model)
         {
             _model = model;
+
+            this.CanSwitchToNewMode = true;
+
+            this.SelectFilesCommand = new RelayCommand(SelectFiles);
+            this.SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);    
         }
 
-        public ICommand FromFilesCommand
-        {
-            get
-            {
-                if (_fromFilesCommand == null)
-                    _fromFilesCommand = new RelayCommand(SelectFiles);
+        public bool CanSwitchToNewMode { get; set; }
+        public RelayCommand SelectFilesCommand { get; private set; }
+        public RelayCommand SwitchToNewModeCommand { get; private set; }
 
-                return _fromFilesCommand;
-            }
+        public void SwitchToNewMode()
+        {
+            Messenger.Default.Send(typeof(WebAlbumListViewModel));
         }
 
-        private void SelectFiles()
+        public void SelectFiles()
         {
-            var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files |*.mp3;*.wma" + "|All Files|*.*" };
-
-      
+            var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files |*.mp3;*.wma" };
 
             if (ofd.ShowDialog() == DialogResult.OK)
                 ReadFiles(ofd.FileNames);
@@ -43,89 +44,39 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void ReadFiles(IEnumerable<string> files)
         {
-            _model.Rows = new ObservableCollection<DetailRow>();
+            var selectedAlbum = new SelectedAlbum();
 
-
-            //TODO: need to sort by track no after loading
-            try
+            foreach (var file in files)
             {
-                foreach (var filePath in files)
+                try
                 {
-                    IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(filePath);
-
-                    //for each song in the album add the container to the models row list
-                    _model.Rows.Add(new DetailRow(filePath, container));
+                    IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(file);
+                    selectedAlbum.Tracks.Add(new Song(file,container));
                 }
-
-                //sort the rows by track number
-                var sortedTracks = _model.Rows.OrderBy(SortByTrackNumber()).ToList();
-
-                _model.Rows.Clear();
-
-                foreach (var row in sortedTracks)
-                    _model.Rows.Add(row);
-
-                //takes the first track read from the model and updates the metadata view
-                SetAlbumDetailsFromFile(_model.Rows.Count, _model.Rows.First().MetaData);
-
-                base.OnMoveNextOverride();
+                catch(AudioFileReadException ex)
+                {
+                    Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,ex.Message));
+                    return;
+                }
             }
-            catch (Exception id3TagException)
+
+            selectedAlbum.Tracks = selectedAlbum.Tracks.OrderBy(SharedMethods.SortByTrackNumber()).ToObservableCollection();
+
+            MetaData ftMetaData = selectedAlbum.Tracks.First().MetaData;
+
+            _model.SearchText = ftMetaData.AlbumArtist + " " + ftMetaData.AlbumName;
+
+            selectedAlbum.ZuneAlbumMetaData = new ExpandedAlbumDetailsViewModel
             {
-                ErrorMessageBox.Show("Error reading album " + Environment.NewLine + id3TagException.Message);
-            }
+                Artist = ftMetaData.AlbumArtist,
+                Title = ftMetaData.AlbumName,
+                SongCount = selectedAlbum.Tracks.Count.ToString(),
+                Year = ftMetaData.Year
+            };
+
+            _model.SelectedAlbum = selectedAlbum;
+
+            Messenger.Default.Send(typeof(SearchViewModel));
         }
-
-        /// <summary>
-        /// converts TrackNumber string into an int
-        /// </summary>
-        /// <returns></returns>
-        private static Func<DetailRow, int> SortByTrackNumber()
-        {
-            return key =>
-                       {
-                           int result;
-                           Int32.TryParse(key.MetaData.TrackNumber, out result);
-
-                           return result;
-                       };
-        }
-
-        private void SetAlbumDetailsFromFile(int songCount, MetaData songMetaData)
-        {
-            _model.AlbumDetailsFromFile = new WebsiteAlbumMetaDataViewModel
-                                              {
-                                                  Artist = songMetaData.AlbumArtist,
-                                                  Title = songMetaData.AlbumName,
-                                                  Year = songMetaData.Year,
-                                                  SongCount = songCount.ToString(),
-                                              };
-
-            //fall back to contributing artists if album artist is not available
-            if (String.IsNullOrEmpty(songMetaData.AlbumArtist))
-                _model.AlbumDetailsFromFile.Artist = songMetaData.ContributingArtists.FirstOrDefault();
-
-
-            //add info so search bar displays the album artist and album title from 
-            //the album that has been selected
-            _model.SearchBarViewModel.SearchText = songMetaData.AlbumName + " " +
-                                                   _model.AlbumDetailsFromFile.Artist;
-        }
-
-        internal override bool IsNextEnabled()
-        {
-            return false;
-        }
-
-        internal override bool IsNextVisible()
-        {
-            return false;
-        }
-
-        internal override bool IsBackVisible()
-        {
-            return false;
-        }
-
     }
 }

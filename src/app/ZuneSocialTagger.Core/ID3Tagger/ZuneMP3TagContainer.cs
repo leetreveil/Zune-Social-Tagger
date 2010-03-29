@@ -47,16 +47,16 @@ namespace ZuneSocialTagger.Core.ID3Tagger
         public MetaData ReadMetaData()
         {
             return new MetaData
-                       {
-                           AlbumArtist = GetValue(ID3Frames.AlbumArtist),
-                           ContributingArtists = GetValue(ID3Frames.ContributingArtists).Split('/'),
-                           AlbumName = GetValue(ID3Frames.AlbumName),
-                           Title = GetValue(ID3Frames.Title),
-                           Year = GetValue(ID3Frames.Year),
-                           DiscNumber = GetValue(ID3Frames.DiscNumber),
-                           Genre = GetValue(ID3Frames.Genre),
-                           TrackNumber = GetValue(ID3Frames.TrackNumber)
-                       };
+               {
+                   AlbumArtist = GetValue(ID3Frames.AlbumArtist),
+                   ContributingArtists = GetValue(ID3Frames.ContributingArtists).Split('/'),
+                   AlbumName = GetValue(ID3Frames.AlbumName),
+                   Title = GetValue(ID3Frames.Title),
+                   Year = GetValue(ID3Frames.Year),
+                   DiscNumber = GetValue(ID3Frames.DiscNumber),
+                   Genre = GetValue(ID3Frames.Genre),
+                   TrackNumber = GetValue(ID3Frames.TrackNumber)
+               };
         }
 
 
@@ -64,17 +64,23 @@ namespace ZuneSocialTagger.Core.ID3Tagger
         {
             foreach (var textFrame in CreateTextFramesFromMetaData(metaData))
             {
-                TextFrame tempTextFrame = textFrame;
+                //TODO: needs testing
 
-                TextFrame existingFrame = (from frame in _container.OfType<TextFrame>()
-                                           where frame.Descriptor.Id == tempTextFrame.Descriptor.Id
-                                           select frame).FirstOrDefault();
+                //we are only allowing fields to be updated if what they are being updated with is not empty
+                if (!string.IsNullOrEmpty(textFrame.Content))
+                {
+                    TextFrame tempTextFrame = textFrame;
+
+                    TextFrame existingFrame = (from frame in _container.OfType<TextFrame>()
+                                               where frame.Descriptor.Id == tempTextFrame.Descriptor.Id
+                                               select frame).FirstOrDefault();
 
 
-                if (existingFrame != null)
-                    _container.Remove(existingFrame);
+                    if (existingFrame != null)
+                        _container.Remove(existingFrame);
 
-                _container.Add(textFrame);
+                    _container.Add(textFrame);
+                }
             }
         }
 

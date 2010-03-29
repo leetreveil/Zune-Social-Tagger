@@ -14,6 +14,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
 
         public AlbumDocumentReader(string url) : this(XmlReader.Create(url))
         {
+
         }
 
         public AlbumDocumentReader(XmlReader reader)

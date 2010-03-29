@@ -1,50 +1,40 @@
-using System;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.GUIV2.Models;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SearchViewModel : ZuneWizardPageViewModelBase
+    public class SearchViewModel : ViewModelBase
     {
-        private readonly ZuneWizardModel _model;
-
-        public SearchViewModel(ZuneWizardModel model)
+        public SearchViewModel(IZuneWizardModel model, SearchHeaderViewModel searchHeaderViewModel)
         {
-            _model = model;
-            this.SearchBarViewModel.StartedSearching += SearchBarViewModel_StartedSearching;
-            this.MoveNextClicked += SearchViewModel_MoveNextClicked;
+            this.SearchHeader = searchHeaderViewModel;
+            model.FoundAlbums = this.SearchHeader.SearchBar.SearchResults;
+
+            this.SearchHeader.AlbumDetails = model.SelectedAlbum.ZuneAlbumMetaData;
+            this.SearchHeader.SearchBar.SearchText = model.SearchText;
+
+            //when the user starts searching we want to move to the next page immediately
+            this.SearchHeader.SearchBar.StartedSearching +=
+                () => Messenger.Default.Send(typeof (SearchResultsViewModel));
+
+            this.MoveBackCommand = new RelayCommand(MoveBack);
+            this.SearchCommand = new RelayCommand(Search);
         }
 
-        void SearchViewModel_MoveNextClicked(object sender, EventArgs e)
+        public RelayCommand MoveBackCommand { get; set; }
+        public RelayCommand SearchCommand { get; private set; }
+        public SearchHeaderViewModel SearchHeader { get; set; }
+
+        public void Search()
         {
-            _model.SearchBarViewModel.Search();
+            this.SearchHeader.SearchBar.Search();
         }
 
-        void SearchBarViewModel_StartedSearching(object sender, EventArgs e)
+        public void MoveBack()
         {
-            //we only want to move to the next page if we are on the current one
-            //this prevents moving to another page when this page is not 'visible'
-            if (base.IsCurrentPage)
-                base.OnMoveNextOverride();
-        }
-
-        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
-        {
-            get { return _model.AlbumDetailsFromFile; }
-        }
-
-        public SearchBarViewModel SearchBarViewModel
-        {
-            get { return _model.SearchBarViewModel; }
-        }
-
-        internal override string NextButtonText
-        {
-            get { return "Search"; }
-        }
-
-        internal override bool IsNextEnabled()
-        {
-            return _model.SearchBarViewModel.CanSearch;
+            Messenger.Default.Send(typeof(IFirstPage));
         }
     }
 }

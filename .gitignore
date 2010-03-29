@@ -24,3 +24,5 @@ Thumbs.db
 *.ncb
 *.suo
 *.cache
+*.tmp
+*.tmp_proj

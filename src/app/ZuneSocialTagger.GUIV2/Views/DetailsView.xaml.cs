@@ -1,6 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using ZuneSocialTagger.GUIV2.ViewModels;
+﻿using System.Windows.Controls;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -9,18 +7,9 @@ namespace ZuneSocialTagger.GUIV2.Views
     /// </summary>
     public partial class DetailsView : UserControl
     {
-        private DetailsViewModel _viewModel;
-
         public DetailsView()
         {
             InitializeComponent();
-
-            this.DataContextChanged += DetailsView_DataContextChanged;
-        }
-
-        void DetailsView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            _viewModel = (DetailsViewModel) this.DataContext;
         }
     }
 }

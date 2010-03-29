@@ -16,17 +16,32 @@
     <WarningLevel>4</WarningLevel>
     <ExpressionBlendVersion>3.0.1927.0</ExpressionBlendVersion>
     <ApplicationIcon>Assets\zuneicondark.ico</ApplicationIcon>
-    <TargetFrameworkSubset>Client</TargetFrameworkSubset>
+    <TargetFrameworkSubset>Full</TargetFrameworkSubset>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;6</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,11 +50,28 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\caliburn\Caliburn.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.PresentationFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\caliburn\Caliburn.PresentationFramework.dll</HintPath>
+    </Reference>
     <Reference Include="leetreveil.AutoUpdate.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\leetreveil.AutoUpdate\leetreveil.AutoUpdate.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\unity\Microsoft.Practices.ObjectBuilder2.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\unity\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -49,6 +81,9 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -80,22 +115,43 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\RelayCommand.cs" />
-    <Compile Include="Converters\AlbumCountToStringConverter.cs" />
-    <Compile Include="Converters\TextToVisibilityConverter.cs" />
-    <Compile Include="Models\DetailRow.cs" />
-    <Compile Include="Models\ZuneWizardModel.cs" />
-    <Compile Include="ErrorMessageBox.cs" />
-    <Compile Include="NotifyPropertyChangedImpl.cs" />
-    <Compile Include="DraggableWindow.cs" />
-    <Compile Include="ViewModels\SearchResultsDetailsViewModel.cs" />
-    <Compile Include="ViewModels\UpdateViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Views\ErrorMessageBoxView.xaml.cs">
-      <DependentUpon>ErrorMessageBoxView.xaml</DependentUpon>
+    <Compile Include="ApplicationModel.cs" />
+    <Compile Include="ApplicationView.xaml.cs">
+      <DependentUpon>ApplicationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SearchBar.xaml.cs">
-      <DependentUpon>SearchBar.xaml</DependentUpon>
+    <Compile Include="Converters\AlbumCountToStringConverter.cs" />
+    <Compile Include="Converters\LinkStatusToImageConverter.cs" />
+    <Compile Include="Converters\NotConverter.cs" />
+    <Compile Include="Converters\PathToImageThumbnailConverter.cs" />
+    <Compile Include="Converters\TextToVisibilityConverter.cs" />
+    <Compile Include="Models\ZuneTypeConverters.cs" />
+    <Compile Include="Models\AlbumDetails.cs" />
+    <Compile Include="Models\AlbumDownloaderWithProgressReporting.cs" />
+    <Compile Include="Models\LinkStatus.cs" />
+    <Compile Include="Models\DetailRow.cs" />
+    <Compile Include="Models\IZuneWizardModel.cs" />
+    <Compile Include="Models\ZuneWizardModel.cs" />
+    <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
+    <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
+    <Compile Include="ViewModels\SearchHeaderViewModel.cs" />
+    <Compile Include="Views\AlbumDetailsView.xaml.cs">
+      <DependentUpon>AlbumDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExpandedAlbumDetailsView.xaml.cs">
+      <DependentUpon>ExpandedAlbumDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchHeaderView.xaml.cs">
+      <DependentUpon>SearchHeaderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ZuneMessageBox.cs" />
+    <Compile Include="DraggableWindow.cs" />
+    <Compile Include="ViewModels\SearchResultsDetailViewModel.cs" />
+    <Compile Include="ViewModels\UpdateViewModel.cs" />
+    <Compile Include="Views\ZuneMessageBoxView.xaml.cs">
+      <DependentUpon>ZuneMessageBoxView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchBarView.xaml.cs">
+      <DependentUpon>SearchBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\DetailsViewModel.cs" />
     <Compile Include="ViewModels\SearchBarViewModel.cs" />
@@ -116,9 +172,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ViewModels\SuccessViewModel.cs" />
-    <Compile Include="ViewModels\WebsiteAlbumMetaDataViewModel.cs" />
-    <Compile Include="ViewModels\ZuneWizardPageViewModelBase.cs" />
-    <Compile Include="ViewModels\ZuneWizardViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
@@ -143,37 +196,15 @@
     <Compile Include="Views\UpdateView.xaml.cs">
       <DependentUpon>UpdateView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WebsiteAlbumMetaDataView.xaml.cs">
-      <DependentUpon>WebsiteAlbumMetaDataView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ZuneWizardView.xaml.cs">
-      <DependentUpon>ZuneWizardView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ZuneHeaderGradient.xaml.cs">
-      <DependentUpon>ZuneHeaderGradient.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ZuneWizardDialog.xaml.cs">
-      <DependentUpon>ZuneWizardDialog.xaml</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <BlendEmbeddedFont Include="Assets\Fonts\ZegoeCapsBold.ttf">
+    <Resource Include="Assets\Fonts\Zegoe Caps.ttf">
       <All>True</All>
       <AutoFill>True</AutoFill>
-    </BlendEmbeddedFont>
-    <BlendEmbeddedFont Include="Assets\Fonts\ZegoeLight-U.ttf">
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-      <Characters>
-      </Characters>
-      <Uppercase>True</Uppercase>
-      <Lowercase>True</Lowercase>
-      <Numbers>True</Numbers>
-      <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
-    <BlendEmbeddedFont Include="Assets\Fonts\ZegoeUI-U.ttf">
+    </Resource>
+    <Resource Include="Assets\Fonts\Zegoe Light - U.ttf">
       <All>True</All>
       <AutoFill>True</AutoFill>
       <Characters>
@@ -182,8 +213,8 @@
       <Lowercase>True</Lowercase>
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
-    <BlendEmbeddedFont Include="Assets\Fonts\ZegoeUI-UBold.ttf">
+    </Resource>
+    <Resource Include="Assets\Fonts\Zegoe UI - U.ttf">
       <All>True</All>
       <AutoFill>True</AutoFill>
       <Characters>
@@ -192,8 +223,8 @@
       <Lowercase>True</Lowercase>
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
-    <BlendEmbeddedFont Include="Assets\Fonts\ZegoeUISemiBold-U.ttf">
+    </Resource>
+    <Resource Include="Assets\Fonts\Zegoe UI - UBold.ttf">
       <All>True</All>
       <AutoFill>True</AutoFill>
       <Characters>
@@ -202,7 +233,17 @@
       <Lowercase>True</Lowercase>
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
+    </Resource>
+    <Resource Include="Assets\Fonts\Zegoe UI SemiBold - U.ttf">
+      <All>True</All>
+      <AutoFill>True</AutoFill>
+      <Characters>
+      </Characters>
+      <Uppercase>True</Uppercase>
+      <Lowercase>True</Lowercase>
+      <Numbers>True</Numbers>
+      <Punctuation>True</Punctuation>
+    </Resource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -218,15 +259,31 @@
     <Resource Include="Assets\magnifyingglassblack.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ApplicationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ErrorMessageBoxView.xaml">
+    <Page Include="Views\AlbumDetailsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ExpandedAlbumDetailsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SearchHeaderView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ZuneMessageBoxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SearchBar.xaml">
+    <Page Include="Views\SearchBarView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -262,22 +319,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WebsiteAlbumMetaDataView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ZuneWizardView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ZuneHeaderGradient.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ZuneWizardDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZuneSocialTagger.Core\ZuneSocialTagger.Core.csproj">
@@ -296,6 +337,59 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\socialtaggerupdater.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\yes.png" />
+    <Resource Include="Assets\no.png" />
+    <Resource Include="Assets\add.png" />
+    <Resource Include="Assets\delete.png" />
+    <Resource Include="Assets\warning.png" />
+    <Resource Include="Assets\stop.png" />
+    <Resource Include="Assets\information.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\minus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\alert.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

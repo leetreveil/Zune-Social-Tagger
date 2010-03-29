@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Views

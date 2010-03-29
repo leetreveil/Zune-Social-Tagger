@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
+using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -9,9 +11,7 @@ namespace ZuneSocialTagger.GUIV2.Views
     {
         public SelectAudioFilesView()
         {
-            this.InitializeComponent();
-			
-            // Insert code required on object creation below this point.
+            InitializeComponent();
         }
     }
 }

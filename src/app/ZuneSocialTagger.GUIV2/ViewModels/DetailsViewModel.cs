@@ -2,31 +2,50 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.Models;
+using ZuneSocialTagger.GUIV2.Properties;
 using ZuneSocialTagger.GUIV2.Views;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    class DetailsViewModel : ZuneWizardPageViewModelBase
+    public class DetailsViewModel : ViewModelBase
     {
-        private readonly ZuneWizardModel _model;
+        private readonly IZuneWizardModel _model;
 
-        public DetailsViewModel(ZuneWizardModel model)
+        public DetailsViewModel(IZuneWizardModel model)
         {
             _model = model;
 
-            base.MoveNextClicked += DetailsViewModel_MoveNextClicked;
+            this.AlbumDetailsFromWebsite = _model.SelectedAlbum.WebAlbumMetaData;
+            this.AlbumDetailsFromFile = _model.SelectedAlbum.ZuneAlbumMetaData;
+
+            this.MoveToStartCommand = new RelayCommand(MoveToStart);
+            this.MoveBackCommand = new RelayCommand(MoveBack);
+            this.SaveCommand = new RelayCommand(Save);
         }
 
-        private void DetailsViewModel_MoveNextClicked(object sender, EventArgs e)
+        public ObservableCollection<Song> Rows
         {
- 
+            get { return _model.SelectedAlbum.Tracks; }
+        }
+
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
+        public RelayCommand MoveToStartCommand { get; private set; }
+        public RelayCommand MoveBackCommand { get; private set; }
+        public RelayCommand SaveCommand { get; private set; }
+
+        public void Save()
+        {
             Mouse.OverrideCursor = Cursors.Wait;
 
             var uaeExceptions = new List<UnauthorizedAccessException>();
 
-            foreach (var row in _model.Rows)
+            foreach (var row in _model.SelectedAlbum.Tracks)
             {
                 try
                 {
@@ -44,10 +63,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                         container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, row.SelectedSong.ArtistMediaID));
                         container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, row.SelectedSong.MediaID));
 
-                        if (Properties.Settings.Default.UpdateAlbumInfo)
+                        if (Settings.Default.UpdateAlbumInfo)
                             container.AddMetaData(row.SelectedSong.MetaData);
 
-                        //TODO: convert TrackNumbers that are imported as 1/1 to just 1 or 1/12 to just 1
                         container.WriteToFile(row.FilePath);
                     }
 
@@ -62,52 +80,40 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             if (uaeExceptions.Count > 0)
                 //usually occurs when a file is readonly
-                ErrorMessageBox.Show("One or more files could not be written to. Have you checked the files are not marked read-only?");
+                Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,"One or more files could not be written to. Have you checked the files are not marked read-only?"));
             else
-                new SuccessView(new SuccessViewModel(_model)).Show();
+            {
+                //must check that this is not null first because if we use the old mode of reading this will never get set
+                if (_model.SelectedAlbum.AlbumDetails != null)
+                    _model.SelectedAlbum.AlbumDetails.NeedsRefreshing = true;
+
+                new SuccessView(new SuccessViewModel(_model.SelectedAlbum.WebAlbumMetaData, _model.SelectedAlbum.ZuneAlbumMetaData)).Show();
+
+                Messenger.Default.Send("ALBUMLINKED"); 
+            }
 
             Mouse.OverrideCursor = null;
         }
 
-        public ObservableCollection<DetailRow> Rows 
+        public void MoveBack()
         {
-            get { return _model.Rows; }
-        } 
-
-        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromWebsite
-        {
-            get { return _model.AlbumDetailsFromWebsite; }
+            Messenger.Default.Send(typeof(SearchResultsViewModel));
         }
 
-        public WebsiteAlbumMetaDataViewModel AlbumDetailsFromFile
+        public void MoveToStart()
         {
-            get { return _model.AlbumDetailsFromFile; }
-        }
-
-        internal override bool IsNextEnabled()
-        {
-            return true;
-        }
-
-        internal override string NextButtonText
-        {
-            get
-            {
-                return "Save";
-            }
+            Messenger.Default.Send(typeof(IFirstPage));
         }
 
         public bool UpdateAlbumInfo
         {
-            get { return Properties.Settings.Default.UpdateAlbumInfo; }
+            get { return Settings.Default.UpdateAlbumInfo; }
             set
             {
                 if (value != UpdateAlbumInfo)
                 {
-                    Properties.Settings.Default.UpdateAlbumInfo = value;
-                    Properties.Settings.Default.Save();
+                    Settings.Default.UpdateAlbumInfo = value;
                 }
-
             }
         }
     }

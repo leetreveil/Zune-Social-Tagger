@@ -10,9 +10,9 @@ namespace ZuneSocialTagger.Core
         public string Name { get; set; }
         public Guid Guid { get; set; }
 
-        public ZuneAttribute(string mediaID, Guid guid)
+        public ZuneAttribute(string mediaId, Guid guid)
         {
-            Name = mediaID;
+            Name = mediaId;
             Guid = guid;
         }
 

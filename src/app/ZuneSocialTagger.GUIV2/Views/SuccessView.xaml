@@ -6,16 +6,18 @@
     WindowStartupLocation="CenterScreen"
     FontFamily="/ZuneSocialTagger.GUI;Component/Assets/Fonts/#Zegoe UI - U"
     xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views"
-    xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2"
-    xmlns:ViewModels="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels"
-    ShowInTaskbar="False"
+    xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2" ShowInTaskbar="False"
     Topmost="True"
     Width="600" Height="200">
 
     <Window.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
     </Window.Resources>
-    
+
+    <Window.DataContext>
+        <Binding Source="{StaticResource Locator}" Path="Success" />
+    </Window.DataContext>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -26,8 +28,8 @@
 
         <!--HEADER-->
         <StackPanel Grid.Row="0">
-            <local:ZuneHeaderGradient/>
-            <TextBlock  FontSize="26.667" Text="SUCCESS"/>
+            <Control Template="{DynamicResource Gradient}"/>
+            <TextBlock FontFamily="../Assets/Fonts/Zegoe Caps"  FontSize="26.667" Text="SUCCESS"/>
         </StackPanel>
 
         
@@ -38,9 +40,9 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             
-            <views:WebsiteAlbumMetaDataView DataContext="{Binding AlbumDetailsFromFile}"/>
+            <views:ExpandedAlbumDetailsView DataContext="{Binding AlbumDetailsFromFile}"/>
             <Image Margin="10,10,10,10" Grid.Column="1" Source="../Assets/arrow.png"/>
-            <views:WebsiteAlbumMetaDataView DataContext="{Binding AlbumDetailsFromWebsite}" Grid.Column="2"/>
+            <views:ExpandedAlbumDetailsView DataContext="{Binding AlbumDetailsFromWebsite}" Grid.Column="2"/>
         </Grid>
         
         <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
@@ -48,7 +50,7 @@
             <TextBlock Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"  Text="Tip: right click and copy the album artwork to so it can be pasted into the zune software" FontSize="10" />
         </StackPanel>
 
-        <Button Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="60" Grid.Row="2" Content="OK" Click="Button_Click" />
+        <Button Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="2" Content="OK" Click="Button_Click" />
     </Grid>
 
 </local:DraggableWindow>

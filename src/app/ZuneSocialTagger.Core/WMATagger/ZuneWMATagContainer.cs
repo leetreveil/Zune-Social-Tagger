@@ -47,8 +47,15 @@ namespace ZuneSocialTagger.Core.WMATagger
         public void AddMetaData(MetaData metaData)
         {
             IEnumerable<Attribute> attributes = CreateTextFramesFromMetaData(metaData);
+
             foreach (var attribute in attributes)
-                _container.Add(attribute);
+            {
+                //TODO: needs testing
+                if (!String.IsNullOrEmpty(attribute.Value))
+                {
+                    _container.Add(attribute);
+                }
+            }
         }
 
         public void WriteToFile(string filePath)
