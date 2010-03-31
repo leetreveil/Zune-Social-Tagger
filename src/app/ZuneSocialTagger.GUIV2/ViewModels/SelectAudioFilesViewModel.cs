@@ -47,7 +47,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
             else
             {
-                var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files |*.mp3;*.wma" };
+                var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files .mp3,.wma |*.mp3;*.wma" };
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                     ReadFiles(ofd.FileNames);

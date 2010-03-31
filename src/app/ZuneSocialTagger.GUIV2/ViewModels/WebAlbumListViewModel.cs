@@ -28,7 +28,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private AlbumDownloaderWithProgressReporting _downloader;
         private bool _canShowProgressBar;
         private bool _canShowReloadButton;
-        private bool _isTaskbarSupported;
+        private readonly bool _isTaskbarSupported;
+        private bool _isCurrentAlbumLinkable;
 
         public WebAlbumListViewModel(IZuneWizardModel model, IZuneDatabaseReader dbReader,CachedZuneDatabaseReader cacheReader)
         {
@@ -63,6 +64,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         }
 
         #region View Binding Properties
+
+        public bool IsCurrentAlbumLinkable
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         public int SelectedIndex
         {
@@ -301,25 +310,30 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                  albumDetails.LinkStatus = LinkStatus.Unknown;
 
-                 string url = String.Concat(Urls.Album, albumMetaData.AlbumMediaId);
-
                  if (albumMetaData.AlbumMediaId != Guid.Empty)
                  {
-                     var downloader = new AlbumDetailsDownloader(url);
+                     var downloader = new AlbumDetailsDownloader(String.Concat(Urls.Album, albumMetaData.AlbumMediaId));
 
                      downloader.DownloadCompleted += (alb, state) =>
                          {
-                             albumDetails.LinkStatus = SharedMethods.GetAlbumLinkStatus(alb.AlbumTitle,
-                                                                                        alb.AlbumArtist,
-                                                                                        albumMetaData.AlbumTitle, 
-                                                                                        albumMetaData.AlbumArtist);
+                             if (alb != null)
+                             {
+                                 albumDetails.LinkStatus = SharedMethods.GetAlbumLinkStatus(alb.AlbumTitle,
+                                                             alb.AlbumArtist,
+                                                             albumMetaData.AlbumTitle,
+                                                             albumMetaData.AlbumArtist);
 
-                             albumDetails.WebAlbumMetaData = new Album
-                                                        {
-                                                            AlbumArtist=alb.AlbumArtist,
-                                                            AlbumTitle = alb.AlbumTitle,
-                                                            ArtworkUrl = alb.ArtworkUrl
-                                                        };
+                                 albumDetails.WebAlbumMetaData = new Album
+                                 {
+                                     AlbumArtist = alb.AlbumArtist,
+                                     AlbumTitle = alb.AlbumTitle,
+                                     ArtworkUrl = alb.ArtworkUrl
+                                 };  
+                             }
+                             else
+                             {
+                                 albumDetails.LinkStatus = LinkStatus.Unavailable;
+                             }
                          };
 
                      downloader.DownloadAsync();

@@ -72,7 +72,7 @@
             <ListView.ContextMenu>
                 <ContextMenu>
 
-                    <MenuItem Header="Link"
+                    <MenuItem IsEnabled="{Binding IsCurrentAlbumLinkable}" Header="Link"
                               Click="LinkAlbum_Click">
                         <MenuItem.Icon>
                             <Image Width="16"
@@ -81,7 +81,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="De-Link"
+                    <MenuItem IsEnabled="{Binding IsCurrentAlbumLinkable}" Header="De-Link"
                               Click="DelinkAlbum_Click">
                         <MenuItem.Icon>
                             <Image Width="16"
