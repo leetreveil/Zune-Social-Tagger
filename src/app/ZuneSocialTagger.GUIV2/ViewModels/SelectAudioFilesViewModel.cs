@@ -17,9 +17,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public SelectAudioFilesViewModel(IZuneWizardModel model)
         {
             _model = model;
-
             this.CanSwitchToNewMode = true;
-
             this.SelectFilesCommand = new RelayCommand(SelectFiles);
             this.SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);    
         }
@@ -35,15 +33,25 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void SelectFiles()
         {
-            var commonOpenFileDialog = new CommonOpenFileDialog("Select audio files");
+            if (CommonFileDialog.IsPlatformSupported)
+            {
+                var commonOpenFileDialog = new CommonOpenFileDialog("Select audio files");
 
-            commonOpenFileDialog.Multiselect = true;
-            commonOpenFileDialog.EnsureFileExists = true;
-            commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("MP3 Files","*.mp3"));
-            commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("WMA Files", "*.wma"));
+                commonOpenFileDialog.Multiselect = true;
+                commonOpenFileDialog.EnsureFileExists = true;
+                commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("MP3 Files", "*.mp3"));
+                commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("WMA Files", "*.wma"));
 
-            if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.OK)
-                ReadFiles(commonOpenFileDialog.FileNames);
+                if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.OK)
+                    ReadFiles(commonOpenFileDialog.FileNames);
+            }
+            else
+            {
+                var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files |*.mp3;*.wma" };
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                    ReadFiles(ofd.FileNames);
+            }
         }
 
         private void ReadFiles(IEnumerable<string> files)
