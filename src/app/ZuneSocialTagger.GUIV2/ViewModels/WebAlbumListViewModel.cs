@@ -448,7 +448,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private void ReportProgress(int current, int total)
         {
             this.LoadingProgress = current*100/total;
-            TaskbarManager.Instance.SetProgressValue(current, total);
+
+            if (_isTaskbarSupported)
+                TaskbarManager.Instance.SetProgressValue(current, total);
         }
 
         private void downloader_FinishedDownloadingAlbums()
@@ -470,8 +472,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private void ResetLoadingProgress()
         {
             this.LoadingProgress = 0;
-            //TaskbarManager.Instance.SetProgressValue(0, 100);
-            TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
+
+            if (_isTaskbarSupported)
+                TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
         }
 
         private void UpdateLinkTotals()
