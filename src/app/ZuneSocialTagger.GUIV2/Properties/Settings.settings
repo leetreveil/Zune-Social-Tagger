@@ -9,7 +9,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="UpdateFeedUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://github.com/leetreveil/Zune-Social-Tagger/raw/83cc55770640fb8e8131dfe949f696f6ef8a5dac/docs/zunesocupdatefeed.xml</Value>
+      <Value Profile="(Default)">http://github.com/leetreveil/Zune-Social-Tagger/raw/master/updates/zunesocupdatefeed.xml</Value>
     </Setting>
     <Setting Name="UpdateExeName" Type="System.String" Scope="User">
       <Value Profile="(Default)">socialtaggerupdater.exe</Value>
