@@ -64,6 +64,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\leetreveil.AutoUpdate\leetreveil.AutoUpdate.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\win7apicodepack\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell">
+      <HintPath>..\..\..\libs\win7apicodepack\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\..\..\libs\ninject\Ninject.dll</HintPath>
     </Reference>

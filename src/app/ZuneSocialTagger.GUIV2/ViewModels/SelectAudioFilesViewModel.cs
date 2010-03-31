@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Forms;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.Core;
 
@@ -36,10 +35,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void SelectFiles()
         {
-            var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files |*.mp3;*.wma" };
+            var commonOpenFileDialog = new CommonOpenFileDialog("Select audio files");
 
-            if (ofd.ShowDialog() == DialogResult.OK)
-                ReadFiles(ofd.FileNames);
+            commonOpenFileDialog.Multiselect = true;
+            commonOpenFileDialog.EnsureFileExists = true;
+            commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("MP3 Files","*.mp3"));
+            commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("WMA Files", "*.wma"));
+
+            if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.OK)
+                ReadFiles(commonOpenFileDialog.FileNames);
         }
 
         private void ReadFiles(IEnumerable<string> files)

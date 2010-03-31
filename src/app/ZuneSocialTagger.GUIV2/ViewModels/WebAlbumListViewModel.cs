@@ -5,6 +5,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.WindowsAPICodePack.Taskbar;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUIV2.Models;
@@ -27,6 +28,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private AlbumDownloaderWithProgressReporting _downloader;
         private bool _canShowProgressBar;
         private bool _canShowReloadButton;
+        private bool _isTaskbarSupported;
 
         public WebAlbumListViewModel(IZuneWizardModel model, IZuneDatabaseReader dbReader,CachedZuneDatabaseReader cacheReader)
         {
@@ -43,6 +45,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.SortViewModel.SortClicked += SortViewModel_SortClicked;
 
             this.ScanAllText = "SCAN ALL";
+            _isTaskbarSupported = TaskbarManager.IsPlatformSupported;
 
             SetupCommandBindings();
 
@@ -439,11 +442,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             UpdateLinkTotals();
             PerformSort(Settings.Default.SortOrder);
             this.SortViewModel.Sort(Settings.Default.SortOrder);
+            ResetLoadingProgress();
         }
 
         private void ReportProgress(int current, int total)
         {
             this.LoadingProgress = current*100/total;
+            TaskbarManager.Instance.SetProgressValue(current, total);
         }
 
         private void downloader_FinishedDownloadingAlbums()
@@ -465,6 +470,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private void ResetLoadingProgress()
         {
             this.LoadingProgress = 0;
+            //TaskbarManager.Instance.SetProgressValue(0, 100);
+            TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
         }
 
         private void UpdateLinkTotals()
