@@ -12,6 +12,7 @@ using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
 using System.Threading;
 using ZuneSocialTagger.GUIV2.Properties;
+using ZuneSocialTagger.GUIV2.Views;
 using Album = ZuneSocialTagger.Core.ZuneDatabase.Album;
 using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
 using ZuneSocialTagger.Core.ZuneDatabase;
@@ -210,7 +211,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             string msg = "Are you sure? All downloaded album details will be reset and the database will be reloaded.";
 
-            ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning, msg), ZuneMessageBoxButton.OKCancel, () =>
+            ZuneMessageBoxView.Show(new ErrorMessage(ErrorMode.Warning, msg), ZuneMessageBoxButton.OKCancel, () =>
                  {
                      this.Albums.Clear();
                      this.SortViewModel.SortOrder =SortOrder. NotSorted;

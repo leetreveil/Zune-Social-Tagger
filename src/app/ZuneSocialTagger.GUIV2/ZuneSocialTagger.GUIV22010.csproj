@@ -160,8 +160,6 @@
     <Compile Include="Views\SortView.xaml.cs">
       <DependentUpon>SortView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ZuneMessageBoxButton.cs" />
-    <Compile Include="ZuneMessageBox.cs" />
     <Compile Include="DraggableWindow.cs" />
     <Compile Include="ViewModels\SearchResultsDetailViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />

@@ -1,9 +1,16 @@
 using System;
 using System.Windows;
+using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
+    public enum ZuneMessageBoxButton
+    {
+        OK,
+        OKCancel
+    }
+
     /// <summary>
     /// Interaction logic for ZuneMessageBoxView.xaml
     /// </summary>
@@ -13,6 +20,15 @@ namespace ZuneSocialTagger.GUIV2.Views
         private readonly ErrorMode _mode;
         private readonly ZuneMessageBoxButton _buttonMode;
         private readonly Action _okClickedCallback;
+
+        public static void Show(ErrorMessage message)
+        {
+            new ZuneMessageBoxView(message.Message, message.ErrorMode).Show();
+        }
+        public static void Show(ErrorMessage message, ZuneMessageBoxButton buttonMode, Action okClickedCallback)
+        {
+            new ZuneMessageBoxView(message.Message, message.ErrorMode, buttonMode, okClickedCallback).Show();
+        }
 
         public ZuneMessageBoxView(string errorMessage, ErrorMode mode)
         {
