@@ -1020,4 +1020,68 @@
         </Setter>
     </Style>
 
+    <Style x:Key="{x:Type CheckBox}" TargetType="{x:Type CheckBox}">
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <BulletDecorator Background="Transparent">
+                        <BulletDecorator.Bullet>
+                            <Border x:Name="Border"  
+              Width="13" 
+              Height="13" 
+              CornerRadius="0" 
+              BorderThickness="1"
+              BorderBrush="#7F7F7F">
+                                <Path
+                x:Name="CheckMark"
+                SnapsToDevicePixels="False" 
+                      HorizontalAlignment="Center"
+      VerticalAlignment="Center"
+                Stroke="#404040"
+                StrokeThickness="2"
+                Data="M 9 1 L 4 7 L 1 4"  />
+
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <GradientStop Color="#F7F7F7"
+                                                  Offset="0" />
+                                        <GradientStop Color="#DFDFDF"
+                                                  Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+
+                            </Border>
+                        </BulletDecorator.Bullet>
+                        <ContentPresenter Margin="4,0,0,0"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
+            RecognizesAccessKey="True"/>
+                    </BulletDecorator>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="false">
+                            <Setter TargetName="CheckMark" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="{x:Null}">
+                            <Setter TargetName="CheckMark" Property="Data" Value="M 0 7 L 7 0" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="Black" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter TargetName="Border" Property="Background" Value="#E0E0E0" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="#606060" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Border" Property="Background" Value="#EEEEEE" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="#AAAAAA" />
+                            <Setter Property="Foreground" Value="#888888"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
