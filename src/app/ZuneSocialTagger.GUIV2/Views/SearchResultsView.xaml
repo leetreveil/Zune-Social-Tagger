@@ -70,9 +70,9 @@
                       ItemContainerStyle="{StaticResource SelectedItemHighlight}" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="10">
+                        <StackPanel Orientation="Horizontal"  Margin="10">
                             <Image Source="{Binding ArtworkUrl}" Width="60" Height="60" />
-                            <StackPanel VerticalAlignment="Center" Margin="5">
+                            <StackPanel Margin="5,0,0,0">
                                 <StackPanel.ToolTip>
                                     <TextBlock Text="{Binding Title}"/>
                                 </StackPanel.ToolTip>
