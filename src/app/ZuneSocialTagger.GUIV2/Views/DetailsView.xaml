@@ -10,7 +10,7 @@
 
     <Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition />
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
@@ -24,7 +24,7 @@
                     <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-			 <views:ExpandedAlbumDetailsView DataContext="{Binding AlbumDetailsFromFile}" Grid.Column = "0" />
+			 <views:ExpandedAlbumDetailsView DataContext="{Binding AlbumDetailsFromFile}" />
              <views:ExpandedAlbumDetailsView DataContext="{Binding AlbumDetailsFromWebsite}" Grid.Column = "1" />
                 
             </Grid>

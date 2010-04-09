@@ -143,7 +143,6 @@
     <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
     <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
     <Compile Include="ViewModels\InlineZuneMessageViewModel.cs" />
-    <Compile Include="ViewModels\SearchHeaderViewModel.cs" />
     <Compile Include="Models\SortOrder.cs" />
     <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />
     <Compile Include="ViewModels\SortViewModel.cs" />
@@ -154,9 +153,6 @@
     <Compile Include="ViewModels\ErrorMode.cs" />
     <Compile Include="Views\ExpandedAlbumDetailsView.xaml.cs">
       <DependentUpon>ExpandedAlbumDetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SearchHeaderView.xaml.cs">
-      <DependentUpon>SearchHeaderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectAudioFilesView.xaml.cs">
       <DependentUpon>SelectAudioFilesView.xaml</DependentUpon>
@@ -172,11 +168,10 @@
     <Compile Include="Views\ZuneMessageBoxView.xaml.cs">
       <DependentUpon>ZuneMessageBoxView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SearchBarView.xaml.cs">
-      <DependentUpon>SearchBarView.xaml</DependentUpon>
+    <Compile Include="Controls\SearchBarControl.xaml.cs">
+      <DependentUpon>SearchBarControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\DetailsViewModel.cs" />
-    <Compile Include="ViewModels\SearchBarViewModel.cs" />
     <Compile Include="ViewModels\SearchResultsViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
     <Compile Include="ViewModels\WebAlbumListViewModel.cs" />
@@ -301,10 +296,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SearchHeaderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\SelectAudioFilesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -319,7 +310,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SearchBarView.xaml">
+    <Page Include="Controls\SearchBarControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -456,7 +447,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controls\" />
+    <Resource Include="Assets\magnifyingglass_light.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

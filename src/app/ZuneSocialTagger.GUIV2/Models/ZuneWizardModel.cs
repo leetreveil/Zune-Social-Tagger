@@ -10,14 +10,8 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public ZuneWizardModel()
         {
-            this.FoundAlbums = new ObservableCollection<Album>();
             this.AlbumsFromDatabase = new ObservableCollection<AlbumDetailsViewModel>();
         }
-
-        /// <summary>
-        /// When searching, the results are populated here
-        /// </summary>
-        public ObservableCollection<Album> FoundAlbums { get; set; }
 
         public SelectedAlbum SelectedAlbum { get; set; }
 

@@ -3,7 +3,6 @@ using Ninject;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.ViewModels;
-using ZuneSocialTagger.ZunePlugin;
 
 namespace ZuneSocialTagger.GUIV2
 {
@@ -17,9 +16,8 @@ namespace ZuneSocialTagger.GUIV2
         static ViewModelLocator()
         {
             Container.Bind<IZuneWizardModel>().To<ZuneWizardModel>().InSingletonScope();
-            Container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
+            Container.Bind<IZuneDatabaseReader>().To<TestZuneDatabaseReader>().InSingletonScope();
             Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
-            Container.Bind<SearchHeaderViewModel>().ToSelf().InSingletonScope();
             Container.Bind<InlineZuneMessageViewModel>().ToSelf().InSingletonScope();
             Container.Bind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
             Container.Bind<CachedZuneDatabaseReader>().ToSelf().InSingletonScope();

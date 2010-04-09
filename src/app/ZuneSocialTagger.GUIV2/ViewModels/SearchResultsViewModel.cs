@@ -18,29 +18,18 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SearchResultsViewModel : ViewModelBase
     {
-        private readonly IZuneWizardModel _model;
+       // private readonly IZuneWizardModel _model;
         private bool _isLoading;
         private SearchResultsDetailViewModel _searchResultsDetailViewModel;
         private bool _showNoResultsMessage;
 
-        public SearchResultsViewModel(IZuneWizardModel model, SearchHeaderViewModel searchHeaderViewModel)
+        public SearchResultsViewModel(IZuneWizardModel model)
         {
-            _model = model;
-
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
-            this.SearchHeader = searchHeaderViewModel;
-            this.Albums = _model.FoundAlbums;
-
-            this.SearchHeader.SearchBar.FinishedSearching += new Action(SearchBar_FinishedSearching);
+            this.Albums = new ObservableCollection<Album>();
 
             this.MoveNextCommand = new RelayCommand(MoveNext);
             this.MoveBackCommand = new RelayCommand(MoveBack);
-        }
-
-        void SearchBar_FinishedSearching()
-        {
-            if (this.SearchHeader.SearchBar.SearchResults.Count == 0)
-                ShowNoResultsMessage = true;
         }
 
         public ObservableCollection<Album> Albums { get; set; }
@@ -83,8 +72,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        public SearchHeaderViewModel SearchHeader { get; set; }
-
         public void MoveBack()
         {
             Messenger.Default.Send(typeof(SearchViewModel));
@@ -111,7 +98,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                      IEnumerable<Track> tracks = reader.Read();
 
-                     _model.SelectedAlbum.WebAlbumMetaData =  SetAlbumDetails(tracks);
+                    // _model.SelectedAlbum.WebAlbumMetaData =  SetAlbumDetails(tracks);
                      AddSelectedSongs(tracks);
 
 
@@ -156,11 +143,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                  }));
 
 
-            foreach (var row in _model.SelectedAlbum.Tracks)
-            {
-                row.SongsFromWebsite = this.SearchResultsDetailViewModel.SelectedAlbumSongs;
-                row.Tracks = tracks;
-            }
+        //    foreach (var row in _model.SelectedAlbum.Tracks)
+        //    {
+        //        row.SongsFromWebsite = this.SearchResultsDetailViewModel.SelectedAlbumSongs;
+        //        row.Tracks = tracks;
+        //    }
         }
     }
 }

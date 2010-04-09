@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -10,6 +11,13 @@ namespace ZuneSocialTagger.GUIV2.Views
         public SearchView()
         {
             this.InitializeComponent();
+        }
+
+        private void SearchBarControl_SearchClicked()
+        {
+            var searchViewModel = (SearchViewModel) this.DataContext;
+
+            searchViewModel.Search();
         }
     }
 }

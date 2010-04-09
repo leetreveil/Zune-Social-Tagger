@@ -9,41 +9,65 @@
 	x:Name="UserControl" 
     FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U">
 
-	<UserControl.Resources>
+    <UserControl.Resources>
         <ResourceDictionary Source="../Resources.xaml "/>
     </UserControl.Resources>
 
-    <UserControl.Triggers>
-        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-            <BeginStoryboard Storyboard="{StaticResource LoadingAnim}"/>
-        </EventTrigger>
-    </UserControl.Triggers>
-
-    <Border x:Name="LayoutRoot">
-		<Grid MaxHeight="400">
-			<Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="10"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="20"/>
-				<RowDefinition  />
-                <RowDefinition Height="Auto"/>
-			</Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition  />
+            </Grid.RowDefinitions>
 
-            <views:SearchHeaderView VerticalAlignment="Top" Grid.ColumnSpan="3" DataContext="{Binding SearchHeader}" />
+            <TextBlock Grid.Row="0" Width="60" x:Name="tbLoading"
+                       Grid.Column="2" VerticalAlignment="Bottom" FontSize="13.333" Foreground="#FF8A8D90" HorizontalAlignment="Right">
+                
+                <TextBlock.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                
+                             <Setter Property="TextBlock.Visibility" Value="Visible"/>   
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                            <Storyboard>
+                                                <StringAnimationUsingKeyFrames RepeatBehavior="Forever"
+                                                                               BeginTime="00:00:00" 
+                                                                               Storyboard.TargetProperty="Text">
 
-            <TextBlock Grid.Row="1" Width="60" x:Name="tbLoading" Visibility="{Binding Path=IsLoading, Converter = {StaticResource BoolToVisConverter}}" 
-                       Grid.Column="2" VerticalAlignment="Bottom" FontSize="13.333" Foreground="#FF8A8D90" HorizontalAlignment="Right" />
+                                                    <DiscreteStringKeyFrame KeyTime="00:00:00"
+                                                                            Value="Loading" />
+                                                    <DiscreteStringKeyFrame KeyTime="00:00:00.2000000"
+                                                                            Value="Loading." />
+                                                    <DiscreteStringKeyFrame KeyTime="00:00:00.4000000"
+                                                                            Value="Loading.." />
+                                                    <DiscreteStringKeyFrame KeyTime="00:00:00.6000000"
+                                                                            Value="Loading..." />
+                                                </StringAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                            
+                            <DataTrigger Binding="{Binding IsLoading}" Value="False">
+                                <Setter Property="TextBlock.Visibility" Value="Hidden"/>  
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+
+            </TextBlock>
 
 
             <ListView Grid.Row="2" x:Name="lvAlbums" SelectionChanged="lvAlbums_SelectionChanged"
                       SelectedIndex="0" Background="Transparent" BorderBrush="Transparent" IsSynchronizedWithCurrentItem="True" 
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Albums}" 
-                      Margin="0,0,36,0" FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U" 
-                      ItemContainerStyle="{DynamicResource SelectedItemHighlight}" >
+                      Margin="0,0,20,0" 
+                      ItemContainerStyle="{StaticResource SelectedItemHighlight}" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="10">
@@ -80,16 +104,6 @@
 
 
             <views:SearchResultsDetailView Grid.Row="2" Grid.Column="2" DataContext="{Binding SearchResultsDetailViewModel}"/>
-            
-            <StackPanel Margin="0,25,0,0" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right"  Orientation="Horizontal">
 
-                <Button Content="BACK" Margin="0,0,10,0" Command="{Binding MoveBackCommand}"/>
-                
-                <Button Content="NEXT" IsEnabled="{Binding Path=IsLoading, Converter={StaticResource NotConverter}}" 
-                        Command="{Binding MoveNextCommand}"/>
-                
-            </StackPanel>
-
-		</Grid>
-	</Border>
+        </Grid>
 </UserControl>

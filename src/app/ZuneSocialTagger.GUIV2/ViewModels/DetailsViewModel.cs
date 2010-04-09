@@ -97,7 +97,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void MoveBack()
         {
-            Messenger.Default.Send(typeof(SearchResultsViewModel));
+            Messenger.Default.Send(typeof(SearchViewModel));
         }
 
         public void MoveToStart()

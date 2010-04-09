@@ -5,6 +5,12 @@ using System.Linq;
 
 namespace ZuneSocialTagger.Core.ZuneDatabase
 {
+    public enum DbAlbumChanged
+    {
+        Added,
+        Removed
+    }
+
     public class TestZuneDatabaseReader : IZuneDatabaseReader
     {
         private List<Album> _deserializedAlbums;
@@ -51,6 +57,26 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
             FinishedReadingAlbums.Invoke();
         }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="albumIds">A list of album id's to check against</param>
+        ///// <returns>A list of albim ids with a flag identifying if they where added / removed from the database</returns>
+        //public Dictionary<Guid,DbAlbumChanged> CheckForChanges(IEnumerable<Guid> albumIds)
+        //{
+        //    var dict = new Dictionary<Guid, DbAlbumChanged>();
+
+        //    //get list of media id's
+        //    IEnumerable<Guid> dbMediaIds = _deserializedAlbums.Select(x => x.AlbumMediaId);
+
+        //    foreach (Guid albumId in albumIds)
+        //    {
+        //        if (!_deserializedAlbums.Where(x=> x.AlbumMediaId))
+        //        {
+                    
+        //        }
+        //    }
+        //}
 
         public Album GetAlbum(int index)
         {
