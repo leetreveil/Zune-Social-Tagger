@@ -62,21 +62,21 @@
                             </Grid.ColumnDefinitions>
                             
                             <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                <TextBlock Width="23" Text="{Binding MetaData.TrackNumber}" VerticalAlignment="Center" FontSize="18"/>
+                                    <TextBlock Width="23" Text="{Binding MetaData.TrackNumber,Converter={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" VerticalAlignment="Center" FontSize="18"/>
                                 <TextBlock ToolTip="{Binding MetaData.Title}" Text="{Binding MetaData.Title}" VerticalAlignment="Center" Margin="10,0,0,0"/>
                             </StackPanel>
 
-                            <ComboBox ItemsSource="{Binding SongsFromWebsite}" 
+                                <ComboBox x:Name="cmbBox" ItemsSource="{Binding SongsFromWebsite}" 
                                       ToolTip="{Binding RelativeSource={RelativeSource Self},Path=SelectedItem.MetaData.Title}"  
                                       SelectedItem="{Binding SelectedSong}" IsReadOnly="True" Grid.Column="1" 
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                                      Width="280" VerticalAlignment="Center">
-                                
-                                <ComboBox.ItemTemplate>
+                                      Width="280" VerticalAlignment="Center" >
+
+                                    <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         
                                         <StackPanel Height="25" Orientation="Horizontal">
-                                            <TextBlock Width="15" Text="{Binding MetaData.TrackNumber}" VerticalAlignment="Top" FontSize="12" FontWeight="Bold"/>
+                                                <TextBlock Width="15" Text="{Binding MetaData.TrackNumber,Converter={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" VerticalAlignment="Top" FontSize="12" FontWeight="Bold"/>
                                             <TextBlock Text="{Binding MetaData.Title}" VerticalAlignment="Top" Margin="10,0,0,0"/>
                                         </StackPanel>
                                         
@@ -93,7 +93,7 @@
 
     </Border>
 
-        <CheckBox IsChecked="{Binding UpdateAlbumInfo}" VerticalAlignment="Top" Grid.Row="2" 
+        <CheckBox Margin="0,5,0,0" IsChecked="{Binding UpdateAlbumInfo}" VerticalAlignment="Top" Grid.Row="2" 
                   Content="Update album information (artist, title, etc)"/>
         
         <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="Auto" Grid.Row="2" 

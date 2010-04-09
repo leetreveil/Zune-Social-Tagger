@@ -18,13 +18,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 {
     public class SearchResultsViewModel : ViewModelBase
     {
-       // private readonly IZuneWizardModel _model;
+        private readonly IZuneWizardModel _model;
         private bool _isLoading;
         private SearchResultsDetailViewModel _searchResultsDetailViewModel;
         private bool _showNoResultsMessage;
 
         public SearchResultsViewModel(IZuneWizardModel model)
         {
+            _model = model;
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
             this.Albums = new ObservableCollection<Album>();
 
@@ -45,7 +46,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                    RaisePropertyChanged("SearchResultsDetailViewModel");
             }
         }
-
 
         public bool ShowNoResultsMessage
         {
@@ -98,7 +98,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                      IEnumerable<Track> tracks = reader.Read();
 
-                    // _model.SelectedAlbum.WebAlbumMetaData =  SetAlbumDetails(tracks);
+                     _model.SelectedAlbum.WebAlbumMetaData =  SetAlbumDetails(tracks);
                      AddSelectedSongs(tracks);
 
 
@@ -115,7 +115,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         }
 
-        private ExpandedAlbumDetailsViewModel SetAlbumDetails(IEnumerable<Track> tracks)
+        private static ExpandedAlbumDetailsViewModel SetAlbumDetails(IEnumerable<Track> tracks)
         {
             MetaData firstTracksMetaData = tracks.First().MetaData;
 
@@ -143,11 +143,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                  }));
 
 
-        //    foreach (var row in _model.SelectedAlbum.Tracks)
-        //    {
-        //        row.SongsFromWebsite = this.SearchResultsDetailViewModel.SelectedAlbumSongs;
-        //        row.Tracks = tracks;
-        //    }
+            foreach (var row in _model.SelectedAlbum.Tracks)
+            {
+                row.SongsFromWebsite = this.SearchResultsDetailViewModel.SelectedAlbumSongs;
+                row.Tracks = tracks;
+            }
         }
     }
 }
