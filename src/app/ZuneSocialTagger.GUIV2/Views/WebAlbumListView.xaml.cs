@@ -24,7 +24,6 @@ namespace ZuneSocialTagger.GUIV2.Views
                                        itemCont.Focus();
                                    }
                                };
-
         }
 
         private void LinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)

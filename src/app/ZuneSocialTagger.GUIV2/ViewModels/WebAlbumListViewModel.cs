@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -35,6 +36,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public WebAlbumListViewModel(IZuneWizardModel model, IZuneDatabaseReader dbReader,CachedZuneDatabaseReader cacheReader)
         {
             _model = model;
+            this.Albums = _model.AlbumsFromDatabase;
 
             _dbReader = dbReader;
             _dbReader.FinishedReadingAlbums += DbAdapterFinishedReadingAlbums;
@@ -61,6 +63,33 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 RefreshAlbum(_model.SelectedAlbum.AlbumDetails);
                 UpdateLinkTotals();
                 _model.SelectedAlbum.AlbumDetails.NeedsRefreshing = false;
+            }
+        }
+
+        private void SetupCommandBindings()
+        {
+            this.LoadDatabaseCommand = new RelayCommand(RefreshDatabase);
+            this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
+            this.CancelDownloadingCommand = new RelayCommand(CancelDownloading);
+            this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
+            this.FilterGreenCommand = new RelayCommand<bool>(FilterGreen);
+        }
+
+        private void FilterGreen(bool state)
+        {
+            if (state)
+            {
+                foreach (var album in this.Albums.Where(x=> x.LinkStatus == LinkStatus.Linked))
+                {
+                    album.IsFiltered = true;
+                }
+            }
+            else
+            {
+                foreach (var album in this.Albums.Where(x => x.LinkStatus == LinkStatus.Linked))
+                {
+                    album.IsFiltered = false;
+                }
             }
         }
 
@@ -166,6 +195,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public RelayCommand LoadFromZuneWebsiteCommand { get; private set; }
         public RelayCommand CancelDownloadingCommand { get; private set; }
         public RelayCommand SwitchToClassicModeCommand { get; private set; }
+        public RelayCommand<bool> FilterGreenCommand { get; private set; }
 
         #endregion
 
@@ -383,14 +413,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public void SwitchToClassicMode()
         {
             Messenger.Default.Send(typeof (SelectAudioFilesViewModel));
-        }
-
-        private void SetupCommandBindings()
-        {
-            this.LoadDatabaseCommand = new RelayCommand(RefreshDatabase);
-            this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
-            this.CancelDownloadingCommand = new RelayCommand(CancelDownloading);
-            this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
         }
 
         private void PerformSort(SortOrder sortOrder)

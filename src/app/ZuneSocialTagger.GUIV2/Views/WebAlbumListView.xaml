@@ -14,46 +14,65 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
+
         <views:SortView DataContext="{Binding SortViewModel}" 
                         HorizontalAlignment="Left" VerticalContentAlignment="Bottom" Margin="0,0,0,3"/>
-        
+
         <StackPanel HorizontalAlignment="Right"
                     Orientation="Horizontal"
                     Margin="0,0,0,5">
 
-            <Image ToolTip="Album is correctly linked to an album in the marketplace"
+            <RadioButton Command="{Binding FilterGreenCommand}" 
+                         CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"
+                         Style="{StaticResource RadioButtonStyle}">
+                <RadioButton.Content>
+                    <Image ToolTip="Album is correctly linked to an album in the marketplace"
                     Width="16"
                    Height="16"
                    Source="../Assets/yes.png"
                    Margin="0,0,2,0" />
-            
+                </RadioButton.Content>
+            </RadioButton>
+
             <TextBlock Text="{Binding LinkedTotal}"
                        Margin="0,0,10,0"
                        FontWeight="SemiBold" />
 
-            <Image ToolTip="Album is either unlinked or is not linked to an album that exists in the marketplace"
-                   Width="16"
-                   Height="16"
-                   Source="../Assets/no.png"
-                   Margin="0,0,2,0" />
-            
+            <RadioButton Command="{Binding FilterRedCommand}" 
+                         CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"
+                         Style="{StaticResource RadioButtonStyle}">
+                <RadioButton.Content>
+                    <Image ToolTip="Album is either unlinked or is not linked to an album that exists in the marketplace"
+                       Width="16"
+                       Height="16"
+                       Source="../Assets/no.png"
+                       Margin="0,0,2,0" />
+                </RadioButton.Content>
+            </RadioButton>
+
             <TextBlock Text="{Binding UnlinkedTotal}"
                        Margin="0,0,10,0"
                        FontWeight="SemiBold" />
 
-            <Image ToolTip="Album is linked but it might be linked to the wrong album"
-                   Width="16"
-                   Height="16"
-                   Source="../Assets/warning.png"
-                   Margin="0,0,2,0" />
-            
+            <RadioButton Command="{Binding FilterYellowCommand}" 
+                         CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"
+                         Style="{StaticResource RadioButtonStyle}">
+                <RadioButton.Content>
+                    <Image ToolTip="Album is linked but it might be linked to the wrong album"
+                           Width="16"
+                           Height="16"
+                           Source="../Assets/warning.png"
+                           Margin="0,0,2,0" 
+                     />
+                </RadioButton.Content>
+            </RadioButton>
+
             <TextBlock Text="{Binding AlbumOrArtistMismatchTotal}"
                        FontWeight="SemiBold" />
 
         </StackPanel>
 
-        
+
         <ListView SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}"
                   SelectionMode="Single"
                   Grid.Row="1"
@@ -67,7 +86,7 @@
                   ItemContainerStyle="{StaticResource ListViewItemStyle}"
                   Background="Transparent"
                   BorderThickness="0">
-                  
+
 
             <ListView.ContextMenu>
                 <ContextMenu>
@@ -103,9 +122,9 @@
 
                 </ContextMenu>
             </ListView.ContextMenu>
-            
+
         </ListView>
-        
+
         <ProgressBar Visibility="{Binding Path=CanShowProgressBar,Converter={StaticResource BoolToVisConverter}}"
                      Margin="0,10,0,0"
                      Width="Auto"

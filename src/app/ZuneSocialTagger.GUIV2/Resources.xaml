@@ -255,31 +255,6 @@
         </Setter>
     </Style>
 
-    <!--<Storyboard x:Key="LoadingAnim">
-        <StringAnimationUsingKeyFrames RepeatBehavior="Forever"
-                                       BeginTime="00:00:00"
-                                       Storyboard.TargetName="tbLoading"
-                                       Storyboard.TargetProperty="(TextBlock.Text)">
-
-            <DiscreteStringKeyFrame KeyTime="00:00:00"
-                                    Value="Loading" />
-            <DiscreteStringKeyFrame KeyTime="00:00:00.2000000"
-                                    Value="Loading." />
-            <DiscreteStringKeyFrame KeyTime="00:00:00.4000000"
-                                    Value="Loading.." />
-            <DiscreteStringKeyFrame KeyTime="00:00:00.6000000"
-                                    Value="Loading..." />
-        </StringAnimationUsingKeyFrames>
-    </Storyboard>-->
-
-    <!--<Storyboard x:Key="SizeFadeInOut" StoryboardManager:StoryboardManager.ID="SizeFadeInOutAnimation" 
-                Storyboard.TargetProperty="ScaleY" Storyboard.TargetName="WarningBoxScaleTransform" >   
-        
-        <DoubleAnimation BeginTime="0:0:0.0" Duration="0:0:0.2"  From="0" To="1" />
-        <DoubleAnimation BeginTime="0:0:8.0" Duration="0:0:0.2" To="0" From="1" />
-        
-    </Storyboard>-->
-
     <Storyboard x:Key="SearchingAnim">
         <StringAnimationUsingKeyFrames RepeatBehavior="Forever"
                                        BeginTime="00:00:00"
@@ -1084,5 +1059,45 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="FilterCheckBox" TargetType="{x:Type CheckBox}"  >
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    
+                <Border Name="Border" BorderThickness="1" >
+
+                    <ContentPresenter/>
+
+                </Border>
+
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter TargetName="Border" Property="BorderBrush" Value="#E0E0E0"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RadioButtonStyle" TargetType="{x:Type RadioButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Border Name="Border" BorderThickness="1">
+                        <ContentPresenter/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="#E0E0E0"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 
 </ResourceDictionary>

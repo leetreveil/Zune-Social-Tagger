@@ -10,7 +10,7 @@
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
     
-    <Grid>
+    <Grid Visibility="{Binding IsFiltered,Converter={StaticResource BoolToVisConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300" />
                 <ColumnDefinition Width="20"/>

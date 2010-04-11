@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace ZuneSocialTagger.Core.ZuneDatabase
 {
-    public enum DbAlbumChanged
-    {
-        Added,
-        Removed
-    }
+    //public enum DbAlbumChanged
+    //{
+    //    Added,
+    //    Removed
+    //}
 
     public class TestZuneDatabaseReader : IZuneDatabaseReader
     {
