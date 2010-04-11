@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -8,6 +9,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
+using ZuneSocialTagger.GUIV2.Controls;
 using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
 using System.Threading;
@@ -30,10 +32,10 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private bool _canShowProgressBar;
         private bool _canShowReloadButton;
         private readonly bool _isTaskbarSupported;
-        private bool _isCurrentAlbumLinkable;
 
         public WebAlbumListViewModel(IZuneWizardModel model, IZuneDatabaseReader dbReader,CachedZuneDatabaseReader cacheReader)
         {
+            Debug.WriteLine("hit!");
             _model = model;
 
             _dbReader = dbReader;
@@ -54,7 +56,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.CanShowReloadButton = true;
             this.CanShowScanAllButton = true;
 
-            //this.SortViewModel.SortOrder = Settings.Default.SortOrder;
+            this.SortViewModel.SortOrder = Settings.Default.SortOrder;
 
             if (_model.SelectedAlbum != null && _model.SelectedAlbum.AlbumDetails.NeedsRefreshing)
             {
@@ -211,7 +213,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             string msg = "Are you sure? All downloaded album details will be reset and the database will be reloaded.";
 
-            ZuneMessageBoxView.Show(new ErrorMessage(ErrorMode.Warning, msg), ZuneMessageBoxButton.OKCancel, () =>
+            ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning, msg), ZuneMessageBoxButton.OKCancel, () =>
                  {
                      this.Albums.Clear();
                      this.SortViewModel.SortOrder =SortOrder. NotSorted;
@@ -346,7 +348,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
              });
         }
 
-        private Dictionary<string, IZuneTagContainer> GetFileNamesAndContainers(IEnumerable<Track> tracks)
+        private static Dictionary<string, IZuneTagContainer> GetFileNamesAndContainers(IEnumerable<Track> tracks)
         {
             var albumContainers = new Dictionary<string, IZuneTagContainer>();
 
@@ -382,7 +384,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void SwitchToClassicMode()
         {
-            Messenger.Default.Send(typeof (SelectAudioFilesViewModel));
+            Messenger.Default.Send(typeof(IFirstPage));
         }
 
         private void SetupCommandBindings()
@@ -418,6 +420,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private void DoSort<T>(Func<AlbumDetailsViewModel, T> sortKey)
         {
             //we want to order by descending if we use DateTime because we want the newest at the top
+            //all the other states we want ascending
             this.Albums = typeof (T) == typeof (DateTime)
                               ? this.Albums.OrderByDescending(sortKey).ToObservableCollection()
                               : this.Albums.OrderBy(sortKey).ToObservableCollection();

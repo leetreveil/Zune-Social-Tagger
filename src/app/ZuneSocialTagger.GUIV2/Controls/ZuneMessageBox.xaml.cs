@@ -3,7 +3,7 @@ using System.Windows;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.ViewModels;
 
-namespace ZuneSocialTagger.GUIV2.Views
+namespace ZuneSocialTagger.GUIV2.Controls
 {
     public enum ZuneMessageBoxButton
     {
@@ -12,9 +12,9 @@ namespace ZuneSocialTagger.GUIV2.Views
     }
 
     /// <summary>
-    /// Interaction logic for ZuneMessageBoxView.xaml
+    /// Interaction logic for ZuneMessageBox.xaml
     /// </summary>
-    public partial class ZuneMessageBoxView : DraggableWindow
+    public partial class ZuneMessageBox : DraggableWindow
     {
         private readonly string _errorMessage;
         private readonly ErrorMode _mode;
@@ -23,14 +23,14 @@ namespace ZuneSocialTagger.GUIV2.Views
 
         public static void Show(ErrorMessage message)
         {
-            new ZuneMessageBoxView(message.Message, message.ErrorMode).Show();
+            new ZuneMessageBox(message.Message, message.ErrorMode).Show();
         }
         public static void Show(ErrorMessage message, ZuneMessageBoxButton buttonMode, Action okClickedCallback)
         {
-            new ZuneMessageBoxView(message.Message, message.ErrorMode, buttonMode, okClickedCallback).Show();
+            new ZuneMessageBox(message.Message, message.ErrorMode, buttonMode, okClickedCallback).Show();
         }
 
-        public ZuneMessageBoxView(string errorMessage, ErrorMode mode)
+        public ZuneMessageBox(string errorMessage, ErrorMode mode)
         {
             InitializeComponent();
 
@@ -40,7 +40,7 @@ namespace ZuneSocialTagger.GUIV2.Views
             this.DataContext = this;
         }
 
-        public ZuneMessageBoxView(string errorMessage,ErrorMode mode, ZuneMessageBoxButton buttonMode,Action okClickedCallback) :this(errorMessage,mode)
+        public ZuneMessageBox(string errorMessage,ErrorMode mode, ZuneMessageBoxButton buttonMode,Action okClickedCallback) :this(errorMessage,mode)
         {
             _buttonMode = buttonMode;
             _okClickedCallback = okClickedCallback;

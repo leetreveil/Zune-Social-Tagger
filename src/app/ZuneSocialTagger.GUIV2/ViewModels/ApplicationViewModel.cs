@@ -43,25 +43,33 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             _dbReader = dbReader;
             _container = container;
 
-            CheckForUpdates();
-            SetupCommandBindings();
+            this.ShowAboutSettingsCommand = new RelayCommand(ShowAboutSettings);
+            this.UpdateCommand = new RelayCommand(ShowUpdate);
 
             //register for changes to the current view model so we can switch between views
             Messenger.Default.Register<Type>(this, SwitchToView);
 
-            //register for database switch messages
-            Messenger.Default.Register<string>(this, SwitchToDatabase);
+            //register for string messages, could be anything
+            Messenger.Default.Register<string>(this, HandleMagicStrings);
 
             //register for error messages to be displayed
             Messenger.Default.Register<ErrorMessage>(this, DisplayErrorMessage);
+
+            CheckForUpdates();
         }
 
         public void ApplicationViewHasLoaded()
         {
             if (Settings.Default.FirstViewToLoad == FirstViews.SelectAudioFilesViewModel)
+            {
+                _container.Bind<SelectAudioFilesViewModel>().ToSelf();
                 this.CurrentPage = _container.Get<SelectAudioFilesViewModel>();
+            }
             else
+            {
+                _container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
                 this.CurrentPage = _container.Get<WebAlbumListViewModel>();
+            }
 
             InitDb();
         }
@@ -86,19 +94,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             private set
             {
                 _currentPage = value;
-
-                if (this.CurrentPage.GetType() == typeof(SelectAudioFilesViewModel))
-                {
-                    _container.Rebind<IFirstPage>().To<SelectAudioFilesViewModel>().InSingletonScope();
-                    Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
-                }
-
-                if (this.CurrentPage.GetType() == typeof(WebAlbumListViewModel))
-                {
-                    _container.Rebind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
-                    Settings.Default.FirstViewToLoad = FirstViews.WebAlbumListViewModel;
-                }
-
                 RaisePropertyChanged("CurrentPage");
             }
         }
@@ -134,7 +129,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             UIDispatcher.GetDispatcher().Invoke(new Action(() => InlineZuneMessage.ShowMessage(message.ErrorMode, message.Message)));
         }
 
-        private void SwitchToDatabase(string message)
+        private void HandleMagicStrings(string message)
         {
             if (message == "SWITCHTODB")
             {
@@ -152,13 +147,31 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void SwitchToView(Type viewType)
         {
-            CurrentPage = (ViewModelBase) _container.Get(viewType);
-        }
-
-        private void SetupCommandBindings()
-        {
-            ShowAboutSettingsCommand = new RelayCommand(ShowAboutSettings);
-            UpdateCommand = new RelayCommand(ShowUpdate);
+            if (viewType == typeof(IFirstPage))
+            {
+                if (_currentPage.GetType() == typeof(WebAlbumListViewModel))
+                {
+                    this.CurrentPage = _container.Get<SelectAudioFilesViewModel>();
+                    Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
+                }
+                else if (_currentPage.GetType() == typeof(SelectAudioFilesViewModel))
+                {
+                    this.CurrentPage = _container.Get<WebAlbumListViewModel>();
+                    Settings.Default.FirstViewToLoad = FirstViews.WebAlbumListViewModel;
+                }
+                else if (Settings.Default.FirstViewToLoad == FirstViews.WebAlbumListViewModel)
+                {
+                    this.CurrentPage = _container.Get<WebAlbumListViewModel>();
+                }
+                else if (Settings.Default.FirstViewToLoad == FirstViews.SelectAudioFilesViewModel)
+                {
+                    this.CurrentPage = _container.Get<SelectAudioFilesViewModel>();
+                }
+            }
+            else
+            {
+                this.CurrentPage = (ViewModelBase)_container.Get(viewType);
+            }
         }
 
         private DbLoadResult InitializeDatabase()
@@ -315,6 +328,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         }
     }
 
+    #region XmlSerializationStuff
+
     public class AlbumDetailsXml
     {
         public AlbumXml ZuneAlbumMetaData { get; set; }
@@ -339,35 +354,38 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             if (album != null)
             {
                 return new AlbumXml
-                {
-                    AlbumArtist = album.AlbumArtist,
-                    AlbumMediaId = album.AlbumMediaId,
-                    AlbumTitle = album.AlbumTitle,
-                    ArtworkUrl = album.ArtworkUrl,
-                    DateAdded = album.DateAdded,
-                    MediaId = album.MediaId,
-                    ReleaseYear = album.ReleaseYear,
-                    TrackCount = album.TrackCount,
-                    Tracks = album.Tracks !=null ? album.Tracks.Select(TrackXml.ToTrackXml).ToList() : null
-                };
+                           {
+                               AlbumArtist = album.AlbumArtist,
+                               AlbumMediaId = album.AlbumMediaId,
+                               AlbumTitle = album.AlbumTitle,
+                               ArtworkUrl = album.ArtworkUrl,
+                               DateAdded = album.DateAdded,
+                               MediaId = album.MediaId,
+                               ReleaseYear = album.ReleaseYear,
+                               TrackCount = album.TrackCount,
+                               Tracks = album.Tracks !=null ? album.Tracks.Select(TrackXml.ToTrackXml).ToList() : null
+                           };
             }
 
             return null;
         }
     }
 
-        public class TrackXml
-        {
-            public string FilePath { get; set; }      
-            public Guid MediaId { get; set; }
+    public class TrackXml
+    {
+        public string FilePath { get; set; }      
+        public Guid MediaId { get; set; }
 
-            public static TrackXml ToTrackXml(Track track)
-            {
-                return new TrackXml 
-                {
-                    FilePath = track.FilePath, 
-                    MediaId = track.MediaId
-                };
-            }
+        public static TrackXml ToTrackXml(Track track)
+        {
+            return new TrackXml 
+                       {
+                           FilePath = track.FilePath, 
+                           MediaId = track.MediaId
+                       };
         }
+    }
+
+    #endregion
+
 }

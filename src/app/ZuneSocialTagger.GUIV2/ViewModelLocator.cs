@@ -19,7 +19,6 @@ namespace ZuneSocialTagger.GUIV2
             Container.Bind<IZuneDatabaseReader>().To<TestZuneDatabaseReader>().InSingletonScope();
             Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
             Container.Bind<InlineZuneMessageViewModel>().ToSelf().InSingletonScope();
-            Container.Bind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
             Container.Bind<CachedZuneDatabaseReader>().ToSelf().InSingletonScope();
         }
 
