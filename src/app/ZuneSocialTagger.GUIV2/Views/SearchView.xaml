@@ -3,13 +3,17 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views" 
     xmlns:Controls="clr-namespace:ZuneSocialTagger.GUIV2.Controls" 
-    x:Class="ZuneSocialTagger.GUIV2.Views.SearchView">
+    x:Class="ZuneSocialTagger.GUIV2.Views.SearchView"
+    mc:Ignorable="d" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:dd="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels.DesignTime">
 
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
 
-    <Grid>    
+    <Grid d:DataContext="{d:DesignInstance dd:SearchDesignViewModel,IsDesignTimeCreatable=True}">    
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="Auto"/>

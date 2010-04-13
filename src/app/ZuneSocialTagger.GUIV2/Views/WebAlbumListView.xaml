@@ -11,7 +11,9 @@
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
 
-    <Grid x:Name="LayoutRoot" d:DataContext="{d:DesignInstance dd:WebAlbumListDesignViewModel,IsDesignTimeCreatable=True}">
+    <Grid x:Name="LayoutRoot" 
+          d:DataContext="{d:DesignInstance dd:WebAlbumListDesignViewModel,IsDesignTimeCreatable=True}">
+        
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
