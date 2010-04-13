@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Xml.Serialization;
 using GalaSoft.MvvmLight;
@@ -11,7 +12,6 @@ using GalaSoft.MvvmLight.Messaging;
 using leetreveil.AutoUpdate.Framework;
 using Ninject;
 using ZuneSocialTagger.Core.ZuneDatabase;
-using ZuneSocialTagger.GUIV2.Controls;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Properties;
 using ZuneSocialTagger.GUIV2.Views;
@@ -87,19 +87,31 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public string ErrorMessageText
         {
             get { return _errorMessageText; }
-            set { _errorMessageText = value; RaisePropertyChanged("ErrorMessageText"); }
+            set
+            {
+                _errorMessageText = value;
+                RaisePropertyChanged("ErrorMessageText");
+            }
         }
 
         public ErrorMode ErrorMessageMode
         {
             get { return _errorMessageMode; }
-            set { _errorMessageMode = value; RaisePropertyChanged("ErrorMessageMode"); }
+            set
+            {
+                _errorMessageMode = value;
+                RaisePropertyChanged("ErrorMessageMode");
+            }
         }
 
         public bool ShouldShowErrorMessage
         {
             get { return _shouldShowErrorMessage; }
-            set { _shouldShowErrorMessage = value; RaisePropertyChanged("ShouldShowErrorMessage"); }
+            set
+            {
+                _shouldShowErrorMessage = value;
+                RaisePropertyChanged("ShouldShowErrorMessage");
+            }
         }
 
         public bool UpdateAvailable
@@ -124,7 +136,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         #endregion
 
-
         private void InitDb()
         {
             if (_model.AlbumsFromDatabase.Count == 0)
@@ -141,7 +152,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 }
                 else
                 {
-                    ReadDatabase(false);
+                    ReadCachedDatabase(result);
                 }
             }
         }
@@ -162,7 +173,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             if (message == "SWITCHTODB")
             {
-                ReadDatabase(true);
+                ReadCachedDatabase(DbLoadResult.Failed);
             }
             else if (message == "ALBUMLINKED")
             {
@@ -222,7 +233,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 }
 
                 DisplayErrorMessage(new ErrorMessage(ErrorMode.Error,
-                                                   "Failed to determine if the zune database can be loaded"));
+                                                     "Failed to determine if the zune database can be loaded"));
                 return DbLoadResult.Failed;
             }
             catch (Exception e)
@@ -232,9 +243,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        private void ReadDatabase(bool loadDatabase)
+        private void ReadCachedDatabase(DbLoadResult loadActualDatabase)
         {
-            if (!loadDatabase)
+            if (loadActualDatabase == DbLoadResult.Success)
             {
                 //if we can read the cache then skip the database and just load that
                 if (_cache.CanInitialize && _cache.Initialize())
@@ -246,6 +257,64 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                             UIDispatcher.GetDispatcher().Invoke(new Action(() =>
                                                                            _model.AlbumsFromDatabase.Add(
                                                                                new AlbumDetailsViewModel(album))));
+                        }
+
+                        //after we have loaded the cache, we want to check for any new albums available in the database
+                        Dictionary<Album, DbAlbumChanged> updates =
+                            _dbReader.CheckForChanges(_model.AlbumsFromDatabase.Select(x => x.ZuneAlbumMetaData));
+
+                        if (updates.Count > 0)
+                        {
+                            //remove albums marked as to be removed
+                            var removed = updates.Where(x => x.Value == DbAlbumChanged.Removed);
+
+                            foreach (var removedAlbum in removed)
+                            {
+                                KeyValuePair<Album, DbAlbumChanged> removedAlbumClosed = removedAlbum;
+
+                                AlbumDetailsViewModel albumToBeRemoved =
+                                    _model.AlbumsFromDatabase.Where(
+                                        x => x.ZuneAlbumMetaData.MediaId == removedAlbumClosed.Key.MediaId).First();
+
+
+                                UIDispatcher.GetDispatcher().Invoke(
+                                    new Action(() => _model.AlbumsFromDatabase.Remove(albumToBeRemoved)));
+                            }
+
+                            //add new albums marked as new
+                            var addedUpdates = updates.Where(x => x.Value == DbAlbumChanged.Added);
+
+                            foreach (KeyValuePair<Album, DbAlbumChanged> newAlbum in addedUpdates)
+                            {
+                                KeyValuePair<Album, DbAlbumChanged> album = newAlbum;
+
+                                UIDispatcher.GetDispatcher().Invoke(
+                                    new Action(
+                                        () =>
+                                        _model.AlbumsFromDatabase.Add(
+                                            new AlbumDetailsViewModel(SharedMethods.ToAlbumDetails(album.Key)))));
+                            }
+
+                            Messenger.Default.Send("SORT");
+
+                            if (addedUpdates.Count() > 0)
+                            {
+                                DisplayErrorMessage(new ErrorMessage(ErrorMode.Info,
+                                                                     String.Format("{0} albums were added",
+                                                                                   addedUpdates.Count())));
+                            }
+                            else if(addedUpdates.Count() > 0 && removed.Count() > 0)
+                            {
+                                DisplayErrorMessage(new ErrorMessage(ErrorMode.Info,
+                                     String.Format("{0} albums were added and {1} albums were removed",
+                                                   addedUpdates.Count(),removed.Count())));
+                            }
+                            else if(removed.Count() > 0)
+                            {
+                                DisplayErrorMessage(new ErrorMessage(ErrorMode.Info,
+                                     String.Format("{0} albums were removed",
+                                                   removed.Count())));
+                            }
                         }
                     });
                 }

@@ -17,6 +17,8 @@ namespace ZuneSocialTagger.GUIV2.Converters
                     return "../Assets/no.png";
                 case ErrorMode.Warning:
                     return "../Assets/warning.png";
+                case ErrorMode.Info:
+                    return "../Assets/information.png";
                 default:
                     throw new ArgumentOutOfRangeException();
             }

@@ -68,15 +68,15 @@ namespace ZuneSocialTagger.ZunePlugin
                                                               (uint) SchemaMap.kiIndex_AlbumID, null);
             albums.AddRef();
 
-            object[] uniqueIds = albums.GetUniqueIds().ToArray();
+            var uniqueIds = albums.GetUniqueIds();
 
-            for (int i = 0; i < uniqueIds.Length; i++)
+            for (int i = 0; i < uniqueIds.Count; i++)
             {
                 object uniqueId = uniqueIds[i];
 
                 yield return GetAlbum((int) uniqueId);
 
-                ProgressChanged.Invoke(i, uniqueIds.Length);
+                ProgressChanged.Invoke(i, uniqueIds.Count);
             }
 
             FinishedReadingAlbums.Invoke();
@@ -85,6 +85,25 @@ namespace ZuneSocialTagger.ZunePlugin
             albums.Dispose();
         }
 
+        public Dictionary<Album, DbAlbumChanged> CheckForChanges(IEnumerable<Album> albumIds)
+        {
+            ZuneQueryList albums = _zuneLibrary.QueryDatabase(EQueryType.eQueryTypeAllAlbums, 0,
+                                                  EQuerySortType.eQuerySortOrderAscending,
+                                                  (uint)SchemaMap.kiIndex_AlbumID, null);
+
+
+            var arrayList = albums.GetUniqueIds();
+            int[] uniqueIds = (int[]) arrayList.ToArray(typeof (int));
+
+
+            var newIds = uniqueIds.Except(albumIds.Select(x => x.MediaId));
+
+            IEnumerable<int> deletedIds = albumIds.Select(x => x.MediaId).Except(uniqueIds);
+            IEnumerable<Album> removedAlbums = albumIds.Where(x => deletedIds.Contains(x.MediaId));
+
+            return removedAlbums.ToDictionary(x => x, x => DbAlbumChanged.Removed).Union(
+                newIds.ToDictionary(GetAlbum, newId => DbAlbumChanged.Added)).ToDictionary(x=> x.Key,x=> x.Value);
+        }
 
         public Album GetAlbumByAlbumTitle(string albumTitle)
         {
@@ -215,7 +234,7 @@ namespace ZuneSocialTagger.ZunePlugin
                 return true;
             }
         }
-        
+
         public void Dispose()
         {
             _zuneLibrary.Dispose();

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:Controls="clr-namespace:ZuneSocialTagger.GUIV2.Controls"
-             xmlns:dd="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels.DesignTime">
+             xmlns:dd="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels.DesignTime" >
     
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources.xaml" />

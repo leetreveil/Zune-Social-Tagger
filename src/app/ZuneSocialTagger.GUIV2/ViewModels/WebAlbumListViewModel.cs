@@ -61,6 +61,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 UpdateLinkTotals();
                 _model.SelectedAlbum.AlbumDetails.NeedsRefreshing = false;
             }
+
+            Messenger.Default.Register<string>(this, HandleMessages);
+        }
+
+        private void HandleMessages(string message)
+        {
+            if (message == "SORT")
+            {
+                SortData(Settings.Default.SortOrder);
+            }
         }
 
         private void SetupCommandBindings()
