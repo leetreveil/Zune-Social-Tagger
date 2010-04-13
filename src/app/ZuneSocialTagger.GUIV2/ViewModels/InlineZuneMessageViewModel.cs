@@ -15,7 +15,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public InlineZuneMessageViewModel()
         {
             _timer = new Timer();
-            _timer.Elapsed += delegate{this.HideMessages.Invoke();};
+            _timer.Elapsed += delegate { this.HideMessages.Invoke(); };
         }
 
         public string MessageText

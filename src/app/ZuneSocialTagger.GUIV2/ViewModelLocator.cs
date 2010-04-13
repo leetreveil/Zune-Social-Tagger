@@ -34,12 +34,12 @@ namespace ZuneSocialTagger.GUIV2
 
         public AboutViewModel About
         {
-            get { return new AboutViewModel(); }
+            get { return Container.Get<AboutViewModel>(); }
         }
 
         public SuccessViewModel Success
         {
-            get { return null; }
+            get { return Container.Get<SuccessViewModel>(); }
         }
 
         public InlineZuneMessageViewModel InlineZuneMessageView

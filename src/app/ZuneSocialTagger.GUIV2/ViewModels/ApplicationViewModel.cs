@@ -36,7 +36,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private ViewModelBase _currentPage;
         private bool _updateAvailable;
 
-        public ApplicationViewModel(IZuneWizardModel model, CachedZuneDatabaseReader cache,IZuneDatabaseReader dbReader, IKernel container)
+        public ApplicationViewModel(IZuneWizardModel model, CachedZuneDatabaseReader cache, IZuneDatabaseReader dbReader,
+                                    IKernel container)
         {
             _model = model;
             _cache = cache;
@@ -76,7 +77,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public RelayCommand UpdateCommand { get; private set; }
         public RelayCommand ShowAboutSettingsCommand { get; private set; }
-        public InlineZuneMessageViewModel InlineZuneMessage { get { return _container.Get<InlineZuneMessageViewModel>(); } }
+
+        public InlineZuneMessageViewModel InlineZuneMessage
+        {
+            get { return _container.Get<InlineZuneMessageViewModel>(); }
+        }
 
         public bool UpdateAvailable
         {
@@ -99,24 +104,24 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         }
 
         private void InitDb()
-        {     
-                if (_model.AlbumsFromDatabase.Count == 0)
-                {
-                    DbLoadResult result = InitializeDatabase();
+        {
+            if (_model.AlbumsFromDatabase.Count == 0)
+            {
+                DbLoadResult result = InitializeDatabase();
 
-                    //if we cannot load the database then switch to the other view
-                    if (result == DbLoadResult.Failed)
-                    {
-                        var selectAudioFilesViewModel = _container.Get<SelectAudioFilesViewModel>();
-                        selectAudioFilesViewModel.CanSwitchToNewMode = false;
-                        this.CurrentPage = selectAudioFilesViewModel;
-                        Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
-                    }
-                    else
-                    {
-                        ReadDatabase(false);
-                    }
+                //if we cannot load the database then switch to the other view
+                if (result == DbLoadResult.Failed)
+                {
+                    var selectAudioFilesViewModel = _container.Get<SelectAudioFilesViewModel>();
+                    selectAudioFilesViewModel.CanSwitchToNewMode = false;
+                    this.CurrentPage = selectAudioFilesViewModel;
+                    Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
                 }
+                else
+                {
+                    ReadDatabase(false);
+                }
+            }
         }
 
         private static bool CheckIfZuneSoftwareIsRunning()
@@ -126,7 +131,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void DisplayErrorMessage(ErrorMessage message)
         {
-            UIDispatcher.GetDispatcher().Invoke(new Action(() => InlineZuneMessage.ShowMessage(message.ErrorMode, message.Message)));
+            UIDispatcher.GetDispatcher().Invoke(
+                new Action(() => InlineZuneMessage.ShowMessage(message.ErrorMode, message.Message)));
         }
 
         private void HandleMagicStrings(string message)
@@ -135,26 +141,26 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 ReadDatabase(true);
             }
-            else if(message == "ALBUMLINKED")
+            else if (message == "ALBUMLINKED")
             {
                 if (!CheckIfZuneSoftwareIsRunning())
                 {
                     DisplayErrorMessage(new ErrorMessage(ErrorMode.Warning,
-                        "Any albums you link / delink will not show their changes until the zune software is running.")); 
+                                                         "Any albums you link / delink will not show their changes until the zune software is running."));
                 }
             }
         }
 
         private void SwitchToView(Type viewType)
         {
-            if (viewType == typeof(IFirstPage))
+            if (viewType == typeof (IFirstPage))
             {
-                if (_currentPage.GetType() == typeof(WebAlbumListViewModel))
+                if (_currentPage.GetType() == typeof (WebAlbumListViewModel))
                 {
                     this.CurrentPage = _container.Get<SelectAudioFilesViewModel>();
                     Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
                 }
-                else if (_currentPage.GetType() == typeof(SelectAudioFilesViewModel))
+                else if (_currentPage.GetType() == typeof (SelectAudioFilesViewModel))
                 {
                     this.CurrentPage = _container.Get<WebAlbumListViewModel>();
                     Settings.Default.FirstViewToLoad = FirstViews.WebAlbumListViewModel;
@@ -170,7 +176,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
             else
             {
-                this.CurrentPage = (ViewModelBase)_container.Get(viewType);
+                this.CurrentPage = (ViewModelBase) _container.Get(viewType);
             }
         }
 
@@ -192,7 +198,8 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     return DbLoadResult.Success;
                 }
 
-                this.InlineZuneMessage.ShowMessage(ErrorMode.Error,"Failed to determine if the zune database can be loaded");
+                this.InlineZuneMessage.ShowMessage(ErrorMode.Error,
+                                                   "Failed to determine if the zune database can be loaded");
                 return DbLoadResult.Failed;
             }
             catch (NotSupportedException e)
@@ -208,7 +215,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 this.InlineZuneMessage.ShowMessage(ErrorMode.Error, e.Message);
                 return DbLoadResult.Failed;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 this.InlineZuneMessage.ShowMessage(ErrorMode.Error, e.Message);
                 return DbLoadResult.Failed;
@@ -222,13 +229,13 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 //if we can read the cache then skip the database and just load that
                 if (_cache.CanInitialize && _cache.Initialize())
                 {
-                    ThreadPool.QueueUserWorkItem(_ =>
-                    {
+                    ThreadPool.QueueUserWorkItem(_ => {
                         foreach (AlbumDetails newAlbum in _cache.ReadAlbums())
                         {
                             AlbumDetails album = newAlbum;
                             UIDispatcher.GetDispatcher().Invoke(new Action(() =>
-                                _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(album))));
+                                                                           _model.AlbumsFromDatabase.Add(
+                                                                               new AlbumDetailsViewModel(album))));
                         }
                     });
                 }
@@ -241,13 +248,14 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void ReadActualDatabase()
         {
-            ThreadPool.QueueUserWorkItem(_ =>
-            {
+            ThreadPool.QueueUserWorkItem(_ => {
                 foreach (Album newAlbum in _dbReader.ReadAlbums())
                 {
                     Album album = newAlbum;
                     UIDispatcher.GetDispatcher().Invoke(new Action(() =>
-                        _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(SharedMethods.ToAlbumDetails(album)))));
+                                                                   _model.AlbumsFromDatabase.Add(
+                                                                       new AlbumDetailsViewModel(
+                                                                           SharedMethods.ToAlbumDetails(album)))));
                 }
             });
         }
@@ -261,22 +269,28 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private void WriteCacheToFile()
         {
             List<AlbumDetailsXml> albums = (from album in _model.AlbumsFromDatabase
-                                         select new AlbumDetailsXml
-                                                    {
-                                                        LinkStatus = album.LinkStatus,
-                                                        WebAlbumMetaData = AlbumXml.ToAlbumXml(album.WebAlbumMetaData),
-                                                        ZuneAlbumMetaData = AlbumXml.ToAlbumXml(album.ZuneAlbumMetaData),
-                                                    }).ToList();
+                                            select new AlbumDetailsXml
+                                                       {
+                                                           LinkStatus = album.LinkStatus,
+                                                           WebAlbumMetaData =
+                                                               AlbumXml.ToAlbumXml(album.WebAlbumMetaData),
+                                                           ZuneAlbumMetaData =
+                                                               AlbumXml.ToAlbumXml(album.ZuneAlbumMetaData),
+                                                       }).ToList();
             if (albums.Count > 0)
             {
                 try
                 {
                     var xSer = new XmlSerializer(albums.GetType());
 
-                    using (var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.xml"), FileMode.Create))
+                    using (
+                        var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.xml"),
+                                                FileMode.Create))
                         xSer.Serialize(fs, albums);
                 }
-                catch{}
+                catch
+                {
+                }
             }
         }
 
@@ -292,7 +306,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void CheckForUpdates()
         {
-            string updaterPath = Path.Combine(Settings.Default.AppDataFolder,Settings.Default.UpdateExeName);
+            string updaterPath = Path.Combine(Settings.Default.AppDataFolder, Settings.Default.UpdateExeName);
 
             if (Settings.Default.CheckForUpdates)
             {
@@ -308,17 +322,16 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     //always clean up at startup because we cant do it at the end
                     updateManager.CleanUp();
 
-                    ThreadPool.QueueUserWorkItem(state =>
-                                                     {
-                                                         try
-                                                         {
-                                                             if (updateManager.CheckForUpdate())
-                                                                 UpdateAvailable = true;
-                                                         }
-                                                         catch
-                                                         {
-                                                         }
-                                                     });
+                    ThreadPool.QueueUserWorkItem(state => {
+                        try
+                        {
+                            if (updateManager.CheckForUpdate())
+                                UpdateAvailable = true;
+                        }
+                        catch
+                        {
+                        }
+                    });
                 }
                 catch
                 {
@@ -363,7 +376,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                                MediaId = album.MediaId,
                                ReleaseYear = album.ReleaseYear,
                                TrackCount = album.TrackCount,
-                               Tracks = album.Tracks !=null ? album.Tracks.Select(TrackXml.ToTrackXml).ToList() : null
+                               Tracks = album.Tracks != null ? album.Tracks.Select(TrackXml.ToTrackXml).ToList() : null
                            };
             }
 
@@ -373,19 +386,18 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
     public class TrackXml
     {
-        public string FilePath { get; set; }      
+        public string FilePath { get; set; }
         public Guid MediaId { get; set; }
 
         public static TrackXml ToTrackXml(Track track)
         {
-            return new TrackXml 
+            return new TrackXml
                        {
-                           FilePath = track.FilePath, 
+                           FilePath = track.FilePath,
                            MediaId = track.MediaId
                        };
         }
     }
 
     #endregion
-
 }
