@@ -8,7 +8,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private Album _zuneAlbumMetaData;
         private Album _webAlbumMetaData;
         private LinkStatus _linkStatus;
-        private bool _isFiltered;
 
         public AlbumDetailsViewModel(AlbumDetails albumDetails)
         {
@@ -49,16 +48,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             {
                 _linkStatus = value;
                 NotifyOfPropertyChange(() => this.LinkStatus);
-            }
-        }
-
-        public bool IsFiltered
-        {
-            get { return _isFiltered; }
-            set
-            {
-                _isFiltered = value;
-                NotifyOfPropertyChange(() => this.IsFiltered);
             }
         }
 

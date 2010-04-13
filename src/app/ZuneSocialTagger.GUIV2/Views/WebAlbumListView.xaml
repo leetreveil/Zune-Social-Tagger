@@ -22,50 +22,31 @@
                     Orientation="Horizontal"
                     Margin="0,0,0,5">
 
-            <RadioButton Command="{Binding FilterGreenCommand}" 
-                         CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"
-                         Style="{StaticResource RadioButtonStyle}">
-                <RadioButton.Content>
-                    <Image ToolTip="Album is correctly linked to an album in the marketplace"
+            <Image ToolTip="Album is correctly linked to an album in the marketplace"
                     Width="16"
                    Height="16"
                    Source="../Assets/yes.png"
                    Margin="0,0,2,0" />
-                </RadioButton.Content>
-            </RadioButton>
 
             <TextBlock Text="{Binding LinkedTotal}"
                        Margin="0,0,10,0"
                        FontWeight="SemiBold" />
 
-            <RadioButton Command="{Binding FilterRedCommand}" 
-                         CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"
-                         Style="{StaticResource RadioButtonStyle}">
-                <RadioButton.Content>
-                    <Image ToolTip="Album is either unlinked or is not linked to an album that exists in the marketplace"
+            <Image ToolTip="Album is either unlinked or is not linked to an album that exists in the marketplace"
                        Width="16"
                        Height="16"
                        Source="../Assets/no.png"
                        Margin="0,0,2,0" />
-                </RadioButton.Content>
-            </RadioButton>
 
             <TextBlock Text="{Binding UnlinkedTotal}"
                        Margin="0,0,10,0"
                        FontWeight="SemiBold" />
 
-            <RadioButton Command="{Binding FilterYellowCommand}" 
-                         CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"
-                         Style="{StaticResource RadioButtonStyle}">
-                <RadioButton.Content>
-                    <Image ToolTip="Album is linked but it might be linked to the wrong album"
+            <Image ToolTip="Album is linked but it might be linked to the wrong album"
                            Width="16"
                            Height="16"
                            Source="../Assets/warning.png"
-                           Margin="0,0,2,0" 
-                     />
-                </RadioButton.Content>
-            </RadioButton>
+                           Margin="0,0,2,0" />
 
             <TextBlock Text="{Binding AlbumOrArtistMismatchTotal}"
                        FontWeight="SemiBold" />

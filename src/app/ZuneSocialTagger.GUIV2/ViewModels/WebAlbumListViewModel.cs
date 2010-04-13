@@ -14,7 +14,6 @@ using ZuneSocialTagger.GUIV2.Models;
 using System.Linq;
 using System.Threading;
 using ZuneSocialTagger.GUIV2.Properties;
-using ZuneSocialTagger.GUIV2.Views;
 using Album = ZuneSocialTagger.Core.ZuneDatabase.Album;
 using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
 using ZuneSocialTagger.Core.ZuneDatabase;
@@ -73,25 +72,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
             this.CancelDownloadingCommand = new RelayCommand(CancelDownloading);
             this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
-            this.FilterGreenCommand = new RelayCommand<bool>(FilterGreen);
-        }
-
-        private void FilterGreen(bool state)
-        {
-            if (state)
-            {
-                foreach (var album in this.Albums.Where(x=> x.LinkStatus == LinkStatus.Linked))
-                {
-                    album.IsFiltered = true;
-                }
-            }
-            else
-            {
-                foreach (var album in this.Albums.Where(x => x.LinkStatus == LinkStatus.Linked))
-                {
-                    album.IsFiltered = false;
-                }
-            }
         }
 
         #region View Binding Properties
