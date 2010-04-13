@@ -48,7 +48,7 @@
 
         <Button Height="25" VerticalAlignment="Bottom" 
                 HorizontalAlignment="Right" Grid.Row="2" 
-                Content="OK" Click="Button_Click" />
+                Content="OK" Command="{Binding OKCommand}" />
     </Grid>
 
 </UserControl>

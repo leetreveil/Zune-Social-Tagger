@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -11,11 +10,6 @@ namespace ZuneSocialTagger.GUIV2.Views
         public SuccessView()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
