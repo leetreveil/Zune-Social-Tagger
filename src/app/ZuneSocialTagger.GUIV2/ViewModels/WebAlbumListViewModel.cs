@@ -35,7 +35,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public WebAlbumListViewModel(IZuneWizardModel model, IZuneDatabaseReader dbReader,CachedZuneDatabaseReader cacheReader)
         {
-            Debug.WriteLine("hit!");
             _model = model;
             this.Albums = _model.AlbumsFromDatabase;
 
@@ -224,7 +223,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         {
             string msg = "Are you sure? All downloaded album details will be reset and the database will be reloaded.";
 
-            ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning, msg), ZuneMessageBoxButton.OKCancel, () =>
+            ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning, msg), () =>
                  {
                      this.Albums.Clear();
                      this.SortOrder =SortOrder. NotSorted;

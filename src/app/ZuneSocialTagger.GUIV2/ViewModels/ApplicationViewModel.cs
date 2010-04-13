@@ -11,6 +11,7 @@ using GalaSoft.MvvmLight.Messaging;
 using leetreveil.AutoUpdate.Framework;
 using Ninject;
 using ZuneSocialTagger.Core.ZuneDatabase;
+using ZuneSocialTagger.GUIV2.Controls;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Properties;
 using ZuneSocialTagger.GUIV2.Views;

@@ -140,7 +140,6 @@
     <converters:PathToImageThumbnailConverter x:Key="PathToImageThumbnailConverter" />
     <converters:SortOrderToTextConverter x:Key="SortOrderToTextConverter" />
     <converters:ErrorModeToImageSourceConverter x:Key="ErrorModeToImageSourceConverter"/>
-    <converters:ZuneMessageBoxButtonToVisibiltyConverter x:Key="ZuneMessageBoxButtonToVisibiltyConverter"/>
     <converters:SortOrderToVisibilityConverter x:Key="SortOrderToVisibilityConverter"/>
     <converters:TrackNumberToDblDigitTrackNumberConverter x:Key="TrackNumberToDblDigitTrackNumberConverter"/>
     <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />

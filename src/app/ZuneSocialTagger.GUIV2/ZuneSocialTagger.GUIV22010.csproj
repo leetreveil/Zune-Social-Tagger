@@ -109,7 +109,6 @@
     </Compile>
     <Compile Include="Converters\SortOrderToVisibilityConverter.cs" />
     <Compile Include="Converters\TrackNumberToDblDigitTrackNumberConverter.cs" />
-    <Compile Include="Converters\ZuneMessageBoxButtonToVisibiltyConverter.cs" />
     <Compile Include="Models\SelectedAlbum.cs" />
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\DetailsDesignViewModel.cs" />
