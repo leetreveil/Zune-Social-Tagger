@@ -30,7 +30,7 @@
         <!--HEADER-->
         <StackPanel Grid.Row="0">
             <Control Template="{DynamicResource Gradient}"/>
-            <TextBlock FontFamily="../Assets/Fonts/Zegoe Caps"  FontSize="26.667">
+            <TextBlock FontSize="26.667">
                 <Run Text="ABOUT"/>
                 <Run Text=" / SETTINGS"/>
             </TextBlock>

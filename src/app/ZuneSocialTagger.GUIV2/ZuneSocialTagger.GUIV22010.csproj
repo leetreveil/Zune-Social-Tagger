@@ -219,50 +219,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Assets\Fonts\Zegoe Caps.ttf">
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-    </Resource>
-    <Resource Include="Assets\Fonts\Zegoe Light - U.ttf">
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-      <Characters>
-      </Characters>
-      <Uppercase>True</Uppercase>
-      <Lowercase>True</Lowercase>
-      <Numbers>True</Numbers>
-      <Punctuation>True</Punctuation>
-    </Resource>
-    <Resource Include="Assets\Fonts\Zegoe UI - U.ttf">
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-      <Characters>
-      </Characters>
-      <Uppercase>True</Uppercase>
-      <Lowercase>True</Lowercase>
-      <Numbers>True</Numbers>
-      <Punctuation>True</Punctuation>
-    </Resource>
-    <Resource Include="Assets\Fonts\Zegoe UI - UBold.ttf">
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-      <Characters>
-      </Characters>
-      <Uppercase>True</Uppercase>
-      <Lowercase>True</Lowercase>
-      <Numbers>True</Numbers>
-      <Punctuation>True</Punctuation>
-    </Resource>
-    <Resource Include="Assets\Fonts\Zegoe UI SemiBold - U.ttf">
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-      <Characters>
-      </Characters>
-      <Uppercase>True</Uppercase>
-      <Lowercase>True</Lowercase>
-      <Numbers>True</Numbers>
-      <Punctuation>True</Punctuation>
-    </Resource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

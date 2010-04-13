@@ -18,7 +18,7 @@
 		<Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="60"/>
 		</Grid.RowDefinitions>
         
         
@@ -50,8 +50,8 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             
-            <TextBlock Text="SONG TITLES IN THIS ALBUM"  FontSize="13.333"/>
-            <TextBlock Grid.Column="1" Text="SONG TITLES FROM ZUNE MARKETPLACE" FontSize="13.333"/>   
+            <TextBlock Text="SONG TITLES IN THIS ALBUM"  FontSize="13.333" FontWeight="SemiBold" />
+            <TextBlock Grid.Column="1" Text="SONG TITLES FROM ZUNE MARKETPLACE" FontSize="13.333" FontWeight="SemiBold" />   
             
              <ListView MaxHeight="260" VerticalAlignment="Top" Background="Transparent" Grid.Row="1" Grid.ColumnSpan="2"
                        ItemsSource="{Binding Rows}" 
@@ -99,13 +99,15 @@
 
     </Border>
 
-        <CheckBox Margin="0,5,0,0" IsChecked="{Binding UpdateAlbumInfo}" VerticalAlignment="Top" Grid.Row="2" 
+        <CheckBox Margin="0,10,0,0" IsChecked="{Binding UpdateAlbumInfo}" VerticalAlignment="Top" Grid.Row="2" 
                   Content="Update album information (artist, title, etc)"/>
         
         <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="Auto" Grid.Row="2" 
                 Content="START AGAIN" Command="{Binding MoveToStartCommand}"/>
 
-        <StackPanel Margin="0,25,0,0" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right"  Orientation="Horizontal">
+        <StackPanel VerticalAlignment="Bottom" Margin="0,25,0,0" 
+                    Grid.Row="2" Grid.Column="2" 
+                    HorizontalAlignment="Right"  Orientation="Horizontal">
             
             <Button Content="BACK" Margin="0,0,10,0" Command="{Binding MoveBackCommand}"/>
 

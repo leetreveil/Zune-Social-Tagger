@@ -45,7 +45,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <TextBlock FontFamily="../Assets/Fonts/Zegoe Caps"  Grid.Column="0" FontSize="26.667" Text="ZUNE SOCIAL TAGGER 2"/>
+            <TextBlock Grid.Column="0" FontSize="26.667" Text="ZUNE SOCIAL TAGGER 2"/>
             
             <Button Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource BoolToVisConverter}}"
                     Margin="10,5,0,0" Style="{StaticResource UpdateButton}" 

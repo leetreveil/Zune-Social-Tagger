@@ -25,7 +25,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         public void SetCanUpdate(bool update)
         {
             if (update == UpdateEnabled) return;
-            Settings.Default.CheckForUpdates = update;
+                Settings.Default.CheckForUpdates = update;
         }
 
         public bool UpdateEnabled
