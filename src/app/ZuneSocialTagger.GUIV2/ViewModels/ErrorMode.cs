@@ -4,5 +4,6 @@
     {
         Error,
         Warning,
+        Info
     }
 }

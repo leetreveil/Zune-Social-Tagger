@@ -74,7 +74,7 @@
 
                                 <ComboBox x:Name="cmbBox" ItemsSource="{Binding SongsFromWebsite}" 
                                       ToolTip="{Binding RelativeSource={RelativeSource Self},Path=SelectedItem.MetaData.Title}"  
-                                      SelectedItem="{Binding SelectedSong}" IsReadOnly="True" Grid.Column="1" 
+                                      SelectedItem="{Binding SelectedSong}" IsReadOnly="True" Grid.Column="1"  
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                                       Width="280" VerticalAlignment="Center" >
 

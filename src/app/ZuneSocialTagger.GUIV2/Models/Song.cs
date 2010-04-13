@@ -73,10 +73,18 @@ namespace ZuneSocialTagger.GUIV2.Models
         private Track MatchThisSongToAvailableSongs()
         {
             //this matches album songs to zune website songs in the details view
-            IEnumerable<Track> matchedSongs =
-                this.SongsFromWebsite.Where(song => song.MetaData.Title.ToLower() == this.MetaData.Title.ToLower());
+            Track matchBySongTitle =
+                this.SongsFromWebsite.Where(song => song.MetaData.Title.ToLower() == this.MetaData.Title.ToLower()).FirstOrDefault();
 
-            return matchedSongs.Count() > 0 ? matchedSongs.First() : new Track();
+            Track matchByTrackNumber = 
+                this.SongsFromWebsite.Where(song => song.MetaData.TrackNumber == this.MetaData.TrackNumber).FirstOrDefault();
+
+            if (matchBySongTitle == null && matchByTrackNumber != null)
+            {
+                return matchByTrackNumber;
+            }
+
+            return matchBySongTitle ?? new Track();
         }
     }
 }

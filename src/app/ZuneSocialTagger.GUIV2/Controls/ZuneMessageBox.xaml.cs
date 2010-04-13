@@ -30,6 +30,9 @@ namespace ZuneSocialTagger.GUIV2.Controls
                 case ErrorMode.Warning:
                     tbMessageTitle.Text = "WARNING";
                     break;
+                case ErrorMode.Info:
+                    tbMessageTitle.Text = "INFO";
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -52,6 +55,8 @@ namespace ZuneSocialTagger.GUIV2.Controls
                     return "pack://application:,,,/Assets/error.png";
                 case ErrorMode.Warning:
                     return "pack://application:,,,/Assets/alert.png";
+                case ErrorMode.Info:
+                    return "pack://application:,,,/Assets/info_big.png";
                 default:
                     throw new ArgumentOutOfRangeException();
             }

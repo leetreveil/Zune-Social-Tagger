@@ -407,6 +407,9 @@
   <ItemGroup>
     <Resource Include="Assets\magnifyingglass_light.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\info_big.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"C:\Program Files\Microsoft SDKs\Windows\v6.0A\Bin\sgen.exe" "$(TargetPath)" /force</PostBuildEvent>
