@@ -164,8 +164,8 @@
     <Compile Include="DraggableWindow.cs" />
     <Compile Include="ViewModels\SearchResultsDetailViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
-    <Compile Include="Views\ZuneMessageBoxView.xaml.cs">
-      <DependentUpon>ZuneMessageBoxView.xaml</DependentUpon>
+    <Compile Include="Controls\ZuneMessageBox.xaml.cs">
+      <DependentUpon>ZuneMessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchBarControl.xaml.cs">
       <DependentUpon>SearchBarControl.xaml</DependentUpon>
@@ -303,7 +303,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ZuneMessageBoxView.xaml">
+    <Page Include="Controls\ZuneMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>

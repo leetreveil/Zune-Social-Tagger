@@ -1,15 +1,17 @@
+using GalaSoft.MvvmLight;
+using ZuneSocialTagger.GUIV2.Models;
+
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
-    public class SuccessViewModel
+    public class SuccessViewModel : ViewModelBase
     {
         private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromWebsite;
         private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
 
-        public SuccessViewModel(ExpandedAlbumDetailsViewModel albumDetailsFromWebsite,
-            ExpandedAlbumDetailsViewModel albumDetailsFromFile)
+        public SuccessViewModel(IZuneWizardModel model)
         {
-            _albumDetailsFromWebsite = albumDetailsFromWebsite;
-            _albumDetailsFromFile = albumDetailsFromFile;
+            _albumDetailsFromWebsite = model.SelectedAlbum.WebAlbumMetaData;
+            _albumDetailsFromFile = model.SelectedAlbum.ZuneAlbumMetaData;
         }
 
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite

@@ -20,7 +20,6 @@ namespace ZuneSocialTagger.GUIV2
 
             Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
             Container.Bind<InlineZuneMessageViewModel>().ToSelf().InSingletonScope();
-            Container.Bind<IFirstPage>().To<WebAlbumListViewModel>().InSingletonScope();
             Container.Bind<CachedZuneDatabaseReader>().ToSelf().InSingletonScope();
         }
 
@@ -36,12 +35,12 @@ namespace ZuneSocialTagger.GUIV2
 
         public AboutViewModel About
         {
-            get { return new AboutViewModel(); }
+            get { return Container.Get<AboutViewModel>(); }
         }
 
         public SuccessViewModel Success
         {
-            get { return null; }
+            get { return Container.Get<SuccessViewModel>(); }
         }
 
         public InlineZuneMessageViewModel InlineZuneMessageView

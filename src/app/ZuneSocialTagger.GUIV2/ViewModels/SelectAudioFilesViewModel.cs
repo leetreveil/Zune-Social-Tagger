@@ -28,7 +28,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void SwitchToNewMode()
         {
-            Messenger.Default.Send(typeof(WebAlbumListViewModel));
+            Messenger.Default.Send(typeof(IFirstPage));
         }
 
         public void SelectFiles()
