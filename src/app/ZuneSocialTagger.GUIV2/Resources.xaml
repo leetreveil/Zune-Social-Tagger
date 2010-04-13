@@ -294,7 +294,7 @@
         <StackPanel Orientation="Horizontal">
             <Image Height="50"
                    Width="50"
-                   Source="{Binding ArtworkUrl}"
+                   Source="{Binding Path=ArtworkUrl,Converter={StaticResource PathToImageThumbnailConverter}}"
                    Margin="0,0,10,0" />
             <StackPanel VerticalAlignment="Center">
                 <TextBlock ToolTip="{Binding AlbumTitle}"

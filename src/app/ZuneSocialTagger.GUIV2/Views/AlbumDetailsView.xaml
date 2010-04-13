@@ -84,7 +84,7 @@
                                                        Source="../Assets/warning.png"
                                                        Margin="0,0,10,0" />
                                             
-                                                <Control Template="{DynamicResource AlbumDetails}" />
+                                                <Control Template="{StaticResource AlbumDetails}" />
                                             
                                             </StackPanel>
                                         </ControlTemplate>
