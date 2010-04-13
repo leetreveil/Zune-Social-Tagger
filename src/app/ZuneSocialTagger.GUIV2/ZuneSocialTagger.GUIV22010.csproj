@@ -120,8 +120,8 @@
     <Compile Include="Models\FirstViews.cs" />
     <Compile Include="Models\IFirstPage.cs" />
     <Compile Include="UIDispatcher.cs" />
-    <Compile Include="Views\InlineZuneMessageView.xaml.cs">
-      <DependentUpon>InlineZuneMessageView.xaml</DependentUpon>
+    <Compile Include="Controls\InlineZuneMessage.xaml.cs">
+      <DependentUpon>InlineZuneMessage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\AlbumCountToStringConverter.cs" />
     <Compile Include="Converters\LinkStatusToImageConverter.cs" />
@@ -143,7 +143,6 @@
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
     <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
-    <Compile Include="ViewModels\InlineZuneMessageViewModel.cs" />
     <Compile Include="Models\SortOrder.cs" />
     <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />
     <Compile Include="ViewModels\SortViewModel.cs" />
@@ -281,7 +280,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\InlineZuneMessageView.xaml">
+    <Page Include="Controls\InlineZuneMessage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

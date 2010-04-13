@@ -35,6 +35,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private readonly IZuneDatabaseReader _dbReader;
         private ViewModelBase _currentPage;
         private bool _updateAvailable;
+        private bool _shouldShowErrorMessage;
+        private ErrorMode _errorMessageMode;
+        private string _errorMessageText;
 
         public ApplicationViewModel(IZuneWizardModel model, CachedZuneDatabaseReader cache, IZuneDatabaseReader dbReader,
                                     IKernel container)
@@ -50,7 +53,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             //register for changes to the current view model so we can switch between views
             Messenger.Default.Register<Type>(this, SwitchToView);
 
-            //register for string messages, could be anything
+            //register for magic string messages, could be anything
             Messenger.Default.Register<string>(this, HandleMagicStrings);
 
             //register for error messages to be displayed
@@ -75,12 +78,27 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             InitDb();
         }
 
+        #region View Bindings
+
         public RelayCommand UpdateCommand { get; private set; }
         public RelayCommand ShowAboutSettingsCommand { get; private set; }
 
-        public InlineZuneMessageViewModel InlineZuneMessage
+        public string ErrorMessageText
         {
-            get { return _container.Get<InlineZuneMessageViewModel>(); }
+            get { return _errorMessageText; }
+            set { _errorMessageText = value; RaisePropertyChanged("ErrorMessageText"); }
+        }
+
+        public ErrorMode ErrorMessageMode
+        {
+            get { return _errorMessageMode; }
+            set { _errorMessageMode = value; RaisePropertyChanged("ErrorMessageMode"); }
+        }
+
+        public bool ShouldShowErrorMessage
+        {
+            get { return _shouldShowErrorMessage; }
+            set { _shouldShowErrorMessage = value; RaisePropertyChanged("ShouldShowErrorMessage"); }
         }
 
         public bool UpdateAvailable
@@ -102,6 +120,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 RaisePropertyChanged("CurrentPage");
             }
         }
+
+        #endregion
+
 
         private void InitDb()
         {
@@ -131,8 +152,9 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         private void DisplayErrorMessage(ErrorMessage message)
         {
-            UIDispatcher.GetDispatcher().Invoke(
-                new Action(() => InlineZuneMessage.ShowMessage(message.ErrorMode, message.Message)));
+            this.ErrorMessageText = message.Message;
+            this.ErrorMessageMode = message.ErrorMode;
+            this.ShouldShowErrorMessage = true;
         }
 
         private void HandleMagicStrings(string message)
@@ -191,33 +213,20 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
                     if (!initalized)
                     {
-                        this.InlineZuneMessage.ShowMessage(ErrorMode.Error, "Error loading zune database");
+                        DisplayErrorMessage(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
                         return DbLoadResult.Failed;
                     }
 
                     return DbLoadResult.Success;
                 }
 
-                this.InlineZuneMessage.ShowMessage(ErrorMode.Error,
-                                                   "Failed to determine if the zune database can be loaded");
-                return DbLoadResult.Failed;
-            }
-            catch (NotSupportedException e)
-            {
-                //if the version of the dll is not the version that this software supports
-                //we should display an error but still attempt to load the database because it might work
-                this.InlineZuneMessage.ShowMessage(ErrorMode.Error, e.Message);
-                return DbLoadResult.Failed;
-            }
-            catch (FileNotFoundException e)
-            {
-                //if ZuneDBApi.dll cannot be found this will be thrown
-                this.InlineZuneMessage.ShowMessage(ErrorMode.Error, e.Message);
+                DisplayErrorMessage(new ErrorMessage(ErrorMode.Error,
+                                                   "Failed to determine if the zune database can be loaded"));
                 return DbLoadResult.Failed;
             }
             catch (Exception e)
             {
-                this.InlineZuneMessage.ShowMessage(ErrorMode.Error, e.Message);
+                DisplayErrorMessage(new ErrorMessage(ErrorMode.Error, e.Message));
                 return DbLoadResult.Failed;
             }
         }
