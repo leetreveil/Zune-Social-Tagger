@@ -46,5 +46,10 @@ namespace ZuneSocialTagger.GUIV2.Views
             return (AlbumDetailsViewModel)lvAlbums.SelectedItem;
         }
 
+        private void SortView_SortClicked(Models.SortOrder sortOrder)
+        {
+            _model.SortData(sortOrder);
+        }
+
     }
 }

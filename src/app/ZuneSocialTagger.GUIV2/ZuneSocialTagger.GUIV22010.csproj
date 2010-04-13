@@ -145,7 +145,6 @@
     <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
     <Compile Include="Models\SortOrder.cs" />
     <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />
-    <Compile Include="ViewModels\SortViewModel.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="Views\AlbumDetailsView.xaml.cs">
       <DependentUpon>AlbumDetailsView.xaml</DependentUpon>
@@ -157,8 +156,8 @@
     <Compile Include="Views\SelectAudioFilesView.xaml.cs">
       <DependentUpon>SelectAudioFilesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SortView.xaml.cs">
-      <DependentUpon>SortView.xaml</DependentUpon>
+    <Compile Include="Controls\SortControl.xaml.cs">
+      <DependentUpon>SortControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DraggableWindow.cs" />
     <Compile Include="ViewModels\SearchResultsDetailViewModel.cs" />
@@ -298,7 +297,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SortView.xaml">
+    <Page Include="Controls\SortControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

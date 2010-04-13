@@ -31,6 +31,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
         private bool _canShowProgressBar;
         private bool _canShowReloadButton;
         private readonly bool _isTaskbarSupported;
+        private SortOrder _sortOrder;
 
         public WebAlbumListViewModel(IZuneWizardModel model, IZuneDatabaseReader dbReader,CachedZuneDatabaseReader cacheReader)
         {
@@ -45,9 +46,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
             cacheReader.FinishedReadingAlbums += cacheReader_FinishedReadingAlbums;
 
-            this.SortViewModel = new SortViewModel();
-            this.SortViewModel.SortClicked += SortViewModel_SortClicked;
-
             this.ScanAllText = "SCAN ALL";
             _isTaskbarSupported = TaskbarManager.IsPlatformSupported;
 
@@ -56,7 +54,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.CanShowReloadButton = true;
             this.CanShowScanAllButton = true;
 
-            this.SortViewModel.SortOrder = Settings.Default.SortOrder;
+            this.SortOrder = Settings.Default.SortOrder;
 
             if (_model.SelectedAlbum != null && _model.SelectedAlbum.AlbumDetails.NeedsRefreshing)
             {
@@ -121,7 +119,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        public SortViewModel SortViewModel { get; set; }
+        public SortOrder SortOrder
+        {
+            get { return _sortOrder; }
+            set { _sortOrder = value; RaisePropertyChanged("SortOrder"); }
+        }
 
         public bool CanShowScanAllButton
         {
@@ -225,7 +227,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning, msg), ZuneMessageBoxButton.OKCancel, () =>
                  {
                      this.Albums.Clear();
-                     this.SortViewModel.SortOrder =SortOrder. NotSorted;
+                     this.SortOrder =SortOrder. NotSorted;
                      Messenger.Default.Send("SWITCHTODB");
                  });
         }
@@ -357,6 +359,11 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
              });
         }
 
+        public void SortData(SortOrder sortOrder)
+        {
+            PerformSort(sortOrder);
+        }
+
         private static Dictionary<string, IZuneTagContainer> GetFileNamesAndContainers(IEnumerable<Track> tracks)
         {
             var albumContainers = new Dictionary<string, IZuneTagContainer>();
@@ -427,11 +434,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                               : this.Albums.OrderBy(sortKey).ToObservableCollection();
         }
 
-        private void SortViewModel_SortClicked(SortOrder sortOrder)
-        {
-            PerformSort(sortOrder);
-        }
-
         private void _dbAdapter_StartedReadingAlbums()
         {
             this.CanShowReloadButton = false;
@@ -452,15 +454,15 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.CanShowScanAllButton = true;
             ResetLoadingProgress();
 
+            this.SortOrder = Settings.Default.SortOrder;
             PerformSort(Settings.Default.SortOrder);
-            this.SortViewModel.Sort(Settings.Default.SortOrder);
         }
 
-        void cacheReader_FinishedReadingAlbums()
+        private void cacheReader_FinishedReadingAlbums()
         {
             UpdateLinkTotals();
+            this.SortOrder = Settings.Default.SortOrder;
             PerformSort(Settings.Default.SortOrder);
-            this.SortViewModel.Sort(Settings.Default.SortOrder);
             ResetLoadingProgress();
         }
 

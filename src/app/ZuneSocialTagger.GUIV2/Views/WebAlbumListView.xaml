@@ -4,7 +4,8 @@
              xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views"
              mc:Ignorable="d" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" >
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:Controls="clr-namespace:ZuneSocialTagger.GUIV2.Controls">
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
@@ -17,8 +18,10 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <views:SortView DataContext="{Binding SortViewModel}" 
-                        HorizontalAlignment="Left" VerticalContentAlignment="Bottom" Margin="0,0,0,3"/>
+        <Controls:SortControl SortClicked="SortView_SortClicked"
+                        SortOrder="{Binding SortOrder,Mode=TwoWay}" 
+                        HorizontalAlignment="Left" VerticalContentAlignment="Bottom" 
+                        Margin="0,0,0,3"/>
 
         <StackPanel HorizontalAlignment="Right"
                     Orientation="Horizontal"

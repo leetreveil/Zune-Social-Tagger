@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="ZuneSocialTagger.GUIV2.Controls.SortControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Resources.xaml" />
+    </UserControl.Resources>
+    
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+
+            <TextBlock Text="SORTED BY " FontWeight="Bold" 
+                       FontSize="12" Foreground="#FFA2ABAA" />
+
+            <Button x:Name="btnSort" Click="btnSort_Click"
+                    FontWeight="Bold" 
+                    FontSize="12" Style="{StaticResource AboutSettingsButton}" />
+            
+        </StackPanel>
+
+    </Grid>
+</UserControl>
