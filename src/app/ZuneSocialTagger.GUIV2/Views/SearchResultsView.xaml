@@ -6,14 +6,14 @@
 	mc:Ignorable="d"
     xmlns:views="clr-namespace:ZuneSocialTagger.GUIV2.Views" 
     x:Class="ZuneSocialTagger.GUIV2.Views.SearchResultsView"
-	x:Name="UserControl" 
-    FontFamily="/ZuneSocialTagger.GUIV2;Component/Assets/Fonts/#Zegoe UI - U">
+    xmlns:dd="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels.DesignTime"
+    d:DesignHeight="200">
 
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources.xaml "/>
     </UserControl.Resources>
 
-        <Grid>
+    <Grid d:DataContext="{d:DesignInstance dd:SearchResultsDesignViewModel,IsDesignTimeCreatable=True}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />

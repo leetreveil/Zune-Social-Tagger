@@ -112,7 +112,11 @@
     <Compile Include="Converters\ZuneMessageBoxButtonToVisibiltyConverter.cs" />
     <Compile Include="Models\SelectedAlbum.cs" />
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
+    <Compile Include="ViewModels\DesignTime\DetailsDesignViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\SearchDesignViewModel.cs" />
+    <Compile Include="ViewModels\DesignTime\SearchResultsDesignViewModel.cs" />
+    <Compile Include="ViewModels\DesignTime\SearchResultsDetailDesignViewModel.cs" />
+    <Compile Include="ViewModels\DesignTime\SuccessDesignViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\WebAlbumListDesignViewModel.cs" />
     <Compile Include="Views\ApplicationView.xaml.cs">
       <DependentUpon>ApplicationView.xaml</DependentUpon>

@@ -4,7 +4,8 @@
     xmlns:GUIV2="clr-namespace:ZuneSocialTagger.GUIV2" 
     Style="{DynamicResource DefaultWindowStyle}"  
     WindowStartupLocation="CenterScreen"
-    Topmost="True" Height="205" Width="400">
+    Topmost="True" Height="205" Width="400"
+    ShowInTaskbar="False">
 
     <Window.Resources>
         <ResourceDictionary Source="../Resources.xaml" />

@@ -5,8 +5,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:local="clr-namespace:ZuneSocialTagger.GUIV2"
     x:Class="ZuneSocialTagger.GUIV2.Views.AboutView"
-    Title="AboutView" WindowStartupLocation="CenterScreen" Height="240" Width="300" 
-    Style="{DynamicResource DefaultWindowStyle}" mc:Ignorable="d">
+    Title="AboutView" WindowStartupLocation="CenterScreen" 
+    Width="300"
+    Style="{DynamicResource DefaultWindowStyle}" 
+    mc:Ignorable="d" 
+    SizeToContent="Height"
+    ShowInTaskbar="False">
 
     <Window.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
@@ -18,9 +22,9 @@
 
     <Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition/>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto" />
-			<RowDefinition/>
+			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 
         <!--HEADER-->
@@ -49,7 +53,7 @@
 		<Button Content="CLOSE"  Grid.Row="2"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click" />
         
-        <CheckBox x:Name="cbCheck" Command="{Binding Path=SetCanUpdateCommand}"
+        <CheckBox Margin="0,20,0,0" x:Name="cbCheck" Command="{Binding Path=SetCanUpdateCommand}"
                   CommandParameter="{Binding ElementName=cbCheck,Path=IsChecked}"
                   IsChecked="{Binding UpdateEnabled,Mode=OneWay}"
                   Grid.Row="2" 

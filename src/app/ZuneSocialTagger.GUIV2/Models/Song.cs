@@ -31,6 +31,11 @@ namespace ZuneSocialTagger.GUIV2.Models
                 this.MetaData.AlbumArtist = this.MetaData.ContributingArtists.First();
         }
 
+        public Song()
+        {
+            
+        }
+
         private string TrackNumberCleaner(string trackNumber)
         {
             if (trackNumber == string.Empty)
