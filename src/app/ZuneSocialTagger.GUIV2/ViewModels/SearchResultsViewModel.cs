@@ -142,11 +142,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                          this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(track);
                  }));
 
+            _model.SelectedAlbum.SongsFromWebsite = this.SearchResultsDetailViewModel.SelectedAlbumSongs;
 
+            //Set each row's selected song based upon whats available from the zune website
             foreach (var row in _model.SelectedAlbum.Tracks)
             {
-                row.SongsFromWebsite = this.SearchResultsDetailViewModel.SelectedAlbumSongs;
-                row.Tracks = tracks;
+                row.SelectedSong = row.MatchThisSongToAvailableSongs(_model.SelectedAlbum.SongsFromWebsite);
             }
         }
     }

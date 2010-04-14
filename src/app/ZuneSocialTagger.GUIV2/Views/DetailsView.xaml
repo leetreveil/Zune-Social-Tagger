@@ -72,9 +72,9 @@
                                 <TextBlock ToolTip="{Binding MetaData.Title}" Text="{Binding MetaData.Title}" VerticalAlignment="Center" Margin="10,0,0,0"/>
                             </StackPanel>
 
-                                <ComboBox x:Name="cmbBox" ItemsSource="{Binding SongsFromWebsite}" 
+                                <ComboBox x:Name="cmbBox" ItemsSource="{Binding ElementName=LayoutRoot, Path=DataContext.SongsFromWebste}" 
                                       ToolTip="{Binding RelativeSource={RelativeSource Self},Path=SelectedItem.MetaData.Title}"  
-                                      SelectedItem="{Binding SelectedSong}" IsReadOnly="True" Grid.Column="1"  
+                                      SelectedItem="{Binding SelectedSong.MetaData}" IsReadOnly="True" Grid.Column="1"  
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                                       Width="280" VerticalAlignment="Center" >
 
@@ -82,8 +82,11 @@
                                     <DataTemplate>
                                         
                                         <StackPanel Height="25" Orientation="Horizontal">
-                                                <TextBlock Width="15" Text="{Binding MetaData.TrackNumber,Converter={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" VerticalAlignment="Top" FontSize="12" FontWeight="Bold"/>
-                                            <TextBlock Text="{Binding MetaData.Title}" VerticalAlignment="Top" Margin="10,0,0,0"/>
+                                                <TextBlock Width="15" Text="{Binding TrackNumber,Converter={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" 
+                                                           VerticalAlignment="Top" FontSize="12" FontWeight="Bold"/>
+                                            
+                                            <TextBlock Text="{Binding Title}" VerticalAlignment="Top" Margin="10,0,0,0"/>
+                                            
                                         </StackPanel>
                                         
                                     </DataTemplate>

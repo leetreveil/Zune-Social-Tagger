@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Models
@@ -14,9 +13,7 @@ namespace ZuneSocialTagger.GUIV2.Models
         }
 
         public SelectedAlbum SelectedAlbum { get; set; }
-
         public string SearchText { get; set; }
-
         public ObservableCollection<AlbumDetailsViewModel> AlbumsFromDatabase
         {
             get { return _albumsFromDatabase; }
@@ -26,7 +23,5 @@ namespace ZuneSocialTagger.GUIV2.Models
                 NotifyOfPropertyChange(() => this.AlbumsFromDatabase);
             }
         }
-
-        public int SelectedItemInListView { get; set; }
     }
 }

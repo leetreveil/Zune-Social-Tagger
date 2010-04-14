@@ -10,13 +10,10 @@ namespace ZuneSocialTagger.GUIV2.Models
     /// </summary>
     public class Song
     {
-        private ObservableCollection<Track> _songsFromWebsite;
-
         public MetaData MetaData { get; set; }
         public string FilePath { get; private set; }
         public IZuneTagContainer Container { get; set; }
         public Track SelectedSong { get; set; }
-        public IEnumerable<Track> Tracks { get; set; }
 
         public Song(string filePath, IZuneTagContainer container)
         {
@@ -36,7 +33,7 @@ namespace ZuneSocialTagger.GUIV2.Models
             
         }
 
-        private string TrackNumberCleaner(string trackNumber)
+        private static string TrackNumberCleaner(string trackNumber)
         {
             if (trackNumber == string.Empty)
             {
@@ -52,32 +49,17 @@ namespace ZuneSocialTagger.GUIV2.Models
         }
 
         /// <summary>
-        /// when this is first set we try to match the songs from the zune website to whats in the songs metadata
-        /// </summary>
-        public ObservableCollection<Track> SongsFromWebsite
-        {
-            get { return _songsFromWebsite; }
-            set
-            {
-                _songsFromWebsite = value;
-
-                //update selected song
-                SelectedSong = MatchThisSongToAvailableSongs();
-            }
-        }
-
-        /// <summary>
         /// Matches song titles
         /// </summary>
         /// <returns></returns>
-        private Track MatchThisSongToAvailableSongs()
+        public Track MatchThisSongToAvailableSongs(IEnumerable<Track> tracksToMatch)
         {
             //this matches album songs to zune website songs in the details view
             Track matchBySongTitle =
-                this.SongsFromWebsite.Where(song => song.MetaData.Title.ToLower() == this.MetaData.Title.ToLower()).FirstOrDefault();
+                tracksToMatch.Where(song => song.MetaData.Title.ToLower() == this.MetaData.Title.ToLower()).FirstOrDefault();
 
-            Track matchByTrackNumber = 
-                this.SongsFromWebsite.Where(song => song.MetaData.TrackNumber == this.MetaData.TrackNumber).FirstOrDefault();
+            Track matchByTrackNumber =
+                tracksToMatch.Where(song => song.MetaData.TrackNumber == this.MetaData.TrackNumber).FirstOrDefault();
 
             if (matchBySongTitle == null && matchByTrackNumber != null)
             {

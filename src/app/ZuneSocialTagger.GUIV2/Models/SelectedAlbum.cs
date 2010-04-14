@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Models
@@ -16,5 +17,6 @@ namespace ZuneSocialTagger.GUIV2.Models
         public ObservableCollection<Song> Tracks { get; set; }
         public ExpandedAlbumDetailsViewModel ZuneAlbumMetaData { get; set; }
         public ExpandedAlbumDetailsViewModel WebAlbumMetaData { get; set; }
+        public ObservableCollection<Track> SongsFromWebsite { get; set; }
     }
 }

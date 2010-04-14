@@ -8,6 +8,5 @@ namespace ZuneSocialTagger.GUIV2.Models
         SelectedAlbum SelectedAlbum { get; set; }
         string SearchText { get; set; }
         ObservableCollection<AlbumDetailsViewModel> AlbumsFromDatabase { get; set; }
-        int SelectedItemInListView { get; set; }
     }
 }

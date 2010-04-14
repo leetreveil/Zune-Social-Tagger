@@ -84,12 +84,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
         }
 
-        public int SelectedIndex
-        {
-            get { return _model.SelectedItemInListView; }
-            set { _model.SelectedItemInListView = value; }
-        }
-
         public ObservableCollection<AlbumDetailsViewModel> Albums
         {
             get { return _model.AlbumsFromDatabase; }
