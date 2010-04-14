@@ -17,7 +17,7 @@ namespace ZuneSocialTagger.GUIV2
         static ViewModelLocator()
         {
             Container.Bind<IZuneWizardModel>().To<ZuneWizardModel>().InSingletonScope();
-            Container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
+            Container.Bind<IZuneDatabaseReader>().To<TestZuneDatabaseReader>().InSingletonScope();
 
             Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
             Container.Bind<CachedZuneDatabaseReader>().ToSelf().InSingletonScope();

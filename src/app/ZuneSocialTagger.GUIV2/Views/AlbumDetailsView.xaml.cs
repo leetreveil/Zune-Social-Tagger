@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -11,5 +12,24 @@ namespace ZuneSocialTagger.GUIV2.Views
         {
             InitializeComponent();
         }
+
+        private void LinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var model = this.DataContext as AlbumDetailsViewModel;
+            if (model != null) model.LinkAlbum();
+        }
+
+        private void Refresh_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var model = this.DataContext as AlbumDetailsViewModel;
+            if (model != null) model.RefreshAlbum();
+        }
+
+        private void DelinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var model = this.DataContext as AlbumDetailsViewModel;
+            if (model != null) model.DelinkAlbum();
+        }
+
     }
 }

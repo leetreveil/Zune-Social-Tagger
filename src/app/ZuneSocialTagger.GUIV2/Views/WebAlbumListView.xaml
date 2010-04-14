@@ -74,45 +74,7 @@
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ItemContainerStyle="{StaticResource ListViewItemStyle}"
                   Background="Transparent"
-                  BorderThickness="0">
-
-
-            <ListView.ContextMenu>
-                <ContextMenu>
-
-                    <MenuItem IsEnabled="{Binding IsCurrentAlbumLinkable}" Header="Link"
-                              Click="LinkAlbum_Click">
-                        <MenuItem.Icon>
-                            <Image Width="16"
-                                   Height="16"
-                                   Source="../Assets/add.png" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-
-                    <MenuItem IsEnabled="{Binding IsCurrentAlbumLinkable}" Header="De-Link"
-                              Click="DelinkAlbum_Click">
-                        <MenuItem.Icon>
-                            <Image Width="16"
-                                   Height="16"
-                                   Source="../Assets/minus.png" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-
-                    <Separator />
-
-                    <MenuItem Header="Refresh"
-                              Click="Refresh_Click">
-                        <MenuItem.Icon>
-                            <Image Width="16"
-                                   Height="16"
-                                   Source="../Assets/refresh.png" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-
-                </ContextMenu>
-            </ListView.ContextMenu>
-
-        </ListView>
+                  BorderThickness="0"/>
 
         <ProgressBar Visibility="{Binding Path=CanShowProgressBar,Converter={StaticResource BoolToVisConverter}}"
                      Margin="0,10,0,0"

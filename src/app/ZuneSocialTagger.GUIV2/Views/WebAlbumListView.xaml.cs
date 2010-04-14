@@ -26,26 +26,6 @@ namespace ZuneSocialTagger.GUIV2.Views
                                };
         }
 
-        private void LinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            _model.LinkAlbum(GetSelectedAlbum().ZuneAlbumMetaData);
-        }
-
-        private void Refresh_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            _model.RefreshAlbum(GetSelectedAlbum());
-        }
-
-        private void DelinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            _model.DelinkAlbum(GetSelectedAlbum().ZuneAlbumMetaData);
-        }
-
-        private AlbumDetailsViewModel GetSelectedAlbum()
-        {
-            return (AlbumDetailsViewModel)lvAlbums.SelectedItem;
-        }
-
         private void SortView_SortClicked(Models.SortOrder sortOrder)
         {
             _model.SortData(sortOrder);

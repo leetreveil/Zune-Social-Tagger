@@ -10,13 +10,47 @@
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
     
+    <UserControl.ContextMenu>
+        <ContextMenu>
+
+            <MenuItem Header="Link"
+                              Click="LinkAlbum_Click">
+                <MenuItem.Icon>
+                    <Image Width="16"
+                                   Height="16"
+                                   Source="../Assets/add.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <MenuItem Header="De-Link"
+                              Click="DelinkAlbum_Click">
+                <MenuItem.Icon>
+                    <Image Width="16"
+                                   Height="16"
+                                   Source="../Assets/minus.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <Separator />
+
+            <MenuItem Header="Refresh"
+                              Click="Refresh_Click">
+                <MenuItem.Icon>
+                    <Image Width="16"
+                                   Height="16"
+                                   Source="../Assets/refresh.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+        </ContextMenu>
+    </UserControl.ContextMenu>
+    
     <Grid>
-            <Grid.ColumnDefinitions>
+           <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300" />
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-
 
             <StackPanel DataContext="{Binding ZuneAlbumMetaData}" Orientation="Horizontal">
                 <StackPanel Orientation="Horizontal">

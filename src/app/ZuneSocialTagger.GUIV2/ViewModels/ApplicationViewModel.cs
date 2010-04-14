@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Xml.Serialization;
 using GalaSoft.MvvmLight;
@@ -254,68 +253,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                         foreach (AlbumDetails newAlbum in _cache.ReadAlbums())
                         {
                             AlbumDetails album = newAlbum;
-                            UIDispatcher.GetDispatcher().Invoke(new Action(() =>
-                                                                           _model.AlbumsFromDatabase.Add(
-                                                                               new AlbumDetailsViewModel(album))));
+                            UIDispatcher.GetDispatcher().Invoke(new Action(() 
+                                => _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(album, _dbReader,_model))));
                         }
 
                         //after we have loaded the cache, we want to check for any new albums available in the database
-                        Dictionary<Album, DbAlbumChanged> updates =
-                            _dbReader.CheckForChanges(_model.AlbumsFromDatabase.Select(x => x.ZuneAlbumMetaData));
-
-                        if (updates.Count > 0)
-                        {
-                            //remove albums marked as to be removed
-                            var removed = updates.Where(x => x.Value == DbAlbumChanged.Removed);
-
-                            foreach (var removedAlbum in removed)
-                            {
-                                KeyValuePair<Album, DbAlbumChanged> removedAlbumClosed = removedAlbum;
-
-                                AlbumDetailsViewModel albumToBeRemoved =
-                                    _model.AlbumsFromDatabase.Where(
-                                        x => x.ZuneAlbumMetaData.MediaId == removedAlbumClosed.Key.MediaId).First();
-
-
-                                UIDispatcher.GetDispatcher().Invoke(
-                                    new Action(() => _model.AlbumsFromDatabase.Remove(albumToBeRemoved)));
-                            }
-
-                            //add new albums marked as new
-                            var addedUpdates = updates.Where(x => x.Value == DbAlbumChanged.Added);
-
-                            foreach (KeyValuePair<Album, DbAlbumChanged> newAlbum in addedUpdates)
-                            {
-                                KeyValuePair<Album, DbAlbumChanged> album = newAlbum;
-
-                                UIDispatcher.GetDispatcher().Invoke(
-                                    new Action(
-                                        () =>
-                                        _model.AlbumsFromDatabase.Add(
-                                            new AlbumDetailsViewModel(SharedMethods.ToAlbumDetails(album.Key)))));
-                            }
-
-                            Messenger.Default.Send("SORT");
-
-                            if (addedUpdates.Count() > 0)
-                            {
-                                DisplayErrorMessage(new ErrorMessage(ErrorMode.Info,
-                                                                     String.Format("{0} albums were added",
-                                                                                   addedUpdates.Count())));
-                            }
-                            else if(addedUpdates.Count() > 0 && removed.Count() > 0)
-                            {
-                                DisplayErrorMessage(new ErrorMessage(ErrorMode.Info,
-                                     String.Format("{0} albums were added and {1} albums were removed",
-                                                   addedUpdates.Count(),removed.Count())));
-                            }
-                            else if(removed.Count() > 0)
-                            {
-                                DisplayErrorMessage(new ErrorMessage(ErrorMode.Info,
-                                     String.Format("{0} albums were removed",
-                                                   removed.Count())));
-                            }
-                        }
+                        GetNewOrRemovedAlbumsFromZuneDb();
                     });
                 }
                 else
@@ -323,6 +266,67 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             }
             else
                 ReadActualDatabase();
+        }
+
+        private void GetNewOrRemovedAlbumsFromZuneDb()
+        {
+            Dictionary<Album, DbAlbumChanged> updates =
+                _dbReader.CheckForChanges(_model.AlbumsFromDatabase.Select(x => x.ZuneAlbumMetaData));
+
+            if (updates.Count > 0)
+            {
+                //remove albums marked as to be removed
+                var removed = updates.Where(x => x.Value == DbAlbumChanged.Removed);
+
+                foreach (var removedAlbum in removed)
+                {
+                    KeyValuePair<Album, DbAlbumChanged> removedAlbumClosed = removedAlbum;
+
+                    AlbumDetailsViewModel albumToBeRemoved =
+                        _model.AlbumsFromDatabase.Where(
+                            x => x.ZuneAlbumMetaData.MediaId == removedAlbumClosed.Key.MediaId).First();
+
+
+                    UIDispatcher.GetDispatcher().Invoke(
+                        new Action(() => _model.AlbumsFromDatabase.Remove(albumToBeRemoved)));
+                }
+
+                //add new albums marked as new
+                var addedUpdates = updates.Where(x => x.Value == DbAlbumChanged.Added);
+
+                foreach (KeyValuePair<Album, DbAlbumChanged> newAlbum in addedUpdates)
+                {
+                    KeyValuePair<Album, DbAlbumChanged> album = newAlbum;
+
+                    UIDispatcher.GetDispatcher().Invoke(
+                        new Action(
+                            () =>
+                            _model.AlbumsFromDatabase.Add(
+                                new AlbumDetailsViewModel(SharedMethods.ToAlbumDetails(album.Key),_dbReader,_model))));
+                }
+
+                Messenger.Default.Send("SORT");
+
+                if (addedUpdates.Count() > 0 && removed.Count() > 0)
+                {
+                    DisplayErrorMessage(new ErrorMessage(ErrorMode.Info,
+                                                         String.Format(
+                                                             "{0} albums were added and {1} albums were removed",
+                                                             addedUpdates.Count(), removed.Count())));
+                }
+                else if (addedUpdates.Count() > 0)
+                {
+                    DisplayErrorMessage(new ErrorMessage(ErrorMode.Info,
+                                                         String.Format("{0} albums were added",
+                                                                       addedUpdates.Count())));
+                }
+                else if (removed.Count() > 0)
+                {
+                    DisplayErrorMessage(new ErrorMessage(ErrorMode.Info,
+                                                         String.Format("{0} albums were removed",
+                                                                       removed.Count())));
+                }
+            }
         }
 
         private void ReadActualDatabase()
@@ -334,7 +338,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                     UIDispatcher.GetDispatcher().Invoke(new Action(() =>
                                                                    _model.AlbumsFromDatabase.Add(
                                                                        new AlbumDetailsViewModel(
-                                                                           SharedMethods.ToAlbumDetails(album)))));
+                                                                           SharedMethods.ToAlbumDetails(album),_dbReader,_model))));
                 }
             });
         }
