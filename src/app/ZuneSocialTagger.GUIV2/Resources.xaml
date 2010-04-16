@@ -132,7 +132,6 @@
         <v:SuccessView/>
     </DataTemplate>
 
-    <GUIV2:ViewModelLocator x:Key="Locator" />
     <converters:TextToVisibilityConverter x:Key="TextToVisConverter" />
     <converters:AlbumCountToStringConverter x:Key="AlbumCountToStringConverter" />
     <converters:NotConverter x:Key="NotConverter" />

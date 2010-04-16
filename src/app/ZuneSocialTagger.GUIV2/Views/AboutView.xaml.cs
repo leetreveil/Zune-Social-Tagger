@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Reflection;
+using ZuneSocialTagger.GUIV2.ViewModels;
 
 namespace ZuneSocialTagger.GUIV2.Views
 {
@@ -22,6 +23,7 @@ namespace ZuneSocialTagger.GUIV2.Views
         public AboutView()
         {
             InitializeComponent();
+            this.DataContext = new AboutViewModel();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

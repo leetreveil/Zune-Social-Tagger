@@ -8,7 +8,6 @@ using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Properties;
-using System.Linq;
 
 namespace ZuneSocialTagger.GUIV2.ViewModels
 {
@@ -27,6 +26,12 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.SaveCommand = new RelayCommand(Save);
         }
+
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; private set; }
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; private set; }
+        public RelayCommand MoveToStartCommand { get; private set; }
+        public RelayCommand MoveBackCommand { get; private set; }
+        public RelayCommand SaveCommand { get; private set; }
 
         public ObservableCollection<Song> Rows
         {
@@ -48,12 +53,6 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
                 return this.SongsFromWebste.Count;
             }
         }
-
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
-        public RelayCommand MoveToStartCommand { get; private set; }
-        public RelayCommand MoveBackCommand { get; private set; }
-        public RelayCommand SaveCommand { get; private set; }
 
         public void Save()
         {

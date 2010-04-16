@@ -16,10 +16,6 @@
         <ResourceDictionary Source="../Resources.xaml" />
     </Window.Resources>
 
-    <Window.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="About" />
-    </Window.DataContext>
-
     <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>

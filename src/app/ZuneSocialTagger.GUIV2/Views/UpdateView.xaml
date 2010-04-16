@@ -10,10 +10,6 @@
         <ResourceDictionary Source="../Resources.xaml" />
     </Window.Resources>
 
-    <Window.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="Update" />
-    </Window.DataContext>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>

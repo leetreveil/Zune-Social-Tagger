@@ -10,15 +10,15 @@ namespace ZuneSocialTagger.GUIV2.Views
     public partial class ApplicationView : Window
     {
         private readonly ApplicationViewModel _viewModel;
-        public ApplicationView()
+
+        public ApplicationView(ApplicationViewModel viewModel)
         {
             InitializeComponent();
 
+            _viewModel = viewModel;
+            this.DataContext = viewModel;
+            this.Loaded += ApplicationView_Loaded;
             Application.Current.Exit += Current_Exit;
-
-           _viewModel = (ApplicationViewModel) this.DataContext;
-
-           this.Loaded += ApplicationView_Loaded;
         }
 
         void ApplicationView_Loaded(object sender, RoutedEventArgs e)
@@ -28,7 +28,7 @@ namespace ZuneSocialTagger.GUIV2.Views
 
         void Current_Exit(object sender, ExitEventArgs e)
         {
-            _viewModel.ShuttingDown();
+            _viewModel.ApplicationIsShuttingDown();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

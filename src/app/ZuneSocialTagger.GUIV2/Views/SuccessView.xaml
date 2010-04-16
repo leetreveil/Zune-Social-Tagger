@@ -11,10 +11,6 @@
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
 
-    <UserControl.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="Success" />
-    </UserControl.DataContext>
-
     <Grid d:DataContext="{d:DesignInstance dd:SuccessDesignViewModel,IsDesignTimeCreatable=True}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

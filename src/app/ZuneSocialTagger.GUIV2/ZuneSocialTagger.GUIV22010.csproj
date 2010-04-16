@@ -150,7 +150,6 @@
     <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
     <Compile Include="Models\SortOrder.cs" />
     <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />
-    <Compile Include="ViewModelLocator.cs" />
     <Compile Include="Views\AlbumDetailsView.xaml.cs">
       <DependentUpon>AlbumDetailsView.xaml</DependentUpon>
     </Compile>

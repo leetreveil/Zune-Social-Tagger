@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using Ninject;
+using ZuneSocialTagger.Core.ZuneDatabase;
+using ZuneSocialTagger.GUIV2.Models;
 using ZuneSocialTagger.GUIV2.Properties;
 using ZuneSocialTagger.GUIV2.ViewModels;
+using ZuneSocialTagger.GUIV2.Views;
 
 
 namespace ZuneSocialTagger.GUIV2
@@ -12,9 +16,10 @@ namespace ZuneSocialTagger.GUIV2
     /// </summary>
     public partial class App
     {
+        private static readonly StandardKernel Container = new StandardKernel();
+
         public App()
         {
-            new ViewModelLocator();
             UIDispatcher.SetDispatcher(this.Dispatcher);
 
             string pathToZuneSocAppDataFolder = Path.Combine(Environment.GetFolderPath(
@@ -25,13 +30,19 @@ namespace ZuneSocialTagger.GUIV2
 
             Settings.Default.AppDataFolder = pathToZuneSocAppDataFolder;
 
-            //AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            SetupBindings();
+
+            new ApplicationView(Container.Get<ApplicationViewModel>()).Show();
         }
 
-        //void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        //{
-        //    Debug.WriteLine("something reaaaaaaaaaaaaaaly bad happened");
-        //}
+        private void SetupBindings()
+        {
+            Container.Bind<IZuneWizardModel>().To<ZuneWizardModel>().InSingletonScope();
+            Container.Bind<IZuneDatabaseReader>().To<TestZuneDatabaseReader>().InSingletonScope();
+
+            Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
+            Container.Bind<CachedZuneDatabaseReader>().ToSelf().InSingletonScope();
+        }
     }
 
 }

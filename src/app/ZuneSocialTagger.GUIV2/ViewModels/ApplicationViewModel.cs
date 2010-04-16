@@ -343,7 +343,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             });
         }
 
-        public void ShuttingDown()
+        public void ApplicationIsShuttingDown()
         {
             WriteCacheToFile();
             Settings.Default.Save();
@@ -379,7 +379,7 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
 
         public void ShowUpdate()
         {
-            new UpdateView().Show();
+            new UpdateView(new UpdateViewModel(UpdateManager.Instance.NewUpdate.Version)).Show();
         }
 
         public void ShowAboutSettings()
