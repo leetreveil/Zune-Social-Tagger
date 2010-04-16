@@ -33,13 +33,22 @@ namespace ZuneSocialTagger.GUIV2.ViewModels
             get { return _model.SelectedAlbum.Tracks; }
         }
 
-        public ObservableCollection<MetaData> SongsFromWebste
+        public ObservableCollection<Track> SongsFromWebste
         {
             get
             {
-                return _model.SelectedAlbum.SongsFromWebsite.Select(x=> x.MetaData).ToObservableCollection();
+                return _model.SelectedAlbum.SongsFromWebsite.ToObservableCollection();
             }
         }
+
+        public int SongsFromWebsiteCount
+        {
+            get
+            {
+                return this.SongsFromWebste.Count;
+            }
+        }
+
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
         public RelayCommand MoveToStartCommand { get; private set; }

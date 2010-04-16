@@ -30,7 +30,7 @@ namespace ZuneSocialTagger.GUIV2.Models
 
         public Song()
         {
-            
+  
         }
 
         private static string TrackNumberCleaner(string trackNumber)
@@ -58,13 +58,13 @@ namespace ZuneSocialTagger.GUIV2.Models
             Track matchBySongTitle =
                 tracksToMatch.Where(song => song.MetaData.Title.ToLower() == this.MetaData.Title.ToLower()).FirstOrDefault();
 
-            Track matchByTrackNumber =
-                tracksToMatch.Where(song => song.MetaData.TrackNumber == this.MetaData.TrackNumber).FirstOrDefault();
+            //Track matchByTrackNumber =
+            //    tracksToMatch.Where(song => song.MetaData.TrackNumber == this.MetaData.TrackNumber).FirstOrDefault();
 
-            if (matchBySongTitle == null && matchByTrackNumber != null)
-            {
-                return matchByTrackNumber;
-            }
+            //if (matchBySongTitle == null && matchByTrackNumber != null)
+            //{
+            //    return matchByTrackNumber;
+            //}
 
             return matchBySongTitle ?? new Track();
         }

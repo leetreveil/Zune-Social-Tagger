@@ -5,7 +5,7 @@
                     xmlns:vm="clr-namespace:ZuneSocialTagger.GUIV2.ViewModels" 
                     xmlns:v="clr-namespace:ZuneSocialTagger.GUIV2.Views" 
                     xmlns:GUIV2="clr-namespace:ZuneSocialTagger.GUIV2">
-    
+
     <Style x:Key="ListViewItemFocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -106,7 +106,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
 
     <DataTemplate DataType="{x:Type vm:SelectAudioFilesViewModel}">
         <v:SelectAudioFilesView/>
@@ -314,7 +314,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsCancel" Value="False" />
                         <Trigger Property="IsFocused" Value="True" >
-                            
+
                         </Trigger>
                         <Trigger Property="IsDefaulted" Value="True" />
                         <Trigger Property="IsMouseOver"
@@ -329,7 +329,7 @@
                                     Property="Source"
                                     Value="Assets/magnifyingglassblack.png" />
                         </Trigger>
-                        
+
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="btnImage"
                                     Property="Source"
@@ -597,8 +597,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="ListViewNoStyle"
-           TargetType="{x:Type ListView}">
+    <Style x:Key="ListViewNoStyle" TargetType="{x:Type ItemsControl}">
         <Setter Property="Background"
                 Value="Transparent" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
@@ -611,7 +610,7 @@
                 Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListBox}">
+                <ControlTemplate TargetType="{x:Type ItemsControl}">
                     <Border x:Name="Bd"
                             SnapsToDevicePixels="true"
                             Background="{TemplateBinding Background}"
@@ -640,12 +639,43 @@
     </Style>
 
     <Style x:Key="ListViewRowNoHighlight"
-           TargetType="{x:Type ListViewItem}">
+           TargetType="{x:Type ContentPresenter}">
         <Setter Property="Focusable"
                 Value="False" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver"
                      Value="True" />
+        </Style.Triggers>
+    </Style>
+
+    <!--<Style x:Key="ItemsControlItemFirstRowHeader" TargetType="{x:Type ContentPresenter}">
+                        <Setter Property="Content">
+                    <Setter.Value>
+                        <TextBlock Text="Faggle"/>
+                    </Setter.Value>
+                </Setter>
+        <Style.Triggers>
+            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <TextBlock Text="Faggle"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>-->
+
+    <Style x:Key="ComboBoxFirstItemStyle" TargetType="{x:Type ComboBoxItem}">
+        <Style.Triggers>
+            <!--<Trigger Property="ComboBox.AlternationIndex" Value="0">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <TextBlock Text="Faggle"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>-->
         </Style.Triggers>
     </Style>
 
@@ -902,41 +932,45 @@
             ClickMode="Press">
                         </ToggleButton>
                         <ContentPresenter
-            Name="ContentSite"
-            IsHitTestVisible="False" 
-            Content="{TemplateBinding SelectionBoxItem}"
-            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-            ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-            Margin="3,3,23,3"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Left" />
+                            Name="ContentSite"
+                            IsHitTestVisible="False" 
+                            Content="{TemplateBinding SelectionBoxItem}"
+                            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                            ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                            Margin="3,3,23,3"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left" />
                         <TextBox x:Name="PART_EditableTextBox"
-            Style="{x:Null}" 
-            Template="{StaticResource ComboBoxTextBox}" 
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Center" 
-            Margin="3,3,23,3"
-            Focusable="True" 
-            Background="Transparent"
-            Visibility="Hidden"
-            IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                            Style="{x:Null}" 
+                            Template="{StaticResource ComboBoxTextBox}" 
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Center" 
+                            Margin="3,3,23,3"
+                            Focusable="True" 
+                            Background="Transparent"
+                            FontWeight="Bold"
+                            Visibility="Hidden"
+                            Foreground="#858585"
+                            IsHitTestVisible="False"
+                            IsReadOnly="{TemplateBinding IsReadOnly}"
+                            Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}"/>
                         <Popup 
-            Name="Popup"
-            Placement="Bottom"
-            IsOpen="{TemplateBinding IsDropDownOpen}"
-            AllowsTransparency="True" 
-            Focusable="False"
-            PopupAnimation="Slide">
+                            Name="Popup"
+                            Placement="Bottom"
+                            IsOpen="{TemplateBinding IsDropDownOpen}"
+                            AllowsTransparency="True" 
+                            Focusable="False"
+                            PopupAnimation="Slide">
                             <Grid 
-              Name="DropDown"
-              SnapsToDevicePixels="True"                
-              MinWidth="{TemplateBinding ActualWidth}"
-              MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                  Name="DropDown"
+                                  SnapsToDevicePixels="True"                
+                                  MinWidth="{TemplateBinding ActualWidth}"
+                                  MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                 <Border 
-                x:Name="DropDownBorder"
-                Background="#FFFFFF"
-                BorderThickness="1"
-                BorderBrush="#888888"/>
+                                    x:Name="DropDownBorder"
+                                    Background="#FFFFFF"
+                                    BorderThickness="1"
+                                    BorderBrush="#888888"/>
                                 <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
                                     <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                                 </ScrollViewer>
@@ -956,11 +990,13 @@
                         <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
                             <Setter TargetName="DropDownBorder" Property="BorderBrush" Value="#B3B3B3"/>
                         </Trigger>
-                        <Trigger Property="IsEditable"
-               Value="true">
+                        <Trigger Property="IsEditable" Value="true">
                             <Setter Property="IsTabStop" Value="false"/>
                             <Setter TargetName="PART_EditableTextBox" Property="Visibility"	Value="Visible"/>
                             <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                        </Trigger>
+                        <Trigger Property="SelectedItem" Value="{x:Null}">
+                            <Setter TargetName="PART_EditableTextBox" Property="Visibility"	Value="Visible"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -1058,8 +1094,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
 
 
 </ResourceDictionary>
