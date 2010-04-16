@@ -62,8 +62,7 @@
         </StackPanel>
 
 
-        <ListView SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}"
-                  SelectionMode="Single"
+        <ListView SelectionMode="Single"
                   Grid.Row="1"
                   x:Name="lvAlbums"
                   ScrollViewer.IsDeferredScrollingEnabled="True"
