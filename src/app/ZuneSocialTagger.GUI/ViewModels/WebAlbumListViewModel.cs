@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -26,7 +27,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private readonly bool _isTaskbarSupported;
         private SortOrder _sortOrder;
 
-        public WebAlbumListViewModel(IZuneWizardModel model, IZuneDatabaseReader dbReader,CachedZuneDatabaseReader cacheReader)
+        public WebAlbumListViewModel(IZuneWizardModel model, IZuneDatabaseReader dbReader)
         {
             _model = model;
             this.Albums = _model.AlbumsFromDatabase;
@@ -35,8 +36,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
             _dbReader.FinishedReadingAlbums += DbAdapterFinishedReadingAlbums;
             _dbReader.ProgressChanged += DbAdapterProgressChanged;
             _dbReader.StartedReadingAlbums += _dbAdapter_StartedReadingAlbums;
-
-            cacheReader.FinishedReadingAlbums += cacheReader_FinishedReadingAlbums;
 
             this.ScanAllText = "SCAN ALL";
             _isTaskbarSupported = TaskbarManager.IsPlatformSupported;
@@ -56,6 +55,13 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
 
             Messenger.Default.Register<string>(this, HandleMessages);
+
+            _model.AlbumsFromDatabase.CollectionChanged += AlbumsFromDatabase_CollectionChanged;
+        }
+
+        void AlbumsFromDatabase_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            UpdateLinkTotals();
         }
 
         private void HandleMessages(string message)
@@ -230,6 +236,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public void SortData(SortOrder sortOrder)
         {
+            Settings.Default.SortOrder = sortOrder;
             PerformSort(sortOrder);
         }
 
@@ -278,7 +285,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void DbAdapterProgressChanged(int arg1, int arg2)
         {
-            UpdateLinkTotals();
             ReportProgress(arg1, arg2);
         }
 
@@ -293,22 +299,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
             PerformSort(Settings.Default.SortOrder);
         }
 
-        private void cacheReader_FinishedReadingAlbums()
-        {
-            UpdateLinkTotals();
-            this.SortOrder = Settings.Default.SortOrder;
-            PerformSort(Settings.Default.SortOrder);
-            ResetLoadingProgress();
-        }
-
-        private void ReportProgress(int current, int total)
-        {
-            this.LoadingProgress = current*100/total;
-
-            if (_isTaskbarSupported)
-                TaskbarManager.Instance.SetProgressValue(current, total);
-        }
-
         private void downloader_FinishedDownloadingAlbums()
         {
             this.CanShowProgressBar = false;
@@ -319,9 +309,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private void downloader_ProgressChanged(int arg1, int arg2)
         {
             //arg1 = current album ;arg2 = total albums
-            if (arg1 < arg2)
-                ReportProgress(arg1, arg2);
-
+            ReportProgress(arg1, arg2);
             UpdateLinkTotals();
         }
 
@@ -331,6 +319,14 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             if (_isTaskbarSupported)
                 TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
+        }
+
+        private void ReportProgress(int current, int total)
+        {
+            this.LoadingProgress = current * 100 / total;
+
+            if (_isTaskbarSupported)
+                TaskbarManager.Instance.SetProgressValue(current, total);
         }
 
         private void UpdateLinkTotals()

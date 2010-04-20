@@ -19,8 +19,9 @@ namespace ZuneSocialTagger.GUI.Views
                                    if (lvAlbums.SelectedItem != null)
                                    {
                                        lvAlbums.ScrollIntoView(lvAlbums.SelectedItem);
-                                       var itemCont = (ListViewItem)lvAlbums.ItemContainerGenerator.ContainerFromItem(lvAlbums.SelectedItem);
-                                       itemCont.Focus();
+                                       ListViewItem item = (ListViewItem)lvAlbums.ItemContainerGenerator.
+                                           ContainerFromItem(lvAlbums.SelectedItem);
+                                       item.Focus();
                                    }
                                };
         }

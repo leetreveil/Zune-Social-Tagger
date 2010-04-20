@@ -8,7 +8,7 @@ namespace ZuneSocialTagger.GUI.Views
     /// </summary>
     public partial class ApplicationView : DraggableWindow
     {
-        private readonly ApplicationViewModel _viewModel;
+        readonly ApplicationViewModel _viewModel;
 
         public ApplicationView(ApplicationViewModel viewModel)
         {
@@ -30,12 +30,12 @@ namespace ZuneSocialTagger.GUI.Views
             _viewModel.ApplicationIsShuttingDown();
         }
 
-        private void Minimize_Click(object sender, RoutedEventArgs e)
+        void Minimize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
         }
 
-        private void Close_Click(object sender, RoutedEventArgs e)
+        void Close_Click(object sender, RoutedEventArgs e)
         {
            Application.Current.Shutdown();
         }
