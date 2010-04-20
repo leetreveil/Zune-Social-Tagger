@@ -252,7 +252,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 if (_cache.CanInitialize && _cache.Initialize())
                 {
                     ThreadPool.QueueUserWorkItem(_ => {
-                        foreach (AlbumDetails newAlbum in _cache.ReadAlbums())
+                        foreach (AlbumDetailsViewModel newAlbum in _cache.ReadAlbums())
                         {
                             var details = new AlbumDetailsViewModel(_dbReader, _model);
                             details.WebAlbumMetaData = newAlbum.WebAlbumMetaData;
@@ -293,7 +293,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
             foreach (var albumToBeRemoved in
                 removedAlbums.Select(id => _model.AlbumsFromDatabase.Where(x => x.ZuneAlbumMetaData.MediaId == id).First()))
             {
-                _dispatcher.Invoke(new Action(() => _model.AlbumsFromDatabase.Remove(albumToBeRemoved)));
+                AlbumDetailsViewModel removed = albumToBeRemoved;
+                _dispatcher.Invoke(new Action(() => _model.AlbumsFromDatabase.Remove(removed)));
             }
 
             //tell the WebAlbumListViewModel to sort its list and update
@@ -347,29 +348,19 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void WriteCacheToFile()
         {
-            List<AlbumDetailsXml> albums = (from album in _model.AlbumsFromDatabase
-                                            select new AlbumDetailsXml
-                                                       {
-                                                           LinkStatus = album.LinkStatus,
-                                                           WebAlbumMetaData =
-                                                               AlbumXml.ToAlbumXml(album.WebAlbumMetaData),
-                                                           ZuneAlbumMetaData =
-                                                               AlbumXml.ToAlbumXml(album.ZuneAlbumMetaData),
-                                                       }).ToList();
+            var albums = _model.AlbumsFromDatabase;
+
             if (albums.Count > 0)
             {
                 try
                 {
                     var xSer = new XmlSerializer(albums.GetType());
 
-                    using (
-                        var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.xml"),
+                    using (var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.xml"),
                                                 FileMode.Create))
                         xSer.Serialize(fs, albums);
                 }
-                catch
-                {
-                }
+                catch{}
             }
         }
 
@@ -419,64 +410,4 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
         }
     }
-
-    #region XmlSerializationStuff
-
-    public class AlbumDetailsXml
-    {
-        public AlbumXml ZuneAlbumMetaData { get; set; }
-        public AlbumXml WebAlbumMetaData { get; set; }
-        public LinkStatus LinkStatus { get; set; }
-    }
-
-    public class AlbumXml
-    {
-        public string AlbumTitle { get; set; }
-        public string AlbumArtist { get; set; }
-        public string ArtworkUrl { get; set; }
-        public DateTime DateAdded { get; set; }
-        public Guid AlbumMediaId { get; set; }
-        public int MediaId { get; set; }
-        public int ReleaseYear { get; set; }
-        public int TrackCount { get; set; }
-        public List<TrackXml> Tracks { get; set; }
-
-        public static AlbumXml ToAlbumXml(Album album)
-        {
-            if (album != null)
-            {
-                return new AlbumXml
-                           {
-                               AlbumArtist = album.AlbumArtist,
-                               AlbumMediaId = album.AlbumMediaId,
-                               AlbumTitle = album.AlbumTitle,
-                               ArtworkUrl = album.ArtworkUrl,
-                               DateAdded = album.DateAdded,
-                               MediaId = album.MediaId,
-                               ReleaseYear = album.ReleaseYear,
-                               TrackCount = album.TrackCount,
-                               Tracks = album.Tracks != null ? album.Tracks.Select(x=> TrackXml.ToTrackXml(x)).ToList() : null
-                           };
-            }
-
-            return null;
-        }
-    }
-
-    public class TrackXml
-    {
-        public string FilePath { get; set; }
-        public Guid MediaId { get; set; }
-
-        public static TrackXml ToTrackXml(Track track)
-        {
-            return new TrackXml
-                       {
-                           FilePath = track.FilePath,
-                           MediaId = track.MediaId
-                       };
-        }
-    }
-
-    #endregion
 }
