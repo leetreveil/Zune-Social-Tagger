@@ -30,11 +30,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         /// <returns></returns>
         bool CanInitialize { get; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="albumIds">A list of albums to check against</param>
-        /// <returns>A list of albums with a flag identifying if they where added / removed from the database</returns>
-        Dictionary<Album, DbAlbumChanged> CheckForChanges(IEnumerable<Album> albumIds);
+        IEnumerable<Album> GetNewAlbums(IEnumerable<int> albumIds);
+        IEnumerable<int> GetRemovedAlbums(IEnumerable<int> albumIds);
     }
 }

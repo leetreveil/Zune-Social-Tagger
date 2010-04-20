@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using ZuneSocialTagger.Core.ZuneDatabase;
 
 namespace ZuneSocialTagger.GUI.Models
 {
@@ -48,14 +47,9 @@ namespace ZuneSocialTagger.GUI.Models
             };
         }
 
-        public static AlbumDetails ToAlbumDetails(Album album)
+        public static LinkStatus GetLinkStatusFromGuid(this Guid guid)
         {
-            var albumDetails = new AlbumDetails();
-
-            albumDetails.LinkStatus = album.AlbumMediaId == Guid.Empty ? LinkStatus.Unlinked : LinkStatus.Unknown;
-            albumDetails.ZuneAlbumMetaData = album;
-
-            return albumDetails;
+            return guid == Guid.Empty ? LinkStatus.Unlinked : LinkStatus.Unknown;
         }
     }
 }

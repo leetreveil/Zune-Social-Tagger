@@ -49,41 +49,33 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             FinishedReadingAlbums.Invoke();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="albumIds">A list of albums to check against</param>
-        /// <returns>A list of albums with a flag identifying if they where added / removed from the database</returns>
-        public Dictionary<Album, DbAlbumChanged> CheckForChanges(IEnumerable<Album> albumIds)
+        public IEnumerable<Album> GetNewAlbums(IEnumerable<int> albumIds)
         {
-            var dict = new Dictionary<Album, DbAlbumChanged>();
+            yield return new Album
+            {
+                AlbumArtist = "Pendulum",
+                AlbumTitle = "Immersion",
+                DateAdded = DateTime.Now,
+                ReleaseYear = 2010,
+                TrackCount = 12
+            };
 
-            //Voodoo People & When Your Heart Stops Beating
-            dict.Add(albumIds.ElementAt(0), DbAlbumChanged.Removed);
-            //The Autumn Effect
-            dict.Add(albumIds.ElementAt(1), DbAlbumChanged.Removed);
-
-
-            dict.Add(new Album()
-                            {
-                                AlbumArtist = "Pendulum",
-                                AlbumTitle = "Immersion",
-                                DateAdded = DateTime.Now,
-                                ReleaseYear = 2010,
-                                TrackCount = 12
-                            },DbAlbumChanged.Added);
-
-            dict.Add(new Album()
+            yield return new Album
             {
                 AlbumArtist = "Circa Survive",
                 AlbumTitle = "Blue Sky Noise",
                 DateAdded = DateTime.Now,
                 ReleaseYear = 2010,
                 TrackCount = 12
-            },DbAlbumChanged.Added);
-
-            return dict;
+            };
         }
+
+        public IEnumerable<int> GetRemovedAlbums(IEnumerable<int> albumIds)
+        {
+            //idicate that the first two albums should be removed
+            return albumIds.Take(2);
+        }
+
 
         public Album GetAlbum(int index)
         {
@@ -126,11 +118,5 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         public void Dispose()
         {
         }
-    }
-
-    public enum DbAlbumChanged
-    {
-        Added,
-        Removed
     }
 }

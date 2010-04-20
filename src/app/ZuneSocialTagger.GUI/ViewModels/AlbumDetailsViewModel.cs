@@ -21,13 +21,10 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private Album _webAlbumMetaData;
         private LinkStatus _linkStatus;
 
-        public AlbumDetailsViewModel(AlbumDetails albumDetails, IZuneDatabaseReader dbReader, IZuneWizardModel model)
+        public AlbumDetailsViewModel(IZuneDatabaseReader dbReader, IZuneWizardModel model)
         {
             _dbReader = dbReader;
             _model = model;
-            this.ZuneAlbumMetaData = albumDetails.ZuneAlbumMetaData;
-            this.WebAlbumMetaData = albumDetails.WebAlbumMetaData;
-            this.LinkStatus = albumDetails.LinkStatus;
         }
 
         public AlbumDetailsViewModel()

@@ -5,9 +5,8 @@ using System.IO;
 using System.Linq;
 using MicrosoftZuneInterop;
 using MicrosoftZuneLibrary;
-using ZuneSocialTagger.Core.ZuneDatabase;
 
-namespace ZuneSocialTagger.ZunePlugin
+namespace ZuneSocialTagger.Core.ZuneDatabase
 {
     public class ZuneDatabaseReader : IZuneDatabaseReader
     {
@@ -57,15 +56,22 @@ namespace ZuneSocialTagger.ZunePlugin
             return (T) fieldValues[0];
         }
 
+        private ZuneQueryList GetAlbumQueryList()
+        {
+            return _zuneLibrary.QueryDatabase(EQueryType.eQueryTypeAllAlbums, 0,
+                                              EQuerySortType.eQuerySortOrderAscending,
+                                              (uint)SchemaMap.kiIndex_AlbumID, null);
+        }
+
+
         public IEnumerable<Album> ReadAlbums()
         {
             this.StartedReadingAlbums.Invoke();
 
             //querying all albums, creates a property bag inside this method to query the database
             //thats why we can pass null for the propertybag
-            ZuneQueryList albums = _zuneLibrary.QueryDatabase(EQueryType.eQueryTypeAllAlbums, 0,
-                                                              EQuerySortType.eQuerySortOrderAscending,
-                                                              (uint) SchemaMap.kiIndex_AlbumID, null);
+            ZuneQueryList albums = GetAlbumQueryList();
+
             albums.AddRef();
 
             var uniqueIds = albums.GetUniqueIds();
@@ -85,26 +91,29 @@ namespace ZuneSocialTagger.ZunePlugin
             albums.Dispose();
         }
 
-        public Dictionary<Album, DbAlbumChanged> CheckForChanges(IEnumerable<Album> albumIds)
+        public IEnumerable<Album> GetNewAlbums(IEnumerable<int> albumIds)
         {
-            ZuneQueryList albums = _zuneLibrary.QueryDatabase(EQueryType.eQueryTypeAllAlbums, 0,
-                                                  EQuerySortType.eQuerySortOrderAscending,
-                                                  (uint)SchemaMap.kiIndex_AlbumID, null);
+            ZuneQueryList albums = GetAlbumQueryList();
+
+            int[] uniqueIds = (int[])albums.GetUniqueIds().ToArray(typeof(int));
 
 
-            var arrayList = albums.GetUniqueIds();
-            int[] uniqueIds = (int[]) arrayList.ToArray(typeof (int));
+            //get all album ids that are in the zune db but NOT in the id list
+            IEnumerable<int> newIds = uniqueIds.Except(albumIds);
 
-
-            var newIds = uniqueIds.Except(albumIds.Select(x => x.MediaId));
-
-            IEnumerable<int> deletedIds = albumIds.Select(x => x.MediaId).Except(uniqueIds);
-            IEnumerable<Album> removedAlbums = albumIds.Where(x => deletedIds.Contains(x.MediaId));
-
-            return removedAlbums.ToDictionary(x => x, x => DbAlbumChanged.Removed).Union(
-                newIds.ToDictionary(GetAlbum, newId => DbAlbumChanged.Added)).ToDictionary(x=> x.Key,x=> x.Value);
+            return newIds.Select(GetAlbum);
         }
 
+        public IEnumerable<int> GetRemovedAlbums(IEnumerable<int> albumIds)
+        {
+            ZuneQueryList albums = GetAlbumQueryList();
+
+            //get a list of album ids
+            int[] uniqueIds = (int[])albums.GetUniqueIds().ToArray(typeof(int));
+
+            return albumIds.Except(uniqueIds);
+        }
+        
         public Album GetAlbumByAlbumTitle(string albumTitle)
         {
             throw new NotImplementedException("SearchForString is not working as I expect, needs investigating");
