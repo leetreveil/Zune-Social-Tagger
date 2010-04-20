@@ -1,0 +1,109 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+    xmlns:views="clr-namespace:ZuneSocialTagger.GUI.Views" 
+    x:Class="ZuneSocialTagger.GUI.Views.SearchResultsView"
+    xmlns:dd="clr-namespace:ZuneSocialTagger.GUI.ViewModels.DesignTime"
+    d:DesignHeight="200">
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Resources.xaml "/>
+    </UserControl.Resources>
+
+    <Grid d:DataContext="{d:DesignInstance dd:SearchResultsDesignViewModel,IsDesignTimeCreatable=True}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition  />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Width="60" x:Name="tbLoading"
+                       Grid.Column="2" VerticalAlignment="Bottom" FontSize="13.333" Foreground="#FF8A8D90" HorizontalAlignment="Right">
+                
+                <TextBlock.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                
+                             <Setter Property="TextBlock.Visibility" Value="Visible"/>   
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                            <Storyboard>
+                                                <StringAnimationUsingKeyFrames RepeatBehavior="Forever"
+                                                                               BeginTime="00:00:00" 
+                                                                               Storyboard.TargetProperty="Text">
+
+                                                    <DiscreteStringKeyFrame KeyTime="00:00:00"
+                                                                            Value="Loading" />
+                                                    <DiscreteStringKeyFrame KeyTime="00:00:00.2000000"
+                                                                            Value="Loading." />
+                                                    <DiscreteStringKeyFrame KeyTime="00:00:00.4000000"
+                                                                            Value="Loading.." />
+                                                    <DiscreteStringKeyFrame KeyTime="00:00:00.6000000"
+                                                                            Value="Loading..." />
+                                                </StringAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                            
+                            <DataTrigger Binding="{Binding IsLoading}" Value="False">
+                                <Setter Property="TextBlock.Visibility" Value="Hidden"/>  
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+
+            </TextBlock>
+
+
+            <ListView Grid.Row="2" x:Name="lvAlbums" SelectionChanged="lvAlbums_SelectionChanged"
+                      SelectedIndex="0" Background="Transparent" BorderBrush="Transparent" IsSynchronizedWithCurrentItem="True" 
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Albums}" 
+                      Margin="0,0,20,0" 
+                      ItemContainerStyle="{StaticResource SelectedItemHighlight}" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal"  Margin="10">
+                            <Image Source="{Binding ArtworkUrl}" Width="60" Height="60" />
+                            <StackPanel Margin="5,0,0,0">
+                                <StackPanel.ToolTip>
+                                    <TextBlock Text="{Binding Title}"/>
+                                </StackPanel.ToolTip>
+                                <TextBlock Text="{Binding Title}" FontSize="13.333"/>
+                                <TextBlock Text="{Binding Artist}" Foreground="#FF8A8D90" />
+                                <TextBlock Text="{Binding ReleaseYear}" Foreground="#FF8A8D90" />
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+
+                <ListView.Style>
+                    <Style TargetType="ListView">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ShowNoResultsMessage}" Value="True">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <TextBlock FontSize="18.667" Text="NO RESULTS"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.Style>
+            </ListView>
+
+
+            <views:SearchResultsDetailView Grid.Row="2" Grid.Column="2" DataContext="{Binding SearchResultsDetailViewModel}"/>
+
+        </Grid>
+</UserControl>

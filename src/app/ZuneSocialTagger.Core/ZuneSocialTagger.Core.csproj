@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,7 +12,10 @@
     <AssemblyName>ZuneSocialTagger.Core</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkSubset>Full</TargetFrameworkSubset>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,8 +54,13 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="ZuneDBApi">
+      <HintPath>..\..\..\libs\zuneApi\ZuneDBApi.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioFileReadException.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="ID3Tagger\ID3Frames.cs" />
     <Compile Include="WMATagger\ASFAttributes.cs" />
@@ -63,7 +71,7 @@
     <Compile Include="ZuneDatabase\IZuneDatabaseReader.cs" />
     <Compile Include="ZuneDatabase\TestZuneDatabaseReader.cs" />
     <Compile Include="ZuneDatabase\Track.cs" />
-    <None Include="ZuneDatabase\ZuneDatabaseReader.cs" />
+    <Compile Include="ZuneDatabase\ZuneDatabaseReader.cs" />
     <Compile Include="ZuneIds.cs" />
     <Compile Include="ID3Tagger\ZuneMP3TagContainer.cs" />
     <Compile Include="ZuneTagContainerFactory.cs" />
@@ -75,14 +83,13 @@
     <Compile Include="ZuneWebsite\AlbumDocumentReader.cs" />
     <Compile Include="ZuneWebsite\AlbumMetaData.cs" />
     <Compile Include="ZuneWebsite\AlbumSearch.cs" />
+    <Compile Include="ZuneWebsite\DownloadState.cs" />
     <Compile Include="ZuneWebsite\Urls.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ZuneDatabase\testzunedatabase.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ZuneDatabase\zunedatabasecache.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
