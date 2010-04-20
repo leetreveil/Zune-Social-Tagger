@@ -7,7 +7,7 @@ namespace ZuneSocialTagger.GUIV2.Views
     /// <summary>
     /// Interaction logic for ApplicationView.xaml
     /// </summary>
-    public partial class ApplicationView : Window
+    public partial class ApplicationView : DraggableWindow
     {
         private readonly ApplicationViewModel _viewModel;
 
