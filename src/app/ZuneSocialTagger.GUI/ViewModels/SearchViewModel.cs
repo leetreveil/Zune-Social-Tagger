@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -13,12 +14,14 @@ namespace ZuneSocialTagger.GUI.ViewModels
 {
     public class SearchViewModel : ViewModelBase
     {
+        private readonly Dispatcher _dispatcher;
         private string _searchText;
         private bool _isSearching;
         private bool _canMoveNext;
 
-        public SearchViewModel(IZuneWizardModel model,SearchResultsViewModel searchResultsViewModel)
+        public SearchViewModel(IZuneWizardModel model,SearchResultsViewModel searchResultsViewModel, Dispatcher dispatcher)
         {
+            _dispatcher = dispatcher;
             this.SearchResultsViewModel = searchResultsViewModel;
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.MoveNextCommand = new RelayCommand(MoveNext);
@@ -83,7 +86,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 this.SearchResultsViewModel.ShowNoResultsMessage = results.Count() == 0;
                 this.CanMoveNext = results.Count() > 0;
 
-                UIDispatcher.GetDispatcher().Invoke(new Action(() =>
+                _dispatcher.Invoke(new Action(() =>
                    {
                        foreach (Album result in results)
                             this.SearchResultsViewModel.Albums.Add(result);

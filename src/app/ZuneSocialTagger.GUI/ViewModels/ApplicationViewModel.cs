@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Windows.Threading;
 using System.Xml.Serialization;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -30,6 +31,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         #endregion
 
         private readonly IKernel _container;
+        private readonly Dispatcher _dispatcher;
         private readonly IZuneWizardModel _model;
         private readonly CachedZuneDatabaseReader _cache;
         private readonly IZuneDatabaseReader _dbReader;
@@ -40,12 +42,13 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private string _errorMessageText;
 
         public ApplicationViewModel(IZuneWizardModel model, CachedZuneDatabaseReader cache, IZuneDatabaseReader dbReader,
-                                    IKernel container)
+                                    IKernel container, Dispatcher dispatcher)
         {
             _model = model;
             _cache = cache;
             _dbReader = dbReader;
             _container = container;
+            _dispatcher = dispatcher;
 
             this.ShowAboutSettingsCommand = new RelayCommand(ShowAboutSettings);
             this.UpdateCommand = new RelayCommand(ShowUpdate);
@@ -253,7 +256,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                         foreach (AlbumDetails newAlbum in _cache.ReadAlbums())
                         {
                             AlbumDetails album = newAlbum;
-                            UIDispatcher.GetDispatcher().Invoke(new Action(() 
+                            _dispatcher.Invoke(new Action(() 
                                 => _model.AlbumsFromDatabase.Add(new AlbumDetailsViewModel(album, _dbReader,_model))));
                         }
 
@@ -287,7 +290,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                             x => x.ZuneAlbumMetaData.MediaId == removedAlbumClosed.Key.MediaId).First();
 
 
-                    UIDispatcher.GetDispatcher().Invoke(
+                    _dispatcher.Invoke(
                         new Action(() => _model.AlbumsFromDatabase.Remove(albumToBeRemoved)));
                 }
 
@@ -298,7 +301,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 {
                     KeyValuePair<Album, DbAlbumChanged> album = newAlbum;
 
-                    UIDispatcher.GetDispatcher().Invoke(
+                    _dispatcher.Invoke(
                         new Action(
                             () =>
                             _model.AlbumsFromDatabase.Add(
@@ -335,8 +338,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 foreach (Album newAlbum in _dbReader.ReadAlbums())
                 {
                     Album album = newAlbum;
-                    UIDispatcher.GetDispatcher().Invoke(new Action(() =>
-                                                                   _model.AlbumsFromDatabase.Add(
+                    _dispatcher.Invoke(new Action(() => _model.AlbumsFromDatabase.Add(
                                                                        new AlbumDetailsViewModel(
                                                                            SharedMethods.ToAlbumDetails(album),_dbReader,_model))));
                 }

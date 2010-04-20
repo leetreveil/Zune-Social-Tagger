@@ -24,7 +24,9 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Width="60" x:Name="tbLoading"
-                       Grid.Column="2" VerticalAlignment="Bottom" FontSize="13.333" Foreground="#FF8A8D90" HorizontalAlignment="Right">
+                       Grid.Column="2" VerticalAlignment="Bottom" 
+                       FontSize="13.333" Foreground="#FF8A8D90" 
+                       HorizontalAlignment="Right">
                 
                 <TextBlock.Style>
                     <Style>

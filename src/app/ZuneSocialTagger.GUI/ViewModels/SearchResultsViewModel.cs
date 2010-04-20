@@ -11,6 +11,7 @@ using ZuneSocialTagger.GUI.Models;
 using System.Threading;
 using Album = ZuneSocialTagger.Core.Album;
 using AlbumDocumentReader = ZuneSocialTagger.Core.ZuneWebsite.AlbumDocumentReader;
+using System.Windows.Threading;
 
 
 namespace ZuneSocialTagger.GUI.ViewModels
@@ -18,13 +19,15 @@ namespace ZuneSocialTagger.GUI.ViewModels
     public class SearchResultsViewModel : ViewModelBase
     {
         private readonly IZuneWizardModel _model;
+        private readonly Dispatcher _dispatcher;
         private bool _isLoading;
         private SearchResultsDetailViewModel _searchResultsDetailViewModel;
         private bool _showNoResultsMessage;
 
-        public SearchResultsViewModel(IZuneWizardModel model)
+        public SearchResultsViewModel(IZuneWizardModel model, Dispatcher dispatcher)
         {
             _model = model;
+            _dispatcher = dispatcher;
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
             this.Albums = new ObservableCollection<Album>();
 
@@ -135,7 +138,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                                                         SelectedAlbumTitle = tracks.First().MetaData.AlbumName
                                                     };
 
-            UIDispatcher.GetDispatcher().Invoke(new Action(() =>
+            _dispatcher.Invoke(new Action(() =>
                  {
                      foreach (var track in tracks)
                          this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(track);

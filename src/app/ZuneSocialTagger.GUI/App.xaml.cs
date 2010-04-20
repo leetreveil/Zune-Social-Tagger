@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Threading;
 using Ninject;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Models;
@@ -19,8 +20,6 @@ namespace ZuneSocialTagger.GUI
 
         public App()
         {
-            UIDispatcher.SetDispatcher(this.Dispatcher);
-
             string pathToZuneSocAppDataFolder = Path.Combine(Environment.GetFolderPath(
                                                              Environment.SpecialFolder.ApplicationData), "Zune Social Tagger");
 
@@ -36,6 +35,7 @@ namespace ZuneSocialTagger.GUI
 
         private void SetupBindings()
         {
+            Container.Bind<Dispatcher>().ToMethod(context => this.Dispatcher);
             Container.Bind<IZuneWizardModel>().To<ZuneWizardModel>().InSingletonScope();
             Container.Bind<IZuneDatabaseReader>().To<TestZuneDatabaseReader>().InSingletonScope();
 
