@@ -97,7 +97,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 selectedAlbum.AlbumDetails = this;
 
                 _model.SelectedAlbum = selectedAlbum;
-                _model.SearchText = albumDetails.AlbumArtist + " " + albumDetails.AlbumTitle;
+                _model.SearchText = albumDetails.AlbumTitle + " " + albumDetails.AlbumArtist;
 
                 //tell the application to switch to the search view
                 Messenger.Default.Send(typeof(SearchViewModel));

@@ -51,56 +51,63 @@
             <TextBlock Text="SONG TITLES IN THIS ALBUM"  FontSize="13.333" FontWeight="SemiBold" />
             <TextBlock Grid.Column="1" Text="SONG TITLES FROM ZUNE MARKETPLACE" FontSize="13.333" FontWeight="SemiBold" Margin="13,0,0,0" />
 
-            <ItemsControl MaxHeight="260" VerticalAlignment="Top" 
-                           Background="Transparent" 
-                           Grid.Row="1" Grid.ColumnSpan="2"
+            <ItemsControl  MaxHeight="260" VerticalAlignment="Top"
+                           Grid.Row="1" Grid.ColumnSpan="2" 
                            ItemsSource="{Binding Rows}">
 
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+                
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Height="25" Margin="0,0,0,4" >
+                        <DataTemplate>
+                            <Grid Height="25" Margin="0,0,0,4" >
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="305"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="305"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
 
-                            <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                <TextBlock Width="23" 
+                                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                    <TextBlock Width="23" 
                                                Text="{Binding MetaData.TrackNumber,Converter={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" 
                                                VerticalAlignment="Center" 
                                                FontSize="18"/>
 
-                                <TextBlock ToolTip="{Binding MetaData.Title}" Text="{Binding MetaData.Title}" 
+                                    <TextBlock ToolTip="{Binding MetaData.Title}" Text="{Binding MetaData.Title}" 
                                            VerticalAlignment="Center" Margin="10,0,0,0"/>
-                            </StackPanel>
+                                </StackPanel>
 
 
-                            <ComboBox Style="{StaticResource SelectSongCombobox}" ItemsSource="{Binding ElementName=LayoutRoot, Path=DataContext.SongsFromWebste}" 
+                                <ComboBox Style="{StaticResource SelectSongCombobox}" ItemsSource="{Binding ElementName=LayoutRoot, Path=DataContext.SongsFromWebste}" 
                                           SelectedItem="{Binding SelectedSong,Mode=TwoWay}" IsReadOnly="True" Grid.Column="1"  
                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                                           Width="280" VerticalAlignment="Center" Tag="Please select a song title">
 
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
 
-                                        <StackPanel Height="25" Orientation="Horizontal">
-                                            <TextBlock Width="15" 
+                                            <StackPanel Height="25" Orientation="Horizontal">
+                                                <TextBlock Width="15" 
                                                            Text="{Binding MetaData.TrackNumber,
                                                                   Converter={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" 
                                                            VerticalAlignment="Top" FontSize="12" 
                                                            FontWeight="Bold"/>
 
-                                            <TextBlock Text="{Binding MetaData.Title}" VerticalAlignment="Top" Margin="10,0,0,0"/>
+                                                <TextBlock Text="{Binding MetaData.Title}" VerticalAlignment="Top" Margin="10,0,0,0"/>
 
-                                        </StackPanel>
+                                            </StackPanel>
 
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
 
-                            </ComboBox>
-                        </Grid>
-                    </DataTemplate>
+                                </ComboBox>
+                            </Grid>
+                        </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 

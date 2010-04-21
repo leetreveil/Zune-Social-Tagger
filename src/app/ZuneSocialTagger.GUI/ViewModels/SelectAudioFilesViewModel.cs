@@ -76,7 +76,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             MetaData ftMetaData = selectedAlbum.Tracks.First().MetaData;
 
-            _model.SearchText = ftMetaData.AlbumArtist + " " + ftMetaData.AlbumName;
+            _model.SearchText = ftMetaData.AlbumName + " " + ftMetaData.AlbumArtist;
 
             selectedAlbum.ZuneAlbumMetaData = new ExpandedAlbumDetailsViewModel
             {
