@@ -6,11 +6,37 @@
 	mc:Ignorable="d"
     xmlns:views="clr-namespace:ZuneSocialTagger.GUI.Views" 
     x:Class="ZuneSocialTagger.GUI.Views.SearchResultsView"
-    xmlns:dd="clr-namespace:ZuneSocialTagger.GUI.ViewModels.DesignTime"
-    d:DesignHeight="200">
+    xmlns:dd="clr-namespace:ZuneSocialTagger.GUI.ViewModels.DesignTime" 
+    xmlns:ZuneWebsite="clr-namespace:ZuneSocialTagger.Core.ZuneWebsite;assembly=ZuneSocialTagger.Core" 
+    xmlns:ctrls="clr-namespace:ZuneSocialTagger.GUI.Controls" d:DesignHeight="200">
 
     <UserControl.Resources>
-        <ResourceDictionary Source="../Resources.xaml "/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml "/>
+                
+                <ResourceDictionary>
+                    <DataTemplate DataType="{x:Type ZuneWebsite:Album}">
+                        <StackPanel Orientation="Horizontal"  Margin="10">
+                            <Image Source="{Binding ArtworkUrl}" Width="60" Height="60" />
+                            <StackPanel Margin="5,0,0,0">
+                                <StackPanel.ToolTip>
+                                    <TextBlock Text="{Binding Title}"/>
+                                </StackPanel.ToolTip>
+                                <TextBlock Text="{Binding Title}" FontSize="13.333"/>
+                                <TextBlock Text="{Binding Artist}" Foreground="#FF8A8D90" />
+                                <TextBlock Text="{Binding ReleaseYear}" Foreground="#FF8A8D90" />
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type ZuneWebsite:Artist}">
+                        <TextBlock Text="{Binding Name}" FontSize="20"/>
+                    </DataTemplate>
+                </ResourceDictionary>
+                
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
     </UserControl.Resources>
 
     <Grid d:DataContext="{d:DesignInstance dd:SearchResultsDesignViewModel,IsDesignTimeCreatable=True}">
@@ -23,7 +49,15 @@
                 <RowDefinition  />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Width="60" x:Name="tbLoading"
+        <StackPanel Margin="10,0,0,0" Orientation="Horizontal">
+            <ctrls:RadioButtonExtended IsCheckedReal="{Binding IsAlbumsEnabled}"
+                         Content="{Binding AlbumCount,Mode=OneWay}" FontWeight="Bold" FontSize="11" Margin="0,0,10,0"/>
+
+            <ctrls:RadioButtonExtended FontWeight="Bold" FontSize="11" Content="{Binding ArtistCount,Mode=OneWay}"/>
+        </StackPanel>
+
+
+        <TextBlock Grid.Row="0" Width="60" x:Name="tbLoading"
                        Grid.Column="2" VerticalAlignment="Bottom" 
                        FontSize="13.333" Foreground="#FF8A8D90" 
                        HorizontalAlignment="Right">
@@ -64,48 +98,20 @@
 
             </TextBlock>
 
+        <ListView Grid.Row="2" x:Name="lvAlbums"
+                MouseUp="lvAlbums_MouseUp"
+                SelectionChanged="lvAlbums_SelectionChanged"
+                SelectedIndex="0" Background="Transparent" 
+                BorderBrush="Transparent" 
+                IsSynchronizedWithCurrentItem="True" 
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                ItemsSource="{Binding SearchResults}" 
+                Margin="0,0,20,0" 
+                ItemContainerStyle="{StaticResource SelectedItemHighlight}">
 
-            <ListView Grid.Row="2" x:Name="lvAlbums" SelectionChanged="lvAlbums_SelectionChanged"
-                      SelectedIndex="0" Background="Transparent" BorderBrush="Transparent" IsSynchronizedWithCurrentItem="True" 
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Albums}" 
-                      Margin="0,0,20,0" 
-                      ItemContainerStyle="{StaticResource SelectedItemHighlight}" >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal"  Margin="10">
-                            <Image Source="{Binding ArtworkUrl}" Width="60" Height="60" />
-                            <StackPanel Margin="5,0,0,0">
-                                <StackPanel.ToolTip>
-                                    <TextBlock Text="{Binding Title}"/>
-                                </StackPanel.ToolTip>
-                                <TextBlock Text="{Binding Title}" FontSize="13.333"/>
-                                <TextBlock Text="{Binding Artist}" Foreground="#FF8A8D90" />
-                                <TextBlock Text="{Binding ReleaseYear}" Foreground="#FF8A8D90" />
-                            </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+        </ListView>
 
-
-                <ListView.Style>
-                    <Style TargetType="ListView">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ShowNoResultsMessage}" Value="True">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate>
-                                            <TextBlock FontSize="18.667" Text="NO RESULTS"/>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ListView.Style>
-            </ListView>
-
-
-            <views:SearchResultsDetailView Grid.Row="2" Grid.Column="2" DataContext="{Binding SearchResultsDetailViewModel}"/>
+        <views:SearchResultsDetailView Grid.Row="2" Grid.Column="2" DataContext="{Binding SearchResultsDetailViewModel}"/>
 
         </Grid>
 </UserControl>

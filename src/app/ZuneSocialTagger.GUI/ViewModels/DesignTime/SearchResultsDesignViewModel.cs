@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using ZuneSocialTagger.Core;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
 {
@@ -7,9 +8,9 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
     {
         public SearchResultsDesignViewModel()
         {
-            this.Albums = new ObservableCollection<Album>();
+            this.SearchResults = new ObservableCollection<object>();
 
-            this.Albums.Add(new Album()
+            this.SearchResults.Add(new Album()
             {
                 Artist = "Pendulum",
                 Title = "In Silico",
@@ -17,7 +18,7 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
                 ArtworkUrl = "http://img.noiset.com/images/album/pendulum-in-silico-cd-cover-artwork-1841.jpeg"
             });
 
-            this.Albums.Add(new Album()
+            this.SearchResults.Add(new Album()
             {
                 Artist = "Pendulum",
                 Title = "Hold Your Color",
@@ -63,8 +64,11 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
             this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(track14);
         }
 
-        public ObservableCollection<Album> Albums { get; set; }
+        public ObservableCollection<object > SearchResults { get; set; }
         public SearchResultsDetailViewModel SearchResultsDetailViewModel { get; set; }
         public bool IsLoading { get { return true; } }
+        public bool ArtistMode { get { return false; } }
+        public string AlbumCount { get { return "ALBUMS (10)"; } }
+        public string ArtistCount { get { return "ARTISTS (3)"; } }
     }
 }

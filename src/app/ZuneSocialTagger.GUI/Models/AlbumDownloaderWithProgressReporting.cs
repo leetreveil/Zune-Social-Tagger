@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.ViewModels;
-using ZuneSocialTagger.Core.ZuneDatabase;
 
 namespace ZuneSocialTagger.GUI.Models
 {
@@ -101,13 +100,14 @@ namespace ZuneSocialTagger.GUI.Models
                 album.LinkStatus = LinkStatus.Unavailable;
             else
             {
-                Album metaData = album.ZuneAlbumMetaData;
+                Core.ZuneDatabase.Album metaData = album.ZuneAlbumMetaData;
 
                 album.LinkStatus = SharedMethods.GetAlbumLinkStatus(dledAlbum.AlbumTitle,
                                                                     dledAlbum.AlbumArtist,
                                                                     metaData.AlbumTitle,
                                                                     metaData.AlbumArtist);
-                album.WebAlbumMetaData = new Album
+
+                album.WebAlbumMetaData = new Core.ZuneDatabase.Album
                                              {
                                                  AlbumArtist = dledAlbum.AlbumArtist,
                                                  AlbumTitle = dledAlbum.AlbumTitle,

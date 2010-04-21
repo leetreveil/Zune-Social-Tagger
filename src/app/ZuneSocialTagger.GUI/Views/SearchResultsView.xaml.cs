@@ -1,7 +1,9 @@
 using System.Collections.Specialized;
 using System.Windows.Controls;
 using ZuneSocialTagger.Core;
+using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.ViewModels;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUI.Views
 {
@@ -24,8 +26,8 @@ namespace ZuneSocialTagger.GUI.Views
             {
                 _searchResultsViewModel = (SearchResultsViewModel) e.NewValue;
 
-                if (_searchResultsViewModel.Albums == null) return;
-                    _searchResultsViewModel.Albums.CollectionChanged += Albums_CollectionChanged;
+                if (_searchResultsViewModel.SearchResults == null) return;
+                    _searchResultsViewModel.SearchResults.CollectionChanged += Albums_CollectionChanged;
             }
         }
 
@@ -41,12 +43,25 @@ namespace ZuneSocialTagger.GUI.Views
         {
             if (_searchResultsViewModel != null)
             {
-                var selectedItem = (Album)lvAlbums.SelectedItem;
-
-                if (selectedItem != null)
+                if (lvAlbums.SelectedItem != null)
                 {
-                    _searchResultsViewModel.LoadAlbum(selectedItem);
+                    if (lvAlbums.SelectedItem.GetType() == typeof(Album) && lvAlbums.SelectedIndex == 0)
+                    {
+                        _searchResultsViewModel.LoadAlbum((Album)lvAlbums.SelectedItem);
+                    }
                 }
+            }
+        }
+
+        private void lvAlbums_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (lvAlbums.SelectedItem != null)
+            {
+                if (lvAlbums.SelectedItem.GetType() == typeof (Artist))
+                    _searchResultsViewModel.LoadAlbumsForArtist((Artist) lvAlbums.SelectedItem);
+
+                if (lvAlbums.SelectedItem.GetType() == typeof (Album))
+                    _searchResultsViewModel.LoadAlbum((Album) lvAlbums.SelectedItem);
             }
         }
     }

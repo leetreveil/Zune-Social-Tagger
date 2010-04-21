@@ -54,6 +54,18 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
         }
 
+        public bool UpdateAlbumInfo
+        {
+            get { return Settings.Default.UpdateAlbumInfo; }
+            set
+            {
+                if (value != UpdateAlbumInfo)
+                {
+                    Settings.Default.UpdateAlbumInfo = value;
+                }
+            }
+        }
+
         public void Save()
         {
             Mouse.OverrideCursor = Cursors.Wait;
@@ -117,18 +129,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
         public void MoveToStart()
         {
             Messenger.Default.Send(typeof(IFirstPage));
-        }
-
-        public bool UpdateAlbumInfo
-        {
-            get { return Settings.Default.UpdateAlbumInfo; }
-            set
-            {
-                if (value != UpdateAlbumInfo)
-                {
-                    Settings.Default.UpdateAlbumInfo = value;
-                }
-            }
         }
     }
 }

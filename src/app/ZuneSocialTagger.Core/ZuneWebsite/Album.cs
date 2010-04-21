@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ZuneSocialTagger.Core
+namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     public class Album
     {

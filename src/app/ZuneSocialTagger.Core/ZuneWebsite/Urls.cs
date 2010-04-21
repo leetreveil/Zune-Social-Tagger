@@ -5,5 +5,6 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         public static string Album = "http://catalog.zune.net/v3.0/en-US/music/album/";
         public static string Image = "http://image.catalog.zune.net/v3.0/image/";
         public static string Schema = "http://schemas.zune.net/catalog/music/2007/10";
+        public static string Artist = "http://catalog.zune.net/v3.1/en-US/music/artist/";
     }
 }

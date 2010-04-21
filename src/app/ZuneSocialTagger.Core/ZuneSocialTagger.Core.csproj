@@ -76,13 +76,15 @@
     <Compile Include="ID3Tagger\ZuneMP3TagContainer.cs" />
     <Compile Include="ZuneTagContainerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Album.cs" />
+    <Compile Include="ZuneWebsite\Album.cs" />
     <Compile Include="MetaData.cs" />
     <Compile Include="Track.cs" />
     <Compile Include="ZuneWebsite\AlbumDetailsDownloader.cs" />
     <Compile Include="ZuneWebsite\AlbumDocumentReader.cs" />
     <Compile Include="ZuneWebsite\AlbumMetaData.cs" />
     <Compile Include="ZuneWebsite\AlbumSearch.cs" />
+    <Compile Include="ZuneWebsite\Artist.cs" />
+    <Compile Include="ZuneWebsite\ArtistSearch.cs" />
     <Compile Include="ZuneWebsite\DownloadState.cs" />
     <Compile Include="ZuneWebsite\Urls.cs" />
   </ItemGroup>

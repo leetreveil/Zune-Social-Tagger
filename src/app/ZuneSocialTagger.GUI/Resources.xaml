@@ -4,7 +4,31 @@
                     xmlns:converters="clr-namespace:ZuneSocialTagger.GUI.Converters" 
                     xmlns:vm="clr-namespace:ZuneSocialTagger.GUI.ViewModels" 
                     xmlns:v="clr-namespace:ZuneSocialTagger.GUI.Views" 
-                    xmlns:GUIV2="clr-namespace:ZuneSocialTagger.GUI">
+                    xmlns:GUIV2="clr-namespace:ZuneSocialTagger.GUI" xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls">
+
+    <Style TargetType="{x:Type Controls:RadioButtonExtended}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Controls:RadioButtonExtended}">
+                    <TextBlock Name="Text">
+                  <ContentPresenter />
+                    </TextBlock>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Foreground" TargetName="Text" Value="Black"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Foreground" TargetName="Text" Value="#828689"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" TargetName="Text" Value="#B1B4B6"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key="ListViewItemFocusVisual">
         <Setter Property="Control.Template">
@@ -566,12 +590,13 @@
                                           ContentTemplate="{TemplateBinding ContentTemplate}" />
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected"
-                                 Value="True">
-                            <Setter Property="Background"
-                                    TargetName="Bd"
-                                    Value="#D4D4D5" />
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" TargetName="Bd" Value="#D4D4D5" />
                         </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="Bd" Value="#E0E1E1" />
+                        </Trigger>
+
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsSelected"

@@ -11,13 +11,22 @@ namespace ZuneSocialTagger.IntegrationTests
         {
             while (true)
             {
-                Console.WriteLine("Search for artist:");
+                Console.WriteLine("Search for album and artists:");
 
-                string artist = Console.ReadLine();
+                string searchString = Console.ReadLine();
 
-                IEnumerable<Album> result = AlbumSearch.SearchFor(artist);
+                IEnumerable<Artist> artists = ArtistSearch.SearchFor(searchString);
 
-                foreach (var album in result)
+                Console.WriteLine("---ARTISTS---");
+                foreach (var artist in artists)
+                {
+                    Console.WriteLine("Artist: {0}, Guid: {1}",artist.Name,artist.Id);
+                }
+
+                IEnumerable<Album> albums = AlbumSearch.SearchFor(searchString);
+
+                Console.WriteLine("---ALBUMS---");
+                foreach (var album in albums)
                 {
                     Console.WriteLine("Artist: {0}, Album: {1}", album.Artist, album.Title);
                 }

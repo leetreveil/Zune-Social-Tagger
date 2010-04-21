@@ -90,6 +90,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
         }
 
+        public int SelectedIndex { get; set; }
+
         public ObservableCollection<AlbumDetailsViewModel> Albums
         {
             get { return _model.AlbumsFromDatabase; }

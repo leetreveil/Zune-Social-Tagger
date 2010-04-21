@@ -62,15 +62,14 @@
         </StackPanel>
 
 
-        <ListView SelectionMode="Single"
+        <ListView SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}"
+                  SelectionMode="Single"
                   Grid.Row="1"
                   x:Name="lvAlbums"
-                  ScrollViewer.IsDeferredScrollingEnabled="True"
                   ItemsSource="{Binding Albums}"
                   IsTextSearchEnabled="True"
                   MaxHeight="400"
                   TextSearch.TextPath="ZuneAlbumMetaData.AlbumTitle"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ItemContainerStyle="{StaticResource ListViewItemStyle}"
                   Background="Transparent"
                   BorderThickness="0"/>

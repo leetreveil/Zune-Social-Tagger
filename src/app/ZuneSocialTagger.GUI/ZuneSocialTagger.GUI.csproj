@@ -107,6 +107,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\RadioButtonExtended.cs" />
     <Compile Include="Converters\SortOrderToVisibilityConverter.cs" />
     <Compile Include="Converters\TrackNumberToDblDigitTrackNumberConverter.cs" />
     <Compile Include="Models\SelectedAlbum.cs" />
