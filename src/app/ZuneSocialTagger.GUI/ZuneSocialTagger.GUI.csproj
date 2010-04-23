@@ -36,6 +36,8 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -143,7 +145,6 @@
     <Compile Include="Models\LinkStatus.cs" />
     <Compile Include="Models\Song.cs" />
     <Compile Include="Models\ZuneWizardModel.cs" />
-    <Compile Include="Models\AlbumDetails.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
@@ -163,7 +164,7 @@
     <Compile Include="Controls\SortControl.xaml.cs">
       <DependentUpon>SortControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DraggableWindow.cs" />
+    <Compile Include="Controls\DraggableWindow.cs" />
     <Compile Include="ViewModels\SearchResultsDetailViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
     <Compile Include="Controls\ZuneMessageBox.xaml.cs">

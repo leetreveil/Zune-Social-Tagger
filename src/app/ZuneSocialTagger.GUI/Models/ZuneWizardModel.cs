@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Threading;
 using ZuneSocialTagger.GUI.ViewModels;
 
 namespace ZuneSocialTagger.GUI.Models
 {
     public class ZuneWizardModel : ViewModelBaseExtended
     {
+        private readonly Dispatcher _dispatcher;
         private ZuneObservableCollection<AlbumDetailsViewModel> _albumsFromDatabase;
+
+        public ZuneWizardModel(Dispatcher dispatcher)
+        {
+            _dispatcher = dispatcher;
+        }
 
         public SelectedAlbum SelectedAlbum { get; set; }
         public string SearchText { get; set; }
@@ -21,11 +28,6 @@ namespace ZuneSocialTagger.GUI.Models
                 }
 
                 return _albumsFromDatabase;
-            }
-            set
-            {
-                _albumsFromDatabase = value;
-                RaisePropertyChanged(() => this.AlbumsFromDatabase);
             }
         }
 
@@ -55,11 +57,10 @@ namespace ZuneSocialTagger.GUI.Models
 
         private void DoSort<T>(Func<AlbumDetailsViewModel, T> sortKey)
         {
-            //we want to order by descending if we use DateTime because we want the newest at the top
-            //all the other states we want ascending
-            //this.AlbumsFromDatabase = typeof (T) == typeof (DateTime)
-            //                  ? this.AlbumsFromDatabase.OrderByDescending(sortKey).ToObservableCollection()
-            //                  : this.AlbumsFromDatabase.OrderBy(sortKey).ToObservableCollection();
+            if (typeof(T) == typeof(DateTime))
+                _dispatcher.Invoke(new Action(() => this.AlbumsFromDatabase.SortDesc(sortKey)));
+            else
+                _dispatcher.Invoke(new Action(() => this.AlbumsFromDatabase.Sort(sortKey)));
         }
     }
 }

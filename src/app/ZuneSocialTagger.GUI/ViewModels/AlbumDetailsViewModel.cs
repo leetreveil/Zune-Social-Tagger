@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Input;
+using System.Xml.Serialization;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneDatabase;
@@ -25,12 +27,23 @@ namespace ZuneSocialTagger.GUI.ViewModels
         {
             _dbReader = dbReader;
             _model = model;
+
+            this.DelinkCommand = new RelayCommand(DelinkAlbum);
+            this.LinkCommand = new RelayCommand(LinkAlbum);
+            this.RefreshCommand = new RelayCommand(RefreshAlbum);
         }
 
         public AlbumDetailsViewModel()
         {
             //used for serialization purposes
         }
+
+        [XmlIgnore]
+        public RelayCommand RefreshCommand { get; private set; }
+        [XmlIgnore]
+        public RelayCommand LinkCommand { get; private set; }
+        [XmlIgnore]
+        public RelayCommand DelinkCommand { get; private set; }
 
         public Album ZuneAlbumMetaData
         {
@@ -59,14 +72,33 @@ namespace ZuneSocialTagger.GUI.ViewModels
             {
                 _linkStatus = value;
                 RaisePropertyChanged(() => this.LinkStatus);
+                RaisePropertyChanged(() => this.CanDelink);
+                RaisePropertyChanged(() => this.CanLink);
             }
         }
 
+        [XmlIgnore]
+        public bool CanDelink
+        {
+            get 
+            {
+                return _linkStatus != LinkStatus.Unlinked && _linkStatus != LinkStatus.Unknown;
+            }
+        }
+
+        [XmlIgnore]
+        public bool CanLink
+        {
+            get {
+                return _linkStatus != LinkStatus.Unknown;
+            }
+        }
+
+        [XmlIgnore]
         /// <summary>
         /// Set this boolean value when you want the view to refresh the details from the zune database
         /// </summary>
         public bool NeedsRefreshing { get; set; }
-
 
         public void LinkAlbum()
         {

@@ -1,14 +1,9 @@
-using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using ZuneSocialTagger.GUI.Controls;
 using ZuneSocialTagger.GUI.Models;
 using System.Linq;
-using System.Threading;
 using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.Core.ZuneDatabase;
 
@@ -61,7 +56,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
         {
             UpdateLinkTotals();
         }
-
 
         private void HandleMessages(string message)
         {
@@ -194,15 +188,13 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 this.CanShowProgressBar = true;
 
                 //check if we have already downloaded all the albums
-                if (this.Albums.Where(x => x.LinkStatus != LinkStatus.Unlinked).All(x => x.WebAlbumMetaData != null))
+                if (this.Albums.Where(x => x.LinkStatus != LinkStatus.Unlinked).
+                    All(x => x.WebAlbumMetaData != null))
                 {
-                    foreach (var album in this.Albums)
+                    foreach (var album in this.Albums.Where(album => album.LinkStatus != LinkStatus.Unlinked))
                     {
-                        if (album.LinkStatus != LinkStatus.Unlinked)
-                        {
-                            album.WebAlbumMetaData = null;
-                            album.LinkStatus = LinkStatus.Unknown;
-                        }
+                        album.WebAlbumMetaData = null;
+                        album.LinkStatus = LinkStatus.Unknown;
                     }
                 }
 
@@ -227,7 +219,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning, msg), () =>
                  {
-                     this.Albums.Clear();
                      this.SortOrder =SortOrder. NotSorted;
                      Messenger.Default.Send("SWITCHTODB");
                  });

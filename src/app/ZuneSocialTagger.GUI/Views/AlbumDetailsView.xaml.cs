@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using ZuneSocialTagger.GUI.ViewModels;
+using System.Windows;
 
 namespace ZuneSocialTagger.GUI.Views
 {
@@ -11,25 +11,7 @@ namespace ZuneSocialTagger.GUI.Views
         public AlbumDetailsView()
         {
             InitializeComponent();
+            NameScope.SetNameScope(contextMenu,NameScope.GetNameScope(this));
         }
-
-        private void LinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            var model = this.DataContext as AlbumDetailsViewModel;
-            if (model != null) model.LinkAlbum();
-        }
-
-        private void Refresh_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            var model = this.DataContext as AlbumDetailsViewModel;
-            if (model != null) model.RefreshAlbum();
-        }
-
-        private void DelinkAlbum_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            var model = this.DataContext as AlbumDetailsViewModel;
-            if (model != null) model.DelinkAlbum();
-        }
-
     }
 }

@@ -14,5 +14,15 @@ namespace ZuneSocialTagger.GUI.Models
 
             return collection;
         }
+
+        public static ZuneObservableCollection<T> ToZuneObservableCollection<T>(this IEnumerable<T> enumerable)
+        {
+            var collection = new ZuneObservableCollection<T>();
+
+            foreach (var item in enumerable)
+                collection.Add(item);
+
+            return collection;
+        }
     }
 }

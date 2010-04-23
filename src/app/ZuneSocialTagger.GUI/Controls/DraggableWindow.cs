@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace ZuneSocialTagger.GUI
+namespace ZuneSocialTagger.GUI.Controls
 {
     public class DraggableWindow :  Window
     {

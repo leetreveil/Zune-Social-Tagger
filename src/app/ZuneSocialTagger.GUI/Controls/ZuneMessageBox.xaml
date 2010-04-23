@@ -1,7 +1,7 @@
-﻿<root:DraggableWindow x:Class="ZuneSocialTagger.GUI.Controls.ZuneMessageBox"
+﻿<Controls:DraggableWindow x:Class="ZuneSocialTagger.GUI.Controls.ZuneMessageBox"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    xmlns:root="clr-namespace:ZuneSocialTagger.GUI" 
+    xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls" 
     Style="{DynamicResource DefaultWindowStyle}"  
     WindowStartupLocation="CenterScreen"
     Topmost="True" 
@@ -44,4 +44,4 @@
 
     </Grid>
 
-</root:DraggableWindow>
+</Controls:DraggableWindow>

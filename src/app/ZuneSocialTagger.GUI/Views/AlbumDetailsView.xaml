@@ -3,18 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             Name="RootVisual">
 
 
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
-    
-    <UserControl.ContextMenu>
-        <ContextMenu>
 
-            <MenuItem Header="Link"
-                              Click="LinkAlbum_Click">
+    <UserControl.ContextMenu>
+        <ContextMenu x:Name="contextMenu">
+
+            <MenuItem Header="Link" 
+                      IsEnabled="{Binding ElementName=RootVisual, Path=DataContext.CanLink}"
+                      Command="{Binding ElementName=RootVisual, Path=DataContext.LinkCommand}">
                 <MenuItem.Icon>
                     <Image Width="16"
                                    Height="16"
@@ -23,7 +25,8 @@
             </MenuItem>
 
             <MenuItem Header="De-Link"
-                              Click="DelinkAlbum_Click">
+                      IsEnabled="{Binding ElementName=RootVisual, Path=DataContext.CanDelink}"
+                      Command="{Binding ElementName=RootVisual, Path=DataContext.DelinkCommand}">
                 <MenuItem.Icon>
                     <Image Width="16"
                                    Height="16"
@@ -33,8 +36,8 @@
 
             <Separator />
 
-            <MenuItem Header="Refresh"
-                              Click="Refresh_Click">
+            <MenuItem Header="Refresh" 
+                      Command="{Binding ElementName=RootVisual, Path=DataContext.RefreshCommand}">
                 <MenuItem.Icon>
                     <Image Width="16"
                                    Height="16"
@@ -44,44 +47,44 @@
 
         </ContextMenu>
     </UserControl.ContextMenu>
-    
-    <Grid>
-           <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300" />
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
 
-            <StackPanel DataContext="{Binding ZuneAlbumMetaData}" Orientation="Horizontal">
-                <StackPanel Orientation="Horizontal">
-                    
-                    <Image Height="50"  Width="50"
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel DataContext="{Binding ZuneAlbumMetaData}" Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal">
+
+                <Image Height="50"  Width="50"
                            Source="{Binding Path=ArtworkUrl,Converter={StaticResource PathToImageThumbnailConverter}}"
                            Margin="0,0,10,0" />
-                    
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock ToolTip="{Binding AlbumTitle}"
+
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock ToolTip="{Binding AlbumTitle}"
                                                        Text="{Binding AlbumTitle}" />
-                        
-                        <TextBlock ToolTip="{Binding AlbumArtist}"
+
+                    <TextBlock ToolTip="{Binding AlbumArtist}"
                                                        Text="{Binding AlbumArtist}"
                                                        Foreground="#FF8A8D90" />
-                    </StackPanel>
                 </StackPanel>
             </StackPanel>
+        </StackPanel>
 
 
-            <ContentControl Grid.Column="2" >
-                <ContentControl.Style>
-                    <Style TargetType="{x:Type ContentControl}">
-                        <Style.Triggers>
-                            
+        <ContentControl Grid.Column="2" >
+            <ContentControl.Style>
+                <Style TargetType="{x:Type ContentControl}">
+                    <Style.Triggers>
+
                         <DataTrigger Binding="{Binding LinkStatus}" Value="Linked">
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                    <StackPanel DataContext="{Binding WebAlbumMetaData}" Orientation="Horizontal">
-                                                                       <Image Width="16" Height="16" Source="../Assets/yes.png"
+                                        <StackPanel DataContext="{Binding WebAlbumMetaData}" Orientation="Horizontal">
+                                            <Image Width="16" Height="16" Source="../Assets/yes.png"
                                                                             Margin="0,0,10,0" />
                                             <Control Template="{DynamicResource AlbumDetails}" />
                                         </StackPanel>
@@ -91,77 +94,77 @@
                         </DataTrigger>
 
                         <DataTrigger Binding="{Binding LinkStatus}" Value="Unknown">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate>
-                                            <StackPanel DataContext="{Binding WebAlbumMetaData}"
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <StackPanel DataContext="{Binding WebAlbumMetaData}"
                                                                                 Orientation="Horizontal">
-                                                    <Image Width="16" Height="16"
+                                            <Image Width="16" Height="16"
                                                            Source="../Assets/help.png"
                                                            Margin="0,0,10,0" />
-                                                
-                                                <Control Template="{DynamicResource AlbumDetails}" />
-                                             </StackPanel>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
+
+                                            <Control Template="{DynamicResource AlbumDetails}" />
+                                        </StackPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
                         </DataTrigger>
 
                         <DataTrigger Binding="{Binding LinkStatus}" Value="AlbumOrArtistMismatch">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
                                         <StackPanel DataContext="{Binding WebAlbumMetaData}" Orientation="Horizontal">
-                                            
-                                                <Image Width="16"
+
+                                            <Image Width="16"
                                                        Height="16"
                                                        Source="../Assets/warning.png"
                                                        Margin="0,0,10,0" />
-                                            
-                                                <Control Template="{StaticResource AlbumDetails}" />
-                                            
-                                            </StackPanel>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
+
+                                            <Control Template="{StaticResource AlbumDetails}" />
+
+                                        </StackPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
                         </DataTrigger>
 
 
                         <DataTrigger Binding="{Binding LinkStatus}" Value="Unlinked">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                
-                                                <Image Width="16" Height="16" Source="../Assets/no.png" Margin="0,0,10,0" />
-                                                <TextBlock VerticalAlignment="Center" FontSize="20" Text="UNLINKED" />
-                                                
-                                            </StackPanel>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                         </DataTrigger>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <StackPanel Orientation="Horizontal">
+
+                                            <Image Width="16" Height="16" Source="../Assets/no.png" Margin="0,0,10,0" />
+                                            <TextBlock VerticalAlignment="Center" FontSize="20" Text="UNLINKED" />
+
+                                        </StackPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
 
                         <DataTrigger Binding="{Binding LinkStatus}" Value="Unavailable">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                
-                                                <Image Width="16" Height="16" Source="../Assets/no.png" Margin="0,0,10,0" />
-                                                <TextBlock FontSize="20" VerticalAlignment="Center" Text="UNAVAILABLE" />
-                                                
-                                            </StackPanel>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <StackPanel Orientation="Horizontal">
 
-                        </Style.Triggers>
-                    </Style>
-                </ContentControl.Style>
+                                            <Image Width="16" Height="16" Source="../Assets/no.png" Margin="0,0,10,0" />
+                                            <TextBlock FontSize="20" VerticalAlignment="Center" Text="UNAVAILABLE" />
 
-            </ContentControl>
+                                        </StackPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
 
-        </Grid>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+
+        </ContentControl>
+
+    </Grid>
 </UserControl>
