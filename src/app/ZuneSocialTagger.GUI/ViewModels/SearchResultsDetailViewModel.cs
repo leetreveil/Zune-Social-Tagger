@@ -3,7 +3,7 @@ using ZuneSocialTagger.Core;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class SearchResultsDetailViewModel : NotifyPropertyChangedImpl
+    public class SearchResultsDetailViewModel : ViewModelBaseExtended
     {
         private string _selectedAlbumTitle;
 
@@ -20,7 +20,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                     _selectedAlbumTitle = value;
-                    NotifyOfPropertyChange(() => SelectedAlbumTitle);
+                    RaisePropertyChanged(() => SelectedAlbumTitle);
             }
         }
     }

@@ -10,7 +10,6 @@
     Width="300"
     Style="{DynamicResource DefaultWindowStyle}" 
     mc:Ignorable="d" 
-    SizeToContent="Height"
     ShowInTaskbar="False">
 
     <Window.Resources>

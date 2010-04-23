@@ -5,12 +5,12 @@ using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class SuccessViewModel : ViewModelBase
+    public class SuccessViewModel : ViewModelBaseExtended
     {
         private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromWebsite;
         private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
 
-        public SuccessViewModel(IZuneWizardModel model)
+        public SuccessViewModel(ZuneWizardModel model)
         {
             _albumDetailsFromWebsite = model.SelectedAlbum.WebAlbumMetaData;
             _albumDetailsFromFile = model.SelectedAlbum.ZuneAlbumMetaData;

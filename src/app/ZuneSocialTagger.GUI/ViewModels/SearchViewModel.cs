@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Windows.Threading;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core.ZuneWebsite;
@@ -10,9 +9,9 @@ using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class SearchViewModel : ViewModelBase
+    public class SearchViewModel : ViewModelBaseExtended
     {
-        private readonly IZuneWizardModel _model;
+        private readonly ZuneWizardModel _model;
         private readonly Dispatcher _dispatcher;
         private string _searchText;
         private bool _isSearching;
@@ -20,7 +19,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private SearchResultsViewModel _searchResultsViewModel;
         private bool _canShowResults;
 
-        public SearchViewModel(IZuneWizardModel model,Dispatcher dispatcher)
+        public SearchViewModel(ZuneWizardModel model,Dispatcher dispatcher)
         {
             _model = model;
             _dispatcher = dispatcher;
@@ -44,7 +43,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _searchResultsViewModel = value;
-                RaisePropertyChanged("SearchResultsViewModel");
+                RaisePropertyChanged(() => this.SearchResultsViewModel);
             }
         }
 
@@ -54,7 +53,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _searchText = value;
-                RaisePropertyChanged("SearchText");
+                RaisePropertyChanged(() => this.SearchText);
             }
         }
 
@@ -64,7 +63,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _isSearching = value;
-                RaisePropertyChanged("IsSearching");
+                RaisePropertyChanged(() => this.IsSearching);
             }
         }
 
@@ -74,7 +73,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _canMoveNext = value;
-                RaisePropertyChanged("CanMoveNext");
+                RaisePropertyChanged(() => this.CanMoveNext);
             }
         }
 
@@ -84,7 +83,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _canShowResults = value;
-                RaisePropertyChanged("CanShowResults");
+                RaisePropertyChanged(() => this.CanShowResults);
             }
         }
 

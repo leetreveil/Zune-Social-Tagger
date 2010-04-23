@@ -14,9 +14,9 @@ using ZuneSocialTagger.Core.ZuneDatabase;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class WebAlbumListViewModel : ViewModelBase, IFirstPage
+    public class WebAlbumListViewModel : ViewModelBaseExtended, IFirstPage
     {
-        private readonly IZuneWizardModel _model;
+        private readonly ZuneWizardModel _model;
         private readonly IZuneDatabaseReader _dbReader;
         private bool _canShowScanAllButton;
         private int _loadingProgress;
@@ -27,10 +27,9 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private readonly bool _isTaskbarSupported;
         private SortOrder _sortOrder;
 
-        public WebAlbumListViewModel(IZuneWizardModel model, IZuneDatabaseReader dbReader)
+        public WebAlbumListViewModel(ZuneWizardModel model, IZuneDatabaseReader dbReader)
         {
             _model = model;
-            this.Albums = _model.AlbumsFromDatabase;
 
             _dbReader = dbReader;
             _dbReader.FinishedReadingAlbums += DbAdapterFinishedReadingAlbums;
@@ -50,19 +49,19 @@ namespace ZuneSocialTagger.GUI.ViewModels
             if (_model.SelectedAlbum != null && _model.SelectedAlbum.AlbumDetails.NeedsRefreshing)
             {
                 this.Albums.Where(x=> x == _model.SelectedAlbum.AlbumDetails).First().RefreshAlbum();
-                UpdateLinkTotals();
                 _model.SelectedAlbum.AlbumDetails.NeedsRefreshing = false;
             }
 
             Messenger.Default.Register<string>(this, HandleMessages);
 
-            _model.AlbumsFromDatabase.CollectionChanged += AlbumsFromDatabase_CollectionChanged;
+            _model.AlbumsFromDatabase.NeedsUpdating += AlbumsFromDatabase_NeedsUpdating;
         }
 
-        void AlbumsFromDatabase_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        void AlbumsFromDatabase_NeedsUpdating()
         {
             UpdateLinkTotals();
         }
+
 
         private void HandleMessages(string message)
         {
@@ -92,14 +91,9 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public int SelectedIndex { get; set; }
 
-        public ObservableCollection<AlbumDetailsViewModel> Albums
+        public ZuneObservableCollection<AlbumDetailsViewModel> Albums
         {
             get { return _model.AlbumsFromDatabase; }
-            set
-            {
-                _model.AlbumsFromDatabase = value;
-                RaisePropertyChanged("Albums");
-            }
         }
 
         public bool CanShowProgressBar
@@ -109,7 +103,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             {
                 _canShowProgressBar = value;
                 this.ScanAllText = CanShowProgressBar ? "STOP" : "SCAN ALL";
-                RaisePropertyChanged("CanShowProgressBar");
+                RaisePropertyChanged(() => this.CanShowProgressBar);
             }
         }
 
@@ -119,14 +113,18 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _canShowReloadButton = value;
-                RaisePropertyChanged("CanShowReloadButton");
+                RaisePropertyChanged(() => this.CanShowReloadButton);
             }
         }
 
         public SortOrder SortOrder
         {
             get { return _sortOrder; }
-            set { _sortOrder = value; RaisePropertyChanged("SortOrder"); }
+            set
+            {
+                _sortOrder = value; 
+                RaisePropertyChanged(() => this.SortOrder);
+            }
         }
 
         public bool CanShowScanAllButton
@@ -135,7 +133,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _canShowScanAllButton = value;
-                RaisePropertyChanged("CanShowScanAllButton");
+                RaisePropertyChanged(() => this.CanShowScanAllButton);
             }
         }
 
@@ -145,7 +143,17 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _loadingProgress = value;
-                RaisePropertyChanged("LoadingProgress");
+                RaisePropertyChanged(() => this.LoadingProgress);
+            }
+        }
+
+        public string ScanAllText
+        {
+            get { return _scanAllText; }
+            set
+            {
+                _scanAllText = value;
+                RaisePropertyChanged(() => this.ScanAllText);
             }
         }
 
@@ -166,16 +174,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
         public int AlbumOrArtistMismatchTotal
         {
             get { return this.Albums.Where(x => x.LinkStatus == LinkStatus.AlbumOrArtistMismatch).Count(); }
-        }
-
-        public string ScanAllText
-        {
-            get { return _scanAllText; }
-            set
-            {
-                _scanAllText = value;
-                RaisePropertyChanged("ScanAllText");
-            }
         }
 
         public RelayCommand LoadDatabaseCommand { get; private set; }
@@ -206,7 +204,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
                             album.LinkStatus = LinkStatus.Unknown;
                         }
                     }
-                    UpdateLinkTotals();
                 }
 
                 _downloader = new AlbumDownloaderWithProgressReporting(
@@ -239,43 +236,12 @@ namespace ZuneSocialTagger.GUI.ViewModels
         public void SortData(SortOrder sortOrder)
         {
             Settings.Default.SortOrder = sortOrder;
-            PerformSort(sortOrder);
+            _model.PerformSort(sortOrder);
         }
 
         public void SwitchToClassicMode()
         {
             Messenger.Default.Send(typeof(IFirstPage));
-        }
-
-        private void PerformSort(SortOrder sortOrder)
-        {
-            ThreadPool.QueueUserWorkItem(_ =>{
-             switch (sortOrder)
-             {
-                 case SortOrder.DateAdded:
-                     DoSort(x => x.ZuneAlbumMetaData.DateAdded);
-                     break;
-                 case SortOrder.Album:
-                     DoSort(x => x.ZuneAlbumMetaData.AlbumTitle);
-                     break;
-                 case SortOrder.Artist:
-                     DoSort(x => x.ZuneAlbumMetaData.AlbumArtist);
-                     break;
-                 case SortOrder.LinkStatus:
-                     DoSort(x => x.LinkStatus);
-                     break;
-                 default:
-                     throw new ArgumentOutOfRangeException();
-             }});
-        }
-
-        private void DoSort<T>(Func<AlbumDetailsViewModel, T> sortKey)
-        {
-            //we want to order by descending if we use DateTime because we want the newest at the top
-            //all the other states we want ascending
-            this.Albums = typeof (T) == typeof (DateTime)
-                              ? this.Albums.OrderByDescending(sortKey).ToObservableCollection()
-                              : this.Albums.OrderBy(sortKey).ToObservableCollection();
         }
 
         private void _dbAdapter_StartedReadingAlbums()
@@ -298,7 +264,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             ResetLoadingProgress();
 
             this.SortOrder = Settings.Default.SortOrder;
-            PerformSort(Settings.Default.SortOrder);
+            _model.PerformSort(Settings.Default.SortOrder);
         }
 
         private void downloader_FinishedDownloadingAlbums()
@@ -310,9 +276,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void downloader_ProgressChanged(int arg1, int arg2)
         {
-            //arg1 = current album ;arg2 = total albums
-            ReportProgress(arg1, arg2);
-            UpdateLinkTotals();
+            ReportProgress(arg1, arg2); //arg1 = current album ;arg2 = total albums
         }
 
         private void ResetLoadingProgress()
@@ -333,9 +297,9 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void UpdateLinkTotals()
         {
-            this.RaisePropertyChanged("LinkedTotal");
-            this.RaisePropertyChanged("UnlinkedTotal");
-            this.RaisePropertyChanged("AlbumOrArtistMismatchTotal");
+            this.RaisePropertyChanged(() => this.LinkedTotal);
+            this.RaisePropertyChanged(() => this.UnlinkedTotal);
+            this.RaisePropertyChanged(() => this.AlbumOrArtistMismatchTotal);
         }
     }
 }

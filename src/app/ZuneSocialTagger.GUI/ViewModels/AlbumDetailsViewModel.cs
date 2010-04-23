@@ -13,15 +13,15 @@ using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class AlbumDetailsViewModel : NotifyPropertyChangedImpl
+    public class AlbumDetailsViewModel : ViewModelBaseExtended
     {
         private readonly IZuneDatabaseReader _dbReader;
-        private readonly IZuneWizardModel _model;
+        private readonly ZuneWizardModel _model;
         private Album _zuneAlbumMetaData;
         private Album _webAlbumMetaData;
         private LinkStatus _linkStatus;
 
-        public AlbumDetailsViewModel(IZuneDatabaseReader dbReader, IZuneWizardModel model)
+        public AlbumDetailsViewModel(IZuneDatabaseReader dbReader, ZuneWizardModel model)
         {
             _dbReader = dbReader;
             _model = model;
@@ -38,7 +38,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _zuneAlbumMetaData = value;
-                NotifyOfPropertyChange(() => this.ZuneAlbumMetaData);
+                RaisePropertyChanged(() => this.ZuneAlbumMetaData);
             }
         }
 
@@ -48,7 +48,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _webAlbumMetaData = value;
-                NotifyOfPropertyChange(() => this.WebAlbumMetaData);
+                RaisePropertyChanged(() => this.WebAlbumMetaData);
             }
         }
 
@@ -58,7 +58,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _linkStatus = value;
-                NotifyOfPropertyChange(() => this.LinkStatus);
+                RaisePropertyChanged(() => this.LinkStatus);
             }
         }
 

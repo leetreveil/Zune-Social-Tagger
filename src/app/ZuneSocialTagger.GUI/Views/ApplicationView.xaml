@@ -4,15 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls" 
     xmlns:root="clr-namespace:ZuneSocialTagger.GUI" 
-    SizeToContent="Height" 
-    Title="Zune Social Tagger" 
-    WindowStartupLocation="CenterScreen"
-    Style="{DynamicResource DefaultWindowStyle}">
+    Style="{DynamicResource DefaultWindowStyle}"
+    WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
     </Window.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="11"/>
@@ -27,30 +25,31 @@
         </Grid.ColumnDefinitions>
 
         <Control Template="{DynamicResource Gradient}"/>
-        
+
         <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
-            
+
             <Button ToolTip="About / Settings" Margin="0,0,30,0" Style="{StaticResource AboutSettingsButton}"
                     VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" Content="ABOUT / SETTINGS"
                     Command="{Binding ShowAboutSettingsCommand}"/>
 
             <Button Click="Minimize_Click" ToolTip="Minimize" Margin="0,0,9,0" Style="{StaticResource MinimizeButton}" 
                     VerticalAlignment="Bottom" Width="10" Height="2"/>
-            
+
             <Button Click="Close_Click" ToolTip="Close" Width="10" Height="10" VerticalAlignment="Bottom" Grid.Column="1" 
                     Style="{StaticResource CloseButton}"/>
-            
+
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal">
             <TextBlock Grid.Column="0" FontSize="26.667" Text="ZUNE SOCIAL TAGGER 2"/>
-            
+
             <Button Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource BoolToVisConverter}}"
                     Margin="10,5,0,0" Style="{StaticResource UpdateButton}" 
                     VerticalAlignment="Top" Content="NEW UPDATE AVAILABLE"
                     Command="{Binding UpdateCommand}"/>
-            
+
         </StackPanel>
+        
 
         <ContentControl Margin="0,20,0,0" Content="{Binding CurrentPage}" Grid.Row="2" Grid.ColumnSpan="2"/>
 

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Threading;
 using System.Xml.Serialization;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using leetreveil.AutoUpdate.Framework;
@@ -18,7 +17,7 @@ using ZuneSocialTagger.GUI.Views;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class ApplicationViewModel : ViewModelBase
+    public class ApplicationViewModel : ViewModelBaseExtended
     {
         #region DbLoadResult enum
 
@@ -32,16 +31,16 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private readonly IKernel _container;
         private readonly Dispatcher _dispatcher;
-        private readonly IZuneWizardModel _model;
+        private readonly ZuneWizardModel _model;
         private readonly CachedZuneDatabaseReader _cache;
         private readonly IZuneDatabaseReader _dbReader;
-        private ViewModelBase _currentPage;
+        private ViewModelBaseExtended _currentPage;
         private bool _updateAvailable;
         private bool _shouldShowErrorMessage;
         private ErrorMode _errorMessageMode;
         private string _errorMessageText;
 
-        public ApplicationViewModel(IZuneWizardModel model, CachedZuneDatabaseReader cache, IZuneDatabaseReader dbReader,
+        public ApplicationViewModel(ZuneWizardModel model, CachedZuneDatabaseReader cache, IZuneDatabaseReader dbReader,
                                     IKernel container, Dispatcher dispatcher)
         {
             _model = model;
@@ -60,7 +59,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             Messenger.Default.Register<string>(this, HandleMagicStrings);
 
             //register for error messages to be displayed
-            Messenger.Default.Register<ErrorMessage>(this, DisplayErrorMessage);
+            Messenger.Default.Register<ErrorMessage>(this, DisplayMessage);
 
             CheckForUpdates();
         }
@@ -92,7 +91,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _errorMessageText = value;
-                RaisePropertyChanged("ErrorMessageText");
+                RaisePropertyChanged(() => this.ErrorMessageText);
             }
         }
 
@@ -102,7 +101,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _errorMessageMode = value;
-                RaisePropertyChanged("ErrorMessageMode");
+                RaisePropertyChanged(() => this.ErrorMessageMode);
             }
         }
 
@@ -112,7 +111,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _shouldShowErrorMessage = value;
-                RaisePropertyChanged("ShouldShowErrorMessage");
+                RaisePropertyChanged(() => this.ShouldShowErrorMessage);
             }
         }
 
@@ -122,17 +121,17 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _updateAvailable = value;
-                RaisePropertyChanged("UpdateAvailable");
+                RaisePropertyChanged(() => this.UpdateAvailable);
             }
         }
 
-        public ViewModelBase CurrentPage
+        public ViewModelBaseExtended CurrentPage
         {
             get { return _currentPage; }
             private set
             {
                 _currentPage = value;
-                RaisePropertyChanged("CurrentPage");
+                RaisePropertyChanged(() => this.CurrentPage);
             }
         }
 
@@ -164,7 +163,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             return Process.GetProcessesByName("Zune").Length != 0;
         }
 
-        private void DisplayErrorMessage(ErrorMessage message)
+        private void DisplayMessage(ErrorMessage message)
         {
             this.ErrorMessageText = message.Message;
             this.ErrorMessageMode = message.ErrorMode;
@@ -175,13 +174,13 @@ namespace ZuneSocialTagger.GUI.ViewModels
         {
             if (message == "SWITCHTODB")
             {
-                ReadCachedDatabase(DbLoadResult.Failed);
+                ReadActualDatabase();
             }
             else if (message == "ALBUMLINKED")
             {
                 if (!CheckIfZuneSoftwareIsRunning())
                 {
-                    DisplayErrorMessage(new ErrorMessage(ErrorMode.Warning,
+                    DisplayMessage(new ErrorMessage(ErrorMode.Warning,
                                                          "Any albums you link / delink will not show their changes until the zune software is running."));
                 }
             }
@@ -212,7 +211,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
             else
             {
-                this.CurrentPage = (ViewModelBase) _container.Get(viewType);
+                this.CurrentPage = (ViewModelBaseExtended)_container.Get(viewType);
             }
         }
 
@@ -227,19 +226,19 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
                     if (!initalized)
                     {
-                        DisplayErrorMessage(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
+                        DisplayMessage(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
                         return DbLoadResult.Failed;
                     }
 
                     return DbLoadResult.Success;
                 }
 
-                DisplayErrorMessage(new ErrorMessage(ErrorMode.Error,"Error loading zune database"));
+                DisplayMessage(new ErrorMessage(ErrorMode.Error,"Error loading zune database"));
                 return DbLoadResult.Failed;
             }
             catch (Exception e)
             {
-                DisplayErrorMessage(new ErrorMessage(ErrorMode.Error, e.Message));
+                DisplayMessage(new ErrorMessage(ErrorMode.Error, e.Message));
                 return DbLoadResult.Failed;
             }
         }
@@ -294,6 +293,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 removedAlbums.Select(id => _model.AlbumsFromDatabase.Where(x => x.ZuneAlbumMetaData.MediaId == id).First()))
             {
                 AlbumDetailsViewModel removed = albumToBeRemoved;
+
                 _dispatcher.Invoke(new Action(() => _model.AlbumsFromDatabase.Remove(removed)));
             }
 
@@ -306,20 +306,20 @@ namespace ZuneSocialTagger.GUI.ViewModels
         {
                 if (addedCount > 0 && removedCount > 0)
                 {
-                    DisplayErrorMessage(new ErrorMessage(ErrorMode.Info,
+                    DisplayMessage(new ErrorMessage(ErrorMode.Info,
                                                          String.Format(
                                                              "{0} albums were added and {1} albums were removed",
                                                              addedCount, removedCount)));
                 }
                 else if (addedCount > 0)
                 {
-                    DisplayErrorMessage(new ErrorMessage(ErrorMode.Info,
+                    DisplayMessage(new ErrorMessage(ErrorMode.Info,
                                                          String.Format("{0} albums were added",
                                                                        addedCount)));
                 }
                 else if (removedCount > 0)
                 {
-                    DisplayErrorMessage(new ErrorMessage(ErrorMode.Info,
+                    DisplayMessage(new ErrorMessage(ErrorMode.Info,
                                                          String.Format("{0} albums were removed",
                                                                        removedCount)));
                 }

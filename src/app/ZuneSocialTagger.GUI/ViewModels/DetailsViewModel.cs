@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core;
@@ -11,11 +10,11 @@ using ZuneSocialTagger.GUI.Properties;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class DetailsViewModel : ViewModelBase
+    public class DetailsViewModel : ViewModelBaseExtended
     {
-        private readonly IZuneWizardModel _model;
+        private readonly ZuneWizardModel _model;
 
-        public DetailsViewModel(IZuneWizardModel model)
+        public DetailsViewModel(ZuneWizardModel model)
         {
             _model = model;
 

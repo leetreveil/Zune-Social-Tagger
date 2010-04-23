@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Dialogs;
@@ -10,11 +9,11 @@ using ZuneSocialTagger.Core;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class SelectAudioFilesViewModel : ViewModelBase, IFirstPage
+    public class SelectAudioFilesViewModel : ViewModelBaseExtended, IFirstPage
     {
-        private readonly IZuneWizardModel _model;
+        private readonly ZuneWizardModel _model;
 
-        public SelectAudioFilesViewModel(IZuneWizardModel model)
+        public SelectAudioFilesViewModel(ZuneWizardModel model)
         {
             _model = model;
             this.CanSwitchToNewMode = true;

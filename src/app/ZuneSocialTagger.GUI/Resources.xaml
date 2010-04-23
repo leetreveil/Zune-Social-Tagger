@@ -374,6 +374,10 @@
                 Value="Zune Social Tagger" />
         <Setter Property="Icon"
                 Value="Assets/zuneicondark.ico" />
+        <Setter Property="SizeToContent"
+                Value="Height"/>
+        <Setter Property="Title" 
+                Value="Zune Social Tagger"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Window}">
@@ -389,7 +393,9 @@
                                                   Offset="1" />
                                 </LinearGradientBrush>
                             </Grid.Background>
-                            <ContentPresenter Margin="20,20,20,20" />
+
+                        <ContentPresenter Margin="20,20,20,20" />
+
                         </Grid>
                     </Border>
                 </ControlTemplate>

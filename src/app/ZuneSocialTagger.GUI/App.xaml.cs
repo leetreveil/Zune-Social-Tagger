@@ -36,7 +36,7 @@ namespace ZuneSocialTagger.GUI
         private void SetupBindings()
         {
             Container.Bind<Dispatcher>().ToMethod(context => this.Dispatcher);
-            Container.Bind<IZuneWizardModel>().To<ZuneWizardModel>().InSingletonScope();
+            Container.Bind<ZuneWizardModel>().ToSelf().InSingletonScope();
             Container.Bind<IZuneDatabaseReader>().To<TestZuneDatabaseReader>().InSingletonScope();
 
             Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();

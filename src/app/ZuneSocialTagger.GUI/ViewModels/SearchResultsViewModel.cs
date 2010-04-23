@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core;
@@ -17,9 +15,9 @@ using System.Windows.Threading;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class SearchResultsViewModel : ViewModelBase
+    public class SearchResultsViewModel : ViewModelBaseExtended
     {
-        private readonly IZuneWizardModel _model;
+        private readonly ZuneWizardModel _model;
         private readonly Dispatcher _dispatcher;
         private IEnumerable<Album> _albums;
         private IEnumerable<Artist> _artists;
@@ -29,7 +27,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private bool _isAlbumsEnabled;
         private string _artistCount;
 
-        public SearchResultsViewModel(IZuneWizardModel model, Dispatcher dispatcher,
+        public SearchResultsViewModel(ZuneWizardModel model, Dispatcher dispatcher,
                                       IEnumerable<Album> albums)
         {
             _model = model;
@@ -66,7 +64,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                     _searchResultsDetailViewModel = value;
-                   RaisePropertyChanged("SearchResultsDetailViewModel");
+                   RaisePropertyChanged(() => this.SearchResultsDetailViewModel);
             }
         }
 
@@ -76,7 +74,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _albumCount = value;
-                RaisePropertyChanged("AlbumCount");
+                RaisePropertyChanged(() => this.AlbumCount);
             }
         }
 
@@ -86,7 +84,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _artistCount = value;
-                RaisePropertyChanged("ArtistCount");
+                RaisePropertyChanged(() => this.ArtistCount);
             }
         }
 
@@ -106,7 +104,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 }
 
 
-                RaisePropertyChanged("IsAlbumsEnabled");
+                RaisePropertyChanged(() => this.IsAlbumsEnabled);
             }
         }
 
@@ -116,7 +114,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _isLoading = value;
-                RaisePropertyChanged("IsLoading");
+                RaisePropertyChanged(() => this.IsLoading);
             }
         }
 
