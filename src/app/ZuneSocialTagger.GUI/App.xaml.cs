@@ -53,6 +53,7 @@ namespace ZuneSocialTagger.GUI
 
             Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
             Container.Bind<CachedZuneDatabaseReader>().ToSelf().InSingletonScope();
+            Container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
         }
     }
 

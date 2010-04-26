@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Taskbar;
@@ -9,7 +11,7 @@ using ZuneSocialTagger.Core.ZuneDatabase;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class WebAlbumListViewModel : ViewModelBaseExtended, IFirstPage
+    public class WebAlbumListViewModel : ViewModelBaseExtended
     {
         private readonly ZuneWizardModel _model;
         private readonly IZuneDatabaseReader _dbReader;
@@ -229,12 +231,32 @@ namespace ZuneSocialTagger.GUI.ViewModels
         public void SortData(SortOrder sortOrder)
         {
             Settings.Default.SortOrder = sortOrder;
-            _model.PerformSort(sortOrder);
+
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                switch (sortOrder)
+                {
+                    case SortOrder.DateAdded:
+                        this.Albums.SortDesc(x => x.ZuneAlbumMetaData.DateAdded);
+                        break;
+                    case SortOrder.Album:
+                        this.Albums.Sort(x => x.ZuneAlbumMetaData.AlbumTitle);
+                        break;
+                    case SortOrder.Artist:
+                        this.Albums.Sort(x => x.ZuneAlbumMetaData.AlbumArtist);
+                        break;
+                    case SortOrder.LinkStatus:
+                        this.Albums.Sort(x => x.LinkStatus);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            });
         }
 
         public void SwitchToClassicMode()
         {
-            Messenger.Default.Send(typeof(IFirstPage));
+            Messenger.Default.Send(typeof(SelectAudioFilesViewModel));
         }
 
         private void _dbAdapter_StartedReadingAlbums()
@@ -255,9 +277,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             this.CanShowProgressBar = false;
             this.CanShowScanAllButton = true;
             ResetLoadingProgress();
-
-            this.SortOrder = Settings.Default.SortOrder;
-            _model.PerformSort(Settings.Default.SortOrder);
+            SortData(Settings.Default.SortOrder);
         }
 
         private void downloader_FinishedDownloadingAlbums()

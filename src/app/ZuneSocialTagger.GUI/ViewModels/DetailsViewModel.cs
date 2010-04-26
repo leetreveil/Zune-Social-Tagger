@@ -127,7 +127,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public void MoveToStart()
         {
-            Messenger.Default.Send(typeof(IFirstPage));
+            Messenger.Default.Send("SWITCHTOFIRSTVIEW");
         }
     }
 }

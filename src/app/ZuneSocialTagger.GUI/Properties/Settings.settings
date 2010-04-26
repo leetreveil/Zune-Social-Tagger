@@ -17,9 +17,6 @@
     <Setting Name="SortOrder" Type="ZuneSocialTagger.GUI.Models.SortOrder" Scope="User">
       <Value Profile="(Default)">DateAdded</Value>
     </Setting>
-    <Setting Name="FirstViewToLoad" Type="ZuneSocialTagger.GUI.Models.FirstViews" Scope="User">
-      <Value Profile="(Default)">WebAlbumListViewModel</Value>
-    </Setting>
     <Setting Name="AppDataFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

@@ -11,6 +11,7 @@ using ZuneSocialTagger.GUI.Models;
 using System.Threading;
 using Album = ZuneSocialTagger.Core.ZuneWebsite.Album;
 using AlbumDocumentReader = ZuneSocialTagger.Core.ZuneWebsite.AlbumDocumentReader;
+using System.Diagnostics;
 
 
 namespace ZuneSocialTagger.GUI.ViewModels
@@ -46,7 +47,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         void SearchResults_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (e.NewStartingIndex == 0)
+            if (e.NewStartingIndex == 0 && e.NewItems[0].GetType() == typeof(Album))
             {
                 LoadAlbum((Album) e.NewItems[0]);
             }

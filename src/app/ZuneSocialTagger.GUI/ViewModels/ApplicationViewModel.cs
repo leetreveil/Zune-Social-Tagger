@@ -20,16 +20,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
 {
     public class ApplicationViewModel : ViewModelBaseExtended
     {
-        #region DbLoadResult enum
-
-        public enum DbLoadResult
-        {
-            Success,
-            Failed
-        }
-
-        #endregion
-
         private readonly IKernel _container;
         private readonly Dispatcher _dispatcher;
         private readonly ZuneWizardModel _model;
@@ -40,6 +30,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private bool _shouldShowErrorMessage;
         private ErrorMode _errorMessageMode;
         private string _errorMessageText;
+        private bool _loadWebView;
 
         public ApplicationViewModel(ZuneWizardModel model, CachedZuneDatabaseReader cache, IZuneDatabaseReader dbReader,
                                     IKernel container, Dispatcher dispatcher)
@@ -68,17 +59,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public void ApplicationViewHasLoaded()
         {
-            if (Settings.Default.FirstViewToLoad == FirstViews.SelectAudioFilesViewModel)
-            {
-                _container.Bind<SelectAudioFilesViewModel>().ToSelf();
-                this.CurrentPage = _container.Get<SelectAudioFilesViewModel>();
-            }
-            else
-            {
-                _container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
-                this.CurrentPage = _container.Get<WebAlbumListViewModel>();
-            }
-
             InitDb();
             CheckForUpdates();
         }
@@ -143,22 +123,21 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void InitDb()
         {
-            if (_model.AlbumsFromDatabase.Count == 0)
-            {
-                DbLoadResult result = InitializeDatabase();
+            bool dbLoaded = InitializeDatabase();
 
-                //if we cannot load the database then switch to the other view
-                if (result == DbLoadResult.Failed)
-                {
-                    var selectAudioFilesViewModel = _container.Get<SelectAudioFilesViewModel>();
-                    selectAudioFilesViewModel.CanSwitchToNewMode = false;
-                    this.CurrentPage = selectAudioFilesViewModel;
-                    Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
-                }
-                else
-                {
-                    ReadCachedDatabase(result);
-                }
+            //if we cannot load the database then switch to the other view
+            if (dbLoaded == false)
+            {
+                var selectAudioFilesViewModel = _container.Get<SelectAudioFilesViewModel>();
+                selectAudioFilesViewModel.CanSwitchToNewMode = false;
+                this.CurrentPage = selectAudioFilesViewModel;
+                _loadWebView = false;
+            }
+            else
+            {
+                this.CurrentPage = _container.Get<WebAlbumListViewModel>();
+                _loadWebView = true;
+                ReadCachedDatabase(true);
             }
         }
 
@@ -188,69 +167,56 @@ namespace ZuneSocialTagger.GUI.ViewModels
                                                          "Any albums you link / delink will not show their changes until the zune software is running."));
                 }
             }
+            else if (message == "SWITCHTOFIRSTVIEW")
+            {
+                SwitchToView(_loadWebView ? typeof (WebAlbumListViewModel) : typeof (SelectAudioFilesViewModel));
+            }
         }
 
         private void SwitchToView(Type viewType)
         {
-            if (viewType == typeof(IFirstPage))
+            if (viewType == typeof(SelectAudioFilesViewModel))
             {
-                if (_currentPage.GetType() == typeof(WebAlbumListViewModel))
-                {
-                    this.CurrentPage = _container.Get<SelectAudioFilesViewModel>();
-                    Settings.Default.FirstViewToLoad = FirstViews.SelectAudioFilesViewModel;
-                }
-                else if (_currentPage.GetType() == typeof(SelectAudioFilesViewModel))
-                {
-                    this.CurrentPage = _container.Get<WebAlbumListViewModel>();
-                    Settings.Default.FirstViewToLoad = FirstViews.WebAlbumListViewModel;
-                }
-                else if (Settings.Default.FirstViewToLoad == FirstViews.WebAlbumListViewModel)
-                {
-                    this.CurrentPage = _container.Get<WebAlbumListViewModel>();
-                }
-                else if (Settings.Default.FirstViewToLoad == FirstViews.SelectAudioFilesViewModel)
-                {
-                    this.CurrentPage = _container.Get<SelectAudioFilesViewModel>();
-                }
+                _loadWebView = false;
             }
-            else
+            if (viewType == typeof(WebAlbumListViewModel))
             {
-                this.CurrentPage = (ViewModelBaseExtended)_container.Get(viewType);
+                _loadWebView = true;
             }
+
+           this.CurrentPage = (ViewModelBaseExtended)_container.Get(viewType);
         }
 
-        private DbLoadResult InitializeDatabase()
+        private bool InitializeDatabase()
         {
             try
             {
                 if (_dbReader.CanInitialize)
                 {
-                    //since the adapter is initally set to the cache this should always be true if the cache exists
                     bool initalized = _dbReader.Initialize();
 
                     if (!initalized)
                     {
                         DisplayMessage(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
-                        return DbLoadResult.Failed;
+                        return false;
                     }
 
-                    return DbLoadResult.Success;
+                    return true;
                 }
 
                 DisplayMessage(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
-                return DbLoadResult.Failed;
+                return false;
             }
             catch (Exception e)
             {
                 DisplayMessage(new ErrorMessage(ErrorMode.Error, e.Message));
-                return DbLoadResult.Failed;
+                return false;
             }
         }
 
-        private void ReadCachedDatabase(DbLoadResult loadActualDatabase)
+        private void ReadCachedDatabase(bool dbInitialized)
         {
-            if (loadActualDatabase == DbLoadResult.Success)
-            {
+            if (dbInitialized)
                 //if we can read the cache then skip the database and just load that
                 if (_cache.CanInitialize && _cache.Initialize())
                 {
@@ -273,9 +239,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 }
                 else
                     ReadActualDatabase();
-            }
-            else
-                ReadActualDatabase();
         }
 
         private void GetNewOrRemovedAlbumsFromZuneDb()

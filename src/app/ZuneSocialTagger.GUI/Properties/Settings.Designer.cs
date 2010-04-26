@@ -80,18 +80,6 @@ namespace ZuneSocialTagger.GUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("WebAlbumListViewModel")]
-        public global::ZuneSocialTagger.GUI.Models.FirstViews FirstViewToLoad {
-            get {
-                return ((global::ZuneSocialTagger.GUI.Models.FirstViews)(this["FirstViewToLoad"]));
-            }
-            set {
-                this["FirstViewToLoad"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string AppDataFolder {
             get {

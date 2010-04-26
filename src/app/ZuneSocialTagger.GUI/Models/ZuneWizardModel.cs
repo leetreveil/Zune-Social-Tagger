@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using ZuneSocialTagger.GUI.ViewModels;
+﻿using ZuneSocialTagger.GUI.ViewModels;
 
 namespace ZuneSocialTagger.GUI.Models
 {
@@ -22,30 +20,6 @@ namespace ZuneSocialTagger.GUI.Models
 
                 return _albumsFromDatabase;
             }
-        }
-
-        public void PerformSort(SortOrder sortOrder)
-        {
-            ThreadPool.QueueUserWorkItem(_ =>
-            {
-                switch (sortOrder)
-                {
-                    case SortOrder.DateAdded:
-                        _albumsFromDatabase.SortDesc(x => x.ZuneAlbumMetaData.DateAdded);
-                        break;
-                    case SortOrder.Album:
-                        _albumsFromDatabase.Sort(x => x.ZuneAlbumMetaData.AlbumTitle);
-                        break;
-                    case SortOrder.Artist:
-                        _albumsFromDatabase.Sort(x => x.ZuneAlbumMetaData.AlbumArtist);
-                        break;
-                    case SortOrder.LinkStatus:
-                        _albumsFromDatabase.Sort(x => x.LinkStatus);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            });
         }
     }
 }

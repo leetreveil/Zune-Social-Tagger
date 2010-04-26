@@ -9,7 +9,7 @@ using ZuneSocialTagger.Core;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class SelectAudioFilesViewModel : ViewModelBaseExtended, IFirstPage
+    public class SelectAudioFilesViewModel : ViewModelBaseExtended
     {
         private readonly ZuneWizardModel _model;
 
@@ -27,7 +27,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public void SwitchToNewMode()
         {
-            Messenger.Default.Send(typeof(IFirstPage));
+            Messenger.Default.Send(typeof(WebAlbumListViewModel));
         }
 
         public void SelectFiles()

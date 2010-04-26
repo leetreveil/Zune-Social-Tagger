@@ -119,7 +119,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public void MoveBack()
         {
-            Messenger.Default.Send(typeof (IFirstPage));
+            Messenger.Default.Send("SWITCHTOFIRSTVIEW");
         }
 
         public void MoveNext()
