@@ -25,7 +25,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core
         private const string FilePath = "SampleData/id3v1.1.mp3";
 
         [Test]
-        [ExpectedException(typeof(Id3TagException))]
+        [ExpectedException(typeof(AudioFileReadException), ExpectedMessage = "cannot read id3v1.1")]
         public void Then_it_should_throw_a_not_supported_exception()
         {
             ZuneTagContainerFactory.GetContainer(FilePath);
@@ -41,7 +41,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core
         private const string FilePath = "SampleData/id3v2.2.mp3";
 
         [Test]
-        [ExpectedException(typeof (Id3TagException), ExpectedMessage = "This major revision is not supported!")]
+        [ExpectedException(typeof (AudioFileReadException), ExpectedMessage = "This major revision is not supported!")]
         public void Then_it_should_get_an_empty_container_at_the_id_3_version_we_require()
         {
             var zuneMp3TagContainer = ZuneTagContainerFactory.GetContainer(FilePath);
