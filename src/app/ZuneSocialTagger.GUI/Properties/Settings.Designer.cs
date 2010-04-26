@@ -47,7 +47,7 @@ namespace ZuneSocialTagger.GUI.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://github.com/leetreveil/Zune-Social-Tagger/raw/master/updates/zunesocupdatef" +
             "eed.xml")]
@@ -55,20 +55,14 @@ namespace ZuneSocialTagger.GUI.Properties {
             get {
                 return ((string)(this["UpdateFeedUrl"]));
             }
-            set {
-                this["UpdateFeedUrl"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("socialtaggerupdater.exe")]
         public string UpdateExeName {
             get {
                 return ((string)(this["UpdateExeName"]));
-            }
-            set {
-                this["UpdateExeName"] = value;
             }
         }
         
@@ -108,15 +102,12 @@ namespace ZuneSocialTagger.GUI.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://github.com/leetreveil/Zune-Social-Tagger")]
         public string AppBaseUrl {
             get {
                 return ((string)(this["AppBaseUrl"]));
-            }
-            set {
-                this["AppBaseUrl"] = value;
             }
         }
     }
