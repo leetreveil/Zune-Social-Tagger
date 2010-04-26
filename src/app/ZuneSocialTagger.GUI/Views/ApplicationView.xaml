@@ -34,7 +34,9 @@
             <Button Click="Minimize_Click" ToolTip="Minimize" Margin="0,0,9,0" Style="{StaticResource MinimizeButton}" 
                     VerticalAlignment="Bottom" Width="10" Height="2"/>
 
-            <Button Click="Close_Click" ToolTip="Close" Width="10" Height="10" VerticalAlignment="Bottom" Grid.Column="1" 
+            <Button Command="{Binding CloseAppCommand}"
+                    ToolTip="Close" Width="10" Height="10" 
+                    VerticalAlignment="Bottom" Grid.Column="1" 
                     Style="{StaticResource CloseButton}"/>
 
         </StackPanel>

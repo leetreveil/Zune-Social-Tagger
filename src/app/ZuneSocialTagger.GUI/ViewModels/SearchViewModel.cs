@@ -26,6 +26,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.MoveNextCommand = new RelayCommand(MoveNext);
+            this.SearchCommand = new RelayCommand(Search);
 
             this.AlbumDetails = model.SelectedAlbum.ZuneAlbumMetaData;
             this.SearchText = model.SearchText;
@@ -35,6 +36,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public RelayCommand MoveBackCommand { get; private set; }
         public RelayCommand MoveNextCommand { get; private set; }
+        public RelayCommand SearchCommand { get; private set; }
         public ExpandedAlbumDetailsViewModel AlbumDetails { get; set; }
 
         public SearchResultsViewModel SearchResultsViewModel
@@ -117,16 +119,13 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void SearchForArtists()
         {
-            //ThreadPool.QueueUserWorkItem(_ =>
-            //{
-                var artists = ArtistSearch.SearchFor(this.SearchText).ToList();
+            var artists = ArtistSearch.SearchFor(this.SearchText).ToList();
 
-                _dispatcher.Invoke(new Action(() => {
-                    this.SearchResultsViewModel.LoadArtists(artists);
-                }));
+            _dispatcher.Invoke(new Action(() => {
+                this.SearchResultsViewModel.LoadArtists(artists);
+            }));
 
-                this.IsSearching = false;
-            //});
+            this.IsSearching = false;
         }
 
         public void MoveBack()

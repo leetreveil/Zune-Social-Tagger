@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
-             Name="RootVisual">
+             Name="root">
 
 
     <UserControl.Resources>
@@ -15,8 +15,8 @@
         <ContextMenu x:Name="contextMenu">
 
             <MenuItem Header="Link" 
-                      IsEnabled="{Binding ElementName=RootVisual, Path=DataContext.CanLink}"
-                      Command="{Binding ElementName=RootVisual, Path=DataContext.LinkCommand}">
+                      IsEnabled="{Binding ElementName=root, Path=DataContext.CanLink}"
+                      Command="{Binding ElementName=root, Path=DataContext.LinkCommand}">
                 <MenuItem.Icon>
                     <Image Width="16"
                                    Height="16"
@@ -25,8 +25,8 @@
             </MenuItem>
 
             <MenuItem Header="De-Link"
-                      IsEnabled="{Binding ElementName=RootVisual, Path=DataContext.CanDelink}"
-                      Command="{Binding ElementName=RootVisual, Path=DataContext.DelinkCommand}">
+                      IsEnabled="{Binding ElementName=root, Path=DataContext.CanDelink}"
+                      Command="{Binding ElementName=root, Path=DataContext.DelinkCommand}">
                 <MenuItem.Icon>
                     <Image Width="16"
                                    Height="16"
@@ -37,7 +37,7 @@
             <Separator />
 
             <MenuItem Header="Refresh" 
-                      Command="{Binding ElementName=RootVisual, Path=DataContext.RefreshCommand}">
+                      Command="{Binding ElementName=root, Path=DataContext.RefreshCommand}">
                 <MenuItem.Icon>
                     <Image Width="16"
                                    Height="16"

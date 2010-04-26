@@ -107,5 +107,17 @@ namespace ZuneSocialTagger.GUI.Properties {
                 this["AppDataFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://github.com/leetreveil/Zune-Social-Tagger")]
+        public string AppBaseUrl {
+            get {
+                return ((string)(this["AppBaseUrl"]));
+            }
+            set {
+                this["AppBaseUrl"] = value;
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewModels;
 using ZuneSocialTagger.GUI.Views;
+using System.Windows;
 
 
 namespace ZuneSocialTagger.GUI
@@ -30,7 +31,12 @@ namespace ZuneSocialTagger.GUI
 
             SetupBindings();
 
-            new ApplicationView(Container.Get<ApplicationViewModel>()).Show();
+            var appViewModel = Container.Get<ApplicationViewModel>();
+            var appView = new ApplicationView {DataContext = appViewModel};
+
+            appView.Loaded += delegate { appViewModel.ApplicationViewHasLoaded(); };
+
+            appView.Show();
         }
 
         private void SetupBindings()

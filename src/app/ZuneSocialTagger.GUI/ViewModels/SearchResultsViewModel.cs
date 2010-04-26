@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -36,11 +37,13 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
             this.SearchResults = new ObservableCollection<object>();
+            this.SearchResults.CollectionChanged += SearchResults_CollectionChanged;
   
             this.MoveNextCommand = new RelayCommand(MoveNext);
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.ArtistCommand = new RelayCommand(DisplayArtists);
             this.AlbumCommand = new RelayCommand(DisplayAlbums);
+            this.ResultClickedCommand = new RelayCommand<object>(ResultClicked);
 
             this.ArtistCount = "";
             this.AlbumCount = "";
@@ -52,11 +55,31 @@ namespace ZuneSocialTagger.GUI.ViewModels
             this.IsAlbumsEnabled = true;
         }
 
+        void SearchResults_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewStartingIndex == 0)
+            {
+                //lvAlbums.SelectedIndex = 0;
+                //_searchResultsViewModel.LoadAlbum((Album)lvAlbums.SelectedItem);
+                LoadAlbum((Album) e.NewItems[0]);
+            }
+        }
+
+        private void ResultClicked(object item)
+        {
+            if (item.GetType() == typeof(Artist))
+                LoadAlbumsForArtist(item as Artist);
+
+            if (item.GetType() == typeof(Album))
+                LoadAlbum(item as Album);
+        }
+
         public ObservableCollection<object> SearchResults { get; set; }
         public RelayCommand MoveNextCommand { get; private set; }
         public RelayCommand MoveBackCommand { get; private set; }
         public RelayCommand ArtistCommand { get; private set; }
         public RelayCommand AlbumCommand { get; private set; }
+        public RelayCommand<object>ResultClickedCommand { get; private set; }
 
         public SearchResultsDetailViewModel SearchResultsDetailViewModel
         {

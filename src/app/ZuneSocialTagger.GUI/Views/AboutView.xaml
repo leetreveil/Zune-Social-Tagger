@@ -17,11 +17,11 @@
     </Window.Resources>
 
     <Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
         <!--HEADER-->
         <StackPanel Grid.Row="0">
@@ -33,28 +33,22 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" >
-			<TextBlock Text="Zune Social Tagger" FontSize="21.333"/>
-			<TextBlock Text="{Binding Version}"/>
-			<TextBlock Text="Developed by: Lee Treveil"/>
-			<TextBlock Text="leetreveil@gmail.com"/>
+            <TextBlock Text="Zune Social Tagger" FontSize="21.333"/>
+            <TextBlock Text="{Binding Version}"/>
+            <TextBlock Text="Developed by: Lee Treveil"/>
+            <TextBlock Text="leetreveil@gmail.com"/>
             <TextBlock Height="14.4">
-                <Hyperlink NavigateUri="http://github.com/leetreveil/Zune-Social-Tagger" 
-                           RequestNavigate="Hyperlink_RequestNavigate">
-                    http://github.com/leetreveil/Zune-Social-Tagger
-                </Hyperlink></TextBlock>
+                <Hyperlink NavigateUri="{Binding ApplicationUrl}" Command="{Binding OpenWebsiteCommand}">
+                    <TextBlock Text="{Binding ApplicationUrl}"/>
+                </Hyperlink>
+            </TextBlock>
             <TextBlock VerticalAlignment="Bottom" Text="© 2009 Lee Treveil"/>
         </StackPanel>
 
 
-		<Button Content="CLOSE"  Grid.Row="2"
+        <Button Content="CLOSE"  Grid.Row="2"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click" />
-        
-        <CheckBox Margin="0,20,0,0" x:Name="cbCheck" Command="{Binding Path=SetCanUpdateCommand}"
-                  CommandParameter="{Binding ElementName=cbCheck,Path=IsChecked}"
-                  IsChecked="{Binding UpdateEnabled,Mode=OneWay}"
-                  Grid.Row="2" 
-                  VerticalAlignment="Bottom" Content="Check for updates" Height="14.4"
-                  HorizontalAlignment="Left" Width="119" />
+
     </Grid>
 
 </Controls:DraggableWindow>

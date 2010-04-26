@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Windows;
 using System.Windows.Threading;
 using System.Xml.Serialization;
 using GalaSoft.MvvmLight.Command;
@@ -51,6 +52,9 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             this.ShowAboutSettingsCommand = new RelayCommand(ShowAboutSettings);
             this.UpdateCommand = new RelayCommand(ShowUpdate);
+            this.CloseAppCommand = new RelayCommand(CloseApp);
+
+            Application.Current.Exit += delegate { ApplicationIsShuttingDown(); };
 
             //register for changes to the current view model so we can switch between views
             Messenger.Default.Register<Type>(this, SwitchToView);
@@ -60,8 +64,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             //register for error messages to be displayed
             Messenger.Default.Register<ErrorMessage>(this, DisplayMessage);
-
-            CheckForUpdates();
         }
 
         public void ApplicationViewHasLoaded()
@@ -78,12 +80,14 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
 
             InitDb();
+            CheckForUpdates();
         }
 
         #region View Bindings
 
         public RelayCommand UpdateCommand { get; private set; }
         public RelayCommand ShowAboutSettingsCommand { get; private set; }
+        public RelayCommand CloseAppCommand { get; private set; }
 
         public string ErrorMessageText
         {
@@ -328,10 +332,10 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void ReadActualDatabase()
         {
+            _model.AlbumsFromDatabase.Clear();
+
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                _dispatcher.Invoke(new Action(() => _model.AlbumsFromDatabase.Clear()));
-
                 foreach (Album newAlbum in _dbReader.ReadAlbums())
                 {
                     Album album = newAlbum;
@@ -344,7 +348,12 @@ namespace ZuneSocialTagger.GUI.ViewModels
             });
         }
 
-        public void ApplicationIsShuttingDown()
+        private void CloseApp()
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void ApplicationIsShuttingDown()
         {
             WriteCacheToFile();
             Settings.Default.Save();
@@ -364,14 +373,16 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
         }
 
-        public void ShowUpdate()
+        private void ShowUpdate()
         {
-            new UpdateView(new UpdateViewModel(UpdateManager.Instance.NewUpdate.Version)).Show();
+            var updateViewModel = new UpdateViewModel(UpdateManager.Instance.NewUpdate.Version);
+            var updateView = new UpdateView {DataContext = updateViewModel};
+            updateView.Show();
         }
 
-        public void ShowAboutSettings()
+        private void ShowAboutSettings()
         {
-            new AboutView().Show();
+            new AboutView{DataContext = new AboutViewModel()}.Show();
         }
 
         private void CheckForUpdates()

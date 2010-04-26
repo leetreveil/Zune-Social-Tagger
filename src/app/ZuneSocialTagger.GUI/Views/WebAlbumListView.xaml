@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls"
-             xmlns:dd="clr-namespace:ZuneSocialTagger.GUI.ViewModels.DesignTime" >
+             xmlns:dd="clr-namespace:ZuneSocialTagger.GUI.ViewModels.DesignTime" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras">
     
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
@@ -21,10 +23,18 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Controls:SortControl SortClicked="SortView_SortClicked"
+        <Controls:SortControl 
                         SortOrder="{Binding SortOrder,Mode=TwoWay}" 
                         HorizontalAlignment="Left" VerticalContentAlignment="Bottom" 
-                        Margin="0,0,0,3"/>
+                        Margin="0,0,0,3">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SortClicked">
+                    <cmd:EventToCommand Command="{Binding SortCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+        </Controls:SortControl>
 
         <StackPanel HorizontalAlignment="Right"
                     Orientation="Horizontal"
@@ -72,7 +82,8 @@
                   TextSearch.TextPath="ZuneAlbumMetaData.AlbumTitle"
                   ItemContainerStyle="{StaticResource ListViewItemStyle}"
                   Background="Transparent"
-                  BorderThickness="0"/>
+                  BorderThickness="0"
+                  ScrollViewer.IsDeferredScrollingEnabled="True"/>
 
         <ProgressBar Visibility="{Binding Path=CanShowProgressBar,Converter={StaticResource BoolToVisConverter}}"
                      Margin="0,10,0,0"

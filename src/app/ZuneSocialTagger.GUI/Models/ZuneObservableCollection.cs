@@ -3,27 +3,36 @@ using System.Collections.ObjectModel;
 using System;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Windows.Threading;
 using ZuneSocialTagger.GUI.ViewModels;
 
 namespace ZuneSocialTagger.GUI.Models
 {
     public class ZuneObservableCollection<T> : ObservableCollection<T>
     {
+        private readonly Dispatcher _dispatcher;
+
         public event Action NeedsUpdating = delegate { };
+
+        public ZuneObservableCollection(Dispatcher dispatcher)
+        {
+            _dispatcher = dispatcher;
+        }
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
             NeedsUpdating.Invoke();
 
-            if (e.Action ==  NotifyCollectionChangedAction.Add)
+            if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 foreach (object newItem in e.NewItems)
                 {
                     if (newItem.GetType() == typeof(AlbumDetailsViewModel))
                     {
-                        var casted = (AlbumDetailsViewModel) newItem;
+                        var casted = (AlbumDetailsViewModel)newItem;
 
-                        casted.PropertyChanged += (sender, args) => {
+                        casted.PropertyChanged += (sender, args) =>
+                        {
                             if (args.PropertyName == "LinkStatus")
                             {
                                 NeedsUpdating.Invoke();
@@ -72,7 +81,8 @@ namespace ZuneSocialTagger.GUI.Models
 
             foreach (var item in sortedItemsList)
             {
-                Move(IndexOf(item), sortedItemsList.IndexOf(item));
+                T item1 = item;
+                _dispatcher.Invoke(new Action(() => Move(IndexOf(item1), sortedItemsList.IndexOf(item1))));
             }
         }
     }

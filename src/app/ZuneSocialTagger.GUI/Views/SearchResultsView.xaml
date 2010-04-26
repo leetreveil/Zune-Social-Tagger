@@ -8,7 +8,10 @@
     x:Class="ZuneSocialTagger.GUI.Views.SearchResultsView"
     xmlns:dd="clr-namespace:ZuneSocialTagger.GUI.ViewModels.DesignTime" 
     xmlns:ZuneWebsite="clr-namespace:ZuneSocialTagger.Core.ZuneWebsite;assembly=ZuneSocialTagger.Core" 
-    xmlns:ctrls="clr-namespace:ZuneSocialTagger.GUI.Controls" d:DesignHeight="200">
+    xmlns:ctrls="clr-namespace:ZuneSocialTagger.GUI.Controls" 
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+    xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras" 
+    d:DesignHeight="200">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -99,15 +102,21 @@
             </TextBlock>
 
         <ListView Grid.Row="2" x:Name="lvAlbums"
-                MouseUp="lvAlbums_MouseUp"
-                SelectionChanged="lvAlbums_SelectionChanged"
-                SelectedIndex="0" Background="Transparent" 
+                SelectedIndex="0" 
+                Background="Transparent" 
                 BorderBrush="Transparent" 
                 IsSynchronizedWithCurrentItem="True" 
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                 ItemsSource="{Binding SearchResults}" 
                 Margin="0,0,20,0" 
                 ItemContainerStyle="{StaticResource SelectedItemHighlight}">
+            
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseUp">
+                    <cmd:EventToCommand Command="{Binding ResultClickedCommand}"
+                                        CommandParameter="{Binding ElementName=lvAlbums,Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
 
         </ListView>
 

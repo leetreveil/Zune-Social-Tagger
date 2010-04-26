@@ -1,3 +1,4 @@
+using System;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Taskbar;
@@ -6,6 +7,7 @@ using ZuneSocialTagger.GUI.Models;
 using System.Linq;
 using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.Core.ZuneDatabase;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
@@ -71,6 +73,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
             this.CancelDownloadingCommand = new RelayCommand(CancelDownloading);
             this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
+            this.SortCommand = new RelayCommand(Sort);
         }
 
         #region View Binding Properties
@@ -175,6 +178,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         public RelayCommand CancelDownloadingCommand { get; private set; }
         public RelayCommand SwitchToClassicModeCommand { get; private set; }
         public RelayCommand<bool> FilterGreenCommand { get; private set; }
+        public RelayCommand SortCommand { get; private set; }
 
         #endregion
 
@@ -284,6 +288,11 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             if (_isTaskbarSupported)
                 TaskbarManager.Instance.SetProgressValue(current, total);
+        }
+
+        private void Sort()
+        {
+            SortData(this.SortOrder);
         }
 
         private void UpdateLinkTotals()

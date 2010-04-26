@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,25 +11,43 @@ namespace ZuneSocialTagger.GUI.Controls
     /// </summary>
     public partial class SearchBarControl : UserControl
     {
-        public event Action SearchClicked = delegate { };
-
         public SearchBarControl()
         {
             this.InitializeComponent();
             this.tbSearching.Visibility = Visibility.Hidden;
         }
 
+        static SearchBarControl()
+        {
+            SearchClickedEvent = EventManager.RegisterRoutedEvent("SearchClicked", RoutingStrategy.Bubble,
+                typeof(RoutedEventHandler), typeof(SearchBarControl));
+        }
+
+        public static RoutedEvent SearchClickedEvent;
+
+        public event RoutedEventHandler SearchClicked
+        {
+            add { AddHandler(SearchClickedEvent, value); }
+            remove { RemoveHandler(SearchClickedEvent, value); }
+        }
+
+        protected virtual void OnSearchClicked()
+        {
+            var args = new RoutedEventArgs {RoutedEvent = SearchClickedEvent};
+            RaiseEvent(args);
+        }
+
         private void TextBox_KeyUp(object sender, KeyEventArgs e)
         {
             if (this.tbSearch.Text.Length > 0 && e.Key == Key.Enter)
-                SearchClicked.Invoke();
+                OnSearchClicked();
 
             this.SearchText = this.tbSearch.Text;
         }
 
         private void Search_Clicked(object sender, RoutedEventArgs e)
         {
-            SearchClicked.Invoke();
+            OnSearchClicked();
         }
 
         public static readonly DependencyProperty IsSearchingProperty =

@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Windows.Threading;
 using ZuneSocialTagger.GUI.ViewModels;
+using System.Linq;
 
 namespace ZuneSocialTagger.GUI.Models
 {
@@ -24,7 +25,7 @@ namespace ZuneSocialTagger.GUI.Models
             {
                 if (_albumsFromDatabase == null)
                 {
-                    _albumsFromDatabase = new ZuneObservableCollection<AlbumDetailsViewModel>();
+                    _albumsFromDatabase = new ZuneObservableCollection<AlbumDetailsViewModel>(_dispatcher);
                 }
 
                 return _albumsFromDatabase;
@@ -58,9 +59,40 @@ namespace ZuneSocialTagger.GUI.Models
         private void DoSort<T>(Func<AlbumDetailsViewModel, T> sortKey)
         {
             if (typeof(T) == typeof(DateTime))
-                _dispatcher.Invoke(new Action(() => this.AlbumsFromDatabase.SortDesc(sortKey)));
+            {
+                var sorted = this.AlbumsFromDatabase.OrderByDescending(sortKey).ToList();
+
+                _dispatcher.Invoke(new Action(delegate {
+                    this.AlbumsFromDatabase.Clear();
+                }));
+
+                foreach (var item in sorted)
+                {
+                    AlbumDetailsViewModel item1 = item;
+                    _dispatcher.Invoke(new Action(delegate
+                    {
+                        this.AlbumsFromDatabase.Add(item1);
+                    }));
+                }
+            }
             else
-                _dispatcher.Invoke(new Action(() => this.AlbumsFromDatabase.Sort(sortKey)));
+            {
+                var sorted = this.AlbumsFromDatabase.OrderBy(sortKey).ToList();
+
+                _dispatcher.Invoke(new Action(delegate
+                {
+                    this.AlbumsFromDatabase.Clear();
+                }));
+
+                foreach (var item in sorted)
+                {
+                    AlbumDetailsViewModel item1 = item;
+                    _dispatcher.Invoke(new Action(delegate
+                    {
+                        this.AlbumsFromDatabase.Add(item1);
+                    }));
+                }
+            }
         }
     }
 }

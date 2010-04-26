@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ZuneSocialTagger.GUIV2.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ZuneSocialTagger.GUI.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="UpdateAlbumInfo" Type="System.Boolean" Scope="User">
@@ -22,6 +22,9 @@
     </Setting>
     <Setting Name="AppDataFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AppBaseUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://github.com/leetreveil/Zune-Social-Tagger</Value>
     </Setting>
   </Settings>
 </SettingsFile>

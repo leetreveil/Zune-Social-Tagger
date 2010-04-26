@@ -25,8 +25,7 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
 
-                            <Button Click="Search_Clicked" 
-                                    IsEnabled="{Binding ElementName=tbSearch,Path=Text,Converter={StaticResource TextToVisConverter}}"
+                            <Button IsEnabled="{Binding ElementName=tbSearch,Path=Text,Converter={StaticResource TextToVisConverter}}"
                                     Style="{DynamicResource SearchButton}"
                                     Grid.Column="1" />
 
@@ -98,8 +97,9 @@
     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1">
 		<TextBlock Foreground="#FF8A8D90" Text="SEARCH" FontWeight="Bold" FontSize="12" Margin="0,0,0,3"/>
         
-        <TextBox x:Name="tbSearch" KeyUp="TextBox_KeyUp" Width="309" 
-                 Grid.Column="1" Style="{DynamicResource SearchBoxStyle}"/>
+        <TextBox x:Name="tbSearch" KeyUp="TextBox_KeyUp" Width="309"
+                 Grid.Column="1" Style="{DynamicResource SearchBoxStyle}" 
+                 ButtonBase.Click="Search_Clicked"/>
         
         <TextBlock x:Name="tbSearching" Foreground="#FF8A8D90" HorizontalAlignment="Right" Width="62" FontSize="13.333"/>
     </StackPanel>

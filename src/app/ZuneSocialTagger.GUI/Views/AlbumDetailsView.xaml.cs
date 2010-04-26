@@ -11,6 +11,8 @@ namespace ZuneSocialTagger.GUI.Views
         public AlbumDetailsView()
         {
             InitializeComponent();
+
+            //hack to get the contextmenu to register for databinding
             NameScope.SetNameScope(contextMenu,NameScope.GetNameScope(this));
         }
     }

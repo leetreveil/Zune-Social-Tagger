@@ -13,12 +13,30 @@ namespace ZuneSocialTagger.GUI.Controls
     /// </summary>
     public partial class SortControl : UserControl
     {
-        public event Action<SortOrder> SortClicked = delegate { };
-
         public SortControl()
         {
             InitializeComponent();
             SetValue(SortOrderProperty, SortOrder.NotSorted);
+        }
+
+        static SortControl()
+        {
+            SortClickedEvent = EventManager.RegisterRoutedEvent("SortClicked", RoutingStrategy.Bubble,
+                typeof(RoutedEventHandler), typeof(SortControl));
+        }
+
+        public static RoutedEvent SortClickedEvent;
+
+        public event RoutedEventHandler SortClicked
+        {
+            add { AddHandler(SortClickedEvent, value); }
+            remove { RemoveHandler(SortClickedEvent, value); }
+        }
+
+        protected virtual void OnSortClicked()
+        {
+            var args = new RoutedEventArgs { RoutedEvent = SortClickedEvent };
+            RaiseEvent(args);
         }
 
         public static readonly DependencyProperty SortOrderProperty =
@@ -50,7 +68,7 @@ namespace ZuneSocialTagger.GUI.Controls
 
             this.SetValue(SortOrderProperty, nextSortOrder);
 
-            this.SortClicked.Invoke(nextSortOrder);
+            OnSortClicked();
         }
     }
 }

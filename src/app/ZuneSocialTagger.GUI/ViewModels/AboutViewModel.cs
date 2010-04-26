@@ -9,31 +9,29 @@ namespace ZuneSocialTagger.GUI.ViewModels
     {
         public AboutViewModel()
         {
-            SetCanUpdateCommand = new RelayCommand<bool>(SetCanUpdate);
+            this.OpenWebsiteCommand = new RelayCommand(OpenWebsite);
         }
 
-        public RelayCommand<bool> SetCanUpdateCommand { get; set; }
+        public RelayCommand OpenWebsiteCommand { get; private set; }
 
         public string Version
         {
-            get
-            {
-                return String.Format("Version {0}", Assembly.GetExecutingAssembly().GetName().Version);
-            }
+            get { return String.Format("Version {0}", Assembly.GetExecutingAssembly().GetName().Version); }
         }
 
-        public void SetCanUpdate(bool update)
+        public string ApplicationUrl
         {
-            if (update == UpdateEnabled) return;
-                Settings.Default.CheckForUpdates = update;
+            get { return Settings.Default.AppBaseUrl; }
         }
 
         public bool UpdateEnabled
         {
-            get
-            {
-                return Settings.Default.CheckForUpdates;
-            }
+            get { return Settings.Default.CheckForUpdates; }
+        }
+
+        private static void OpenWebsite()
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(Settings.Default.AppBaseUrl));
         }
     }
 }

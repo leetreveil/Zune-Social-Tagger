@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using ZuneSocialTagger.GUI.Controls;
-using ZuneSocialTagger.GUI.ViewModels;
 
 namespace ZuneSocialTagger.GUI.Views
 {
@@ -9,11 +8,9 @@ namespace ZuneSocialTagger.GUI.Views
     /// </summary>
     public partial class UpdateView : DraggableWindow
     {
-        public UpdateView(UpdateViewModel updateViewModel)
+        public UpdateView()
         {
             InitializeComponent();
-
-            this.DataContext = updateViewModel;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

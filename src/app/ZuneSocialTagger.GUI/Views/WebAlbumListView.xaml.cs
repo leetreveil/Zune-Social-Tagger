@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using ZuneSocialTagger.GUI.ViewModels;
 
 namespace ZuneSocialTagger.GUI.Views
 {
@@ -8,28 +7,23 @@ namespace ZuneSocialTagger.GUI.Views
     /// </summary>
     public partial class WebAlbumListView : UserControl
     {
-        private WebAlbumListViewModel _model;
-
         public WebAlbumListView()
         {
             this.InitializeComponent();
-            this.DataContextChanged += delegate { _model = (WebAlbumListViewModel) this.DataContext; };
-            this.Loaded += delegate
-                               {
-                                   if (lvAlbums.SelectedItem != null)
-                                   {
-                                       lvAlbums.ScrollIntoView(lvAlbums.SelectedItem);
-                                       var item = (ListViewItem)lvAlbums.ItemContainerGenerator.
-                                           ContainerFromItem(lvAlbums.SelectedItem);
-                                       item.Focus();
-                                   }
-                               };
+            this.Loaded += WebAlbumListView_Loaded;
         }
 
-        private void SortView_SortClicked(Models.SortOrder sortOrder)
+        void WebAlbumListView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            _model.SortData(sortOrder);
-        }
+            if (lvAlbums.SelectedItem != null)
+            {
+                lvAlbums.ScrollIntoView(lvAlbums.SelectedItem);
+                var item = (ListViewItem)lvAlbums.ItemContainerGenerator.
+                    ContainerFromItem(lvAlbums.SelectedItem);
+                item.Focus();
+            }
 
+            e.Handled = true;
+        }
     }
 }
