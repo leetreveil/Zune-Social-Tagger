@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using GalaSoft.MvvmLight;
+
 namespace ZuneSocialTagger.GUI
 {
     public class ViewModelBaseExtended : ViewModelBase

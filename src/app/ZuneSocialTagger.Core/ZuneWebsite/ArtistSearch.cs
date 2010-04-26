@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.ServiceModel.Syndication;
+using System.Threading;
 using System.Xml;
 
 namespace ZuneSocialTagger.Core.ZuneWebsite
@@ -14,6 +16,11 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             XmlReader reader = XmlReader.Create(searchUrl);
 
             return ReadArtistsFromXmlDocument(reader);
+        }
+
+        public static void SearchForAsync(string searchString,Action<IEnumerable<Artist>> callback)
+        {
+            ThreadPool.QueueUserWorkItem(_ => callback(SearchFor(searchString).ToList()));
         }
 
         private static IEnumerable<Artist> ReadArtistsFromXmlDocument(XmlReader reader)

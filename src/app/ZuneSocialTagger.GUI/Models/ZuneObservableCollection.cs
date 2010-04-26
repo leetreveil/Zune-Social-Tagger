@@ -2,22 +2,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Windows.Threading;
+using System.Threading;
+using GalaSoft.MvvmLight.Threading;
 using ZuneSocialTagger.GUI.ViewModels;
+using System.Linq;
 
 namespace ZuneSocialTagger.GUI.Models
 {
     public class ZuneObservableCollection<T> : ObservableCollection<T>
     {
-        private readonly Dispatcher _dispatcher;
-
         public event Action NeedsUpdating = delegate { };
-
-        public ZuneObservableCollection(Dispatcher dispatcher)
-        {
-            _dispatcher = dispatcher;
-        }
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
@@ -55,7 +49,7 @@ namespace ZuneSocialTagger.GUI.Models
             InternalSort(Items.OrderBy(keySelector));
         }
 
-        public void SortDesc<TKey>(Func<T,TKey> keySelector)
+        public void SortDesc<TKey>(Func<T, TKey> keySelector)
         {
             InternalSort(Items.OrderByDescending(keySelector));
         }
@@ -82,7 +76,7 @@ namespace ZuneSocialTagger.GUI.Models
             foreach (var item in sortedItemsList)
             {
                 T item1 = item;
-                _dispatcher.Invoke(new Action(() => Move(IndexOf(item1), sortedItemsList.IndexOf(item1))));
+                DispatcherHelper.CheckBeginInvokeOnUI(() => Move(IndexOf(item1), sortedItemsList.IndexOf(item1)));
             }
         }
     }

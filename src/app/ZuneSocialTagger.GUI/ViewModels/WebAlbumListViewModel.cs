@@ -1,4 +1,3 @@
-using System;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Taskbar;
@@ -7,7 +6,6 @@ using ZuneSocialTagger.GUI.Models;
 using System.Linq;
 using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.Core.ZuneDatabase;
-using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {

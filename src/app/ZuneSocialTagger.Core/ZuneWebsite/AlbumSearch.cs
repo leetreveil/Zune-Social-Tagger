@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ServiceModel.Syndication;
+using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
@@ -15,6 +16,11 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             string searchUrl = String.Format("{0}?q={1}", Urls.Album, searchString);
 
             return ReadFromXmlDocument(XmlReader.Create(searchUrl));
+        }
+
+        public static void SearchForAsync(string searchString, Action<IEnumerable<Album>> callback)
+        {
+            ThreadPool.QueueUserWorkItem(_ => callback(SearchFor(searchString).ToList()));
         }
 
         public static IEnumerable<Album> GetAlbumsFromArtistGuid(Guid guid)
@@ -42,7 +48,6 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                          };
                 }
             }
-
         }
 
         private static string GetAlbumArtist(SyndicationItem feed)

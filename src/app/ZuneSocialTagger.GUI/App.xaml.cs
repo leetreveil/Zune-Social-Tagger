@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Threading;
 using Ninject;
 using ZuneSocialTagger.Core.ZuneDatabase;
+using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewModels;
 using ZuneSocialTagger.GUI.Views;
-using System.Windows;
-
+using GalaSoft.MvvmLight.Threading;
+using System.Diagnostics;
+using Album = ZuneSocialTagger.Core.ZuneWebsite.Album;
 
 namespace ZuneSocialTagger.GUI
 {
@@ -21,6 +25,8 @@ namespace ZuneSocialTagger.GUI
 
         public App()
         {
+            DispatcherHelper.Initialize();
+
             string pathToZuneSocAppDataFolder = Path.Combine(Environment.GetFolderPath(
                                                              Environment.SpecialFolder.ApplicationData), "Zune Social Tagger");
 

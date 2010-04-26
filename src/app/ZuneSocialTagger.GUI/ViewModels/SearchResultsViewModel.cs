@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Threading;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using System.Threading;
 using Album = ZuneSocialTagger.Core.ZuneWebsite.Album;
 using AlbumDocumentReader = ZuneSocialTagger.Core.ZuneWebsite.AlbumDocumentReader;
-using System.Windows.Threading;
 
 
 namespace ZuneSocialTagger.GUI.ViewModels
@@ -19,7 +18,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
     public class SearchResultsViewModel : ViewModelBaseExtended
     {
         private readonly ZuneWizardModel _model;
-        private readonly Dispatcher _dispatcher;
         private IEnumerable<Album> _albums;
         private IEnumerable<Artist> _artists;
         private bool _isLoading;
@@ -28,12 +26,9 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private bool _isAlbumsEnabled;
         private string _artistCount;
 
-        public SearchResultsViewModel(ZuneWizardModel model, Dispatcher dispatcher,
-                                      IEnumerable<Album> albums)
+        public SearchResultsViewModel(ZuneWizardModel model)
         {
             _model = model;
-            _dispatcher = dispatcher;
-            _albums = albums;
 
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
             this.SearchResults = new ObservableCollection<object>();
@@ -47,20 +42,12 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             this.ArtistCount = "";
             this.AlbumCount = "";
-
-            foreach (Album album in albums)
-                this.SearchResults.Add(album);
-
-            this.AlbumCount = String.Format("ALBUMS ({0})", albums.Count());
-            this.IsAlbumsEnabled = true;
         }
 
         void SearchResults_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewStartingIndex == 0)
             {
-                //lvAlbums.SelectedIndex = 0;
-                //_searchResultsViewModel.LoadAlbum((Album)lvAlbums.SelectedItem);
                 LoadAlbum((Album) e.NewItems[0]);
             }
         }
@@ -187,8 +174,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
                 _albums = albums;
 
-                _dispatcher.Invoke(new Action(delegate {
-
+                DispatcherHelper.CheckBeginInvokeOnUI(() => {
                     this.SearchResults.Clear();
 
                     foreach (var album in _albums)
@@ -197,7 +183,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                     this.AlbumCount = String.Format("ALBUMS ({0})", albums.Count());
 
                     this.IsAlbumsEnabled = true;
-                }));
+                });
             });
         }
 
@@ -221,6 +207,17 @@ namespace ZuneSocialTagger.GUI.ViewModels
         {
             _artists = artists;
             this.ArtistCount = String.Format("ARTISTS ({0})", artists.Count());
+        }
+
+        public void LoadAlbums(IEnumerable<Album> albums)
+        {
+            _albums = albums;
+            this.AlbumCount = String.Format("ALBUMS ({0})", albums.Count());
+
+            foreach (Album album in albums)
+                this.SearchResults.Add(album);
+
+            this.IsAlbumsEnabled = true;
         }
 
         private void MoveBack()
@@ -255,11 +252,11 @@ namespace ZuneSocialTagger.GUI.ViewModels
                                                         SelectedAlbumTitle = tracks.First().MetaData.AlbumName
                                                     };
 
-            _dispatcher.Invoke(new Action(() =>
-                 {
-                     foreach (var track in tracks)
-                         this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(track);
-                 }));
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                foreach (var track in tracks)
+                    this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(track);
+            });
         }
     }
 }

@@ -1,28 +1,24 @@
-using System;
 using System.Linq;
-using System.Threading;
-using System.Windows.Threading;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
+using GalaSoft.MvvmLight.Threading;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
     public class SearchViewModel : ViewModelBaseExtended
     {
         private readonly ZuneWizardModel _model;
-        private readonly Dispatcher _dispatcher;
         private string _searchText;
         private bool _isSearching;
         private bool _canMoveNext;
         private SearchResultsViewModel _searchResultsViewModel;
         private bool _canShowResults;
 
-        public SearchViewModel(ZuneWizardModel model,Dispatcher dispatcher)
+        public SearchViewModel(ZuneWizardModel model)
         {
             _model = model;
-            _dispatcher = dispatcher;
 
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.MoveNextCommand = new RelayCommand(MoveNext);
@@ -101,41 +97,34 @@ namespace ZuneSocialTagger.GUI.ViewModels
             this.IsSearching = true;
             this.SearchResultsViewModel = null;
 
-            ThreadPool.QueueUserWorkItem(_ =>
-            {
-                var albums = AlbumSearch.SearchFor(this.SearchText).ToList();
+            AlbumSearch.SearchForAsync(this.SearchText, albums => {
+                this.SearchResultsViewModel = new SearchResultsViewModel(_model);
+
+                DispatcherHelper.CheckBeginInvokeOnUI(() => this.SearchResultsViewModel.LoadAlbums(albums));
+
                 this.CanMoveNext = albums.Count() > 0;
                 this.CanShowResults = true;
 
-                _dispatcher.Invoke(new Action(delegate {
-                    this.SearchResultsViewModel = new SearchResultsViewModel(_model, _dispatcher, albums);
-                }));
-
                 SearchForArtists();
-
-                this.IsSearching = false;
             });
         }
 
         private void SearchForArtists()
         {
-            var artists = ArtistSearch.SearchFor(this.SearchText).ToList();
-
-            _dispatcher.Invoke(new Action(() => {
+            ArtistSearch.SearchForAsync(this.SearchText,artists => {
                 this.SearchResultsViewModel.LoadArtists(artists);
-            }));
-
-            this.IsSearching = false;
+                this.IsSearching = false;
+            });
         }
 
         public void MoveBack()
         {
-            Messenger.Default.Send(typeof(IFirstPage));
+            Messenger.Default.Send(typeof (IFirstPage));
         }
 
         public void MoveNext()
         {
-            Messenger.Default.Send(typeof(DetailsViewModel));
+            Messenger.Default.Send(typeof (DetailsViewModel));
         }
     }
 }
