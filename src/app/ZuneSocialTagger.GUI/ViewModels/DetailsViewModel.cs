@@ -21,14 +21,12 @@ namespace ZuneSocialTagger.GUI.ViewModels
             this.AlbumDetailsFromWebsite = _model.SelectedAlbum.WebAlbumMetaData;
             this.AlbumDetailsFromFile = _model.SelectedAlbum.ZuneAlbumMetaData;
    
-            this.MoveToStartCommand = new RelayCommand(MoveToStart);
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.SaveCommand = new RelayCommand(Save);
         }
 
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; private set; }
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; private set; }
-        public RelayCommand MoveToStartCommand { get; private set; }
         public RelayCommand MoveBackCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
 
@@ -65,7 +63,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
         }
 
-        public void Save()
+        private void Save()
         {
             Mouse.OverrideCursor = Cursors.Wait;
 
@@ -116,14 +114,9 @@ namespace ZuneSocialTagger.GUI.ViewModels
             Mouse.OverrideCursor = null;
         }
 
-        public void MoveBack()
+        private void MoveBack()
         {
             Messenger.Default.Send(typeof(SearchViewModel));
-        }
-
-        public void MoveToStart()
-        {
-            Messenger.Default.Send("SWITCHTOFIRSTVIEW");
         }
     }
 }
