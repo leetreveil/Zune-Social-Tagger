@@ -46,8 +46,11 @@ namespace ZuneSocialTagger.GUI.Controls
         private static void SortOrderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var view = (SortControl) d;
+            var sortOrder = (SortOrder) e.NewValue;
 
-            view.btnSort.Content = new SortOrderToTextConverter().Convert(e.NewValue, typeof (SortOrder), null, null);
+            view.RootVisual.Visibility = sortOrder == SortOrder.NotSorted ? Visibility.Hidden : Visibility.Visible;
+
+            view.btnSort.Content = new SortOrderToTextConverter().Convert(sortOrder, typeof (SortOrder), null, null);
         }
 
         public SortOrder SortOrder

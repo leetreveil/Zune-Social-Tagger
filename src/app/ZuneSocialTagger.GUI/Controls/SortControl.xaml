@@ -6,7 +6,7 @@
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
     
-    <Grid>
+    <Grid x:Name="RootVisual">
         <StackPanel Orientation="Horizontal">
 
             <TextBlock Text="SORTED BY " FontWeight="Bold" 
