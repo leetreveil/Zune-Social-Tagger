@@ -14,7 +14,10 @@ namespace ZuneSocialTagger.GUI.ViewModels
             _albumDetailsFromWebsite = model.SelectedAlbum.WebAlbumMetaData;
             _albumDetailsFromFile = model.SelectedAlbum.ZuneAlbumMetaData;
 
-            this.OKCommand =new RelayCommand(() => Messenger.Default.Send("SWITCHTOFIRSTVIEW"));
+            this.OKCommand =new RelayCommand(() => {
+                Messenger.Default.Send("SWITCHTOFIRSTVIEW");
+                Messenger.Default.Send("ALBUMLINKED");
+            });
         }
 
         public RelayCommand OKCommand { get; private set; }

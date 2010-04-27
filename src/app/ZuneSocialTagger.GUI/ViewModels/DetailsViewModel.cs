@@ -108,7 +108,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
             else
             {
                 Messenger.Default.Send(typeof(SuccessViewModel));
-                Messenger.Default.Send("ALBUMLINKED"); 
             }
 
             Mouse.OverrideCursor = null;

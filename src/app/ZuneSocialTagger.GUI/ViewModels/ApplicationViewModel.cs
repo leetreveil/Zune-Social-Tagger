@@ -171,6 +171,11 @@ namespace ZuneSocialTagger.GUI.ViewModels
                     DisplayMessage(new ErrorMessage(ErrorMode.Warning,
                                                          "Any albums you link / delink will not show their changes until the zune software is running."));
                 }
+                else
+                {
+                    GetNewOrRemovedAlbumsFromZuneDb();
+                    //TODO: refresh selected album
+                }
             }
             else if (message == "SWITCHTOFIRSTVIEW")
             {
@@ -239,7 +244,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                         }
 
                         //after we have loaded the cache, we want to check for any new albums available in the database
-                        //GetNewOrRemovedAlbumsFromZuneDb();
+                        GetNewOrRemovedAlbumsFromZuneDb();
                     });
                 }
                 else
@@ -250,7 +255,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         {
             var currentMediaIds = _albums.Select(x => x.ZuneAlbumMetaData.MediaId);
 
-            IEnumerable<Album> newAlbums = _dbReader.GetNewAlbums(currentMediaIds);
+            IEnumerable<Album> newAlbums = _dbReader.GetNewAlbums(currentMediaIds).ToList();
             IEnumerable<int> removedAlbums = _dbReader.GetRemovedAlbums(currentMediaIds).ToList();
 
             foreach (var album in newAlbums)
