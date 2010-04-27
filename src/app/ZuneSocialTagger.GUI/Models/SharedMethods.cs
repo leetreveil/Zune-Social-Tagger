@@ -1,5 +1,8 @@
 using System;
+using System.Globalization;
 using System.Linq;
+using System.Text;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUI.Models
 {
@@ -8,19 +11,20 @@ namespace ZuneSocialTagger.GUI.Models
         public static LinkStatus GetAlbumLinkStatus(string albumTitle, string albumArtist, 
                                                     string existingAlbumTitle, string existingAlbumArtist)
         {
-            bool artistTitlesMatch = albumArtist.ToUpper() ==
-                                     existingAlbumArtist.ToUpper();
+            string albumTitleCleaned = CleanString(albumTitle);
+            string albumArtistCleaned = CleanString(albumArtist);
+            string existingAlbumTitleCleaned = CleanString(existingAlbumTitle);
+            string existingAlbumArtistCleaned = CleanString(existingAlbumArtist);
 
-            bool albumTitlesMatch = albumTitle.ToUpper() ==
-                                    existingAlbumTitle.ToUpper();
+            bool artistTitlesMatch = albumArtistCleaned == existingAlbumArtistCleaned;
+            bool albumTitlesMatch = albumTitleCleaned == existingAlbumTitleCleaned;
 
 
             //if first or second character of album title is different...
             //TODO: find better way to do comparison
-            string firstTwoChars =
-                new string(existingAlbumTitle.ToUpper().Take(2).ToArray());
+            string firstTwoChars = new string(existingAlbumTitleCleaned.Take(2).ToArray());
 
-            bool albumTitlesFirstTwoCharactersMatch = albumTitle.ToUpper().StartsWith(firstTwoChars);
+            bool albumTitlesFirstTwoCharactersMatch = albumTitleCleaned.StartsWith(firstTwoChars);
 
             if (!albumTitlesFirstTwoCharactersMatch)
                 return LinkStatus.AlbumOrArtistMismatch;
@@ -35,17 +39,45 @@ namespace ZuneSocialTagger.GUI.Models
            return LinkStatus.Linked;
         }
 
-        public static bool DoesStringMatchWithoutTheAtStart(string first, string second)
+        private static string RemoveDiacritics(string stIn)
         {
-            if (first.ToUpper().StartsWith("THE"))
+            string stFormD = stIn.Normalize(NormalizationForm.FormD);
+            var sb = new StringBuilder();
+
+            foreach (char t in
+                from t in stFormD
+                let uc = CharUnicodeInfo.GetUnicodeCategory(t)
+                where uc != UnicodeCategory.NonSpacingMark
+                select t)
             {
-                if (first.ToUpper().Skip(3) == second.ToUpper())
-                {
-                    return true;
-                }
+                sb.Append(t);
             }
 
-            return false;
+            return (sb.ToString().Normalize(NormalizationForm.FormC));
+        }
+
+
+        /// <summary>
+        /// Takes a string and converts it to an easily comparable string, ToUpper + THE removes
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private static string CleanString(string input)
+        {
+            string result = input.ToUpper();
+
+            if (result.StartsWith("THE "))
+                result = new string(result.Skip(4).ToArray()); //skip THE and space
+
+            if (result.StartsWith("A "))
+                result = new string(result.Skip(2).ToArray());
+
+            if (result.EndsWith(".") || result.EndsWith("?"))
+                result = new string(result.Take(result.Count() - 1).ToArray());
+
+            result = RemoveDiacritics(result);
+
+            return result;
         }
 
         public static Func<Song, int> SortByTrackNumber()

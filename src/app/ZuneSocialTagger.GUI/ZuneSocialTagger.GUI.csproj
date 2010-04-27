@@ -56,16 +56,16 @@
       <HintPath>..\libs\mvvmlight3\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight.Extras">
-      <HintPath>..\libs\mvvmlight3\GalaSoft.MvvmLight.Extras.dll</HintPath>
+      <HintPath>..\..\..\libs\mvvmlight3\GalaSoft.MvvmLight.Extras.dll</HintPath>
     </Reference>
     <Reference Include="leetreveil.AutoUpdate.Framework">
-      <HintPath>..\libs\leetreveil.AutoUpdate\leetreveil.AutoUpdate.Framework.dll</HintPath>
+      <HintPath>..\..\..\libs\leetreveil.AutoUpdate\leetreveil.AutoUpdate.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack">
-      <HintPath>..\libs\win7apicodepack\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <HintPath>..\..\..\libs\win7apicodepack\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell">
-      <HintPath>..\libs\win7apicodepack\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+      <HintPath>..\..\..\libs\win7apicodepack\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
     <Reference Include="Ninject, Version=2.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -76,7 +76,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\libs\mvvmlight3\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\..\..\libs\mvvmlight3\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />

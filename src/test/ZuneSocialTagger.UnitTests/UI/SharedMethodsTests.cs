@@ -5,26 +5,44 @@ namespace ZuneSocialTagger.UnitTests.UI
 {
     public class SharedMethodsTests
     {
-        #region GetAlbumListStatus Tests
-
         [Test]
-        public void ShouldMatchIfArtistNameStartsWithThe()
+        public void Should_return_linked_if_artist_starts_with_the()
         {
-            bool result = SharedMethods.DoesStringMatchWithoutTheAtStart("The Shape Of Punk To Come", "Shape Of Punk To Come");
+            var result = SharedMethods.GetAlbumLinkStatus("Shape Of Punk To Come", "The Refused", "Shape Of Punk To Come", "Refused");
 
-            Assert.That(result, Is.True);
+            Assert.That(result, Is.EqualTo(LinkStatus.Linked));
         }
 
         [Test]
-        public void ShouldNotMatchIfArtistNameDoesNotStartWithThe()
+        public void Should_return_linked_if_artist_has_a_accent_in_and_source_does_not()
         {
-            bool result = SharedMethods.DoesStringMatchWithoutTheAtStart("AFI", "U2");
+            var result = SharedMethods.GetAlbumLinkStatus("Takk", "Sigur Ros", "Takk", "Sigur Rós");
 
-            Assert.That(result, Is.True);
+            Assert.That(result,Is.EqualTo(LinkStatus.Linked));
         }
 
-        #endregion
+        [Test]
+        public void Should_return_linked_if_artist_starts_with_A_and_other_does_not()
+        {
+            var result = SharedMethods.GetAlbumLinkStatus("Takk", "A Sigur Ros", "Takk", "Sigur Ros");
 
+            Assert.That(result, Is.EqualTo(LinkStatus.Linked));
+        }
 
+        [Test]
+        public void Should_return_linked_if_artist_ends_with_car_and_other_does_not()
+        {
+            var result = SharedMethods.GetAlbumLinkStatus("Takk", "Sigur Ros.", "Takk", "Sigur Ros");
+
+            Assert.That(result, Is.EqualTo(LinkStatus.Linked));
+        }
+
+        [Test]
+        public void Should_return_linked_if_artist_ends_with_car_and_other_does_not_2()
+        {
+            var result = SharedMethods.GetAlbumLinkStatus("Takk", "Sigur Ros?", "Takk", "Sigur Ros");
+
+            Assert.That(result, Is.EqualTo(LinkStatus.Linked));
+        }
     }
 }
