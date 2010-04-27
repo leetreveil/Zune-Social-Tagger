@@ -125,7 +125,7 @@
 
             <Button Content="BACK" Margin="0,0,10,0" Command="{Binding MoveBackCommand}"/>
 
-            <Button Content="SAVE" Command="{Binding SaveCommand}"/>
+            <Button Content="LINK" Command="{Binding SaveCommand}"/>
         </StackPanel>
 
     </Grid>
