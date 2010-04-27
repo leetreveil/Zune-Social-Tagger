@@ -12,7 +12,7 @@ namespace ZuneSocialTagger.UnitTests.UI
         {
             bool result = SharedMethods.DoesStringMatchWithoutTheAtStart("The Shape Of Punk To Come", "Shape Of Punk To Come");
 
-            Assert.That(result,Is.True);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -24,5 +24,7 @@ namespace ZuneSocialTagger.UnitTests.UI
         }
 
         #endregion
+
+
     }
 }
