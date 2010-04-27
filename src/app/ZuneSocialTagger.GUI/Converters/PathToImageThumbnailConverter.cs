@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace ZuneSocialTagger.GUI.Converters
 {
@@ -10,9 +11,13 @@ namespace ZuneSocialTagger.GUI.Converters
         {
             string artworkUrl = value as string;
 
-            if (String.IsNullOrEmpty(artworkUrl))
-                return CreateBlankImage();
+            if (String.IsNullOrEmpty(artworkUrl)) return CreateBlankImage();
 
+            if (!artworkUrl.StartsWith("http://"))
+            {
+                if (!File.Exists(artworkUrl)) return CreateBlankImage();
+            }
+            
             try
             {
                 var image = new BitmapImage();
