@@ -22,7 +22,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public string Year
         {
-            get { return string.IsNullOrEmpty(_year) ? "Unknown Year" : _year; }
+            get { return string.IsNullOrEmpty(_year) || _year == "-1" ? "Unknown Year" : _year; }
             set { _year = value; }
         }
 

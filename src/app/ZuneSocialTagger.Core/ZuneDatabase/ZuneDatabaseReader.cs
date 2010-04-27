@@ -167,6 +167,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
                                 Tracks = GetTracksForAlbum(albumMetadata.MediaId).ToList()
                             };
 
+
             albumMetadata.Dispose();
 
             return album;
@@ -238,7 +239,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
                 if (fileVersion != supportedVersion)
                     throw new NotSupportedException(
-                        "Zune Social Tagger was not designed to work with this version of the Zune software, proceed with caution and please wait for an update!");
+                        "Zune Social Tagger was not designed to work with this version of the Zune software, please wait for an update!");
 
                 return true;
             }

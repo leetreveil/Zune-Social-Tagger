@@ -174,7 +174,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 else
                 {
                     GetNewOrRemovedAlbumsFromZuneDb();
-                    //TODO: refresh selected album
+                    _model.SelectedAlbum.AlbumDetails.RefreshAlbum();
                 }
             }
             else if (message == "SWITCHTOFIRSTVIEW")
