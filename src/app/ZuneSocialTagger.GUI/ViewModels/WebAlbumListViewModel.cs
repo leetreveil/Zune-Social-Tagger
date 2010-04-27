@@ -274,6 +274,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             this.CanShowProgressBar = false;
             this.CanShowScanAllButton = true;
             ResetLoadingProgress();
+            this.SortOrder = Settings.Default.SortOrder;
             SortData(Settings.Default.SortOrder);
         }
 
