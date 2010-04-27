@@ -31,7 +31,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <views:ExpandedAlbumDetailsView DataContext="{Binding AlbumDetailsFromFile}" />
+            <views:ExpandedAlbumDetailsView DataContext="{Binding AlbumDetailsFromFile}" Margin="0,0,20,0" />
             <views:ExpandedAlbumDetailsView DataContext="{Binding AlbumDetailsFromWebsite}" Grid.Column = "1" />
 
         </Grid>
