@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System;
 using System.Collections.Specialized;
-using System.Threading;
 using GalaSoft.MvvmLight.Threading;
 using ZuneSocialTagger.GUI.ViewModels;
 using System.Linq;
@@ -15,8 +14,6 @@ namespace ZuneSocialTagger.GUI.Models
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            NeedsUpdating.Invoke();
-
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 foreach (object newItem in e.NewItems)

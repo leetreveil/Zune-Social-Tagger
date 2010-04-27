@@ -20,8 +20,7 @@ namespace ZuneSocialTagger.GUI.Models
             string firstTwoChars =
                 new string(existingAlbumTitle.ToUpper().Take(2).ToArray());
 
-            bool albumTitlesFirstTwoCharactersMatch =
-                albumTitle.ToUpper().StartsWith(firstTwoChars);
+            bool albumTitlesFirstTwoCharactersMatch = albumTitle.ToUpper().StartsWith(firstTwoChars);
 
             if (!albumTitlesFirstTwoCharactersMatch)
                 return LinkStatus.AlbumOrArtistMismatch;
@@ -34,6 +33,19 @@ namespace ZuneSocialTagger.GUI.Models
 
 
            return LinkStatus.Linked;
+        }
+
+        public static bool DoesStringMatchWithoutTheAtStart(string first, string second)
+        {
+            if (first.ToUpper().StartsWith("THE"))
+            {
+                if (first.ToUpper().Skip(3) == second.ToUpper())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public static Func<Song, int> SortByTrackNumber()

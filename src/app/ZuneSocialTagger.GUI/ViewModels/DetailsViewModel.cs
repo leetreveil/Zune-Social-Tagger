@@ -109,10 +109,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,"One or more files could not be written to. Have you checked the files are not marked read-only?"));
             else
             {
-                //must check that this is not null first because if we use the old mode of reading this will never get set
-                if (_model.SelectedAlbum.AlbumDetails != null)
-                    _model.SelectedAlbum.AlbumDetails.NeedsRefreshing = true;
-
                 Messenger.Default.Send(typeof(SuccessViewModel));
                 Messenger.Default.Send("ALBUMLINKED"); 
             }

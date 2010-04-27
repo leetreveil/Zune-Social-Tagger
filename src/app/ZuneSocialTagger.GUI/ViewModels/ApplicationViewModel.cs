@@ -31,6 +31,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private ErrorMode _errorMessageMode;
         private string _errorMessageText;
         private bool _loadWebView;
+        private readonly ZuneObservableCollection<AlbumDetailsViewModel> _albums;
 
         public ApplicationViewModel(ZuneWizardModel model, CachedZuneDatabaseReader cache, IZuneDatabaseReader dbReader,
                                     IKernel container, Dispatcher dispatcher)
@@ -55,6 +56,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             //register for error messages to be displayed
             Messenger.Default.Register<ErrorMessage>(this, DisplayMessage);
+
+            _albums = new ZuneObservableCollection<AlbumDetailsViewModel>();
         }
 
         public void ApplicationViewHasLoaded()
@@ -135,7 +138,9 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
             else
             {
-                this.CurrentPage = _container.Get<WebAlbumListViewModel>();
+                var viewModel = _container.Get<WebAlbumListViewModel>();
+                viewModel.Albums = _albums;
+                this.CurrentPage = viewModel;
                 _loadWebView = true;
                 ReadCachedDatabase(true);
             }
@@ -229,7 +234,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                             details.ZuneAlbumMetaData = newAlbum.ZuneAlbumMetaData;
                             details.LinkStatus = newAlbum.LinkStatus;
 
-                            _dispatcher.Invoke(new Action(() => _model.AlbumsFromDatabase.Add(details)));
+                            _dispatcher.Invoke(new Action(() => _albums.Add(details)));
 
                         }
 
@@ -243,7 +248,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void GetNewOrRemovedAlbumsFromZuneDb()
         {
-            var currentMediaIds = _model.AlbumsFromDatabase.Select(x => x.ZuneAlbumMetaData.MediaId);
+            var currentMediaIds = _albums.Select(x => x.ZuneAlbumMetaData.MediaId);
 
             IEnumerable<Album> newAlbums = _dbReader.GetNewAlbums(currentMediaIds);
             IEnumerable<int> removedAlbums = _dbReader.GetRemovedAlbums(currentMediaIds).ToList();
@@ -254,15 +259,15 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 albumDetails.LinkStatus = album.AlbumMediaId.GetLinkStatusFromGuid();
                 albumDetails.ZuneAlbumMetaData = album;
 
-                _dispatcher.Invoke(new Action(() => _model.AlbumsFromDatabase.Add(albumDetails)));
+                _dispatcher.Invoke(new Action(() => _albums.Add(albumDetails)));
             }
 
             foreach (var albumToBeRemoved in
-                removedAlbums.Select(id => _model.AlbumsFromDatabase.Where(x => x.ZuneAlbumMetaData.MediaId == id).First()))
+                removedAlbums.Select(id => _albums.Where(x => x.ZuneAlbumMetaData.MediaId == id).First()))
             {
                 AlbumDetailsViewModel removed = albumToBeRemoved;
 
-                _dispatcher.Invoke(new Action(() => _model.AlbumsFromDatabase.Remove(removed)));
+                _dispatcher.Invoke(new Action(() => _albums.Remove(removed)));
             }
 
             //tell the WebAlbumListViewModel to sort its list and update
@@ -295,7 +300,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void ReadActualDatabase()
         {
-            _model.AlbumsFromDatabase.Clear();
+            _albums.Clear();
 
             ThreadPool.QueueUserWorkItem(_ =>
             {
@@ -306,7 +311,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                     advm.LinkStatus = album.AlbumMediaId.GetLinkStatusFromGuid();
                     advm.ZuneAlbumMetaData = album;
 
-                    _dispatcher.Invoke(new Action(() => _model.AlbumsFromDatabase.Add(advm)));
+                    _dispatcher.Invoke(new Action(() => _albums.Add(advm)));
                 }
             });
         }
@@ -324,15 +329,13 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void WriteCacheToFile()
         {
-            var albums = _model.AlbumsFromDatabase;
-
-            if (albums.Count > 0)
+            if (_albums.Count > 0)
             {
-                var xSer = new XmlSerializer(albums.GetType());
+                var xSer = new XmlSerializer(_albums.GetType());
 
                 using (var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.xml"),
                                             FileMode.Create))
-                    xSer.Serialize(fs, albums);
+                    xSer.Serialize(fs, _albums);
             }
         }
 

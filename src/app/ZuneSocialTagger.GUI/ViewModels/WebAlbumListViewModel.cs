@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.Threading;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -13,7 +14,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
 {
     public class WebAlbumListViewModel : ViewModelBaseExtended
     {
-        private readonly ZuneWizardModel _model;
         private readonly IZuneDatabaseReader _dbReader;
         private bool _canShowScanAllButton;
         private int _loadingProgress;
@@ -23,11 +23,10 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private bool _canShowReloadButton;
         private readonly bool _isTaskbarSupported;
         private SortOrder _sortOrder;
+        private ZuneObservableCollection<AlbumDetailsViewModel> _albums;
 
-        public WebAlbumListViewModel(ZuneWizardModel model, IZuneDatabaseReader dbReader)
+        public WebAlbumListViewModel(IZuneDatabaseReader dbReader)
         {
-            _model = model;
-
             _dbReader = dbReader;
             _dbReader.FinishedReadingAlbums += DbAdapterFinishedReadingAlbums;
             _dbReader.ProgressChanged += DbAdapterProgressChanged;
@@ -43,20 +42,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             this.SortOrder = Settings.Default.SortOrder;
 
-            if (_model.SelectedAlbum != null && _model.SelectedAlbum.AlbumDetails.NeedsRefreshing)
-            {
-                this.Albums.Where(x=> x == _model.SelectedAlbum.AlbumDetails).First().RefreshAlbum();
-                _model.SelectedAlbum.AlbumDetails.NeedsRefreshing = false;
-            }
-
             Messenger.Default.Register<string>(this, HandleMessages);
-
-            _model.AlbumsFromDatabase.NeedsUpdating += AlbumsFromDatabase_NeedsUpdating;
-        }
-
-        void AlbumsFromDatabase_NeedsUpdating()
-        {
-            UpdateLinkTotals();
         }
 
         private void HandleMessages(string message)
@@ -90,7 +76,19 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public ZuneObservableCollection<AlbumDetailsViewModel> Albums
         {
-            get { return _model.AlbumsFromDatabase; }
+            get { return _albums; }
+            set
+            {
+                _albums = value;
+                _albums.NeedsUpdating += UpdateLinkTotals;
+                _albums.CollectionChanged += (sender, args) => {
+                    if (args.Action == NotifyCollectionChangedAction.Add || 
+                        args.Action ==  NotifyCollectionChangedAction.Remove)
+                    {
+                        UpdateLinkTotals();
+                    }
+                };
+            }
         }
 
         public bool CanShowProgressBar
@@ -177,7 +175,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
         public RelayCommand LoadFromZuneWebsiteCommand { get; private set; }
         public RelayCommand CancelDownloadingCommand { get; private set; }
         public RelayCommand SwitchToClassicModeCommand { get; private set; }
-        public RelayCommand<bool> FilterGreenCommand { get; private set; }
         public RelayCommand SortCommand { get; private set; }
 
         #endregion
