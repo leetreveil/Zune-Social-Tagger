@@ -166,15 +166,18 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
             else if (message == "ALBUMLINKED")
             {
-                if (!CheckIfZuneSoftwareIsRunning())
+                if (_loadWebView)
                 {
-                    DisplayMessage(new ErrorMessage(ErrorMode.Warning,
-                                                         "Any albums you link / delink will not show their changes until the zune software is running."));
-                }
-                else
-                {
-                    GetNewOrRemovedAlbumsFromZuneDb();
-                    _model.SelectedAlbum.AlbumDetails.RefreshAlbum();
+                    if (!CheckIfZuneSoftwareIsRunning())
+                    {
+                        DisplayMessage(new ErrorMessage(ErrorMode.Warning,
+                                                             "Any albums you link / delink will not show their changes until the zune software is running."));
+                    }
+                    else
+                    {
+                        GetNewOrRemovedAlbumsFromZuneDb();
+                        _model.SelectedAlbum.AlbumDetails.RefreshAlbum();
+                    }
                 }
             }
             else if (message == "SWITCHTOFIRSTVIEW")
