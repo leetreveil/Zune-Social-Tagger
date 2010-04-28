@@ -6,6 +6,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.Core;
+using System;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
@@ -59,16 +60,12 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             foreach (var file in files)
             {
-                try
-                {
-                    IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(file);
-                    selectedAlbum.Tracks.Add(new Song(file,container));
-                }
-                catch(AudioFileReadException ex)
-                {
-                    Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,ex.Message));
+                var zuneTagContainer = SharedMethods.GetContainer(file);
+
+                if (zuneTagContainer != null)
+                    selectedAlbum.Tracks.Add(new Song(file, zuneTagContainer));
+                else
                     return;
-                }
             }
 
             selectedAlbum.Tracks = selectedAlbum.Tracks.OrderBy(SharedMethods.SortByTrackNumber()).ToObservableCollection();

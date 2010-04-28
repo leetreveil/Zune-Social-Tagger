@@ -102,32 +102,35 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             IEnumerable<Track> tracksForAlbum = _dbReader.GetTracksForAlbum(albumDetails.MediaId);
 
-            var containers = GetFileNamesAndContainers(tracksForAlbum);
-
             var selectedAlbum = new SelectedAlbum();
 
-            foreach (var item in containers)
-                selectedAlbum.Tracks.Add(new Song(item.Key, item.Value));
-
-            if (containers.Count > 0)
+            foreach (var track in tracksForAlbum)
             {
-                selectedAlbum.ZuneAlbumMetaData = new ExpandedAlbumDetailsViewModel
-                                                      {
-                                                          Artist = albumDetails.AlbumArtist,
-                                                          Title = albumDetails.AlbumTitle,
-                                                          ArtworkUrl = albumDetails.ArtworkUrl,
-                                                          SongCount = albumDetails.TrackCount.ToString(),
-                                                          Year = albumDetails.ReleaseYear.ToString()
-                                                      };
+                var zuneTagContainer = SharedMethods.GetContainer(track.FilePath);
 
-                selectedAlbum.AlbumDetails = this;
-
-                _model.SelectedAlbum = selectedAlbum;
-                _model.SearchText = albumDetails.AlbumTitle + " " + albumDetails.AlbumArtist;
-
-                //tell the application to switch to the search view
-                Messenger.Default.Send(typeof(SearchViewModel));
+                if (zuneTagContainer != null)
+                    selectedAlbum.Tracks.Add(new Song(track.FilePath, zuneTagContainer));
+                else
+                    return;
             }
+
+            selectedAlbum.ZuneAlbumMetaData = new ExpandedAlbumDetailsViewModel
+                                                    {
+                                                        Artist = albumDetails.AlbumArtist,
+                                                        Title = albumDetails.AlbumTitle,
+                                                        ArtworkUrl = albumDetails.ArtworkUrl,
+                                                        SongCount = albumDetails.TrackCount.ToString(),
+                                                        Year = albumDetails.ReleaseYear.ToString()
+                                                    };
+
+            selectedAlbum.AlbumDetails = this;
+
+            _model.SelectedAlbum = selectedAlbum;
+            _model.SearchText = albumDetails.AlbumTitle + " " + albumDetails.AlbumArtist;
+
+            //tell the application to switch to the search view
+            Messenger.Default.Send(typeof(SearchViewModel));
+            
         }
 
         public void DelinkAlbum()
@@ -138,38 +141,39 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             //TODO: fix bug where application crashes when removing an album that is currently playing
 
-            var tracksForAlbum = _dbReader.GetTracksForAlbum(this.ZuneAlbumMetaData.MediaId).ToList();
+            List<Track> tracksForAlbum = _dbReader.GetTracksForAlbum(this.ZuneAlbumMetaData.MediaId).ToList();
 
-            //_dbReader.RemoveAlbumFromDatabase(this.ZuneAlbumMetaData.MediaId);
 
-            //make sure we can actually read all the files before doing anything to them
-            var containers = GetFileNamesAndContainers(tracksForAlbum);
-
-            foreach (var item in containers)
+            foreach (var track in tracksForAlbum)
             {
-                item.Value.RemoveZuneAttribute("WM/WMContentID");
-                item.Value.RemoveZuneAttribute("WM/WMCollectionID");
-                item.Value.RemoveZuneAttribute("WM/WMCollectionGroupID");
-                item.Value.RemoveZuneAttribute("ZuneCollectionID");
-                item.Value.RemoveZuneAttribute("WM/UniqueFileIdentifier");
-                item.Value.RemoveZuneAttribute("ZuneCollectionID");
-                item.Value.RemoveZuneAttribute("ZuneUserEditedFields");
-                item.Value.RemoveZuneAttribute(ZuneIds.Album);
-                item.Value.RemoveZuneAttribute(ZuneIds.Artist);
-                item.Value.RemoveZuneAttribute(ZuneIds.Track);
+                IZuneTagContainer zuneTagContainer = SharedMethods.GetContainer(track.FilePath);
 
-                item.Value.WriteToFile(item.Key);
+                if (zuneTagContainer != null)
+                {
+                    zuneTagContainer.RemoveZuneAttribute("WM/WMContentID");
+                    zuneTagContainer.RemoveZuneAttribute("WM/WMCollectionID");
+                    zuneTagContainer.RemoveZuneAttribute("WM/WMCollectionGroupID");
+                    zuneTagContainer.RemoveZuneAttribute("ZuneCollectionID");
+                    zuneTagContainer.RemoveZuneAttribute("WM/UniqueFileIdentifier");
+                    zuneTagContainer.RemoveZuneAttribute("ZuneCollectionID");
+                    zuneTagContainer.RemoveZuneAttribute("ZuneUserEditedFields");
+                    zuneTagContainer.RemoveZuneAttribute(ZuneIds.Album);
+                    zuneTagContainer.RemoveZuneAttribute(ZuneIds.Artist);
+                    zuneTagContainer.RemoveZuneAttribute(ZuneIds.Track);
+
+                    zuneTagContainer.WriteToFile(track.FilePath);
+                }
+                else
+                {
+                    return;
+                }
             }
-
-            //foreach (var track in tracksForAlbum)
-            //    _dbReader.AddTrackToDatabase(track.FilePath);
 
             Mouse.OverrideCursor = null;
 
-            if (containers.Count > 0)
-                Messenger.Default.Send(new ErrorMessage(ErrorMode.Warning,
-                                                        "Album should now be de-linked. You may need to " +
-                                                        "remove then re-add the album for the changes to take effect."));
+            Messenger.Default.Send(new ErrorMessage(ErrorMode.Warning,
+                                                    "Album should now be de-linked. You may need to " +
+                                                    "remove then re-add the album for the changes to take effect."));
 
             //force a refresh on the album to see if the de-link worked
             //this probably wont work because the zunedatabase does not correctly change the albums
@@ -234,27 +238,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
 
             return true;
-        }
-
-        private static Dictionary<string, IZuneTagContainer> GetFileNamesAndContainers(IEnumerable<Track> tracks)
-        {
-            var albumContainers = new Dictionary<string, IZuneTagContainer>();
-
-            foreach (var track in tracks)
-            {
-                try
-                {
-                    IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(track.FilePath);
-                    albumContainers.Add(track.FilePath, container);
-                }
-                catch (Exception ex)
-                {
-                    Messenger.Default.Send(new ErrorMessage(ErrorMode.Error, ex.Message));
-                    break;
-                }
-            }
-
-            return albumContainers;
         }
     }
 }

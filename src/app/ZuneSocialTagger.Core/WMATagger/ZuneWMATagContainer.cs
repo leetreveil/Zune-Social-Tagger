@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using ASFTag;
 using Attribute=ASFTag.Attribute;
@@ -13,6 +14,12 @@ namespace ZuneSocialTagger.Core.WMATagger
         public ZuneWMATagContainer(TagContainer container)
         {
             _container = container;
+
+            foreach (var item in container)
+            {
+                Trace.WriteLine(item.Name);
+                Trace.WriteLine(item.Value);
+            }
         }
 
         public IEnumerable<ZuneAttribute> ReadZuneAttributes()
@@ -90,7 +97,9 @@ namespace ZuneSocialTagger.Core.WMATagger
 
         private string GetValue(string key)
         {
-            Attribute result = _container.Where(x => x.Name == key).SingleOrDefault();
+            //TODO: a track could have multiple genres, need to implment like we do for contribartists
+
+            Attribute result = _container.Where(x => x.Name == key).FirstOrDefault();
 
             return result != null ? result.Value : string.Empty;
         }

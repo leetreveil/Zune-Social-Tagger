@@ -1,13 +1,32 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Diagnostics;
+using GalaSoft.MvvmLight.Messaging;
+using ZuneSocialTagger.Core;
+using ZuneSocialTagger.GUI.ViewModels;
 
 namespace ZuneSocialTagger.GUI.Models
 {
     public static class SharedMethods
     {
+        public static IZuneTagContainer GetContainer(string filePath)
+        {
+            try
+            {
+                IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(filePath);
+                return container;
+            }
+            catch (Exception ex)
+            {
+                Messenger.Default.Send(new ErrorMessage(ErrorMode.Error, ex.Message));
+                //if we hit an error on any track in the albums then just fail and dont read anymore
+                return null;
+            }
+        }
+
+
         public static LinkStatus GetAlbumLinkStatus(string albumTitle, string albumArtist, 
                                                     string existingAlbumTitle, string existingAlbumArtist)
         {

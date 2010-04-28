@@ -8,6 +8,7 @@ using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewModels;
 using ZuneSocialTagger.GUI.Views;
 using GalaSoft.MvvmLight.Threading;
+using System.Windows;
 
 namespace ZuneSocialTagger.GUI
 {
@@ -20,6 +21,7 @@ namespace ZuneSocialTagger.GUI
 
         public App()
         {
+            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
             DispatcherHelper.Initialize();
 
             string pathToZuneSocAppDataFolder = Path.Combine(Environment.GetFolderPath(
@@ -38,6 +40,12 @@ namespace ZuneSocialTagger.GUI
             appView.Loaded += delegate { appViewModel.ApplicationViewHasLoaded(); };
 
             appView.Show();
+        }
+
+        void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show("IT IS FUCKED!");
+            e.Handled = true;
         }
 
         private void SetupBindings()
