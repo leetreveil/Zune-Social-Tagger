@@ -5,22 +5,13 @@ using System.Linq;
 
 namespace ZuneSocialTagger.Core.ZuneDatabase
 {
-    //public enum DbAlbumChanged
-    //{
-    //    Added,
-    //    Removed
-    //}
-
     public class TestZuneDatabaseReader : IZuneDatabaseReader
     {
         private List<Album> _deserializedAlbums;
 
         public bool CanInitialize
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
 
         public event Action FinishedReadingAlbums = delegate { };
@@ -57,26 +48,34 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
             FinishedReadingAlbums.Invoke();
         }
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="albumIds">A list of album id's to check against</param>
-        ///// <returns>A list of albim ids with a flag identifying if they where added / removed from the database</returns>
-        //public Dictionary<Guid,DbAlbumChanged> CheckForChanges(IEnumerable<Guid> albumIds)
-        //{
-        //    var dict = new Dictionary<Guid, DbAlbumChanged>();
 
-        //    //get list of media id's
-        //    IEnumerable<Guid> dbMediaIds = _deserializedAlbums.Select(x => x.AlbumMediaId);
+        public IEnumerable<Album> GetNewAlbums(IEnumerable<int> albumIds)
+        {
+            yield return new Album
+            {
+                AlbumArtist = "Pendulum",
+                AlbumTitle = "Immersion",
+                DateAdded = DateTime.Now,
+                ReleaseYear = 2010,
+                TrackCount = 12
+            };
 
-        //    foreach (Guid albumId in albumIds)
-        //    {
-        //        if (!_deserializedAlbums.Where(x=> x.AlbumMediaId))
-        //        {
-                    
-        //        }
-        //    }
-        //}
+            yield return new Album
+            {
+                AlbumArtist = "Circa Survive",
+                AlbumTitle = "Blue Sky Noise",
+                DateAdded = DateTime.Now,
+                ReleaseYear = 2010,
+                TrackCount = 12
+            };
+        }
+
+        public IEnumerable<int> GetRemovedAlbums(IEnumerable<int> albumIds)
+        {
+            //idicate that the first two albums should be removed
+            return albumIds.Take(2);
+        }
+
 
         public Album GetAlbum(int index)
         {
@@ -92,7 +91,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         {
             var albumDetails = _deserializedAlbums.Where(x => x.MediaId == albumId).First();
 
-           return albumDetails.Tracks.Select(track => new Track() {FilePath = track.FilePath});
+            return albumDetails.Tracks.Select(track => new Track() {FilePath = track.FilePath});
         }
 
         public Album GetAlbumByAlbumTitle(string albumTitle)
@@ -118,7 +117,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
         public void Dispose()
         {
-            
         }
     }
 }

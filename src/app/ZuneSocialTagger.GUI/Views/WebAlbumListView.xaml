@@ -1,0 +1,127 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ZuneSocialTagger.GUI.Views.WebAlbumListView"
+             mc:Ignorable="d" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls"
+             xmlns:dd="clr-namespace:ZuneSocialTagger.GUI.ViewModels.DesignTime" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras">
+    
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Resources.xaml" />
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot" 
+          d:DataContext="{d:DesignInstance dd:WebAlbumListDesignViewModel,IsDesignTimeCreatable=True}">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Controls:SortControl 
+                        SortOrder="{Binding SortOrder,Mode=TwoWay}" 
+                        HorizontalAlignment="Left" VerticalContentAlignment="Bottom" 
+                        Margin="0,0,0,3">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SortClicked">
+                    <cmd:EventToCommand Command="{Binding SortCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+        </Controls:SortControl>
+
+        <StackPanel HorizontalAlignment="Right"
+                    Orientation="Horizontal"
+                    Margin="0,0,0,5">
+
+            <Image ToolTip="Album is correctly linked to an album in the marketplace"
+                    Width="16"
+                   Height="16"
+                   Source="../Assets/yes.png"
+                   Margin="0,0,2,0" />
+
+            <TextBlock Text="{Binding LinkedTotal}"
+                       Margin="0,0,10,0"
+                       FontWeight="SemiBold" />
+
+            <Image ToolTip="Album is either unlinked or is not linked to an album that exists in the marketplace"
+                       Width="16"
+                       Height="16"
+                       Source="../Assets/no.png"
+                       Margin="0,0,2,0" />
+
+            <TextBlock Text="{Binding UnlinkedTotal}"
+                       Margin="0,0,10,0"
+                       FontWeight="SemiBold" />
+
+            <Image ToolTip="Album is linked but it might be linked to the wrong album"
+                           Width="16"
+                           Height="16"
+                           Source="../Assets/warning.png"
+                           Margin="0,0,2,0" />
+
+            <TextBlock Text="{Binding AlbumOrArtistMismatchTotal}"
+                       FontWeight="SemiBold" />
+
+        </StackPanel>
+
+
+        <ListView SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}"
+                  SelectionMode="Single"
+                  Grid.Row="1"
+                  x:Name="lvAlbums"
+                  ItemsSource="{Binding Albums}"
+                  IsTextSearchEnabled="True"
+                  MaxHeight="400"
+                  TextSearch.TextPath="ZuneAlbumMetaData.AlbumTitle"
+                  ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                  Background="Transparent"
+                  BorderThickness="0"
+                  ScrollViewer.IsDeferredScrollingEnabled="True"/>
+
+        <ProgressBar Visibility="{Binding Path=CanShowProgressBar,Converter={StaticResource BoolToVisConverter}}"
+                     Margin="0,10,0,0"
+                     Width="Auto"
+                     Style="{StaticResource GradientProgressbar}"
+                     Height="5"
+                     Grid.Row="2"
+                     Value="{Binding LoadingProgress}" />
+
+        <Grid Margin ="0,10,0,0"
+              Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+            <Button ToolTip="Refresh the zune database"
+                    IsEnabled="{Binding Path=CanShowReloadButton}"
+                    Margin="0,0,10,0"
+                    Command="{Binding LoadDatabaseCommand}"
+                    Content="REFRESH" />
+
+            <Button ToolTip="Download the details for every album in the list"
+                    IsEnabled="{Binding Path=CanShowScanAllButton}"
+                    Margin="0,0,10,0"
+                    Grid.Column="1"
+                    Command="{Binding LoadFromZuneWebsiteCommand}"
+                    Content="{Binding ScanAllText}" />
+
+            <Button HorizontalAlignment="Right"
+                    Grid.Column="3"
+                    Command="{Binding SwitchToClassicModeCommand}"
+                    Content="SELECT FILES MANUALLY" />
+
+        </Grid>
+
+    </Grid>
+</UserControl>

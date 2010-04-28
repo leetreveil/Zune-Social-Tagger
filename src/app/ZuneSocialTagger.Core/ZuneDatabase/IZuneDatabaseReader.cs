@@ -29,5 +29,8 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         /// </summary>
         /// <returns></returns>
         bool CanInitialize { get; }
+
+        IEnumerable<Album> GetNewAlbums(IEnumerable<int> albumIds);
+        IEnumerable<int> GetRemovedAlbums(IEnumerable<int> albumIds);
     }
 }

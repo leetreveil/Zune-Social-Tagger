@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ServiceModel.Syndication;
+using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
@@ -14,33 +15,39 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         {
             string searchUrl = String.Format("{0}?q={1}", Urls.Album, searchString);
 
-            XmlReader reader = XmlReader.Create(searchUrl);
-
-            return ReadFromXmlDocument(reader);
+            return ReadFromXmlDocument(XmlReader.Create(searchUrl));
         }
 
-        public static IList<Album> ReadFromXmlDocument(XmlReader reader)
+        public static void SearchForAsync(string searchString, Action<IEnumerable<Album>> callback)
         {
-            var tempList = new List<Album>();
+            ThreadPool.QueueUserWorkItem(_ => callback(SearchFor(searchString).ToList()));
+        }
 
+        public static IEnumerable<Album> GetAlbumsFromArtistGuid(Guid guid)
+        {
+            var artistAlbumsUrl = String.Format("{0}{1}/albums", Urls.Artist, guid);
+
+            return ReadFromXmlDocument(XmlReader.Create(artistAlbumsUrl));
+        }
+
+        public static IEnumerable<Album> ReadFromXmlDocument(XmlReader reader)
+        {
             SyndicationFeed feed = SyndicationFeed.Load(reader);
 
             if (feed != null)
             {
                 foreach (var item in feed.Items)
                 {
-                    tempList.Add(new Album
+                    yield return new Album
                          {
                              Title = item.Title.Text,
                              AlbumMediaID = item.Id.ExtractGuidFromUrnUuid(),
                              Artist = GetAlbumArtist(item),
                              ArtworkUrl = GetArtworkUrl(item),
                              ReleaseYear = GetReleaseYear(item)
-                         });
+                         };
                 }
             }
-
-            return tempList;
         }
 
         private static string GetAlbumArtist(SyndicationItem feed)
