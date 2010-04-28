@@ -39,6 +39,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
                 commonOpenFileDialog.Multiselect = true;
                 commonOpenFileDialog.EnsureFileExists = true;
+                commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("Audio Files", "*.mp3;*.wma"));
                 commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("MP3 Files", "*.mp3"));
                 commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("WMA Files", "*.wma"));
 
