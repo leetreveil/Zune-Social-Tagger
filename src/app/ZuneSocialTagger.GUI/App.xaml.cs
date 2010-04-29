@@ -24,13 +24,7 @@ namespace ZuneSocialTagger.GUI
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
             DispatcherHelper.Initialize();
 
-            string pathToZuneSocAppDataFolder = Path.Combine(Environment.GetFolderPath(
-                                                             Environment.SpecialFolder.ApplicationData), "Zune Social Tagger");
-
-            if (!Directory.Exists(pathToZuneSocAppDataFolder))
-                Directory.CreateDirectory(pathToZuneSocAppDataFolder);
-
-            Settings.Default.AppDataFolder = pathToZuneSocAppDataFolder;
+            Settings.Default.AppDataFolder = GetUserDataPath();
 
             SetupBindings();
 
@@ -40,6 +34,17 @@ namespace ZuneSocialTagger.GUI
             appView.Loaded += delegate { appViewModel.ApplicationViewHasLoaded(); };
 
             appView.Show();
+        }
+
+        private static string GetUserDataPath()
+        {
+            string pathToZuneSocAppDataFolder = Path.Combine(Environment.GetFolderPath(
+                Environment.SpecialFolder.ApplicationData), "Zune Social Tagger");
+
+            if (!Directory.Exists(pathToZuneSocAppDataFolder))
+                Directory.CreateDirectory(pathToZuneSocAppDataFolder);
+
+            return pathToZuneSocAppDataFolder;
         }
 
         void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
