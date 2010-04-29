@@ -2,13 +2,14 @@
 using System.IO;
 using System.Windows.Threading;
 using Ninject;
+using Utilities;
 using ZuneSocialTagger.Core.ZuneDatabase;
+using ZuneSocialTagger.GUI.Controls;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewModels;
 using ZuneSocialTagger.GUI.Views;
 using GalaSoft.MvvmLight.Threading;
-using System.Windows;
 
 namespace ZuneSocialTagger.GUI
 {
@@ -18,9 +19,23 @@ namespace ZuneSocialTagger.GUI
     public partial class App
     {
         private static readonly StandardKernel Container = new StandardKernel();
+        private static readonly ExceptionLogger LoggerForStrings = new ExceptionLogger();
+        private static readonly StringLogger StringLogger = new StringLogger();
+        private static readonly ExceptionLogger LoggerForEmail = new ExceptionLogger();
 
         public App()
         {
+            var emailLogger = new EmailLogger
+            { 
+                EmailFrom = "error@zunesocialtagger.net", 
+                EmailServer = "smtp.ntlworld.com", 
+                EmailTo = "leetreveil@gmail.com" 
+            };
+
+            LoggerForStrings.AddLogger(StringLogger);
+            LoggerForEmail.AddLogger(emailLogger);
+
+
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
             DispatcherHelper.Initialize();
 
@@ -44,7 +59,23 @@ namespace ZuneSocialTagger.GUI
 
         void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            MessageBox.Show("IT IS FUCKED!");
+            LoggerForStrings.LogException(e.Exception);
+
+            ErrorReportDialog.Show(StringLogger.ErrorLog,() => 
+            {
+                try
+                {
+                    LoggerForEmail.LogException(e.Exception);
+                }
+                catch{}
+                finally 
+                {
+                    Current.Shutdown();
+                }
+
+
+            }, () => Current.Shutdown());
+
             e.Handled = true;
         }
 
@@ -57,6 +88,16 @@ namespace ZuneSocialTagger.GUI
             Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
             Container.Bind<CachedZuneDatabaseReader>().ToSelf().InSingletonScope();
             Container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
+        }
+    }
+
+    public class StringLogger : LoggerImplementation
+    {
+        public string ErrorLog { get; private set; }
+
+        public override void LogError(string error)
+        {
+            ErrorLog = error;
         }
     }
 
