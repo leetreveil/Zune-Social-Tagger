@@ -52,6 +52,9 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExceptionLogger">
+      <HintPath>..\..\..\libs\exceptionLogger\ExceptionLogger.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3e875cdb3903c512, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libs\mvvmlight3\GalaSoft.MvvmLight.dll</HintPath>
@@ -127,6 +130,9 @@
     </Compile>
     <Compile Include="Views\DetailsView.xaml.cs">
       <DependentUpon>DetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ErrorReportDialog.xaml.cs">
+      <DependentUpon>ErrorReportDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ExpandedAlbumDetailsView.xaml.cs">
       <DependentUpon>ExpandedAlbumDetailsView.xaml</DependentUpon>
@@ -269,6 +275,10 @@
     <Page Include="Views\DetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ErrorReportDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExpandedAlbumDetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>

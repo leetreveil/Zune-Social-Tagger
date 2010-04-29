@@ -64,6 +64,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         {
             InitDb();
             CheckForUpdates();
+            throw new AccessViolationException();
         }
 
         #region View Bindings
