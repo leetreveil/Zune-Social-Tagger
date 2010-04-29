@@ -49,7 +49,8 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="SONG TITLES IN THIS ALBUM"  FontSize="13.333" FontWeight="SemiBold" />
-            <TextBlock Grid.Column="1" Text="SONG TITLES FROM ZUNE MARKETPLACE" FontSize="13.333" FontWeight="SemiBold" Margin="13,0,0,0" />
+            <TextBlock Grid.Column="1" Text="SONG TITLES FROM ZUNE MARKETPLACE" 
+                       FontSize="13.333" FontWeight="SemiBold" Margin="5,0,0,0" />
 
             <ItemsControl  MaxHeight="260" VerticalAlignment="Top"
                            Grid.Row="1" Grid.ColumnSpan="2" 
@@ -74,17 +75,20 @@
 
                                 <StackPanel Orientation="Horizontal" Grid.Column="0">
                                     <TextBlock Width="23" 
-                                               Text="{Binding MetaData.TrackNumber,Converter={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" 
+                                               Text="{Binding MetaData.TrackNumber,
+                                                      Converter ={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" 
                                                VerticalAlignment="Center" 
                                                FontSize="18"/>
 
                                     <TextBlock ToolTip="{Binding MetaData.Title}" Text="{Binding MetaData.Title}" 
-                                           VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                               VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 </StackPanel>
 
 
-                                <ComboBox Style="{StaticResource SelectSongCombobox}" ItemsSource="{Binding ElementName=LayoutRoot, Path=DataContext.SongsFromWebste}" 
-                                          SelectedItem="{Binding SelectedSong,Mode=TwoWay}" IsReadOnly="True" Grid.Column="1"  
+                                <ComboBox Style="{StaticResource SelectSongCombobox}" 
+                                          ItemsSource="{Binding ElementName=LayoutRoot, Path=DataContext.SongsFromWebste}" 
+                                          SelectedItem="{Binding SelectedSong,Mode=TwoWay}" 
+                                          IsReadOnly="True" Grid.Column="1"  
                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                                           Width="280" VerticalAlignment="Center" Tag="Please select a song title">
 

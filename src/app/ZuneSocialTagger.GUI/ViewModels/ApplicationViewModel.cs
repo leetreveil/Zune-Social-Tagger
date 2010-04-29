@@ -9,6 +9,7 @@ using System.Windows.Threading;
 using System.Xml.Serialization;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Threading;
 using leetreveil.AutoUpdate.Framework;
 using Ninject;
 using ZuneSocialTagger.Core.ZuneDatabase;
@@ -21,7 +22,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
     public class ApplicationViewModel : ViewModelBaseExtended
     {
         private readonly IKernel _container;
-        private readonly Dispatcher _dispatcher;
         private readonly ZuneWizardModel _model;
         private readonly CachedZuneDatabaseReader _cache;
         private readonly IZuneDatabaseReader _dbReader;
@@ -34,13 +34,12 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private readonly ZuneObservableCollection<AlbumDetailsViewModel> _albums;
 
         public ApplicationViewModel(ZuneWizardModel model, CachedZuneDatabaseReader cache, IZuneDatabaseReader dbReader,
-                                    IKernel container, Dispatcher dispatcher)
+                                    IKernel container)
         {
             _model = model;
             _cache = cache;
             _dbReader = dbReader;
             _container = container;
-            _dispatcher = dispatcher;
 
             this.ShowAboutSettingsCommand = new RelayCommand(ShowAboutSettings);
             this.UpdateCommand = new RelayCommand(ShowUpdate);
@@ -60,11 +59,10 @@ namespace ZuneSocialTagger.GUI.ViewModels
             _albums = new ZuneObservableCollection<AlbumDetailsViewModel>();
         }
 
-        public void ApplicationViewHasLoaded()
+        public void ViewHasLoaded()
         {
             InitDb();
             CheckForUpdates();
-            throw new AccessViolationException();
         }
 
         #region View Bindings
@@ -243,8 +241,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                             details.ZuneAlbumMetaData = newAlbum.ZuneAlbumMetaData;
                             details.LinkStatus = newAlbum.LinkStatus;
 
-                            _dispatcher.Invoke(new Action(() => _albums.Add(details)));
-
+                            DispatcherHelper.CheckBeginInvokeOnUI(() => _albums.Add(details));
                         }
 
                         //after we have loaded the cache, we want to check for any new albums available in the database
@@ -268,15 +265,14 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 albumDetails.LinkStatus = album.AlbumMediaId.GetLinkStatusFromGuid();
                 albumDetails.ZuneAlbumMetaData = album;
 
-                _dispatcher.Invoke(new Action(() => _albums.Add(albumDetails)));
+                DispatcherHelper.CheckBeginInvokeOnUI(() => _albums.Add(albumDetails));
             }
 
             foreach (var albumToBeRemoved in
                 removedAlbums.Select(id => _albums.Where(x => x.ZuneAlbumMetaData.MediaId == id).First()))
             {
-                AlbumDetailsViewModel removed = albumToBeRemoved;
-
-                _dispatcher.Invoke(new Action(() => _albums.Remove(removed)));
+                AlbumDetailsViewModel toBeRemoved = albumToBeRemoved;
+                DispatcherHelper.CheckBeginInvokeOnUI(() => _albums.Remove(toBeRemoved));
             }
 
             //tell the WebAlbumListViewModel to sort its list and update
@@ -320,7 +316,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                     advm.LinkStatus = album.AlbumMediaId.GetLinkStatusFromGuid();
                     advm.ZuneAlbumMetaData = album;
 
-                    _dispatcher.Invoke(new Action(() => _albums.Add(advm)));
+                    DispatcherHelper.CheckBeginInvokeOnUI(() => _albums.Add(advm));
                 }
             });
         }
