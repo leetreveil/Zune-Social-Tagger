@@ -25,18 +25,10 @@ namespace ZuneSocialTagger.GUI
 
         public App()
         {
-            var emailLogger = new EmailLogger
-            { 
-                EmailFrom = "error@zunesocialtagger.net", 
-                EmailServer = "smtp.ntlworld.com", 
-                EmailTo = "leetreveil@gmail.com" 
-            };
-
-            LoggerForStrings.AddLogger(StringLogger);
-            LoggerForEmail.AddLogger(emailLogger);
-
+            SetupUnhandledExceptionLogging();
 
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+
             DispatcherHelper.Initialize();
 
             string pathToZuneSocAppDataFolder = Path.Combine(Environment.GetFolderPath(
@@ -55,6 +47,19 @@ namespace ZuneSocialTagger.GUI
             appView.Loaded += delegate { appViewModel.ApplicationViewHasLoaded(); };
 
             appView.Show();
+        }
+
+        private void SetupUnhandledExceptionLogging()
+        {
+            var emailLogger = new EmailLogger
+                                  { 
+                                      EmailFrom = "error@zunesocialtagger.net", 
+                                      EmailServer = "smtp.ntlworld.com", 
+                                      EmailTo = "leetreveil@gmail.com" 
+                                  };
+
+            LoggerForStrings.AddLogger(StringLogger);
+            LoggerForEmail.AddLogger(emailLogger);
         }
 
         void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

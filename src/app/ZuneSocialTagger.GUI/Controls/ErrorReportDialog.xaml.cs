@@ -27,6 +27,8 @@ namespace ZuneSocialTagger.GUI.Controls
 
         private void expMoreInfo_Expanded(object sender, RoutedEventArgs e)
         {
+            //hack to get the buttons at the bottom to be in the correct position after the 
+            //expander control has expanded
             this.btnSendErrorRep.Margin = new Thickness(0,20,0,0);
             this.btnCancel.Margin = new Thickness(10,20,0,0);
         }

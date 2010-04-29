@@ -30,7 +30,7 @@
                 <TextBlock FontWeight="Bold"  Text="please submit."/>
             </TextBlock>
 
-            <TextBlock TextWrapping="Wrap" Margin="0,10,0,0">Thank you, Lee</TextBlock>
+            <TextBlock TextWrapping="Wrap" Margin="0,10,0,0">Thank you.</TextBlock>
         </StackPanel>
 
         <StackPanel Grid.Row="2" Margin="0,20,0,0">
@@ -42,11 +42,26 @@
                     <TextBlock x:Name="tbErrorReport" TextWrapping="Wrap"/>
                 </ScrollViewer>
 
+                <Expander.Style>
+                    <Style  TargetType="Expander">
+                        <Setter Property="HeaderTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"  FontSize="10" 
+                                               FontWeight="Bold" Foreground="#373A3D"/>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Expander.Style>
+                
             </Expander>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Click="btnSendErrorRep_Click" x:Name="btnSendErrorRep" Width="140" Margin="0,-20,0,0" Content="SEND ERROR REPORT" />
-                <Button Click="btnCancel_Click" x:Name="btnCancel" Width="70" Margin="10,-20,0,0"  Content="CANCEL" />
+                <Button Click="btnSendErrorRep_Click" x:Name="btnSendErrorRep" 
+                        Width="140" Margin="0,-20,0,0" Content="SEND ERROR REPORT" />
+                <Button Click="btnCancel_Click" x:Name="btnCancel" 
+                        Width="70" Margin="10,-20,0,0"  Content="CANCEL" />
             </StackPanel>
         </StackPanel>
 
