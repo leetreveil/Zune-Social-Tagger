@@ -1,9 +1,8 @@
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Xml;
-using System.Xml.Linq;
 using System.ServiceModel.Syndication;
 using System.IO;
 
@@ -19,13 +18,13 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         private SyndicationFeed _feed;
         private readonly WebClient _client;
 
-        public event Action<AlbumMetaData,DownloadState> DownloadCompleted = delegate { };
+        public event Action<Album,DownloadState> DownloadCompleted = delegate { };
 
         public AlbumDetailsDownloader(string url)
         {
             _url = url;
             _client = new WebClient();
-            _client.DownloadDataCompleted += _client_DownloadDataCompleted;
+            _client.DownloadDataCompleted += ClientDownloadDataCompleted;
         }
 
         public void Cancel()
@@ -38,7 +37,16 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             _client.DownloadDataAsync(new Uri(_url));
         }
 
-        void _client_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
+        public Album Download()
+        {
+            byte[] downloadData = _client.DownloadData(new Uri(_url));
+
+            _reader = XmlReader.Create(new MemoryStream(downloadData));
+
+            return Read();
+        }
+
+        void ClientDownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
         {
             if (e.Cancelled)
                 this.DownloadCompleted.Invoke(null, DownloadState.Cancelled);
@@ -64,62 +72,41 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             }
         }
 
-        private AlbumMetaData Read()
+        private Album Read()
         {
             _feed = SyndicationFeed.Load(_reader);
 
             return _feed != null ? GetAlbumDetails() : null;
         }
 
-        private AlbumMetaData GetAlbumDetails()
+        private Album GetAlbumDetails()
         {
-            return new AlbumMetaData
+            return new Album
                        {
-                           AlbumTitle = _feed.Title.Text,
-                           AlbumArtist = GetArtist(_feed),
-                           ArtworkUrl = GetArtworkUrl(_feed)
+                           Title = _feed.Title.Text,
+                           Artist = _feed.GetArtist(),
+                           ArtworkUrl = _feed.GetArtworkUrl(),
+                           ReleaseYear = _feed.GetReleaseYear(),
+                           Tracks = GetTracks(),
+                           AlbumMediaId = _feed.Id.ExtractGuidFromUrnUuid()
                        };
         }
 
-
-        private string GetArtist(SyndicationFeed item)
+        private List<Track> GetTracks()
         {
-            XElement primaryArtistElement = GetElement(item, "primaryArtist");
-
-            return primaryArtistElement != null ? primaryArtistElement.Elements().Last().Value : null;
+            return _feed.Items.Select(item => new Track
+            {
+                MediaId = item.Id.ExtractGuidFromUrnUuid(),
+                ArtistMediaId = item.GetArtistMediaIdFromTrack(),
+                AlbumMediaId = item.GetAlbumMediaIdFromTrack(),
+                Title = item.Title.Text,
+                DiscNumber = item.GetDiscNumber(),
+                TrackNumber = item.GetTrackNumberFromTrack(),
+                Genre = item.GetGenre(),
+                ContributingArtists = item.GetContributingArtists().ToList(),
+                Artist = item.GetArtist()
+            }).ToList();
         }
-
-        private string GetArtworkUrl(SyndicationFeed feed)
-        {
-            XElement imageElement = GetElement(feed, "image");
-
-            //TODO: pull out the string formattings, we should just be returning the artwork guid 
-            //and deal with what size image to get later
-
-            return imageElement != null
-                       ? String.Format("{0}{1}?width=50&height=50", Urls.Image,
-                                       ExtractGuidFromUrnUuid(imageElement.Elements().First().Value))
-                       : null;
-        }
-
-        private XElement GetElement(SyndicationFeed feed, string elementName)
-        {
-            Collection<XElement> elements =
-                feed.ElementExtensions.ReadElementExtensions<XElement>(elementName, Urls.Schema);
-
-            return elements.Count > 0 ? elements.First() : null;
-        }
-
-        /// <summary>
-        /// urn:uuid:c14c4e00-0300-11db-89ca-0019b92a3933
-        /// </summary>
-        /// <param name="urn"></param>
-        /// <returns>c14c4e00-0300-11db-89ca-0019b92a3933</returns>
-        public static Guid ExtractGuidFromUrnUuid(string urn)
-        {
-            return new Guid(urn.Substring(urn.LastIndexOf(':') + 1));
-        }
-
     }
 }
 

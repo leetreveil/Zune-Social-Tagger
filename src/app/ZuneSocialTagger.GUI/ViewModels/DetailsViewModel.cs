@@ -83,12 +83,12 @@ namespace ZuneSocialTagger.GUI.ViewModels
                         container.RemoveZuneAttribute("ZuneCollectionID");
                         container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
 
-                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, row.SelectedSong.AlbumMediaID));
-                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, row.SelectedSong.ArtistMediaID));
-                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, row.SelectedSong.MediaID));
+                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, row.SelectedSong.AlbumMediaId));
+                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, row.SelectedSong.ArtistMediaId));
+                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, row.SelectedSong.MediaId));
 
                         if (Settings.Default.UpdateAlbumInfo)
-                            container.AddMetaData(row.SelectedSong.MetaData);
+                            //container.AddMetaData(row.SelectedSong.MetaData);
 
                         container.WriteToFile(row.FilePath);
                     }

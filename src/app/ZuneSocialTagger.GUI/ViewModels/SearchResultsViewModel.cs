@@ -9,10 +9,6 @@ using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using System.Threading;
-using Album = ZuneSocialTagger.Core.ZuneWebsite.Album;
-using AlbumDocumentReader = ZuneSocialTagger.Core.ZuneWebsite.AlbumDocumentReader;
-using System.Diagnostics;
-
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
@@ -45,22 +41,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             this.AlbumCount = "";
         }
 
-        void SearchResults_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.NewStartingIndex == 0 && e.NewItems[0].GetType() == typeof(Album))
-            {
-                LoadAlbum((Album) e.NewItems[0]);
-            }
-        }
-
-        private void ResultClicked(object item)
-        {
-            if (item.GetType() == typeof(Artist))
-                LoadAlbumsForArtist(item as Artist);
-
-            if (item.GetType() == typeof(Album))
-                LoadAlbum(item as Album);
-        }
+        #region Bindings
 
         public ObservableCollection<object> SearchResults { get; set; }
         public RelayCommand MoveNextCommand { get; private set; }
@@ -74,8 +55,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
             get { return _searchResultsDetailViewModel; }
             set
             {
-                    _searchResultsDetailViewModel = value;
-                   RaisePropertyChanged(() => this.SearchResultsDetailViewModel);
+                _searchResultsDetailViewModel = value;
+                RaisePropertyChanged(() => this.SearchResultsDetailViewModel);
             }
         }
 
@@ -129,43 +110,42 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
         }
 
+        #endregion
+
         public void LoadAlbum(Album album)
         {
             this.IsLoading = true;
 
             if (album == null) return;
 
-            string fullUrlToAlbumXmlDetails = String.Concat(Urls.Album, album.AlbumMediaID);
+            string fullUrlToAlbumXmlDetails = String.Concat(Urls.Album, album.AlbumMediaId);
 
-            ThreadPool.QueueUserWorkItem(_ =>
-             {
-                 try
-                 {
-                     var reader = new AlbumDocumentReader(fullUrlToAlbumXmlDetails);
+            var reader = new AlbumDetailsDownloader(fullUrlToAlbumXmlDetails);
 
-                     IEnumerable<Track> tracks = reader.Read();
+            reader.DownloadCompleted += (details, state) => {
+                if (state == DownloadState.Success)
+                {
+                    _model.SelectedAlbum.WebAlbumMetaData = SetAlbumDetails(details);
+                    _model.SelectedAlbum.SongsFromWebsite = details.Tracks.ToObservableCollection();
 
-                     _model.SelectedAlbum.WebAlbumMetaData =  SetAlbumDetails(tracks);
-                     _model.SelectedAlbum.SongsFromWebsite = tracks.ToObservableCollection();
+                    foreach (var track in _model.SelectedAlbum.Tracks)
+                    {
+                        track.SelectedSong = track.MatchThisSongToAvailableSongs(details.Tracks);
+                    }
 
-                     //Set each row's selected song based upon whats available from the zune website
-                     foreach (var row in _model.SelectedAlbum.Tracks)
-                     {
-                         row.SelectedSong = row.MatchThisSongToAvailableSongs(_model.SelectedAlbum.SongsFromWebsite);
-                     }
+                    UpdateDetail(details);
+                    this.IsLoading = false;
+                }
+                else
+                {
+                    this.SearchResultsDetailViewModel.SelectedAlbumTitle =
+                        "Could not get album details";
 
-                     UpdateDetail(tracks);
-
-                     this.IsLoading = false;
-                 }
-                 catch (Exception)
-                 {
-                     this.SearchResultsDetailViewModel.SelectedAlbumTitle =
-                            "Could not get album details";
-
-                     this.IsLoading = false;
-                 }
-             });
+                    this.IsLoading = false;
+                }
+            };
+            
+            reader.DownloadAsync();
         }
 
         public void LoadAlbumsForArtist(Artist artist)
@@ -232,32 +212,47 @@ namespace ZuneSocialTagger.GUI.ViewModels
         }
 
 
-        private static ExpandedAlbumDetailsViewModel SetAlbumDetails(IEnumerable<Track> tracks)
+        private static ExpandedAlbumDetailsViewModel SetAlbumDetails(Album albumMetaData)
         {
-            MetaData firstTracksMetaData = tracks.First().MetaData;
-
             return new ExpandedAlbumDetailsViewModel
                  {
-                     Title = firstTracksMetaData.AlbumName,
-                     Artist = firstTracksMetaData.AlbumArtist,
-                     ArtworkUrl = tracks.First().ArtworkUrl,
-                     Year = firstTracksMetaData.Year,
-                     SongCount = tracks.Count().ToString()
+                     Title = albumMetaData.Title,
+                     Artist = albumMetaData.Artist,
+                     ArtworkUrl = albumMetaData.ArtworkUrl,
+                     Year = albumMetaData.ReleaseYear,
+                     SongCount = albumMetaData.Tracks.Count().ToString()
                  };
         }
 
-        private void UpdateDetail(IEnumerable<Track> tracks)
+        private void UpdateDetail(Album albumMetaData)
         {
              this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel
                                                     {
-                                                        SelectedAlbumTitle = tracks.First().MetaData.AlbumName
+                                                        SelectedAlbumTitle = albumMetaData.Title
                                                     };
 
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
-                foreach (var track in tracks)
+                foreach (var track in albumMetaData.Tracks)
                     this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(track);
             });
+        }
+
+        private void SearchResults_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewStartingIndex == 0 && e.NewItems[0].GetType() == typeof(Album))
+            {
+                LoadAlbum((Album)e.NewItems[0]);
+            }
+        }
+
+        private void ResultClicked(object item)
+        {
+            if (item.GetType() == typeof(Artist))
+                LoadAlbumsForArtist(item as Artist);
+
+            if (item.GetType() == typeof(Album))
+                LoadAlbum(item as Album);
         }
     }
 }

@@ -11,6 +11,7 @@
     xmlns:ctrls="clr-namespace:ZuneSocialTagger.GUI.Controls" 
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
     xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras" 
+    xmlns:Core="clr-namespace:ZuneSocialTagger.Core;assembly=ZuneSocialTagger.Core" 
     d:DesignHeight="200">
 
     <UserControl.Resources>
@@ -19,7 +20,7 @@
                 <ResourceDictionary Source="../Resources.xaml "/>
                 
                 <ResourceDictionary>
-                    <DataTemplate DataType="{x:Type ZuneWebsite:Album}">
+                    <DataTemplate DataType="{x:Type Core:Album}">
                         <StackPanel Orientation="Horizontal"  Margin="10">
                             <Image Source="{Binding ArtworkUrl}" Width="60" Height="60" />
                             <StackPanel Margin="5,0,0,0">

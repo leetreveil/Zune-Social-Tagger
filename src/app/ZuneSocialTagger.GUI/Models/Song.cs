@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ZuneSocialTagger.Core;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUI.Models
 {
@@ -55,15 +56,7 @@ namespace ZuneSocialTagger.GUI.Models
         {
             //this matches album songs to zune website songs in the details view
             Track matchBySongTitle =
-                tracksToMatch.Where(song => song.MetaData.Title.ToLower() == this.MetaData.Title.ToLower()).FirstOrDefault();
-
-            //Track matchByTrackNumber =
-            //    tracksToMatch.Where(song => song.MetaData.TrackNumber == this.MetaData.TrackNumber).FirstOrDefault();
-
-            //if (matchBySongTitle == null && matchByTrackNumber != null)
-            //{
-            //    return matchByTrackNumber;
-            //}
+                tracksToMatch.Where(song => song.Title.ToLower() == this.MetaData.Title.ToLower()).FirstOrDefault();
 
             return matchBySongTitle ?? new Track();
         }

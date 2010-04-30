@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.ViewModels;
 
@@ -13,11 +13,10 @@ namespace ZuneSocialTagger.GUI.Models
     {
         private readonly IEnumerable<AlbumDetailsViewModel> _albums;
         private int _downloadCounter;
+        private readonly List<AlbumDetailsDownloader> _downloadList;
 
         public event Action FinishedDownloadingAlbums = delegate { };
         public event Action<int, int> ProgressChanged = delegate { };
-
-        private List<AlbumDetailsDownloader> _downloadList;
 
         /// <summary>
         /// Only pass in albums into the ctor that you want downloading! Don't pass in albums already downloaded /
@@ -42,11 +41,8 @@ namespace ZuneSocialTagger.GUI.Models
 
         public void Start()
         {
-            bool hasBeenCancelled = false;
-
             int albumCount = _albums.Count();
 
-            //only download albums that we do not know the details of
             foreach (var album in _albums)
             {
                 string fullUrlToAlbumXmlDetails =
@@ -61,32 +57,22 @@ namespace ZuneSocialTagger.GUI.Models
 
                 downloader.DownloadCompleted += (dledAlbum, state) =>
                     {
-                        if (state != DownloadState.Cancelled)
+                        if (state == DownloadState.Success)
                         {
-                            if (!hasBeenCancelled)
-                            {
-                                _downloadCounter++;
+                            _downloadCounter++;
 
-                                SetAlbumDetails(dledAlbum, album1);
+                            SetAlbumDetails(dledAlbum, album1);
 
-                                //TODO: don't like how we are doing progress reporting
+                            this.ProgressChanged.Invoke(_downloadCounter, albumCount);
 
-                                Debug.WriteLine(_downloadCounter);
-                                Debug.WriteLine(albumCount);
-
-                                this.ProgressChanged.Invoke(_downloadCounter, albumCount);
-
-                                if (_downloadCounter == albumCount)
-                                    this.FinishedDownloadingAlbums.Invoke();
-                            }
+                            if (_downloadCounter == albumCount)
+                                this.FinishedDownloadingAlbums.Invoke();
                         }
 
                         if (state == DownloadState.Cancelled)
                         {
-                            if (!hasBeenCancelled)
-                                this.FinishedDownloadingAlbums.Invoke();
-
-                            hasBeenCancelled = true;
+                            this.FinishedDownloadingAlbums.Invoke();
+                            return;
                         }
                     };
 
@@ -94,23 +80,23 @@ namespace ZuneSocialTagger.GUI.Models
             }
         }
 
-        private void SetAlbumDetails(AlbumMetaData dledAlbum, AlbumDetailsViewModel album)
+        private void SetAlbumDetails(Album dledAlbum, AlbumDetailsViewModel album)
         {
             if (dledAlbum == null)
                 album.LinkStatus = LinkStatus.Unavailable;
             else
             {
-                Core.ZuneDatabase.Album metaData = album.ZuneAlbumMetaData;
+                Album metaData = album.ZuneAlbumMetaData;
 
-                album.LinkStatus = SharedMethods.GetAlbumLinkStatus(dledAlbum.AlbumTitle,
-                                                                    dledAlbum.AlbumArtist,
-                                                                    metaData.AlbumTitle,
-                                                                    metaData.AlbumArtist);
+                album.LinkStatus = SharedMethods.GetAlbumLinkStatus(dledAlbum.Title,
+                                                                    dledAlbum.Artist,
+                                                                    metaData.Title,
+                                                                    metaData.Artist);
 
-                album.WebAlbumMetaData = new Core.ZuneDatabase.Album
+                album.WebAlbumMetaData = new Album
                                              {
-                                                 AlbumArtist = dledAlbum.AlbumArtist,
-                                                 AlbumTitle = dledAlbum.AlbumTitle,
+                                                 Artist = dledAlbum.Artist,
+                                                 Title = dledAlbum.Title,
                                                  ArtworkUrl = dledAlbum.ArtworkUrl
                                              };
             }

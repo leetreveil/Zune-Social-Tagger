@@ -116,18 +116,18 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         
         public Album GetAlbumByAlbumTitle(string albumTitle)
         {
-            throw new NotImplementedException("SearchForString is not working as I expect, needs investigating");
+            ////querying all albums, creates a property bag inside this method to query the database
+            ////thats why we can pass null for the propertybag
+            //ZuneQueryList albums = _zuneLibrary.QueryDatabase(EQueryType.eQueryTypeAllAlbums, 0,
+            //                                                  EQuerySortType.eQuerySortOrderAscending,
+            //                                                  (uint) SchemaMap.kiIndex_AlbumID, null);
 
-            //querying all albums, creates a property bag inside this method to query the database
-            //thats why we can pass null for the propertybag
-            ZuneQueryList albums = _zuneLibrary.QueryDatabase(EQueryType.eQueryTypeAllAlbums, 0,
-                                                              EQuerySortType.eQuerySortOrderAscending,
-                                                              (uint) SchemaMap.kiIndex_AlbumID, null);
-
-            int searchForString = albums.SearchForString((uint) SchemaMap.kiIndex_WMAlbumArtist, false, albumTitle);
+            //int searchForString = albums.SearchForString((uint) SchemaMap.kiIndex_WMAlbumArtist, false, albumTitle);
 
 
-            var album = GetAlbum(searchForString);
+            //var album = GetAlbum(searchForString);
+
+            return null;
         }
 
         public bool DoesAlbumExist(int index)
@@ -158,11 +158,11 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
                             {
                                 AlbumMediaId = albumMediaId,
                                 DateAdded = dateAdded,
-                                AlbumTitle = albumMetadata.AlbumTitle,
-                                AlbumArtist = albumMetadata.AlbumArtist,
+                                Title = albumMetadata.AlbumTitle,
+                                Artist = albumMetadata.AlbumArtist,
                                 ArtworkUrl = albumMetadata.CoverUrl,
                                 MediaId = albumMetadata.MediaId,
-                                ReleaseYear = albumMetadata.ReleaseYear,
+                                ReleaseYear = albumMetadata.ReleaseYear.ToString(),
                                 TrackCount = (int) albumMetadata.TrackCount,
                                 Tracks = GetTracksForAlbum(albumMetadata.MediaId).ToList()
                             };
@@ -185,7 +185,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
                 string filePath =
                     (string) track.GetFieldValue(typeof (string), (uint) ZuneQueryList.AtomNameToAtom("SourceURL"));
 
-                Guid mediaId = GetFieldValue(track.ID, EListType.eTrackList, 
+                Guid mediaId = GetFieldValue(track.ID, EListType.eTrackList,
                     ZuneQueryList.AtomNameToAtom("ZuneMediaID"), Guid.Empty);
 
                 yield return new Track

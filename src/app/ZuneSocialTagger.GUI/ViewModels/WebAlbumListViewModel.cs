@@ -237,10 +237,10 @@ namespace ZuneSocialTagger.GUI.ViewModels
                         this.Albums.SortDesc(x => x.ZuneAlbumMetaData.DateAdded);
                         break;
                     case SortOrder.Album:
-                        this.Albums.Sort(x => x.ZuneAlbumMetaData.AlbumTitle);
+                        this.Albums.Sort(x => x.ZuneAlbumMetaData.Title);
                         break;
                     case SortOrder.Artist:
-                        this.Albums.Sort(x => x.ZuneAlbumMetaData.AlbumArtist);
+                        this.Albums.Sort(x => x.ZuneAlbumMetaData.Artist);
                         break;
                     case SortOrder.LinkStatus:
                         this.Albums.Sort(x => x.LinkStatus);
@@ -302,8 +302,16 @@ namespace ZuneSocialTagger.GUI.ViewModels
         {
             this.LoadingProgress = current * 100 / total;
 
-            if (_isTaskbarSupported)
-                TaskbarManager.Instance.SetProgressValue(current, total);
+            try
+            {
+                if (_isTaskbarSupported)
+                    TaskbarManager.Instance.SetProgressValue(current, total);
+            }
+            catch 
+            {
+                //needs ignoring because it is possible that we try to report progress before a window has been
+                //created, this will throw an InvalidOperationException
+            }
         }
 
         private void Sort()

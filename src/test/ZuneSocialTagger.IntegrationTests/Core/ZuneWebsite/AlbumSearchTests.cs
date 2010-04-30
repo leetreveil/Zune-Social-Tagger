@@ -25,7 +25,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         {
             IEnumerable<Album> result = AlbumSearch.ReadFromXmlDocument(XmlReader.Create(_file));
 
-            bool areAnyNull = result.All(arg => arg.AlbumMediaID == Guid.Empty || String.IsNullOrEmpty(arg.Title) || String.IsNullOrEmpty(arg.Artist));
+            bool areAnyNull = result.All(arg => arg.AlbumMediaId == Guid.Empty || String.IsNullOrEmpty(arg.Title) || String.IsNullOrEmpty(arg.Artist));
 
             Assert.That(areAnyNull,Is.False);
         }
@@ -35,7 +35,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ZuneWebsite
         {
             Album firstResult = AlbumSearch.ReadFromXmlDocument(XmlReader.Create(_file)).First();
 
-            Assert.That(firstResult.AlbumMediaID, Is.EqualTo(new Guid("abecf900-0100-11db-89ca-0019b92a3933")));
+            Assert.That(firstResult.AlbumMediaId, Is.EqualTo(new Guid("abecf900-0100-11db-89ca-0019b92a3933")));
             Assert.That(firstResult.Artist, Is.EqualTo("Creedence Clearwater Revival"));
             Assert.That(firstResult.Title, Is.EqualTo("Pendulum"));
         }

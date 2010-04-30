@@ -53,19 +53,19 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         {
             yield return new Album
             {
-                AlbumArtist = "Pendulum",
-                AlbumTitle = "Immersion",
+                Artist = "Pendulum",
+                Title = "Immersion",
                 DateAdded = DateTime.Now,
-                ReleaseYear = 2010,
+                ReleaseYear = "2010",
                 TrackCount = 12
             };
 
             yield return new Album
             {
-                AlbumArtist = "Circa Survive",
-                AlbumTitle = "Blue Sky Noise",
+                Artist = "Circa Survive",
+                Title = "Blue Sky Noise",
                 DateAdded = DateTime.Now,
-                ReleaseYear = 2010,
+                ReleaseYear = "2010",
                 TrackCount = 12
             };
         }

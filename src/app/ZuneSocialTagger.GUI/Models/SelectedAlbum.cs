@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using ZuneSocialTagger.Core;
+using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.ViewModels;
 
 namespace ZuneSocialTagger.GUI.Models

@@ -10,8 +10,6 @@ using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
-using Album = ZuneSocialTagger.Core.ZuneDatabase.Album;
-using Track = ZuneSocialTagger.Core.ZuneDatabase.Track;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
@@ -117,8 +115,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             selectedAlbum.ZuneAlbumMetaData = new ExpandedAlbumDetailsViewModel
                                                     {
-                                                        Artist = albumDetails.AlbumArtist,
-                                                        Title = albumDetails.AlbumTitle,
+                                                        Artist = albumDetails.Artist,
+                                                        Title = albumDetails.Title,
                                                         ArtworkUrl = albumDetails.ArtworkUrl,
                                                         SongCount = albumDetails.TrackCount.ToString(),
                                                         Year = albumDetails.ReleaseYear.ToString()
@@ -127,7 +125,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             selectedAlbum.AlbumDetails = this;
 
             _model.SelectedAlbum = selectedAlbum;
-            _model.SearchText = albumDetails.AlbumTitle + " " + albumDetails.AlbumArtist;
+            _model.SearchText = albumDetails.Title + " " + albumDetails.Artist;
 
             //tell the application to switch to the search view
             Messenger.Default.Send(typeof(SearchViewModel));
@@ -198,24 +196,33 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
                     downloader.DownloadCompleted += (alb, state) =>
                     {
-                        if (alb != null)
+                        if (state == DownloadState.Success)
                         {
-                            this.LinkStatus = SharedMethods.GetAlbumLinkStatus(alb.AlbumTitle,
-                                                        alb.AlbumArtist,
-                                                        albumMetaData.AlbumTitle,
-                                                        albumMetaData.AlbumArtist);
-
-                            this.WebAlbumMetaData = new Album
+                            if (alb != null)
                             {
-                                AlbumArtist = alb.AlbumArtist,
-                                AlbumTitle = alb.AlbumTitle,
-                                ArtworkUrl = alb.ArtworkUrl
-                            };
+                                this.LinkStatus = SharedMethods.GetAlbumLinkStatus(alb.Title,
+                                                            alb.Artist,
+                                                            albumMetaData.Title,
+                                                            albumMetaData.Artist);
+
+                                this.WebAlbumMetaData = new Album
+                                {
+                                    Artist = alb.Artist,
+                                    Title = alb.Title,
+                                    ArtworkUrl = alb.ArtworkUrl
+                                };
+                            }
+                            else
+                            {
+                                this.LinkStatus = LinkStatus.Unavailable;
+                            }
                         }
                         else
                         {
                             this.LinkStatus = LinkStatus.Unavailable;
+                            Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,"Failed to communicate with zune server"));
                         }
+
                     };
 
                     downloader.DownloadAsync();
