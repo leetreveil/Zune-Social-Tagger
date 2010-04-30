@@ -26,15 +26,8 @@
         <Controls:SortControl 
                         SortOrder="{Binding SortOrder,Mode=TwoWay}" 
                         HorizontalAlignment="Left" VerticalContentAlignment="Bottom" 
-                        Margin="0,0,0,3">
-
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SortClicked">
-                    <cmd:EventToCommand Command="{Binding SortCommand}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-
-        </Controls:SortControl>
+                        Margin="0,0,0,3"
+                        Command="{Binding SortCommand}"/>
 
         <StackPanel HorizontalAlignment="Right"
                     Orientation="Horizontal"

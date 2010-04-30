@@ -245,7 +245,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                         }
 
                         //after we have loaded the cache, we want to check for any new albums available in the database
-                        GetNewOrRemovedAlbumsFromZuneDb();
+                        DispatcherHelper.CheckBeginInvokeOnUI(GetNewOrRemovedAlbumsFromZuneDb);
                     });
                 }
                 else
@@ -265,17 +265,17 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 albumDetails.LinkStatus = album.AlbumMediaId.GetLinkStatusFromGuid();
                 albumDetails.ZuneAlbumMetaData = album;
 
-                DispatcherHelper.CheckBeginInvokeOnUI(() => _albums.Add(albumDetails));
+                _albums.Add(albumDetails);
             }
 
             foreach (var albumToBeRemoved in
                 removedAlbums.Select(id => _albums.Where(x => x.ZuneAlbumMetaData.MediaId == id).First()))
             {
                 AlbumDetailsViewModel toBeRemoved = albumToBeRemoved;
-                DispatcherHelper.CheckBeginInvokeOnUI(() => _albums.Remove(toBeRemoved));
+                _albums.Remove(toBeRemoved);
             }
 
-            //tell the WebAlbumListViewModel to sort its list and update
+            //tell the WebAlbumListViewModel to sort its list
             Messenger.Default.Send("SORT");
             TellViewThatUpdatesHaveBeenAdded(newAlbums.Count(), removedAlbums.Count());
         }

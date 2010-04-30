@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using ZuneSocialTagger.GUI.Converters;
 using ZuneSocialTagger.GUI.Models;
 
@@ -19,24 +20,20 @@ namespace ZuneSocialTagger.GUI.Controls
             SetValue(SortOrderProperty, SortOrder.NotSorted);
         }
 
-        static SortControl()
-        {
-            SortClickedEvent = EventManager.RegisterRoutedEvent("SortClicked", RoutingStrategy.Bubble,
-                typeof(RoutedEventHandler), typeof(SortControl));
-        }
+        public static DependencyProperty CommandProperty =
+            DependencyProperty.Register("Command", typeof(ICommand), typeof(SortControl),
+                                new PropertyMetadata(null));
 
-        public static RoutedEvent SortClickedEvent;
-
-        public event RoutedEventHandler SortClicked
+        public ICommand Command
         {
-            add { AddHandler(SortClickedEvent, value); }
-            remove { RemoveHandler(SortClickedEvent, value); }
+            get { return GetValue(CommandProperty) as ICommand; }
+            set { SetValue(CommandProperty, value); }
         }
 
         protected virtual void OnSortClicked()
         {
-            var args = new RoutedEventArgs { RoutedEvent = SortClickedEvent };
-            RaiseEvent(args);
+            if (Command != null && Command.CanExecute(null))
+                Command.Execute(null);
         }
 
         public static readonly DependencyProperty SortOrderProperty =

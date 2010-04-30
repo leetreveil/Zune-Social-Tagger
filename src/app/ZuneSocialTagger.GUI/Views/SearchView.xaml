@@ -37,15 +37,8 @@
             HorizontalAlignment="Right"
             Grid.Column="1"
             IsSearching="{Binding IsSearching}"
-            SearchText="{Binding Path=SearchText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SearchClicked">
-                    <cmd:EventToCommand Command="{Binding SearchCommand}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-
-        </Controls:SearchBarControl>
+            SearchText="{Binding Path=SearchText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+            Command="{Binding SearchCommand}"/>
 
         <views:SearchResultsView Visibility="{Binding RelativeSource={RelativeSource FindAncestor,
                                                 AncestorType={x:Type UserControl}},

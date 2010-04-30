@@ -89,8 +89,9 @@ namespace ZuneSocialTagger.GUI.ViewModels
         [XmlIgnore]
         public bool CanLink
         {
-            get {
-                return _linkStatus != LinkStatus.Unknown;
+            get 
+            {
+                return true;
             }
         }
 

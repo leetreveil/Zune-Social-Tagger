@@ -17,24 +17,20 @@ namespace ZuneSocialTagger.GUI.Controls
             this.tbSearching.Visibility = Visibility.Hidden;
         }
 
-        static SearchBarControl()
-        {
-            SearchClickedEvent = EventManager.RegisterRoutedEvent("SearchClicked", RoutingStrategy.Bubble,
-                typeof(RoutedEventHandler), typeof(SearchBarControl));
-        }
+        public static DependencyProperty CommandProperty =
+            DependencyProperty.Register("Command",typeof(ICommand), typeof(SearchBarControl),
+                                new PropertyMetadata(null));
 
-        public static RoutedEvent SearchClickedEvent;
-
-        public event RoutedEventHandler SearchClicked
+        public ICommand Command
         {
-            add { AddHandler(SearchClickedEvent, value); }
-            remove { RemoveHandler(SearchClickedEvent, value); }
+            get { return GetValue(CommandProperty) as ICommand; }
+            set { SetValue(CommandProperty, value); }
         }
 
         protected virtual void OnSearchClicked()
         {
-            var args = new RoutedEventArgs {RoutedEvent = SearchClickedEvent};
-            RaiseEvent(args);
+            if (Command != null && Command.CanExecute(null))
+                Command.Execute(null);
         }
 
         private void TextBox_KeyUp(object sender, KeyEventArgs e)
