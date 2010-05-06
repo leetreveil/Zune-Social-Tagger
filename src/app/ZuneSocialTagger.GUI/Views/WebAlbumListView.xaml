@@ -7,7 +7,8 @@
              xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls"
              xmlns:dd="clr-namespace:ZuneSocialTagger.GUI.ViewModels.DesignTime" 
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras" xmlns:v="clr-namespace:ZuneSocialTagger.GUI.Views">
+             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras" 
+             xmlns:v="clr-namespace:ZuneSocialTagger.GUI.Views">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -147,7 +148,7 @@
         </StackPanel>
 
 
-        <ListView SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}"
+        <ListView SelectedItem="{Binding SelectedAlbum,Mode=TwoWay}"
                   SelectionMode="Single"
                   Grid.Row="1"
                   x:Name="lvAlbums"
@@ -158,7 +159,46 @@
                   ItemContainerStyle="{StaticResource ListViewItemStyle}"
                   Background="Transparent"
                   BorderThickness="0"
-                  ScrollViewer.IsDeferredScrollingEnabled="True"/>
+                  ScrollViewer.IsDeferredScrollingEnabled="True">
+            
+            <ListView.ContextMenu>
+                <ContextMenu x:Name="contextMenu">
+
+                    <MenuItem Header="Link" 
+                      IsEnabled="{Binding ElementName=lvAlbums, Path=SelectedItem.CanLink}"
+                      Command="{Binding ElementName=lvAlbums, Path=SelectedItem.LinkCommand}">
+                        <MenuItem.Icon>
+                            <Image Width="16"
+                                   Height="16"
+                                   Source="../Assets/add.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="De-Link"
+                      IsEnabled="{Binding ElementName=lvAlbums, Path=SelectedItem.CanDelink}"
+                      Command="{Binding ElementName=lvAlbums, Path=SelectedItem.DelinkCommand}">
+                        <MenuItem.Icon>
+                            <Image Width="16"
+                                   Height="16"
+                                   Source="../Assets/minus.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <Separator />
+
+                    <MenuItem Header="Refresh" 
+                      Command="{Binding ElementName=lvAlbums, Path=SelectedItem.RefreshCommand}">
+                        <MenuItem.Icon>
+                            <Image Width="16"
+                                   Height="16"
+                                   Source="../Assets/refresh.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                </ContextMenu>
+            </ListView.ContextMenu>
+            
+        </ListView>
 
         <ProgressBar Visibility="{Binding Path=CanShowProgressBar,Converter={StaticResource BoolToVisConverter}}"
                      Margin="0,10,0,0"
@@ -178,7 +218,8 @@
             </Grid.ColumnDefinitions>
 
 
-            <Button ToolTip="Refresh the zune database"
+            <Button Visibility="Collapsed"
+                    ToolTip="Refresh the zune database"
                     IsEnabled="{Binding Path=CanShowReloadButton}"
                     Margin="0,0,10,0"
                     Command="{Binding LoadDatabaseCommand}"
@@ -189,7 +230,7 @@
                     Margin="0,0,10,0"
                     Grid.Column="1"
                     Command="{Binding LoadFromZuneWebsiteCommand}"
-                    Content="{Binding ScanAllText}" />
+                    Content="SCAN ALL" />
 
             <Button HorizontalAlignment="Right"
                     Grid.Column="3"

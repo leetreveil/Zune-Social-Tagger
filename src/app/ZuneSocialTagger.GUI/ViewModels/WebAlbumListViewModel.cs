@@ -17,8 +17,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private readonly IZuneDatabaseReader _dbReader;
         private bool _canShowScanAllButton;
         private int _loadingProgress;
-        private string _scanAllText;
-        private AlbumDownloaderWithProgressReporting _downloader;
         private bool _canShowProgressBar;
         private bool _canShowReloadButton;
         private readonly bool _isTaskbarSupported;
@@ -32,7 +30,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
             _dbReader.ProgressChanged += DbAdapterProgressChanged;
             _dbReader.StartedReadingAlbums += _dbAdapter_StartedReadingAlbums;
 
-            this.ScanAllText = "SCAN ALL";
             _isTaskbarSupported = TaskbarManager.IsPlatformSupported;
 
             SetupCommandBindings();
@@ -57,7 +54,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
         {
             this.LoadDatabaseCommand = new RelayCommand(RefreshDatabase);
             this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
-            this.CancelDownloadingCommand = new RelayCommand(CancelDownloading);
             this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
             this.SortCommand = new RelayCommand(Sort);
         }
@@ -72,7 +68,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
         }
 
-        public int SelectedIndex { get; set; }
+        public AlbumDetailsViewModel SelectedAlbum { get; set; }
 
         public ZuneObservableCollection<AlbumDetailsViewModel> Albums
         {
@@ -97,7 +93,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
             set
             {
                 _canShowProgressBar = value;
-                this.ScanAllText = CanShowProgressBar ? "STOP" : "SCAN ALL";
                 RaisePropertyChanged(() => this.CanShowProgressBar);
             }
         }
@@ -142,16 +137,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
         }
 
-        public string ScanAllText
-        {
-            get { return _scanAllText; }
-            set
-            {
-                _scanAllText = value;
-                RaisePropertyChanged(() => this.ScanAllText);
-            }
-        }
-
         public int LinkedTotal
         {
             get { return this.Albums.Where(x => x.LinkStatus == LinkStatus.Linked).Count(); }
@@ -181,37 +166,32 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public void LoadFromZuneWebsite()
         {
-            if (this.CanShowProgressBar)
-                CancelDownloading();
-            else
-            {
-                this.CanShowReloadButton = false;
+            ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning,"This process could take a very long time, are you sure?"),() => {
                 this.CanShowProgressBar = true;
+                this.CanShowScanAllButton = false;
+                this.CanShowReloadButton = false;
 
-                //check if we have already downloaded all the albums
-                if (this.Albums.Where(x => x.LinkStatus != LinkStatus.Unlinked).
-                    All(x => x.WebAlbumMetaData != null))
+                //skip the unlinked albums that cant be downloaded
+                var totalToDownload = this.Albums.Where(x => x.LinkStatus != LinkStatus.Unlinked).ToList();
+
+                int counter = 0;
+                foreach (var album in totalToDownload)
                 {
-                    foreach (var album in this.Albums.Where(album => album.LinkStatus != LinkStatus.Unlinked))
+                    album.LinkStatus = LinkStatus.Unknown; // reset the linkstatus so we can scan all multiple times
+                    album.WebAlbumMetaData = null;
+
+                    album.AlbumDetailsDownloaded += () =>
                     {
-                        album.WebAlbumMetaData = null;
-                        album.LinkStatus = LinkStatus.Unknown;
-                    }
-                }
+                        ReportProgress(counter++, totalToDownload.Count);
 
-                _downloader = new AlbumDownloaderWithProgressReporting(
-                    this.Albums.Where(x => x.WebAlbumMetaData == null && x.LinkStatus != LinkStatus.Unlinked));
+                        var toBeDownloaded = this.Albums.Where(x => x.LinkStatus == LinkStatus.Unknown);
 
-                _downloader.ProgressChanged += downloader_ProgressChanged;
-                _downloader.FinishedDownloadingAlbums += downloader_FinishedDownloadingAlbums;
-                _downloader.Start();
-            }
-        }
+                        if (toBeDownloaded.Count() == 0) ResetLoadingProgress();
+                    };
 
-        public void CancelDownloading()
-        {
-            if (_downloader != null)
-                _downloader.StopDownloading();
+                    album.GetAlbumDetailsFromWebsite();
+                } 
+            } );
         }
 
         public void RefreshDatabase()
@@ -270,28 +250,17 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void DbAdapterFinishedReadingAlbums()
         {
-            this.CanShowReloadButton = true;
-            this.CanShowProgressBar = false;
             this.CanShowScanAllButton = true;
             ResetLoadingProgress();
             this.SortOrder = Settings.Default.SortOrder;
             SortData(Settings.Default.SortOrder);
         }
 
-        private void downloader_FinishedDownloadingAlbums()
-        {
-            this.CanShowProgressBar = false;
-            this.CanShowReloadButton = true;
-            ResetLoadingProgress();
-        }
-
-        private void downloader_ProgressChanged(int arg1, int arg2)
-        {
-            ReportProgress(arg1, arg2); //arg1 = current album ;arg2 = total albums
-        }
-
         private void ResetLoadingProgress()
         {
+            this.CanShowScanAllButton = true;
+            this.CanShowProgressBar = false;
+            this.CanShowReloadButton = true;
             this.LoadingProgress = 0;
 
             if (_isTaskbarSupported)

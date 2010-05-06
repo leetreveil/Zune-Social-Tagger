@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using ZuneSocialTagger.Core;
-using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUI.Models
 {

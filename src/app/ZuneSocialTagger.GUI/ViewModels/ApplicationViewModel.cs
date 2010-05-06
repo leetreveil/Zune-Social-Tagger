@@ -145,11 +145,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
         }
 
-        private static bool CheckIfZuneSoftwareIsRunning()
-        {
-            return Process.GetProcessesByName("Zune").Length != 0;
-        }
-
         private void DisplayMessage(ErrorMessage message)
         {
             this.ErrorMessageText = message.Message;
@@ -167,7 +162,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             {
                 if (_loadWebView)
                 {
-                    if (!CheckIfZuneSoftwareIsRunning())
+                    if (!SharedMethods.CheckIfZuneSoftwareIsRunning())
                     {
                         DisplayMessage(new ErrorMessage(ErrorMode.Warning,
                                                              "Any albums you link / delink will not show their changes until the zune software is running."));

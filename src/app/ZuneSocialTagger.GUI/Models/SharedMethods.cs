@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -26,6 +26,30 @@ namespace ZuneSocialTagger.GUI.Models
             }
         }
 
+        public static bool CheckIfZuneSoftwareIsRunning()
+        {
+            return Process.GetProcessesByName("Zune").Length != 0;
+        }
+
+        public static void SetAlbumDetails(Album dledAlbum, AlbumDetailsViewModel albumToSet)
+        {
+            if (dledAlbum == null)
+                albumToSet.LinkStatus = LinkStatus.Unavailable;
+            else
+            {
+                Album metaData = albumToSet.ZuneAlbumMetaData;
+
+                albumToSet.LinkStatus = GetAlbumLinkStatus(dledAlbum.Title, dledAlbum.Artist,
+                                                      metaData.Title, metaData.Artist);
+
+                albumToSet.WebAlbumMetaData = new Album
+                {
+                    Artist = dledAlbum.Artist,
+                    Title = dledAlbum.Title,
+                    ArtworkUrl = dledAlbum.ArtworkUrl
+                };
+            }
+        }
 
         public static LinkStatus GetAlbumLinkStatus(string albumTitle, string albumArtist, 
                                                     string existingAlbumTitle, string existingAlbumArtist)

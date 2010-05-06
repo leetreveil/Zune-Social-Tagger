@@ -97,12 +97,12 @@
 
                                             <StackPanel Height="25" Orientation="Horizontal">
                                                 <TextBlock Width="15" 
-                                                           Text="{Binding MetaData.TrackNumber,
+                                                           Text="{Binding TrackNumber,
                                                                   Converter={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" 
                                                            VerticalAlignment="Top" FontSize="12" 
                                                            FontWeight="Bold"/>
 
-                                                <TextBlock Text="{Binding MetaData.Title}" VerticalAlignment="Top" Margin="10,0,0,0"/>
+                                                <TextBlock Text="{Binding Title}" VerticalAlignment="Top" Margin="10,0,0,0"/>
 
                                             </StackPanel>
 

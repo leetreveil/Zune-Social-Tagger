@@ -11,43 +11,6 @@
         <ResourceDictionary Source="../Resources.xaml" />
     </UserControl.Resources>
 
-    <UserControl.ContextMenu>
-        <ContextMenu x:Name="contextMenu">
-
-            <MenuItem Header="Link" 
-                      IsEnabled="{Binding ElementName=root, Path=DataContext.CanLink}"
-                      Command="{Binding ElementName=root, Path=DataContext.LinkCommand}">
-                <MenuItem.Icon>
-                    <Image Width="16"
-                                   Height="16"
-                                   Source="../Assets/add.png" />
-                </MenuItem.Icon>
-            </MenuItem>
-
-            <MenuItem Header="De-Link"
-                      IsEnabled="{Binding ElementName=root, Path=DataContext.CanDelink}"
-                      Command="{Binding ElementName=root, Path=DataContext.DelinkCommand}">
-                <MenuItem.Icon>
-                    <Image Width="16"
-                                   Height="16"
-                                   Source="../Assets/minus.png" />
-                </MenuItem.Icon>
-            </MenuItem>
-
-            <Separator />
-
-            <MenuItem Header="Refresh" 
-                      Command="{Binding ElementName=root, Path=DataContext.RefreshCommand}">
-                <MenuItem.Icon>
-                    <Image Width="16"
-                                   Height="16"
-                                   Source="../Assets/refresh.png" />
-                </MenuItem.Icon>
-            </MenuItem>
-
-        </ContextMenu>
-    </UserControl.ContextMenu>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />

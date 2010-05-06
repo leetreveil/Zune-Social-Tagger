@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using System.Windows;
 
 namespace ZuneSocialTagger.GUI.Views
 {
@@ -11,9 +10,6 @@ namespace ZuneSocialTagger.GUI.Views
         public AlbumDetailsView()
         {
             InitializeComponent();
-
-            //hack to get the contextmenu to register for databinding
-            NameScope.SetNameScope(contextMenu,NameScope.GetNameScope(this));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace ZuneSocialTagger.GUI.Views
 {
@@ -11,9 +12,11 @@ namespace ZuneSocialTagger.GUI.Views
         {
             this.InitializeComponent();
             this.Loaded += WebAlbumListView_Loaded;
+            //hack to get the contextmenu to register for databinding
+            NameScope.SetNameScope(contextMenu,NameScope.GetNameScope(this));
         }
 
-        void WebAlbumListView_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        void WebAlbumListView_Loaded(object sender, RoutedEventArgs e)
         {
             if (lvAlbums.SelectedItem != null)
             {

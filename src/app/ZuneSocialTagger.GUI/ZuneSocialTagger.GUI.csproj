@@ -187,7 +187,6 @@
     <Compile Include="Converters\SortOrderToVisibilityConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Converters\TrackNumberToDblDigitTrackNumberConverter.cs" />
-    <Compile Include="Models\AlbumDownloaderWithProgressReporting.cs" />
     <Compile Include="Models\CachedZuneDatabaseReader.cs" />
     <Compile Include="Models\ErrorMessage.cs" />
     <Compile Include="Models\ExtensionMethods.cs" />

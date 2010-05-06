@@ -240,10 +240,10 @@
                    Source="{Binding Path=ArtworkUrl,Converter={StaticResource PathToImageThumbnailConverter}}"
                    Margin="0,0,10,0" />
             <StackPanel VerticalAlignment="Center">
-                <TextBlock ToolTip="{Binding AlbumTitle}"
-                           Text="{Binding AlbumTitle}" />
-                <TextBlock ToolTip="{Binding AlbumArtist}"
-                           Text="{Binding AlbumArtist}"
+                <TextBlock ToolTip="{Binding Title}"
+                           Text="{Binding Title}" />
+                <TextBlock ToolTip="{Binding Artist}"
+                           Text="{Binding Artist}"
                            Foreground="#FF8A8D90" />
             </StackPanel>
         </StackPanel>
