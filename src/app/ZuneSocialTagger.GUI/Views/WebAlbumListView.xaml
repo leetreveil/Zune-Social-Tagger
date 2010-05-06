@@ -155,7 +155,7 @@
                   ItemsSource="{Binding Albums}"
                   IsTextSearchEnabled="True"
                   MaxHeight="400"
-                  TextSearch.TextPath="ZuneAlbumMetaData.AlbumTitle"
+                  TextSearch.TextPath="ZuneAlbumMetaData.Title"
                   ItemContainerStyle="{StaticResource ListViewItemStyle}"
                   Background="Transparent"
                   BorderThickness="0"
