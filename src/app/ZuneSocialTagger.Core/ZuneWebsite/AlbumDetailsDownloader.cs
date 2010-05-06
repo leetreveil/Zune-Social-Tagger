@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Xml;
 using System.ServiceModel.Syndication;
-using System.IO;
+using System.Xml;
 
 namespace ZuneSocialTagger.Core.ZuneWebsite
 {

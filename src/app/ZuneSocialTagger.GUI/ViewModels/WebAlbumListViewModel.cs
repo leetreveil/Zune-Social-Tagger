@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Threading;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Taskbar;
+using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Controls;
 using ZuneSocialTagger.GUI.Models;
-using System.Linq;
 using ZuneSocialTagger.GUI.Properties;
-using ZuneSocialTagger.Core.ZuneDatabase;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {

@@ -1,7 +1,7 @@
 using System;
+using System.IO;
 using ASFTag;
 using Id3Tag;
-using System.IO;
 using ZuneSocialTagger.Core.ID3Tagger;
 using ZuneSocialTagger.Core.WMATagger;
 

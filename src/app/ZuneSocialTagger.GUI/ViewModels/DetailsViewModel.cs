@@ -87,7 +87,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                         container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, row.SelectedSong.ArtistMediaId));
                         container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, row.SelectedSong.MediaId));
 
-                        if (Settings.Default.UpdateAlbumInfo)
+                        //if (Settings.Default.UpdateAlbumInfo)
                             //container.AddMetaData(row.SelectedSong.MetaData);
 
                         container.WriteToFile(row.FilePath);

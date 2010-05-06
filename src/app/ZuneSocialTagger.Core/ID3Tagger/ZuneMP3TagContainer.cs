@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Id3Tag;
 using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
-using System.Linq;
-using System.Text;
 
 namespace ZuneSocialTagger.Core.ID3Tagger
 {

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Threading;
+using GalaSoft.MvvmLight.Threading;
 using Ninject;
+using Utilities;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Controls;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewModels;
 using ZuneSocialTagger.GUI.Views;
-using GalaSoft.MvvmLight.Threading;
-using Utilities;
 
 namespace ZuneSocialTagger.GUI
 {

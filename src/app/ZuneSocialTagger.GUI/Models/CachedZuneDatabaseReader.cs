@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using ZuneSocialTagger.Core;
-using ZuneSocialTagger.GUI.ViewModels;
 using ZuneSocialTagger.GUI.Properties;
+using ZuneSocialTagger.GUI.ViewModels;
 
 namespace ZuneSocialTagger.GUI.Models
 {

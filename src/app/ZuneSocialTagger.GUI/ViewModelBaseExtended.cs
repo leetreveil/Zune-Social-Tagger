@@ -15,7 +15,7 @@ namespace ZuneSocialTagger.GUI
         /// Gets the member info represented by an expression.
         /// </summary>
         /// <param name="expression">The member expression.</param>
-        /// <returns>The member info represeted by the expression.</returns>
+        /// <returns>The member name</returns>
         public static string GetMemberInfoName(Expression expression)
         {
             var lambda = (LambdaExpression)expression;

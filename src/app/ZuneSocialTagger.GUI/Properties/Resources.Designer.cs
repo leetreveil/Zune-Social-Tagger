@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ZuneSocialTagger.GUI.Properties {
-    using System;
-    
-    
+namespace ZuneSocialTagger.GUI.Properties
+{
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

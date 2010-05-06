@@ -1,9 +1,9 @@
 using System.Linq;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Threading;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
-using GalaSoft.MvvmLight.Threading;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {

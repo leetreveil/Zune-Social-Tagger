@@ -4,9 +4,8 @@ using System.Windows.Forms;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.Core;
-using System;
+using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
