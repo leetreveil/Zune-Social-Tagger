@@ -1,4 +1,4 @@
-using ZuneSocialTagger.Core.WMATagger;
+using ZuneSocialTagger.Core.IO.WMATagger;
 
 namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
 {

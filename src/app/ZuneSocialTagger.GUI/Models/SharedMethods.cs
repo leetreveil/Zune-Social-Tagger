@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core;
+using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.GUI.ViewModels;
 using ZuneSocialTagger.Core.ZuneWebsite;
 

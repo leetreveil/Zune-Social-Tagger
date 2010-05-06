@@ -1,4 +1,4 @@
-namespace ZuneSocialTagger.Core.WMATagger
+namespace ZuneSocialTagger.Core.IO.WMATagger
 {
     /// <summary>
     /// ASF Attributes that are specific to the ASF Specification

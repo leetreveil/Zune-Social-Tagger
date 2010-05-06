@@ -6,7 +6,7 @@ using Id3Tag;
 using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
 
-namespace ZuneSocialTagger.Core.ID3Tagger
+namespace ZuneSocialTagger.Core.IO.ID3Tagger
 {
     /// <summary>
     /// Updates a pre-existing TagContainer with new zune PRIV tags

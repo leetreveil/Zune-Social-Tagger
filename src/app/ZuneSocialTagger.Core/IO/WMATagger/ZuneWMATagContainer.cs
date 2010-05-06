@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ASFTag;
-using Attribute=ASFTag.Attribute;
+using Attribute = ASFTag.Attribute;
 
-namespace ZuneSocialTagger.Core.WMATagger
+namespace ZuneSocialTagger.Core.IO.WMATagger
 {
     public class ZuneWMATagContainer : IZuneTagContainer
     {

@@ -1,4 +1,4 @@
-namespace ZuneSocialTagger.Core.ID3Tagger
+namespace ZuneSocialTagger.Core.IO.ID3Tagger
 {
     public class ID3Frames
     {

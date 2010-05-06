@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core;
+using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;

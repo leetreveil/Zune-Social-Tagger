@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ZuneSocialTagger.Core
+namespace ZuneSocialTagger.Core.IO
 {
     public interface IZuneTagContainer
     {

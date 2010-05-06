@@ -92,23 +92,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioFileReadException.cs" />
+    <Compile Include="IO\AudioFileReadException.cs" />
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="ID3Tagger\ID3Frames.cs" />
-    <Compile Include="WMATagger\ASFAttributes.cs" />
-    <Compile Include="WMATagger\ZuneWMATagContainer.cs" />
-    <Compile Include="IZuneTagContainer.cs" />
-    <Compile Include="ZuneAttribute.cs" />
+    <Compile Include="IO\ID3Tagger\ID3Frames.cs" />
+    <Compile Include="IO\WMATagger\ASFAttributes.cs" />
+    <Compile Include="IO\WMATagger\ZuneWMATagContainer.cs" />
+    <Compile Include="IO\IZuneTagContainer.cs" />
+    <Compile Include="IO\ZuneAttribute.cs" />
     <Compile Include="ZuneDatabase\DbAlbum.cs" />
     <Compile Include="ZuneDatabase\DbTrack.cs" />
     <Compile Include="ZuneDatabase\IZuneDatabaseReader.cs" />
     <Compile Include="ZuneDatabase\TestZuneDatabaseReader.cs" />
     <Compile Include="ZuneDatabase\ZuneDatabaseReader.cs" />
-    <Compile Include="ZuneIds.cs" />
-    <Compile Include="ID3Tagger\ZuneMP3TagContainer.cs" />
-    <Compile Include="ZuneTagContainerFactory.cs" />
+    <Compile Include="IO\ZuneIds.cs" />
+    <Compile Include="IO\ID3Tagger\ZuneMP3TagContainer.cs" />
+    <Compile Include="IO\ZuneTagContainerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MetaData.cs" />
+    <Compile Include="IO\MetaData.cs" />
     <Compile Include="ZuneWebsite\SyndicationExtensions.cs" />
     <Compile Include="ZuneWebsite\AlbumDetailsDownloader.cs" />
     <Compile Include="ZuneWebsite\AlbumSearch.cs" />
@@ -125,9 +125,7 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IO\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

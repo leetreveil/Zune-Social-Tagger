@@ -2,10 +2,10 @@ using System;
 using System.IO;
 using ASFTag;
 using Id3Tag;
-using ZuneSocialTagger.Core.ID3Tagger;
-using ZuneSocialTagger.Core.WMATagger;
+using ZuneSocialTagger.Core.IO.ID3Tagger;
+using ZuneSocialTagger.Core.IO.WMATagger;
 
-namespace ZuneSocialTagger.Core
+namespace ZuneSocialTagger.Core.IO
 {
     public static class ZuneTagContainerFactory
     {

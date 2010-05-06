@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using ZuneSocialTagger.Core;
 using System.Linq;
-using ZuneSocialTagger.Core.WMATagger;
+using ZuneSocialTagger.Core.IO;
+using ZuneSocialTagger.Core.IO.WMATagger;
 
 namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
 {

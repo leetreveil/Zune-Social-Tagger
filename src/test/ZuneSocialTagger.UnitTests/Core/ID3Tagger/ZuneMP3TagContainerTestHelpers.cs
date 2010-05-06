@@ -2,9 +2,9 @@ using System;
 using Id3Tag;
 using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
-using ZuneSocialTagger.Core;
-using ZuneSocialTagger.Core.ID3Tagger;
 using System.Text;
+using ZuneSocialTagger.Core.IO;
+using ZuneSocialTagger.Core.IO.ID3Tagger;
 
 namespace ZuneSocialTagger.UnitTests.Core.ID3Tagger
 {

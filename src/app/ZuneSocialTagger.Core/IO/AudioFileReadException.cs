@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ZuneSocialTagger.Core
+namespace ZuneSocialTagger.Core.IO
 {
     public class AudioFileReadException : Exception
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace ZuneSocialTagger.Core
+namespace ZuneSocialTagger.Core.IO
 {
     /// <summary>
     /// A zune attribute, Name = ZuneAlbumArtistId, Guid = 3ed50a00-0600-11db-89ca-0019b92a3933

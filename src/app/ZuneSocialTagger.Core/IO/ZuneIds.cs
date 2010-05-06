@@ -1,4 +1,4 @@
-namespace ZuneSocialTagger.Core
+namespace ZuneSocialTagger.Core.IO
 {
     /// <summary>
     /// These are the id's that the zune software uses to map a track to a certain artist, album and track
