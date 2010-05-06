@@ -16,8 +16,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
     {
         private readonly IZuneDatabaseReader _dbReader;
         private readonly ZuneWizardModel _model;
-        private Album _zuneAlbumMetaData;
-        private Album _webAlbumMetaData;
+        private DbAlbum _zuneAlbumMetaData;
+        private WebAlbum _webAlbumMetaData;
         private LinkStatus _linkStatus;
 
         public event Action AlbumDetailsDownloaded = delegate { };
@@ -46,7 +46,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         [XmlIgnore]
         public RelayCommand DelinkCommand { get; private set; }
 
-        public Album ZuneAlbumMetaData
+        public DbAlbum ZuneAlbumMetaData
         {
             get { return _zuneAlbumMetaData; }
             set
@@ -56,7 +56,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
         }
 
-        public Album WebAlbumMetaData
+        public WebAlbum WebAlbumMetaData
         {
             get { return _webAlbumMetaData; }
             set
@@ -96,7 +96,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             DoesAlbumExistInDbAndDisplayError(albumDetails);
 
-            IEnumerable<Track> tracksForAlbum = _dbReader.GetTracksForAlbum(albumDetails.MediaId);
+            IEnumerable<DbTrack> tracksForAlbum = _dbReader.GetTracksForAlbum(albumDetails.MediaId);
 
             var selectedAlbum = new SelectedAlbum();
 
@@ -136,7 +136,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             //TODO: fix bug where application crashes when removing an album that is currently playing
 
-            List<Track> tracksForAlbum = _dbReader.GetTracksForAlbum(this.ZuneAlbumMetaData.MediaId).ToList();
+            List<DbTrack> tracksForAlbum = _dbReader.GetTracksForAlbum(this.ZuneAlbumMetaData.MediaId).ToList();
 
 
             foreach (var track in tracksForAlbum)
@@ -180,7 +180,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         {
             DoesAlbumExistInDbAndDisplayError(this.ZuneAlbumMetaData);
 
-            Album albumMetaData = _dbReader.GetAlbum(this.ZuneAlbumMetaData.MediaId);
+            DbAlbum albumMetaData = _dbReader.GetAlbum(this.ZuneAlbumMetaData.MediaId);
             this.ZuneAlbumMetaData = albumMetaData;
             this.LinkStatus = LinkStatus.Unknown;
             this.WebAlbumMetaData = null;
@@ -216,7 +216,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
         }
 
-        private void DoesAlbumExistInDbAndDisplayError(Album selectedAlbum)
+        private void DoesAlbumExistInDbAndDisplayError(DbAlbum selectedAlbum)
         {
             if (!SharedMethods.CheckIfZuneSoftwareIsRunning())
             {

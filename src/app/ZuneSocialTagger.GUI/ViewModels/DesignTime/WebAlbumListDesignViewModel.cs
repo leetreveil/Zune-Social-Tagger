@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using ZuneSocialTagger.Core;
+using ZuneSocialTagger.Core.ZuneDatabase;
+using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
@@ -21,7 +22,7 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
                                 {
                                     LinkStatus = LinkStatus.Unlinked,
                                     ZuneAlbumMetaData =
-                                        new Album
+                                        new DbAlbum
                                             {
                                                 Artist = "Pendulum",
                                                 Title = "Immersion",
@@ -34,7 +35,7 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
                                 {
                                     LinkStatus = LinkStatus.Linked,
                                     ZuneAlbumMetaData =
-                                        new Album
+                                        new DbAlbum
                                             {
                                                 Artist = "Various Artists",
                                                 Title = "Sick Music 2",
@@ -43,7 +44,7 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
                                                     "http://shop.hospitalrecords.com/images/product/NHS164/medium.jpg"
                                             },
                                     WebAlbumMetaData =
-                                        new Album
+                                        new WebAlbum
                                             {
                                                 Artist = "Various Artists",
                                                 Title = "Sick Music 2",
@@ -57,14 +58,14 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
                                 {
                                     LinkStatus = LinkStatus.AlbumOrArtistMismatch,
                                     ZuneAlbumMetaData =
-                                        new Album
+                                        new DbAlbum
                                             {
                                                 Artist = "Various Artists",
                                                 Title = "Sick Music",
                                                 ReleaseYear = "2010",
                                             },
                                     WebAlbumMetaData =
-                                        new Album
+                                        new WebAlbum
                                             {
                                                 Artist = "Various Artists",
                                                 Title = "Sick Music 2",
@@ -78,7 +79,7 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
                                 {
                                     LinkStatus = LinkStatus.Unavailable,
                                     ZuneAlbumMetaData =
-                                        new Album
+                                        new DbAlbum
                                             {
                                                 Artist = "AFI",
                                                 Title = "A new AFI record",

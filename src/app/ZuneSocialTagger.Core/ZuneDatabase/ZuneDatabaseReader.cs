@@ -64,7 +64,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         }
 
 
-        public IEnumerable<Album> ReadAlbums()
+        public IEnumerable<DbAlbum> ReadAlbums()
         {
             this.StartedReadingAlbums.Invoke();
 
@@ -91,7 +91,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             albums.Dispose();
         }
 
-        public IEnumerable<Album> GetNewAlbums(IEnumerable<int> albumIds)
+        public IEnumerable<DbAlbum> GetNewAlbums(IEnumerable<int> albumIds)
         {
             ZuneQueryList albums = GetAlbumQueryList();
 
@@ -113,8 +113,8 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
             return albumIds.Except(uniqueIds);
         }
-        
-        public Album GetAlbumByAlbumTitle(string albumTitle)
+
+        public DbAlbum GetAlbumByAlbumTitle(string albumTitle)
         {
             ////querying all albums, creates a property bag inside this method to query the database
             ////thats why we can pass null for the propertybag
@@ -144,7 +144,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             }
         }
 
-        public Album GetAlbum(int index)
+        public DbAlbum GetAlbum(int index)
         {
             AlbumMetadata albumMetadata = _zuneLibrary.GetAlbumMetadata(index);
 
@@ -154,7 +154,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             var dateAdded = GetFieldValue(index, EListType.eAlbumList,
                                           ZuneQueryList.AtomNameToAtom("DateAdded"), new DateTime());
 
-            var album = new Album
+            var album = new DbAlbum
                             {
                                 AlbumMediaId = albumMediaId,
                                 DateAdded = dateAdded,
@@ -173,7 +173,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             return album;
         }
 
-        public IEnumerable<Track> GetTracksForAlbum(int albumId)
+        public IEnumerable<DbTrack> GetTracksForAlbum(int albumId)
         {
             ZuneQueryList zuneQueryList = _zuneLibrary.GetTracksByAlbum(0, albumId,
                                                                         EQuerySortType.eQuerySortOrderAscending,
@@ -188,7 +188,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
                 Guid mediaId = GetFieldValue(track.ID, EListType.eTrackList,
                     ZuneQueryList.AtomNameToAtom("ZuneMediaID"), Guid.Empty);
 
-                yield return new Track
+                yield return new DbTrack
                  {
                      FilePath = filePath,
                      MediaId = mediaId
@@ -227,6 +227,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             {
                 //The version that this program was written to support, in future versions methods could change
                 //so updates will probably be needed
+                //TODO: put this into the app settings so if an update is released the app can be 'hacked' to support it
                 var supportedVersion = new Version(4, 2, 202, 0);
 
                 if (!File.Exists("ZuneDBApi.dll"))

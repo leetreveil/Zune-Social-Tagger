@@ -7,7 +7,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 {
     public class TestZuneDatabaseReader : IZuneDatabaseReader
     {
-        private List<Album> _deserializedAlbums;
+        private List<DbAlbum> _deserializedAlbums;
 
         public bool CanInitialize
         {
@@ -23,7 +23,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             try
             {
                 using (var fs = new FileStream(@"ZuneDatabase\testzunedatabase.xml", FileMode.Open))
-                    _deserializedAlbums = fs.XmlDeserializeFromStream<List<Album>>();
+                    _deserializedAlbums = fs.XmlDeserializeFromStream<List<DbAlbum>>();
 
                 return true;
             }
@@ -33,7 +33,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             }
         }
 
-        public IEnumerable<Album> ReadAlbums()
+        public IEnumerable<DbAlbum> ReadAlbums()
         {
             this.StartedReadingAlbums.Invoke();
 
@@ -49,9 +49,9 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             FinishedReadingAlbums.Invoke();
         }
 
-        public IEnumerable<Album> GetNewAlbums(IEnumerable<int> albumIds)
+        public IEnumerable<DbAlbum> GetNewAlbums(IEnumerable<int> albumIds)
         {
-            yield return new Album
+            yield return new DbAlbum
             {
                 Artist = "Pendulum",
                 Title = "Immersion",
@@ -60,7 +60,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
                 TrackCount = 12
             };
 
-            yield return new Album
+            yield return new DbAlbum
             {
                 Artist = "Circa Survive",
                 Title = "Blue Sky Noise",
@@ -77,7 +77,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         }
 
 
-        public Album GetAlbum(int index)
+        public DbAlbum GetAlbum(int index)
         {
             if (_deserializedAlbums != null && _deserializedAlbums.Count > 0)
             {
@@ -87,14 +87,14 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             return null;
         }
 
-        public IEnumerable<Track> GetTracksForAlbum(int albumId)
+        public IEnumerable<DbTrack> GetTracksForAlbum(int albumId)
         {
             var albumDetails = _deserializedAlbums.Where(x => x.MediaId == albumId).First();
 
-            return albumDetails.Tracks.Select(track => new Track() {FilePath = track.FilePath});
+            return albumDetails.Tracks.Select(track => new DbTrack() {FilePath = track.FilePath});
         }
 
-        public Album GetAlbumByAlbumTitle(string albumTitle)
+        public DbAlbum GetAlbumByAlbumTitle(string albumTitle)
         {
             throw new NotImplementedException();
         }

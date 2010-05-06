@@ -99,7 +99,8 @@
     <Compile Include="WMATagger\ZuneWMATagContainer.cs" />
     <Compile Include="IZuneTagContainer.cs" />
     <Compile Include="ZuneAttribute.cs" />
-    <Compile Include="Album.cs" />
+    <Compile Include="ZuneDatabase\DbAlbum.cs" />
+    <Compile Include="ZuneDatabase\DbTrack.cs" />
     <Compile Include="ZuneDatabase\IZuneDatabaseReader.cs" />
     <Compile Include="ZuneDatabase\TestZuneDatabaseReader.cs" />
     <Compile Include="ZuneDatabase\ZuneDatabaseReader.cs" />
@@ -109,19 +110,23 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MetaData.cs" />
     <Compile Include="ZuneWebsite\SyndicationExtensions.cs" />
-    <Compile Include="Track.cs" />
     <Compile Include="ZuneWebsite\AlbumDetailsDownloader.cs" />
     <Compile Include="ZuneWebsite\AlbumSearch.cs" />
     <Compile Include="ZuneWebsite\Artist.cs" />
     <Compile Include="ZuneWebsite\ArtistSearch.cs" />
     <Compile Include="ZuneWebsite\DownloadState.cs" />
     <Compile Include="ZuneWebsite\Urls.cs" />
+    <Compile Include="ZuneWebsite\WebAlbum.cs" />
+    <Compile Include="ZuneWebsite\WebTrack.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ZuneDatabase\testzunedatabase.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IO\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,5 +1,5 @@
 using System.Collections.ObjectModel;
-using ZuneSocialTagger.Core;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
 {
@@ -16,7 +16,7 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
         {
             this.SearchResults = new ObservableCollection<object>();
 
-            this.SearchResults.Add(new Album()
+            this.SearchResults.Add(new WebAlbum
             {
                 Artist = "Pendulum",
                 Title = "In Silico",
@@ -24,7 +24,7 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
                 ArtworkUrl = "http://img.noiset.com/images/album/pendulum-in-silico-cd-cover-artwork-1841.jpeg"
             });
 
-            this.SearchResults.Add(new Album()
+            this.SearchResults.Add(new WebAlbum
             {
                 Artist = "Pendulum",
                 Title = "Hold Your Color",
@@ -36,23 +36,23 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
 
             this.SearchResultsDetailViewModel.SelectedAlbumTitle = "Hold Your Colour";
-            this.SearchResultsDetailViewModel.SelectedAlbumSongs = new ObservableCollection<Track>();
+            this.SearchResultsDetailViewModel.SelectedAlbumSongs = new ObservableCollection<WebTrack>();
 
-            ObservableCollection<Track> selectedAlbumSongs = this.SearchResultsDetailViewModel.SelectedAlbumSongs;
-            selectedAlbumSongs.Add(new Track { TrackNumber = "01", Title = "Prelude" });
-            selectedAlbumSongs.Add(new Track { TrackNumber = "02", Title = "Slam" });
-            selectedAlbumSongs.Add(new Track { TrackNumber = "03", Title = "Plasticworld" });
-            selectedAlbumSongs.Add(new Track { TrackNumber = "04", Title = "Fasten Your Seatbelt" });
-            selectedAlbumSongs.Add(new Track { TrackNumber = "05", Title = "Through The Loop" });
-            selectedAlbumSongs.Add(new Track { TrackNumber = "06", Title = "Sounds Of Life" });
-            selectedAlbumSongs.Add(new Track { TrackNumber = "07", Title = "Girl In The Fire" });
-            selectedAlbumSongs.Add(new Track { TrackNumber = "08", Title = "Tarantula" });
-            selectedAlbumSongs.Add(new Track { TrackNumber = "09", Title = "Out Here" });
-            selectedAlbumSongs.Add(new Track { TrackNumber = "10", Title = "Hold Your Colour" });
-            selectedAlbumSongs.Add(new Track { TrackNumber = "11", Title = "The Terminal" });
-            selectedAlbumSongs.Add(new Track { TrackNumber = "12", Title = "Streamline" });
-            selectedAlbumSongs.Add(new Track { TrackNumber = "13", Title = "Another Planet" });
-            selectedAlbumSongs.Add(new Track { TrackNumber = "14", Title = "Still Grey" });
+            ObservableCollection<WebTrack> selectedAlbumSongs = this.SearchResultsDetailViewModel.SelectedAlbumSongs;
+            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "01", Title = "Prelude" });
+            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "02", Title = "Slam" });
+            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "03", Title = "Plasticworld" });
+            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "04", Title = "Fasten Your Seatbelt" });
+            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "05", Title = "Through The Loop" });
+            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "06", Title = "Sounds Of Life" });
+            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "07", Title = "Girl In The Fire" });
+            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "08", Title = "Tarantula" });
+            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "09", Title = "Out Here" });
+            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "10", Title = "Hold Your Colour" });
+            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "11", Title = "The Terminal" });
+            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "12", Title = "Streamline" });
+            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "13", Title = "Another Planet" });
+            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "14", Title = "Still Grey" });
         }
     }
 }

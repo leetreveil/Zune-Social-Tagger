@@ -250,7 +250,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         {
             var currentMediaIds = _albums.Select(x => x.ZuneAlbumMetaData.MediaId);
 
-            IEnumerable<Album> newAlbums = _dbReader.GetNewAlbums(currentMediaIds).ToList();
+            IEnumerable<DbAlbum> newAlbums = _dbReader.GetNewAlbums(currentMediaIds).ToList();
             IEnumerable<int> removedAlbums = _dbReader.GetRemovedAlbums(currentMediaIds).ToList();
 
             foreach (var album in newAlbums)
@@ -303,12 +303,11 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                foreach (Album newAlbum in _dbReader.ReadAlbums())
+                foreach (DbAlbum newAlbum in _dbReader.ReadAlbums())
                 {
-                    Album album = newAlbum;
                     var advm = new AlbumDetailsViewModel(_dbReader, _model);
-                    advm.LinkStatus = album.AlbumMediaId.GetLinkStatusFromGuid();
-                    advm.ZuneAlbumMetaData = album;
+                    advm.LinkStatus = newAlbum.AlbumMediaId.GetLinkStatusFromGuid();
+                    advm.ZuneAlbumMetaData = newAlbum;
 
                     DispatcherHelper.CheckBeginInvokeOnUI(() => _albums.Add(advm));
                 }

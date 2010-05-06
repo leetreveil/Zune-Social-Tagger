@@ -6,6 +6,7 @@ using System.Text;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core;
 using ZuneSocialTagger.GUI.ViewModels;
+using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUI.Models
 {
@@ -31,18 +32,18 @@ namespace ZuneSocialTagger.GUI.Models
             return Process.GetProcessesByName("Zune").Length != 0;
         }
 
-        public static void SetAlbumDetails(Album dledAlbum, AlbumDetailsViewModel albumToSet)
+        public static void SetAlbumDetails(WebAlbum dledAlbum, AlbumDetailsViewModel albumToSet)
         {
             if (dledAlbum == null)
                 albumToSet.LinkStatus = LinkStatus.Unavailable;
             else
             {
-                Album metaData = albumToSet.ZuneAlbumMetaData;
+                var metaData = albumToSet.ZuneAlbumMetaData;
 
                 albumToSet.LinkStatus = GetAlbumLinkStatus(dledAlbum.Title, dledAlbum.Artist,
                                                       metaData.Title, metaData.Artist);
 
-                albumToSet.WebAlbumMetaData = new Album
+                albumToSet.WebAlbumMetaData = new WebAlbum
                 {
                     Artist = dledAlbum.Artist,
                     Title = dledAlbum.Title,

@@ -6,9 +6,9 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
     public interface IZuneDatabaseReader : IDisposable
     {
         bool Initialize();
-        IEnumerable<Album> ReadAlbums();
-        Album GetAlbum(int index);
-        IEnumerable<Track> GetTracksForAlbum(int albumId);
+        IEnumerable<DbAlbum> ReadAlbums();
+        DbAlbum GetAlbum(int index);
+        IEnumerable<DbTrack> GetTracksForAlbum(int albumId);
         event Action StartedReadingAlbums;
         event Action FinishedReadingAlbums;
         event Action<int, int> ProgressChanged;
@@ -18,7 +18,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         /// </summary>
         /// <param name="albumTitle"></param>
         /// <returns></returns>
-        Album GetAlbumByAlbumTitle(string albumTitle);
+        DbAlbum GetAlbumByAlbumTitle(string albumTitle);
 
         bool DoesAlbumExist(int index);
         void RemoveAlbumFromDatabase(int albumId );
@@ -30,7 +30,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         /// <returns></returns>
         bool CanInitialize { get; }
 
-        IEnumerable<Album> GetNewAlbums(IEnumerable<int> albumIds);
+        IEnumerable<DbAlbum> GetNewAlbums(IEnumerable<int> albumIds);
         IEnumerable<int> GetRemovedAlbums(IEnumerable<int> albumIds);
     }
 }

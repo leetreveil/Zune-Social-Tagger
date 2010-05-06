@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace ZuneSocialTagger.Core
+namespace ZuneSocialTagger.Core.ZuneDatabase
 {
-    public class Album
+    public class DbAlbum
     {
         public string Title { get; set; }
         public string Artist { get; set; }
@@ -13,6 +13,6 @@ namespace ZuneSocialTagger.Core
         public int MediaId { get; set; }
         public string ReleaseYear { get; set; }
         public int TrackCount { get; set; }
-        public List<Track> Tracks { get; set; }
+        public List<DbTrack> Tracks { get; set; }
     }
 }

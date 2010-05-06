@@ -5,6 +5,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core;
+using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 
@@ -35,7 +36,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             get { return _model.SelectedAlbum.Tracks; }
         }
 
-        public ObservableCollection<Track> SongsFromWebste
+        public ObservableCollection<WebTrack> SongsFromWebste
         {
             get
             {

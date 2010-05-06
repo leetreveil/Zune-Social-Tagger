@@ -2,15 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace ZuneSocialTagger.Core
+namespace ZuneSocialTagger.Core.ZuneWebsite
 {
-    public class Track
+    public class WebTrack
     {
         public Guid AlbumMediaId { get; set; }
         public Guid ArtistMediaId { get; set; }
         public Guid MediaId { get; set; }
-        public string FilePath { get; set; } 
-
         public string Title { get; set; }
         public string TrackNumber { get; set; }
         public string DiscNumber { get; set; }

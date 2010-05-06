@@ -6,7 +6,6 @@ using System.Threading;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
-using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 
@@ -15,7 +14,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
     public class SearchResultsViewModel : ViewModelBaseExtended
     {
         private readonly ZuneWizardModel _model;
-        private IEnumerable<Album> _albums;
+        private IEnumerable<WebAlbum> _albums;
         private IEnumerable<Artist> _artists;
         private bool _isLoading;
         private SearchResultsDetailViewModel _searchResultsDetailViewModel;
@@ -112,7 +111,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         #endregion
 
-        public void LoadAlbum(Album album)
+        public void LoadAlbum(WebAlbum album)
         {
             this.IsLoading = true;
 
@@ -151,7 +150,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         public void LoadAlbumsForArtist(Artist artist)
         {
             ThreadPool.QueueUserWorkItem(_ => {
-                IEnumerable<Album> albums = AlbumSearch.GetAlbumsFromArtistGuid(artist.Id).ToList();
+                IEnumerable<WebAlbum> albums = AlbumSearch.GetAlbumsFromArtistGuid(artist.Id).ToList();
 
                 _albums = albums;
 
@@ -190,12 +189,12 @@ namespace ZuneSocialTagger.GUI.ViewModels
             this.ArtistCount = String.Format("ARTISTS ({0})", artists.Count());
         }
 
-        public void LoadAlbums(IEnumerable<Album> albums)
+        public void LoadAlbums(IEnumerable<WebAlbum> albums)
         {
             _albums = albums;
             this.AlbumCount = String.Format("ALBUMS ({0})", albums.Count());
 
-            foreach (Album album in albums)
+            foreach (WebAlbum album in albums)
                 this.SearchResults.Add(album);
 
             this.IsAlbumsEnabled = true;
@@ -212,7 +211,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         }
 
 
-        private static ExpandedAlbumDetailsViewModel SetAlbumDetails(Album albumMetaData)
+        private static ExpandedAlbumDetailsViewModel SetAlbumDetails(WebAlbum albumMetaData)
         {
             return new ExpandedAlbumDetailsViewModel
                  {
@@ -224,7 +223,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                  };
         }
 
-        private void UpdateDetail(Album albumMetaData)
+        private void UpdateDetail(WebAlbum albumMetaData)
         {
              this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel
                                                     {
@@ -240,9 +239,9 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void SearchResults_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (e.NewStartingIndex == 0 && e.NewItems[0].GetType() == typeof(Album))
+            if (e.NewStartingIndex == 0 && e.NewItems[0].GetType() == typeof(WebAlbum))
             {
-                LoadAlbum((Album)e.NewItems[0]);
+                LoadAlbum((WebAlbum)e.NewItems[0]);
             }
         }
 
@@ -251,8 +250,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
             if (item.GetType() == typeof(Artist))
                 LoadAlbumsForArtist(item as Artist);
 
-            if (item.GetType() == typeof(Album))
-                LoadAlbum(item as Album);
+            if (item.GetType() == typeof(WebAlbum))
+                LoadAlbum(item as WebAlbum);
         }
     }
 }

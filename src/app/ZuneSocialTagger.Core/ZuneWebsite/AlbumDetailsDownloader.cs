@@ -18,7 +18,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         private SyndicationFeed _feed;
         private readonly WebClient _client;
 
-        public event Action<Album,DownloadState> DownloadCompleted = delegate { };
+        public event Action<WebAlbum,DownloadState> DownloadCompleted = delegate { };
 
         public AlbumDetailsDownloader(string url)
         {
@@ -37,7 +37,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             _client.DownloadDataAsync(new Uri(_url));
         }
 
-        public Album Download()
+        public WebAlbum Download()
         {
             byte[] downloadData = _client.DownloadData(new Uri(_url));
 
@@ -72,16 +72,16 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             }
         }
 
-        private Album Read()
+        private WebAlbum Read()
         {
             _feed = SyndicationFeed.Load(_reader);
 
             return _feed != null ? GetAlbumDetails() : null;
         }
 
-        private Album GetAlbumDetails()
+        private WebAlbum GetAlbumDetails()
         {
-            return new Album
+            return new WebAlbum
                        {
                            Title = _feed.Title.Text,
                            Artist = _feed.GetArtist(),
@@ -92,9 +92,9 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                        };
         }
 
-        private List<Track> GetTracks()
+        private List<WebTrack> GetTracks()
         {
-            return _feed.Items.Select(item => new Track
+            return _feed.Items.Select(item => new WebTrack
             {
                 MediaId = item.Id.ExtractGuidFromUrnUuid(),
                 ArtistMediaId = item.GetArtistMediaIdFromTrack(),
