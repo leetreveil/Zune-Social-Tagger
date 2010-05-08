@@ -29,8 +29,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -75,7 +74,7 @@
     </Reference>
     <Reference Include="Ninject, Version=2.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\libs\ninject\Ninject.dll</HintPath>
+      <HintPath>..\..\..\libs\ninject\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
@@ -189,7 +188,6 @@
     <Compile Include="Converters\SortOrderToVisibilityConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Converters\TrackNumberToDblDigitTrackNumberConverter.cs" />
-    <Compile Include="Models\CachedZuneDatabaseReader.cs" />
     <Compile Include="Models\ErrorMessage.cs" />
     <Compile Include="Models\ExtensionMethods.cs" />
     <Compile Include="Models\LinkStatus.cs" />
