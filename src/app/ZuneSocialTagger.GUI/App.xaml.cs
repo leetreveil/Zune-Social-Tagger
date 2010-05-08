@@ -25,6 +25,11 @@ namespace ZuneSocialTagger.GUI
 
         public App()
         {
+            this.Startup += App_Startup;
+        }
+
+        void App_Startup(object sender, System.Windows.StartupEventArgs e)
+        {
             SetupUnhandledExceptionLogging();
 
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
@@ -36,7 +41,7 @@ namespace ZuneSocialTagger.GUI
             SetupBindings();
 
             var appViewModel = Container.Get<ApplicationViewModel>();
-            var appView = new ApplicationView {DataContext = appViewModel};
+            var appView = new ApplicationView { DataContext = appViewModel };
 
             //tell the view model when the view has loaded, and then start the view model load routine
             //if we didnt do this the viewmodel would load before the view and would delay the startup
@@ -46,17 +51,22 @@ namespace ZuneSocialTagger.GUI
             appView.Show();
         }
 
-        private void SetupBindings()
+        private static void SetupBindings()
         {
-            Container.Bind<ZuneWizardModel>().ToSelf().InSingletonScope();
             Container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
 
             Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
-            Container.Bind<CachedZuneDatabaseReader>().ToSelf().InSingletonScope();
+            Container.Bind<SelectedAlbum>().ToSelf().InSingletonScope();
 
             //we need the web view model to be a singleton because we want to be able to continue
-            //downloading data while linking
+            //downloading data while linking etc
             Container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
+            Container.Bind<SearchViewModel>().ToSelf().InSingletonScope();
+        }
+
+        public static ViewModelBaseExtended GetViewForType(Type viewType)
+        {
+            return Container.Get(viewType) as ViewModelBaseExtended;
         }
 
         private static void SetupUnhandledExceptionLogging()
@@ -83,7 +93,7 @@ namespace ZuneSocialTagger.GUI
             return pathToZuneSocAppDataFolder;
         }
 
-        static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             LoggerForStrings.LogException(e.Exception);
 
@@ -93,12 +103,10 @@ namespace ZuneSocialTagger.GUI
                 {
                     LoggerForEmail.LogException(e.Exception);
                 }
-                catch{}
                 finally 
                 {
                     Current.Shutdown();
                 }
-
 
             }, () => Current.Shutdown());
 

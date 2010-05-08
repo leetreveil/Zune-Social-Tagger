@@ -8,8 +8,10 @@ using ZuneSocialTagger.GUI.ViewModels;
 
 namespace ZuneSocialTagger.GUI.Models
 {
+    [Serializable]
     public class ZuneObservableCollection<T> : ObservableCollection<T>
     {
+        [field: NonSerialized]
         public event Action NeedsUpdating = delegate { };
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)

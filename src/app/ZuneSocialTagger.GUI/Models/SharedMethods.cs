@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Messaging;
-using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.GUI.ViewModels;
 using ZuneSocialTagger.Core.ZuneWebsite;
@@ -22,7 +22,7 @@ namespace ZuneSocialTagger.GUI.Models
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send(new ErrorMessage(ErrorMode.Error, ex.Message));
+                Messenger.Default.Send<ErrorMessage,ApplicationViewModel>(new ErrorMessage(ErrorMode.Error, ex.Message));
                 //if we hit an error on any track in the albums then just fail and dont read anymore
                 return null;
             }

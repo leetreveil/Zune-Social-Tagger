@@ -13,7 +13,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 {
     public class SearchResultsViewModel : ViewModelBaseExtended
     {
-        private readonly ZuneWizardModel _model;
+        private readonly SelectedAlbum _selectedAlbum;
         private IEnumerable<WebAlbum> _albums;
         private IEnumerable<Artist> _artists;
         private bool _isLoading;
@@ -22,9 +22,9 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private bool _isAlbumsEnabled;
         private string _artistCount;
 
-        public SearchResultsViewModel(ZuneWizardModel model)
+        public SearchResultsViewModel(SelectedAlbum selectedAlbum)
         {
-            _model = model;
+            _selectedAlbum = selectedAlbum;
 
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
             this.SearchResults = new ObservableCollection<object>();
@@ -124,10 +124,10 @@ namespace ZuneSocialTagger.GUI.ViewModels
             reader.DownloadCompleted += (details, state) => {
                 if (state == DownloadState.Success)
                 {
-                    _model.SelectedAlbum.WebAlbumMetaData = SetAlbumDetails(details);
-                    _model.SelectedAlbum.SongsFromWebsite = details.Tracks.ToObservableCollection();
+                    _selectedAlbum.WebAlbumMetaData = SetAlbumDetails(details);
+                    _selectedAlbum.SongsFromWebsite = details.Tracks.ToObservableCollection();
 
-                    foreach (var track in _model.SelectedAlbum.Tracks)
+                    foreach (var track in _selectedAlbum.Tracks)
                     {
                         track.SelectedSong = track.MatchThisSongToAvailableSongs(details.Tracks);
                     }
@@ -200,14 +200,14 @@ namespace ZuneSocialTagger.GUI.ViewModels
             this.IsAlbumsEnabled = true;
         }
 
-        private void MoveBack()
+        private static void MoveBack()
         {
-            Messenger.Default.Send(typeof(SearchViewModel));
+            Messenger.Default.Send<Type, ApplicationViewModel>(typeof(SearchViewModel));
         }
 
-        private void MoveNext()
+        private static void MoveNext()
         {
-            Messenger.Default.Send(typeof(DetailsViewModel));
+            Messenger.Default.Send<Type, ApplicationViewModel>(typeof(DetailsViewModel));
         }
 
 

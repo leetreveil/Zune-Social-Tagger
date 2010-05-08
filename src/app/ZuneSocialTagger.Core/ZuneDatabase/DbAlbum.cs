@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ZuneSocialTagger.Core.ZuneDatabase
 {
+    [Serializable]
     public class DbAlbum
     {
         public string Title { get; set; }

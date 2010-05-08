@@ -9,24 +9,32 @@ namespace ZuneSocialTagger.GUI.ViewModels
 {
     public class SearchViewModel : ViewModelBaseExtended
     {
-        private readonly ZuneWizardModel _model;
+        private readonly SelectedAlbum _selectedAlbum;
         private string _searchText;
         private bool _isSearching;
         private bool _canMoveNext;
         private SearchResultsViewModel _searchResultsViewModel;
         private bool _canShowResults;
 
-        public SearchViewModel(ZuneWizardModel model)
+        public SearchViewModel(SelectedAlbum selectedAlbum)
         {
-            _model = model;
-
+            _selectedAlbum = selectedAlbum;
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.MoveNextCommand = new RelayCommand(MoveNext);
             this.SearchCommand = new RelayCommand(Search);
 
-            this.AlbumDetails = model.SelectedAlbum.ZuneAlbumMetaData;
-            this.SearchText = model.SearchText;
+            Messenger.Default.Register<string>(this, GotSearchTextFromOtherViewModels);
+            Messenger.Default.Register<ExpandedAlbumDetailsViewModel>(this,GotAlbumDetailsFromOtherViewModels);
+        }
 
+        private void GotAlbumDetailsFromOtherViewModels(ExpandedAlbumDetailsViewModel details)
+        {
+            this.AlbumDetails = details;
+        }
+
+        private void GotSearchTextFromOtherViewModels(string searchText)
+        {
+            this.SearchText = searchText;
             Search();
         }
 
@@ -98,7 +106,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             this.SearchResultsViewModel = null;
 
             AlbumSearch.SearchForAsync(this.SearchText, albums => {
-                this.SearchResultsViewModel = new SearchResultsViewModel(_model);
+                this.SearchResultsViewModel = new SearchResultsViewModel(_selectedAlbum);
 
                 DispatcherHelper.CheckBeginInvokeOnUI(() => this.SearchResultsViewModel.LoadAlbums(albums));
 
@@ -119,12 +127,12 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public void MoveBack()
         {
-            Messenger.Default.Send("SWITCHTOFIRSTVIEW");
+            Messenger.Default.Send<string,ApplicationViewModel>("SWITCHTOFIRSTVIEW");
         }
 
         public void MoveNext()
         {
-            Messenger.Default.Send(typeof (DetailsViewModel));
+            Messenger.Default.Send<System.Type,ApplicationViewModel>(typeof (DetailsViewModel));
         }
     }
 }

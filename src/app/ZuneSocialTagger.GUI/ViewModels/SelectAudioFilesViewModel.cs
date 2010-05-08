@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -11,11 +12,11 @@ namespace ZuneSocialTagger.GUI.ViewModels
 {
     public class SelectAudioFilesViewModel : ViewModelBaseExtended
     {
-        private readonly ZuneWizardModel _model;
+        private readonly SelectedAlbum _selectedAlbum;
 
-        public SelectAudioFilesViewModel(ZuneWizardModel model)
+        public SelectAudioFilesViewModel(SelectedAlbum selectedAlbum)
         {
-            _model = model;
+            _selectedAlbum = selectedAlbum;
             this.CanSwitchToNewMode = true;
             this.SelectFilesCommand = new RelayCommand(SelectFiles);
             this.SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);    
@@ -27,7 +28,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public void SwitchToNewMode()
         {
-            Messenger.Default.Send(typeof(WebAlbumListViewModel));
+            Messenger.Default.Send<Type, ApplicationViewModel>(typeof(WebAlbumListViewModel));
         }
 
         public void SelectFiles()
@@ -56,35 +57,31 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void ReadFiles(IEnumerable<string> files)
         {
-            var selectedAlbum = new SelectedAlbum();
-
             foreach (var file in files)
             {
                 var zuneTagContainer = SharedMethods.GetContainer(file);
 
                 if (zuneTagContainer != null)
-                    selectedAlbum.Tracks.Add(new Song(file, zuneTagContainer));
+                    _selectedAlbum.Tracks.Add(new Song(file, zuneTagContainer));
                 else
                     return;
             }
 
-            selectedAlbum.Tracks = selectedAlbum.Tracks.OrderBy(SharedMethods.SortByTrackNumber()).ToObservableCollection();
+            _selectedAlbum.Tracks = _selectedAlbum.Tracks.OrderBy(SharedMethods.SortByTrackNumber()).ToObservableCollection();
 
-            MetaData ftMetaData = selectedAlbum.Tracks.First().MetaData;
+            MetaData ftMetaData = _selectedAlbum.Tracks.First().MetaData;
 
-            _model.SearchText = ftMetaData.AlbumName + " " + ftMetaData.AlbumArtist;
-
-            selectedAlbum.ZuneAlbumMetaData = new ExpandedAlbumDetailsViewModel
+            _selectedAlbum.ZuneAlbumMetaData = new ExpandedAlbumDetailsViewModel
             {
                 Artist = ftMetaData.AlbumArtist,
                 Title = ftMetaData.AlbumName,
-                SongCount = selectedAlbum.Tracks.Count.ToString(),
+                SongCount = _selectedAlbum.Tracks.Count.ToString(),
                 Year = ftMetaData.Year
             };
 
-            _model.SelectedAlbum = selectedAlbum;
-
-            Messenger.Default.Send(typeof(SearchViewModel));
+            Messenger.Default.Send<Type, ApplicationViewModel>(typeof(SearchViewModel));
+            Messenger.Default.Send<string, SearchViewModel>(ftMetaData.AlbumName + " " + ftMetaData.AlbumArtist);
+            Messenger.Default.Send<ExpandedAlbumDetailsViewModel,SearchViewModel>(_selectedAlbum.ZuneAlbumMetaData);
         }
     }
 }

@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
@@ -14,14 +13,14 @@ namespace ZuneSocialTagger.GUI.ViewModels
 {
     public class DetailsViewModel : ViewModelBaseExtended
     {
-        private readonly ZuneWizardModel _model;
+        private readonly SelectedAlbum _selectedAlbum;
 
-        public DetailsViewModel(ZuneWizardModel model)
+        public DetailsViewModel(SelectedAlbum selectedAlbum)
         {
-            _model = model;
+            _selectedAlbum = selectedAlbum;
 
-            this.AlbumDetailsFromWebsite = _model.SelectedAlbum.WebAlbumMetaData;
-            this.AlbumDetailsFromFile = _model.SelectedAlbum.ZuneAlbumMetaData;
+            this.AlbumDetailsFromWebsite = _selectedAlbum.WebAlbumMetaData;
+            this.AlbumDetailsFromFile = _selectedAlbum.ZuneAlbumMetaData;
    
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.SaveCommand = new RelayCommand(Save);
@@ -34,14 +33,14 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public ObservableCollection<Song> Rows
         {
-            get { return _model.SelectedAlbum.Tracks; }
+            get { return _selectedAlbum.Tracks; }
         }
 
         public ObservableCollection<WebTrack> SongsFromWebste
         {
             get
             {
-                return _model.SelectedAlbum.SongsFromWebsite.ToObservableCollection();
+                return _selectedAlbum.SongsFromWebsite.ToObservableCollection();
             }
         }
 
@@ -71,31 +70,34 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             var uaeExceptions = new List<UnauthorizedAccessException>();
 
-            foreach (var row in _model.SelectedAlbum.Tracks)
+            foreach (var row in _selectedAlbum.Tracks)
             {
                 try
                 {
-                    var container = row.Container;
-
-                    if (row.SelectedSong.HasAllZuneIds)
+                    if (row.SelectedSong != null)
                     {
-                        container.RemoveZuneAttribute("WM/WMContentID");
-                        container.RemoveZuneAttribute("WM/WMCollectionID");
-                        container.RemoveZuneAttribute("WM/WMCollectionGroupID");
-                        container.RemoveZuneAttribute("ZuneCollectionID");
-                        container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
+                        var container = row.Container;
 
-                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, row.SelectedSong.AlbumMediaId));
-                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, row.SelectedSong.ArtistMediaId));
-                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, row.SelectedSong.MediaId));
+                        if (row.SelectedSong.HasAllZuneIds)
+                        {
+                            container.RemoveZuneAttribute("WM/WMContentID");
+                            container.RemoveZuneAttribute("WM/WMCollectionID");
+                            container.RemoveZuneAttribute("WM/WMCollectionGroupID");
+                            container.RemoveZuneAttribute("ZuneCollectionID");
+                            container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
 
-                        //if (Settings.Default.UpdateAlbumInfo)
+                            container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, row.SelectedSong.AlbumMediaId));
+                            container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, row.SelectedSong.ArtistMediaId));
+                            container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, row.SelectedSong.MediaId));
+
+                            //if (Settings.Default.UpdateAlbumInfo)
                             //container.AddMetaData(row.SelectedSong.MetaData);
 
-                        container.WriteToFile(row.FilePath);
-                    }
+                            container.WriteToFile(row.FilePath);
+                        }
 
-                    //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
+                        //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
+                    }
                 }
                 catch (UnauthorizedAccessException uae)
                 {
@@ -106,18 +108,18 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             if (uaeExceptions.Count > 0)
                 //usually occurs when a file is readonly
-                Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,"One or more files could not be written to. Have you checked the files are not marked read-only?"));
+                Messenger.Default.Send<ErrorMessage, ApplicationViewModel>(new ErrorMessage(ErrorMode.Error, "One or more files could not be written to. Have you checked the files are not marked read-only?"));
             else
             {
-                Messenger.Default.Send(typeof(SuccessViewModel));
+                Messenger.Default.Send<Type,ApplicationViewModel>(typeof(SuccessViewModel));
             }
 
             Mouse.OverrideCursor = null;
         }
 
-        private void MoveBack()
+        private static void MoveBack()
         {
-            Messenger.Default.Send(typeof(SearchViewModel));
+            Messenger.Default.Send<Type, ApplicationViewModel>(typeof(SearchViewModel));
         }
     }
 }

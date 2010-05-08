@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 
 namespace ZuneSocialTagger.Core.ZuneWebsite
 {
+    [Serializable]
     public class WebTrack
     {
         public Guid AlbumMediaId { get; set; }

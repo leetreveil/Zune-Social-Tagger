@@ -9,14 +9,14 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromWebsite;
         private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
 
-        public SuccessViewModel(ZuneWizardModel model)
+        public SuccessViewModel(SelectedAlbum selectedAlbum)
         {
-            _albumDetailsFromWebsite = model.SelectedAlbum.WebAlbumMetaData;
-            _albumDetailsFromFile = model.SelectedAlbum.ZuneAlbumMetaData;
+            _albumDetailsFromWebsite = selectedAlbum.WebAlbumMetaData;
+            _albumDetailsFromFile = selectedAlbum.ZuneAlbumMetaData;
 
             this.OKCommand =new RelayCommand(() => {
-                Messenger.Default.Send("SWITCHTOFIRSTVIEW");
-                Messenger.Default.Send("ALBUMLINKED");
+                Messenger.Default.Send<string, ApplicationViewModel>("SWITCHTOFIRSTVIEW");
+                Messenger.Default.Send<string, ApplicationViewModel>("ALBUMLINKED");
             });
         }
 

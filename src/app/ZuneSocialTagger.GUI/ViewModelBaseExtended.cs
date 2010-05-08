@@ -1,10 +1,11 @@
 using System;
+using System.ComponentModel;
 using System.Linq.Expressions;
-using GalaSoft.MvvmLight;
 
 namespace ZuneSocialTagger.GUI
 {
-    public class ViewModelBaseExtended : ViewModelBase
+    [Serializable]
+    public class ViewModelBaseExtended : INotifyPropertyChanged
     {
         public void RaisePropertyChanged<TProperty>(Expression<Func<TProperty>> propertyExpression)
         {
@@ -29,6 +30,15 @@ namespace ZuneSocialTagger.GUI
             else memberExpression = (MemberExpression)lambda.Body;
 
             return memberExpression.Member.Name;
+        }
+
+        [field: NonSerialized]
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void RaisePropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -1,3 +1,6 @@
+#if DEBUG
+
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -120,3 +123,5 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         }
     }
 }
+
+#endif

@@ -201,7 +201,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning, msg), () =>
                  {
                      this.SortOrder =SortOrder. NotSorted;
-                     Messenger.Default.Send("SWITCHTODB");
+                     Messenger.Default.Send<string,ApplicationViewModel>("SWITCHTODB");
                  });
         }
 
@@ -233,7 +233,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public void SwitchToClassicMode()
         {
-            Messenger.Default.Send(typeof(SelectAudioFilesViewModel));
+            Messenger.Default.Send<Type,ApplicationViewModel>(typeof(SelectAudioFilesViewModel));
         }
 
         private void _dbAdapter_StartedReadingAlbums()
