@@ -54,15 +54,24 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             {
                 if (e.Error == null)
                 {
+                    WebAlbum album = null;
                     try
                     {
                         _reader = XmlReader.Create(new MemoryStream(e.Result));
-
-                        this.DownloadCompleted.Invoke(this.Read(), DownloadState.Success);
+                        album = Read();
                     }
-                    catch
+                    catch{ }
+                    finally
                     {
-                        this.DownloadCompleted.Invoke(null, DownloadState.Error);
+                        if (album != null)
+                        {
+                            this.DownloadCompleted.Invoke(album, DownloadState.Success);
+                        }
+                        else
+                        {
+                            this.DownloadCompleted.Invoke(null, DownloadState.Error);
+                        }
+                        
                     }
                 }
                 else
@@ -92,7 +101,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                        };
         }
 
-        private List<WebTrack> GetTracks()
+        private IEnumerable<WebTrack> GetTracks()
         {
             return _feed.Items.Select(item => new WebTrack
             {
@@ -105,7 +114,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                 Genre = item.GetGenre(),
                 ContributingArtists = item.GetContributingArtists().ToList(),
                 Artist = item.GetArtist()
-            }).ToList();
+            });
         }
     }
 }

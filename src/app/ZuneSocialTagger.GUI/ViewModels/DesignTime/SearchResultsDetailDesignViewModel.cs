@@ -7,6 +7,8 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
     {
         public SearchResultsDetailDesignViewModel()
         {
+            this.SelectedAlbumSongs = new List<WebTrack>();
+
             this.SelectedAlbumSongs.Add(new WebTrack { TrackNumber = "01", Title = "Prelude" });
             this.SelectedAlbumSongs.Add(new WebTrack { TrackNumber = "02", Title = "Slam" });
             this.SelectedAlbumSongs.Add(new WebTrack { TrackNumber = "03", Title = "Plasticworld" });

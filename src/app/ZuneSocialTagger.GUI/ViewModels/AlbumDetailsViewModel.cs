@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using System.Xml.Serialization;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core.IO;
@@ -46,21 +45,18 @@ namespace ZuneSocialTagger.GUI.ViewModels
             //used for serialization purposes
         }
 
-        [XmlIgnore]
         public RelayCommand RefreshCommand
         {
             get { return _refreshCommand; }
             private set { _refreshCommand = value; }
         }
 
-        [XmlIgnore]
         public RelayCommand LinkCommand
         {
             get { return _linkCommand; }
             private set { _linkCommand = value; }
         }
 
-        [XmlIgnore]
         public RelayCommand DelinkCommand
         {
             get { return _delinkCommand; }
@@ -99,13 +95,11 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
         }
 
-        [XmlIgnore]
         public bool CanDelink
         {
             get { return _linkStatus != LinkStatus.Unlinked && _linkStatus != LinkStatus.Unknown; }
         }
 
-        [XmlIgnore]
         public bool CanLink
         {
             get { return true; }
@@ -113,7 +107,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public void LinkAlbum()
         {
-            SelectedAlbum selectedAlbum = new SelectedAlbum();
+            ApplicationViewModel.SongsFromFile = new List<Song>();
+            var tracks = ApplicationViewModel.SongsFromFile;
             //TODO: instead of passing the selected album into the ctor, create it here and using the messaging system to
             //set it in the applicationviewmodel
             var albumDetails = this.ZuneAlbumMetaData;
@@ -122,35 +117,22 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             IEnumerable<DbTrack> tracksForAlbum = _dbReader.GetTracksForAlbum(albumDetails.MediaId);
 
-            foreach (var track in tracksForAlbum)
+            foreach (DbTrack track in tracksForAlbum)
             {
                 var zuneTagContainer = SharedMethods.GetContainer(track.FilePath);
 
                 if (zuneTagContainer != null)
-                    selectedAlbum.Tracks.Add(new Song(track.FilePath, zuneTagContainer));
+                    tracks.Add(new Song(track.FilePath, zuneTagContainer));
                 else
                     return;
             }
 
-            selectedAlbum.ZuneAlbumMetaData = new ExpandedAlbumDetailsViewModel
-                {
-                    Artist = albumDetails.Artist,
-                    Title = albumDetails.Title,
-                    ArtworkUrl = albumDetails.ArtworkUrl,
-                    SongCount = albumDetails.TrackCount.ToString(),
-                    Year = albumDetails.ReleaseYear
-                };
-
-            selectedAlbum.AlbumDetails = this;
+            ApplicationViewModel.AlbumDetailsFromFile = SharedMethods.GetAlbumDetailsFrom(albumDetails);
 
             //tell the application to switch to the search view
-            Messenger.Default.Send<Type,ApplicationViewModel>(typeof (SearchViewModel));
-            //store the albums link details
-            Messenger.Default.Send<SelectedAlbum,ApplicationViewModel>(selectedAlbum);
-
+            Messenger.Default.Send<Type, ApplicationViewModel>(typeof(SearchViewModel));
             //send the search text to the search view model after it has been constructed
             Messenger.Default.Send<string, SearchViewModel>(albumDetails.Title + " " + albumDetails.Artist);
-            Messenger.Default.Send<ExpandedAlbumDetailsViewModel, SearchViewModel>(selectedAlbum.ZuneAlbumMetaData);
         }
 
         public void DelinkAlbum()
@@ -237,12 +219,12 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void DoesAlbumExistInDbAndDisplayError(DbAlbum selectedAlbum)
         {
-            if (!SharedMethods.CheckIfZuneSoftwareIsRunning())
-            {
-                Messenger.Default.Send<ErrorMessage,ApplicationViewModel>(new ErrorMessage(ErrorMode.Warning, 
-                    "Any albums you link / delink will not show their changes until the zune software is running."));
-            }
-            else if (!_dbReader.DoesAlbumExist(selectedAlbum.MediaId))
+            //if (!SharedMethods.CheckIfZuneSoftwareIsRunning())
+            //{
+            //    Messenger.Default.Send<ErrorMessage,ApplicationViewModel>(new ErrorMessage(ErrorMode.Warning, 
+            //        "Any albums you link / delink will not show their changes until the zune software is running."));
+            //}
+            if (!_dbReader.DoesAlbumExist(selectedAlbum.MediaId))
             {
                 Messenger.Default.Send<ErrorMessage,ApplicationViewModel>(new ErrorMessage(ErrorMode.Error,
                     "Could not find album, you may need to refresh the database."));

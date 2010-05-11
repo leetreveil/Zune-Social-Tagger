@@ -1,4 +1,4 @@
-﻿namespace ZuneSocialTagger.GUI.ViewModels
+﻿namespace ZuneSocialTagger.GUI.Models
 {
     public enum ErrorMode
     {

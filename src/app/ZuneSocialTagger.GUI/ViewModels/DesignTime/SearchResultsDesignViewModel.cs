@@ -11,9 +11,11 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
         public bool ArtistMode { get { return false; } }
         public string AlbumCount { get { return "ALBUMS (10)"; } }
         public string ArtistCount { get { return "ARTISTS (3)"; } }
+        public bool HasResults { get; set; }
 
         public SearchResultsDesignViewModel()
         {
+            this.HasResults = true;
             this.SearchResults = new ObservableCollection<object>();
 
             this.SearchResults.Add(new WebAlbum

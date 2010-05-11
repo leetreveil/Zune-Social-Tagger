@@ -54,9 +54,7 @@ namespace ZuneSocialTagger.GUI
         private static void SetupBindings()
         {
             Container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
-
             Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
-            Container.Bind<SelectedAlbum>().ToSelf().InSingletonScope();
 
             //we need the web view model to be a singleton because we want to be able to continue
             //downloading data while linking etc

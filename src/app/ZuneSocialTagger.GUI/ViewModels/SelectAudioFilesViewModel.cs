@@ -12,11 +12,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
 {
     public class SelectAudioFilesViewModel : ViewModelBaseExtended
     {
-        private readonly SelectedAlbum _selectedAlbum;
-
-        public SelectAudioFilesViewModel(SelectedAlbum selectedAlbum)
+        public SelectAudioFilesViewModel()
         {
-            _selectedAlbum = selectedAlbum;
             this.CanSwitchToNewMode = true;
             this.SelectFilesCommand = new RelayCommand(SelectFiles);
             this.SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);    
@@ -35,7 +32,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         {
             if (CommonFileDialog.IsPlatformSupported)
             {
-                var commonOpenFileDialog = new CommonOpenFileDialog("Select audio files");
+                var commonOpenFileDialog = new CommonOpenFileDialog("Select the audio files that you want to link to the zune social");
 
                 commonOpenFileDialog.Multiselect = true;
                 commonOpenFileDialog.EnsureFileExists = true;
@@ -49,7 +46,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
             else
             {
                 var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files .mp3,.wma |*.mp3;*.wma" };
-
+                ofd.AutoUpgradeEnabled = true;
+                ofd.Title = "Select the audio files that you want to link to the zune social";
                 if (ofd.ShowDialog() == DialogResult.OK)
                     ReadFiles(ofd.FileNames);
             }
@@ -57,31 +55,35 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void ReadFiles(IEnumerable<string> files)
         {
+            ApplicationViewModel.SongsFromFile = new List<Song>();
+            var tracks = ApplicationViewModel.SongsFromFile;
+
             foreach (var file in files)
             {
                 var zuneTagContainer = SharedMethods.GetContainer(file);
 
                 if (zuneTagContainer != null)
-                    _selectedAlbum.Tracks.Add(new Song(file, zuneTagContainer));
+                    tracks.Add(new Song(file, zuneTagContainer));
                 else
                     return;
             }
 
-            _selectedAlbum.Tracks = _selectedAlbum.Tracks.OrderBy(SharedMethods.SortByTrackNumber()).ToObservableCollection();
+            tracks = tracks.OrderBy(SharedMethods.SortByTrackNumber()).ToList();
 
-            MetaData ftMetaData = _selectedAlbum.Tracks.First().MetaData;
+            MetaData firstTrackMetaData = tracks.First().MetaData;
 
-            _selectedAlbum.ZuneAlbumMetaData = new ExpandedAlbumDetailsViewModel
+            var albumMetaData = new ExpandedAlbumDetailsViewModel
             {
-                Artist = ftMetaData.AlbumArtist,
-                Title = ftMetaData.AlbumName,
-                SongCount = _selectedAlbum.Tracks.Count.ToString(),
-                Year = ftMetaData.Year
+                Artist = firstTrackMetaData.AlbumArtist,
+                Title = firstTrackMetaData.AlbumName,
+                SongCount = tracks.Count.ToString(),
+                Year = firstTrackMetaData.Year
             };
 
+            ApplicationViewModel.AlbumDetailsFromFile = albumMetaData;
+
             Messenger.Default.Send<Type, ApplicationViewModel>(typeof(SearchViewModel));
-            Messenger.Default.Send<string, SearchViewModel>(ftMetaData.AlbumName + " " + ftMetaData.AlbumArtist);
-            Messenger.Default.Send<ExpandedAlbumDetailsViewModel,SearchViewModel>(_selectedAlbum.ZuneAlbumMetaData);
+            Messenger.Default.Send<string, SearchViewModel>(firstTrackMetaData.AlbumName + " " + firstTrackMetaData.AlbumArtist);
         }
     }
 }

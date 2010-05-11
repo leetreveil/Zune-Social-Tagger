@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" 
-                   Height="30" Text="Select the album you want linking to the zune social" />
+                   Height="30" Text="Select the audio files that you want to link to the zune social" />
         
         <Button Command="{Binding SelectFilesCommand}"
                 HorizontalAlignment="Center" Grid.Row="1" Content="SELECT AUDIO FILES"/>

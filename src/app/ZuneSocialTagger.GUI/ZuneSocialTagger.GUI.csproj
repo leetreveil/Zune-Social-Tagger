@@ -58,7 +58,7 @@
     </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3e875cdb3903c512, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\libs\mvvmlight3\GalaSoft.MvvmLight.dll</HintPath>
+      <HintPath>..\..\..\libs\mvvmlight3\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight.Extras">
       <HintPath>..\..\..\libs\mvvmlight3\GalaSoft.MvvmLight.Extras.dll</HintPath>
@@ -100,6 +100,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\DiscHeader.cs" />
     <Compile Include="ViewModelBaseExtended.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
@@ -111,8 +112,10 @@
     <Compile Include="ViewModels\DesignTime\SearchResultsDetailDesignViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\SuccessDesignViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\WebAlbumListDesignViewModel.cs" />
+    <Compile Include="Models\DetailRow.cs" />
+    <Compile Include="Models\DetailRowSong.cs" />
     <Compile Include="ViewModels\DetailsViewModel.cs" />
-    <Compile Include="ViewModels\ErrorMode.cs" />
+    <Compile Include="Models\ErrorMode.cs" />
     <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
     <Compile Include="ViewModels\SearchResultsDetailViewModel.cs" />
     <Compile Include="ViewModels\SearchResultsViewModel.cs" />
@@ -191,7 +194,6 @@
     <Compile Include="Models\ErrorMessage.cs" />
     <Compile Include="Models\ExtensionMethods.cs" />
     <Compile Include="Models\LinkStatus.cs" />
-    <Compile Include="Models\SelectedAlbum.cs" />
     <Compile Include="Models\SharedMethods.cs" />
     <Compile Include="Models\Song.cs" />
     <Compile Include="Models\SortOrder.cs" />

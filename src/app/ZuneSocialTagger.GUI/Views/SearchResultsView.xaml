@@ -52,7 +52,7 @@
                 <RowDefinition  />
             </Grid.RowDefinitions>
 
-        <StackPanel Margin="10,0,0,0" Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal">
             <ctrls:RadioButtonExtended IsCheckedReal="{Binding IsAlbumsEnabled}"
                          Content="{Binding AlbumCount,Mode=OneWay}" FontWeight="Bold" FontSize="11" Margin="0,0,10,0"/>
 
@@ -101,24 +101,55 @@
 
             </TextBlock>
 
-        <ListView Grid.Row="2" x:Name="lvAlbums"
-                SelectedIndex="0" 
-                Background="Transparent" 
-                BorderBrush="Transparent" 
-                IsSynchronizedWithCurrentItem="True" 
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                ItemsSource="{Binding SearchResults}" 
-                Margin="0,0,20,0" 
-                ItemContainerStyle="{StaticResource SelectedItemHighlight}">
-            
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseUp">
-                    <cmd:EventToCommand Command="{Binding ResultClickedCommand}"
-                                        CommandParameter="{Binding ElementName=lvAlbums,Path=SelectedItem}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
+        <ContentControl Grid.Row="2">
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasResults}" Value="False">
+                            <Setter Property="ContentControl.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Grid>
+                                            <TextBlock FontWeight="Bold" FontSize="20" Text="NO RESULTS"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding HasResults}" Value="True">
+                            <Setter Property="ContentControl.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Grid>
+                                            <ListView  x:Name="lvAlbums"
+                                                        SelectedIndex="0" 
+                                                        Background="Transparent" 
+                                                        BorderBrush="Transparent" 
+                                                        IsSynchronizedWithCurrentItem="True" 
+                                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                                        ItemsSource="{Binding SearchResults}" 
+                                                        Margin="0,0,20,0" 
+                                                        ItemContainerStyle="{StaticResource SelectedItemHighlight}">
 
-        </ListView>
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="MouseUp">
+                                                        <cmd:EventToCommand Command="{Binding ResultClickedCommand}"
+                                        CommandParameter="{Binding ElementName=lvAlbums,Path=SelectedItem}"/>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+
+                                            </ListView>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+
+        </ContentControl>
+
 
         <views:SearchResultsDetailView Grid.Row="2" Grid.Column="2" DataContext="{Binding SearchResultsDetailViewModel}"/>
 

@@ -7,13 +7,11 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using ZuneSocialTagger.Core.ZuneWebsite;
-using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
     public class SearchResultsViewModel : ViewModelBaseExtended
     {
-        private readonly SelectedAlbum _selectedAlbum;
         private IEnumerable<WebAlbum> _albums;
         private IEnumerable<Artist> _artists;
         private bool _isLoading;
@@ -22,10 +20,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private bool _isAlbumsEnabled;
         private string _artistCount;
 
-        public SearchResultsViewModel(SelectedAlbum selectedAlbum)
+        public SearchResultsViewModel()
         {
-            _selectedAlbum = selectedAlbum;
-
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
             this.SearchResults = new ObservableCollection<object>();
             this.SearchResults.CollectionChanged += SearchResults_CollectionChanged;
@@ -57,6 +53,11 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 _searchResultsDetailViewModel = value;
                 RaisePropertyChanged(() => this.SearchResultsDetailViewModel);
             }
+        }
+
+        public bool HasResults
+        {
+            get { return this.SearchResults.Count > 0; }
         }
 
         public string AlbumCount
@@ -124,13 +125,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
             reader.DownloadCompleted += (details, state) => {
                 if (state == DownloadState.Success)
                 {
-                    _selectedAlbum.WebAlbumMetaData = SetAlbumDetails(details);
-                    _selectedAlbum.SongsFromWebsite = details.Tracks.ToObservableCollection();
-
-                    foreach (var track in _selectedAlbum.Tracks)
-                    {
-                        track.SelectedSong = track.MatchThisSongToAvailableSongs(details.Tracks);
-                    }
+                    ApplicationViewModel.AlbumDetailsFromWeb = SetAlbumDetails(details);
+                    ApplicationViewModel.SongsFromWebsite = details.Tracks.ToList();
 
                     UpdateDetail(details);
                     this.IsLoading = false;
@@ -181,6 +177,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             foreach (var album in _albums)
                 this.SearchResults.Add(album);
+
+            RaisePropertyChanged(() => this.HasResults);
         }
 
         public void LoadArtists(IEnumerable<Artist> artists)

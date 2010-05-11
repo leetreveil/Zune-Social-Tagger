@@ -4,7 +4,8 @@
                     xmlns:converters="clr-namespace:ZuneSocialTagger.GUI.Converters" 
                     xmlns:vm="clr-namespace:ZuneSocialTagger.GUI.ViewModels" 
                     xmlns:v="clr-namespace:ZuneSocialTagger.GUI.Views" 
-                    xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls">
+                    xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls" 
+                    xmlns:Models="clr-namespace:ZuneSocialTagger.GUI.Models">
 
     <DataTemplate DataType="{x:Type vm:SelectAudioFilesViewModel}">
         <v:SelectAudioFilesView/>
@@ -319,7 +320,7 @@
                                 </LinearGradientBrush>
                             </Grid.Background>
 
-                        <ContentPresenter Margin="20,20,20,20" />
+                            <ContentPresenter Margin="20,20,20,20" />
 
                         </Grid>
                     </Border>
@@ -926,6 +927,59 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <DataTemplate DataType="{x:Type Models:DiscHeader}">
+        <TextBlock VerticalAlignment="Center" FontWeight="SemiBold" FontSize="18" Text="{Binding DiscNumber}"/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type Models:DetailRow}" >
+        
+        <Grid Height="30">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="305"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="23" Text="{Binding SongDetails.TrackNumber,
+                                                      Converter ={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" 
+                                               FontSize="18" VerticalAlignment="Center"  />
+
+                <TextBlock ToolTip="{Binding SongDetails.TrackTitle}" Text="{Binding SongDetails.TrackTitle}" 
+                                              VerticalAlignment="Center" FontSize="13.333" Margin="10,0,0,0"
+                           />
+            </StackPanel>
+
+
+            <ComboBox Style="{DynamicResource SelectSongCombobox}" 
+                                          ItemsSource="{Binding AvailableZuneTracks}" 
+                                          SelectedItem="{Binding SelectedSong,Mode=TwoWay}" 
+                                          IsReadOnly="True" Grid.Column="1"  
+                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                          Width="280" VerticalAlignment="Center" Tag="Please select a song title"
+                                          Height="25">
+
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+
+                        <StackPanel Height="25" Orientation="Horizontal">
+                            <TextBlock Width="15" 
+                                                           Text="{Binding TrackNumber,
+                                                                  Converter={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" 
+                                                           VerticalAlignment="Top" FontSize="12" 
+                                                           FontWeight="Bold"/>
+
+                            <TextBlock Text="{Binding TrackTitle}" VerticalAlignment="Top" Margin="10,0,0,0"/>
+
+                        </StackPanel>
+
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+
+            </ComboBox>
+        </Grid>
+    </DataTemplate>
 
 
 </ResourceDictionary>

@@ -109,7 +109,7 @@ namespace ZuneSocialTagger.Core.IO.ID3Tagger
             IEnumerable<TextFrame> allTextFrames = from frame in _container.OfType<TextFrame>()
                                                    select frame;
 
-            TextFrame result = allTextFrames.Where(x => x.Descriptor.Id == key).SingleOrDefault();
+            TextFrame result = allTextFrames.Where(x => x.Descriptor.Id == key).FirstOrDefault();
 
             return result != null ? result.Content : string.Empty;
         }

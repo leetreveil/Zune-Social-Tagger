@@ -6,12 +6,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" 
-    xmlns:dd="clr-namespace:ZuneSocialTagger.GUI.ViewModels.DesignTime"
+    xmlns:dd="clr-namespace:ZuneSocialTagger.GUI.ViewModels.DesignTime" 
+    xmlns:Models="clr-namespace:ZuneSocialTagger.GUI.Models"
+    xmlns:System="clr-namespace:System;assembly=mscorlib" 
     d:DesignHeight="350"
     d:DesignWidth="619">
 
     <UserControl.Resources>
-        <ResourceDictionary Source="../Resources.xaml" />
+        <ResourceDictionary Source="../Resources.xaml"/>
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot" 
@@ -48,9 +50,9 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="SONG TITLES IN THIS ALBUM"  FontSize="13.333" FontWeight="SemiBold" />
+            <TextBlock Text="SONG TITLES IN THIS ALBUM"  FontSize="12" FontWeight="Bold" />
             <TextBlock Grid.Column="1" Text="SONG TITLES FROM ZUNE MARKETPLACE" 
-                       FontSize="13.333" FontWeight="SemiBold" Margin="5,0,0,0" />
+                       FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
 
             <ItemsControl  MaxHeight="260" VerticalAlignment="Top"
                            Grid.Row="1" Grid.ColumnSpan="2" 
@@ -58,67 +60,21 @@
 
                 <ItemsControl.Template>
                     <ControlTemplate>
-                        <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}">
+                        <ScrollViewer x:Name="ScrollViewer" 
+                                      VerticalScrollBarVisibility="Auto" 
+                                      Padding="{TemplateBinding Padding}">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </ControlTemplate>
                 </ItemsControl.Template>
                 
-                <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Height="25" Margin="0,0,0,4" >
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="305"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-
-                                <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                    <TextBlock Width="23" 
-                                               Text="{Binding MetaData.TrackNumber,
-                                                      Converter ={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" 
-                                               VerticalAlignment="Center" 
-                                               FontSize="18"/>
-
-                                    <TextBlock ToolTip="{Binding MetaData.Title}" Text="{Binding MetaData.Title}" 
-                                               VerticalAlignment="Center" Margin="10,0,0,0"/>
-                                </StackPanel>
-
-
-                                <ComboBox Style="{StaticResource SelectSongCombobox}" 
-                                          ItemsSource="{Binding ElementName=LayoutRoot, Path=DataContext.SongsFromWebste}" 
-                                          SelectedItem="{Binding SelectedSong,Mode=TwoWay}" 
-                                          IsReadOnly="True" Grid.Column="1"  
-                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                                          Width="280" VerticalAlignment="Center" Tag="Please select a song title">
-
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-
-                                            <StackPanel Height="25" Orientation="Horizontal">
-                                                <TextBlock Width="15" 
-                                                           Text="{Binding TrackNumber,
-                                                                  Converter={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" 
-                                                           VerticalAlignment="Top" FontSize="12" 
-                                                           FontWeight="Bold"/>
-
-                                                <TextBlock Text="{Binding Title}" VerticalAlignment="Top" Margin="10,0,0,0"/>
-
-                                            </StackPanel>
-
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-
-                                </ComboBox>
-                            </Grid>
-                        </DataTemplate>
-                </ItemsControl.ItemTemplate>
             </ItemsControl>
 
         </Grid>
 
         <CheckBox Margin="0,10,0,0" IsChecked="{Binding UpdateAlbumInfo}" VerticalAlignment="Top" Grid.Row="2" 
-                  Content="Update album information (artist, title, etc)"/>
+                  Content="Update album information (artist, title, etc)"
+                  ToolTip="Check this box to update album information inside of the audio files, if you don't the tracks will still be linked"/>
 
         <StackPanel VerticalAlignment="Bottom" Margin="0,20,0,0" 
                     Grid.Row="3" Grid.Column="2" 

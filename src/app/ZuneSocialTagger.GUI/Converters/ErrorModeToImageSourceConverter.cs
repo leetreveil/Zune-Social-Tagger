@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using ZuneSocialTagger.GUI.ViewModels;
+using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.Converters
 {

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
@@ -25,31 +24,22 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
                                                    Year = "2010"
                                                };
 
-            this.Rows = new List<Song>();
+            this.Rows = new List<object>();
 
-            var metaData1 = new MetaData {TrackNumber = "1", Title = "Prelude"};
-            var metaData2 = new MetaData {TrackNumber = "2", Title = "Slam"};
-            var metaData3 = new MetaData {TrackNumber = "3", Title = "Plasticworld"};
-            var metaData4 = new MetaData {TrackNumber = "4", Title = "Fasten Your Seatbelt"};
-            var metaData5 = new MetaData {TrackNumber = "5", Title = "Through The Loop"};
-            var metaData6 = new MetaData {TrackNumber = "6", Title = "Sounds Of Life"};
-            var metaData7 = new MetaData {TrackNumber = "7", Title = "Girl In The Fire"};
-            var metaData8 = new MetaData {TrackNumber = "8", Title = "Tarantula"};
-            var metaData9 = new MetaData {TrackNumber = "9", Title = "Out Here"};
-
-            this.Rows.Add(new Song {MetaData = metaData1});
-            this.Rows.Add(new Song {MetaData = metaData2});
-            this.Rows.Add(new Song {MetaData = metaData3});
-            this.Rows.Add(new Song {MetaData = metaData4});
-            this.Rows.Add(new Song {MetaData = metaData5});
-            this.Rows.Add(new Song {MetaData = metaData6});
-            this.Rows.Add(new Song {MetaData = metaData7});
-            this.Rows.Add(new Song {MetaData = metaData8});
-            this.Rows.Add(new Song {MetaData = metaData9});
+            this.Rows.Add(new DiscHeader { DiscNumber = "Disc 1" });
+            this.Rows.Add(new DetailRow {SongDetails = new DetailRowSong{TrackNumber = "1",TrackTitle = "Prelude"}});
+            this.Rows.Add(new DetailRow { SongDetails = new DetailRowSong { TrackNumber = "2", TrackTitle = "Slam" } });
+            this.Rows.Add(new DetailRow { SongDetails = new DetailRowSong { TrackNumber = "3", TrackTitle = "Plasticworld" } });
+            this.Rows.Add(new DiscHeader{DiscNumber = "Disc 2"});
+            this.Rows.Add(new DetailRow { SongDetails = new DetailRowSong { TrackNumber = "5", TrackTitle = "Through The Loop" } });
+            this.Rows.Add(new DetailRow { SongDetails = new DetailRowSong { TrackNumber = "6", TrackTitle = "Sounds Of Life" } });
+            this.Rows.Add(new DetailRow { SongDetails = new DetailRowSong { TrackNumber = "7", TrackTitle = "Girl In The Fire" } });
+            this.Rows.Add(new DetailRow { SongDetails = new DetailRowSong { TrackNumber = "8", TrackTitle = "Tarantula" } });
+            this.Rows.Add(new DetailRow { SongDetails = new DetailRowSong { TrackNumber = "9", TrackTitle = "Out Here" } });
         }
 
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
-        public List<Song> Rows { get; set; }
+        public List<object> Rows { get; set; }
     }
 }

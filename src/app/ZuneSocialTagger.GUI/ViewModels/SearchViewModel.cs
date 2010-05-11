@@ -1,35 +1,27 @@
+using System;
 using System.Linq;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using ZuneSocialTagger.Core.ZuneWebsite;
-using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
     public class SearchViewModel : ViewModelBaseExtended
     {
-        private readonly SelectedAlbum _selectedAlbum;
         private string _searchText;
         private bool _isSearching;
         private bool _canMoveNext;
         private SearchResultsViewModel _searchResultsViewModel;
         private bool _canShowResults;
 
-        public SearchViewModel(SelectedAlbum selectedAlbum)
+        public SearchViewModel()
         {
-            _selectedAlbum = selectedAlbum;
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.MoveNextCommand = new RelayCommand(MoveNext);
             this.SearchCommand = new RelayCommand(Search);
 
             Messenger.Default.Register<string>(this, GotSearchTextFromOtherViewModels);
-            Messenger.Default.Register<ExpandedAlbumDetailsViewModel>(this,GotAlbumDetailsFromOtherViewModels);
-        }
-
-        private void GotAlbumDetailsFromOtherViewModels(ExpandedAlbumDetailsViewModel details)
-        {
-            this.AlbumDetails = details;
         }
 
         private void GotSearchTextFromOtherViewModels(string searchText)
@@ -41,7 +33,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         public RelayCommand MoveBackCommand { get; private set; }
         public RelayCommand MoveNextCommand { get; private set; }
         public RelayCommand SearchCommand { get; private set; }
-        public ExpandedAlbumDetailsViewModel AlbumDetails { get; set; }
+        public ExpandedAlbumDetailsViewModel AlbumDetails { get { return ApplicationViewModel.AlbumDetailsFromFile; } }
 
         public SearchResultsViewModel SearchResultsViewModel
         {
@@ -106,7 +98,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             this.SearchResultsViewModel = null;
 
             AlbumSearch.SearchForAsync(this.SearchText, albums => {
-                this.SearchResultsViewModel = new SearchResultsViewModel(_selectedAlbum);
+                this.SearchResultsViewModel = new SearchResultsViewModel();
 
                 DispatcherHelper.CheckBeginInvokeOnUI(() => this.SearchResultsViewModel.LoadAlbums(albums));
 
@@ -132,7 +124,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         public void MoveNext()
         {
-            Messenger.Default.Send<System.Type,ApplicationViewModel>(typeof (DetailsViewModel));
+            Messenger.Default.Send<Type,ApplicationViewModel>(typeof(DetailsViewModel));
         }
     }
 }

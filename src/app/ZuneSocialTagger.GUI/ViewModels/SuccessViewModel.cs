@@ -1,18 +1,14 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
     public class SuccessViewModel : ViewModelBaseExtended
     {
-        private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromWebsite;
-        private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
-
-        public SuccessViewModel(SelectedAlbum selectedAlbum)
+        public SuccessViewModel()
         {
-            _albumDetailsFromWebsite = selectedAlbum.WebAlbumMetaData;
-            _albumDetailsFromFile = selectedAlbum.ZuneAlbumMetaData;
+            this.AlbumDetailsFromFile = ApplicationViewModel.AlbumDetailsFromFile;
+            this.AlbumDetailsFromWebsite = ApplicationViewModel.AlbumDetailsFromWeb;
 
             this.OKCommand =new RelayCommand(() => {
                 Messenger.Default.Send<string, ApplicationViewModel>("SWITCHTOFIRSTVIEW");
@@ -21,15 +17,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
         }
 
         public RelayCommand OKCommand { get; private set; }
-
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite
-        {
-            get { return _albumDetailsFromWebsite; }
-        }
-
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile
-        {
-            get { return _albumDetailsFromFile; }
-        }
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; private set; }
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; private set; }
     }
 }

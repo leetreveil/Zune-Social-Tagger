@@ -10,6 +10,7 @@ using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using leetreveil.AutoUpdate.Framework;
 using ZuneSocialTagger.Core.ZuneDatabase;
+using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.Views;
@@ -24,7 +25,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private readonly SelectAudioFilesViewModel _selectAudioFilesViewModel;
         private readonly WebAlbumListViewModel _webAlbumListViewModel;
         private readonly ZuneObservableCollection<AlbumDetailsViewModel> _albums;
-        private SelectedAlbum _selectedAlbum;
         private ViewModelBaseExtended _currentPage;
         private bool _updateAvailable;
         private bool _shouldShowErrorMessage;
@@ -32,15 +32,24 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private string _errorMessageText;
         private bool _loadWebView;
 
+        public static ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
+        public static ExpandedAlbumDetailsViewModel AlbumDetailsFromWeb { get; set; }
+        /// <summary>
+        /// The downloaded album songs after searching
+        /// </summary>
+        public static List<WebTrack> SongsFromWebsite { get; set; }
+        /// <summary>
+        /// The actual track details from the audio files
+        /// </summary>
+        public static List<Song> SongsFromFile { get; set; }
+
         public ApplicationViewModel(IZuneDatabaseReader dbReader,
                                     SelectAudioFilesViewModel selectAudioFilesViewModel,
-                                    WebAlbumListViewModel webAlbumListViewModel,
-                                    SelectedAlbum selectedAlbum)
+                                    WebAlbumListViewModel webAlbumListViewModel)
         {
             _dbReader = dbReader;
             _selectAudioFilesViewModel = selectAudioFilesViewModel;
             _webAlbumListViewModel = webAlbumListViewModel;
-            _selectedAlbum = selectedAlbum;
 
             this.ShowAboutSettingsCommand = new RelayCommand(ShowAboutSettings);
             this.UpdateCommand = new RelayCommand(ShowUpdate);
@@ -56,9 +65,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             //register for error messages to be displayed
             Messenger.Default.Register<ErrorMessage>(this, DisplayMessage);
-
-            //register for when the selected album is set so other view models can consume the data
-            Messenger.Default.Register<SelectedAlbum>(this, selAlbum => _selectedAlbum = selAlbum);
 
             _albums = new ZuneObservableCollection<AlbumDetailsViewModel>();
         }
@@ -172,7 +178,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                     else
                     {
                         GetNewOrRemovedAlbumsFromZuneDb();
-                        _selectedAlbum.AlbumDetails.RefreshAlbum();
+                        Messenger.Default.Send<string, WebAlbumListViewModel>("REFRESHCURRENTALBUM");
                     }
                 }
             }
@@ -184,15 +190,17 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void SwitchToView(Type viewType)
         {
-            ViewModelBaseExtended viewToShow = App.GetViewForType(viewType);
+            this.CurrentPage = App.GetViewForType(viewType);
 
-            if (viewToShow.GetType() == typeof (SelectAudioFilesViewModel))
+            //each time we switch to the two starting views we need to remember which one to go back to if the
+            //user goes back through the wizard, this is just at runtime it is not remembered at startup
+            if (this.CurrentPage.GetType() == typeof(SelectAudioFilesViewModel))
                 _loadWebView = false;
-            if (viewToShow.GetType() == typeof (WebAlbumListViewModel))
-                _loadWebView = true;
 
-            this.CurrentPage = viewToShow;
+            if (this.CurrentPage.GetType() == typeof(WebAlbumListViewModel))
+                _loadWebView = true;
         }
+
 
         private bool InitializeDatabase()
         {

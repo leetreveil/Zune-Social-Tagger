@@ -3,16 +3,52 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.GUI.ViewModels;
 using ZuneSocialTagger.Core.ZuneWebsite;
+using ZuneSocialTagger.Core.ZuneDatabase;
 
 namespace ZuneSocialTagger.GUI.Models
 {
     public static class SharedMethods
     {
+        public static ExpandedAlbumDetailsViewModel GetAlbumDetailsFrom(DbAlbum album)
+        {
+            return new ExpandedAlbumDetailsViewModel
+            {
+                Artist = album.Artist,
+                Title = album.Title,
+                ArtworkUrl = album.ArtworkUrl,
+                SongCount = album.TrackCount.ToString(),
+                Year = album.ReleaseYear
+            };
+        }
+
+        /// <summary>
+        /// Converts Track numbers that are like 1/2 to just 1 or 4/11 to just 4
+        /// </summary>
+        /// <param name="trackNumber"></param>
+        /// <returns></returns>
+        public static string TrackNumberConverter(string trackNumber)
+        {
+            if (String.IsNullOrEmpty(trackNumber)) return "0";
+
+            return trackNumber.Contains('/') ? trackNumber.Split('/').First() : trackNumber;
+        }
+
+        /// <summary>
+        /// Converts Disc number 1/2 to just one and 2/2 to just 2
+        /// </summary>
+        /// <param name="discNumber"></param>
+        /// <returns></returns>
+        public static string DiscNumberConverter(string discNumber)
+        {
+            if (String.IsNullOrEmpty(discNumber)) return "1";
+
+            return discNumber.Contains('/') ? discNumber.Split('/').First() : discNumber;
+        }
+
         public static IZuneTagContainer GetContainer(string filePath)
         {
             try
@@ -39,7 +75,7 @@ namespace ZuneSocialTagger.GUI.Models
                 albumToSet.LinkStatus = LinkStatus.Unavailable;
             else
             {
-                var metaData = albumToSet.ZuneAlbumMetaData;
+                DbAlbum metaData = albumToSet.ZuneAlbumMetaData;
 
                 albumToSet.LinkStatus = GetAlbumLinkStatus(dledAlbum.Title, dledAlbum.Artist,
                                                       metaData.Title, metaData.Artist);
@@ -84,24 +120,6 @@ namespace ZuneSocialTagger.GUI.Models
            return LinkStatus.Linked;
         }
 
-        private static string RemoveDiacritics(string stIn)
-        {
-            string stFormD = stIn.Normalize(NormalizationForm.FormD);
-            var sb = new StringBuilder();
-
-            foreach (char t in
-                from t in stFormD
-                let uc = CharUnicodeInfo.GetUnicodeCategory(t)
-                where uc != UnicodeCategory.NonSpacingMark
-                select t)
-            {
-                sb.Append(t);
-            }
-
-            return (sb.ToString().Normalize(NormalizationForm.FormC));
-        }
-
-
         /// <summary>
         /// Takes a string and converts it to an easily comparable string, ToUpper + THE removes
         /// </summary>
@@ -125,16 +143,34 @@ namespace ZuneSocialTagger.GUI.Models
             return result;
         }
 
+        private static string RemoveDiacritics(string stIn)
+        {
+            string stFormD = stIn.Normalize(NormalizationForm.FormD);
+            var sb = new StringBuilder();
+
+            foreach (char t in
+                from t in stFormD
+                let uc = CharUnicodeInfo.GetUnicodeCategory(t)
+                where uc != UnicodeCategory.NonSpacingMark
+                select t)
+            {
+                sb.Append(t);
+            }
+
+            return (sb.ToString().Normalize(NormalizationForm.FormC));
+        }
+
         public static Func<Song, int> SortByTrackNumber()
         {
-            return key =>
+            return arg =>
             {
                 int result;
-                Int32.TryParse(key.MetaData.TrackNumber, out result);
+                Int32.TryParse(arg.MetaData.TrackNumber, out result);
 
                 return result;
             };
         }
+
 
         public static LinkStatus GetLinkStatusFromGuid(this Guid guid)
         {

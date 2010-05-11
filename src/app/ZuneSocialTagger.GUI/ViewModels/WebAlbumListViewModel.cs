@@ -48,6 +48,10 @@ namespace ZuneSocialTagger.GUI.ViewModels
             {
                 SortData(Settings.Default.SortOrder);
             }
+            if (message == "REFRESHCURRENTALBUM")
+            {
+                this.SelectedAlbum.RefreshAlbum();
+            }
         }
 
         private void SetupCommandBindings()

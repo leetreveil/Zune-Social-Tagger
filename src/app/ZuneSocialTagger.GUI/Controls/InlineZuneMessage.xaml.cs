@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using ZuneSocialTagger.GUI.Converters;
-using ZuneSocialTagger.GUI.ViewModels;
+using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.Controls
 {
