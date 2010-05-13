@@ -2,7 +2,16 @@
 {
     public class DetailRowSong
     {
-        public string TrackNumber { get; set; }
+        private string _trackNumber;
+        public string TrackNumber
+        {
+            get { return _trackNumber; }
+            set
+            {
+                _trackNumber = SharedMethods.ConvertTrackNumberToDoubleDigits(value);
+            }
+        }
+
         public string TrackTitle { get; set; }
     }
 }

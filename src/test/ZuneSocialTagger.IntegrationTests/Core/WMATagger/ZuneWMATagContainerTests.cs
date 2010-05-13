@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using ZuneSocialTagger.Core;
 using System.Linq;
 using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.Core.IO.WMATagger;

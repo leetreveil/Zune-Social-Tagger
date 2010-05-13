@@ -1,56 +1,65 @@
+using System;
 using System.Collections.Generic;
-using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
 {
     public class AlbumMoreInfoDesignViewModel
     {
-        public List<Song> Tracks { get; set; }
+        public List<AlbumMoreInfoRow> Tracks { get; set; }
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
 
         public AlbumMoreInfoDesignViewModel()
         {
             this.AlbumDetailsFromFile = new ExpandedAlbumDetailsViewModel
-                                            {
-                                                Artist = "Pendulum",
-                                                ArtworkUrl = "http://images.play.com/covers/12691916x.jpg",
-                                                SongCount = "10",
-                                                Title = "Immersion",
-                                                Year = "2010"
-                                            };
+                {
+                    Artist = "Pendulum",
+                    ArtworkUrl = "http://images.play.com/covers/12691916x.jpg",
+                    SongCount = "10",
+                    Title = "Immersion",
+                    Year = "2010"
+                };
 
             this.AlbumDetailsFromWebsite = new ExpandedAlbumDetailsViewModel
-                                               {
-                                                   Artist = "Pendulum",
-                                                   ArtworkUrl = "http://images.play.com/covers/12691916x.jpg",
-                                                   SongCount = "10",
-                                                   Title = "Immersion",
-                                                   Year = "2010"
-                                               };
+                {
+                    Artist = "Pendulum",
+                    ArtworkUrl = "http://images.play.com/covers/12691916x.jpg",
+                    SongCount = "10",
+                    Title = "Immersion",
+                    Year = "2010"
+                };
 
-            this.Tracks = new List<Song>();
+            this.Tracks = new List<AlbumMoreInfoRow>();
 
-            var metaData1 = new MetaData {TrackNumber = "1", Title = "Prelude"};
-            var metaData2 = new MetaData {TrackNumber = "2", Title = "Slam"};
-            var metaData3 = new MetaData {TrackNumber = "3", Title = "Plasticworld"};
-            var metaData4 = new MetaData {TrackNumber = "4", Title = "Fasten Your Seatbelt"};
-            var metaData5 = new MetaData {TrackNumber = "5", Title = "Through The Loop"};
-            var metaData6 = new MetaData {TrackNumber = "6", Title = "Sounds Of Life"};
-            var metaData7 = new MetaData {TrackNumber = "7", Title = "Girl In The Fire"};
-            var metaData8 = new MetaData {TrackNumber = "8", Title = "Tarantula"};
-            var metaData9 = new MetaData {TrackNumber = "9", Title = "Out Here"};
+            this.Tracks.Add(new AlbumMoreInfoRow
+                                {
+                                    TrackFromFile = new DetailRowSong { TrackNumber = "1", TrackTitle = "Prelude" }, 
+                                    LinkStatusImage = new Uri("pack://application:,,,/Assets/yes.png"),
+                                    TrackFromWeb = new DetailRowSong { TrackNumber = "1", TrackTitle = "Prelude (Album)" }
+                                });
+            this.Tracks.Add(new AlbumMoreInfoRow
+                                {
+                                    TrackFromFile = new DetailRowSong { TrackNumber = "2", TrackTitle = "Slam" }, 
+                                    LinkStatusImage = new Uri("pack://application:,,,/Assets/no.png"),
+                                    LinkStatusText = "UNLINKED"
+                                });
+            this.Tracks.Add(new AlbumMoreInfoRow
+            {
+                TrackFromFile = new DetailRowSong { TrackNumber = "1", TrackTitle = "Some really really really really really really long album title" },
+                LinkStatusImage = new Uri("pack://application:,,,/Assets/yes.png"),
+                TrackFromWeb = new DetailRowSong { TrackNumber = "1", TrackTitle = "Prelude (Album)" }
+            });
 
-            this.Tracks.Add(new Song {MetaData = metaData1});
-            this.Tracks.Add(new Song {MetaData = metaData2});
-            this.Tracks.Add(new Song {MetaData = metaData3});
-            this.Tracks.Add(new Song {MetaData = metaData4});
-            this.Tracks.Add(new Song {MetaData = metaData5});
-            this.Tracks.Add(new Song {MetaData = metaData6});
-            this.Tracks.Add(new Song {MetaData = metaData7});
-            this.Tracks.Add(new Song {MetaData = metaData8});
-            this.Tracks.Add(new Song {MetaData = metaData9});
+
+
+            //this.Tracks.Add(new AlbumMoreInfoRow { TrackFromFile = new DetailRowSong { TrackNumber = "3", TrackTitle = "Plasticworld" } });
+            //this.Tracks.Add(new AlbumMoreInfoRow { TrackFromFile = new DetailRowSong { TrackNumber = "4", TrackTitle = "Fasten Your Seatbelt" } });
+            //this.Tracks.Add(new AlbumMoreInfoRow { TrackFromFile = new DetailRowSong { TrackNumber = "5", TrackTitle = "Through The Loop" } });
+            //this.Tracks.Add(new AlbumMoreInfoRow { TrackFromFile = new DetailRowSong { TrackNumber = "6", TrackTitle = "Sounds Of Life" } });
+            //this.Tracks.Add(new AlbumMoreInfoRow { TrackFromFile = new DetailRowSong { TrackNumber = "7", TrackTitle = "Girl In The Fire" } });
+            //this.Tracks.Add(new AlbumMoreInfoRow { TrackFromFile = new DetailRowSong { TrackNumber = "8", TrackTitle = "Tarantula" } });
+            //this.Tracks.Add(new AlbumMoreInfoRow { TrackFromFile = new DetailRowSong { TrackNumber = "9", TrackTitle = "Out Here" } });
         }
     }
 }

@@ -19,13 +19,13 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class ApplicationViewModel : ViewModelBaseExtended
+    public class ApplicationViewModel : ViewModelBase
     {
         private readonly IZuneDatabaseReader _dbReader;
         private readonly SelectAudioFilesViewModel _selectAudioFilesViewModel;
         private readonly WebAlbumListViewModel _webAlbumListViewModel;
         private readonly ZuneObservableCollection<AlbumDetailsViewModel> _albums;
-        private ViewModelBaseExtended _currentPage;
+        private ViewModelBase _currentPage;
         private bool _updateAvailable;
         private bool _shouldShowErrorMessage;
         private ErrorMode _errorMessageMode;
@@ -121,7 +121,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             }
         }
 
-        public ViewModelBaseExtended CurrentPage
+        public ViewModelBase CurrentPage
         {
             get { return _currentPage; }
             private set
@@ -330,7 +330,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void ReadActualDatabase()
         {
-            _albums.Clear();
+            DispatcherHelper.CheckBeginInvokeOnUI(() => _albums.Clear());
 
             ThreadPool.QueueUserWorkItem(_ => {
                 foreach (DbAlbum newAlbum in _dbReader.ReadAlbums())
@@ -359,23 +359,22 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void WriteCacheToFile()
         {
-            if (_albums.Count > 0)
-            {
-                var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.dat"), FileMode.Create);
-                var binaryFormatter = new BinaryFormatter();
-                try
-                {
-                    binaryFormatter.Serialize(fs, _albums);
-                }
-                catch (SerializationException e)
-                {
-                    Debug.WriteLine(e);
-                }
-                finally
-                {
-                    fs.Close();
-                }
-            }
+            var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.dat"), FileMode.Create);
+            var binaryFormatter = new BinaryFormatter();
+            binaryFormatter.Serialize(fs, _albums);
+            fs.Close();
+            //try
+            //{
+                
+            //}
+            //catch (SerializationException e)
+            //{
+            //    Debug.WriteLine(e);
+            //}
+            //finally
+            //{
+                
+            //}
         }
 
         private static void ShowUpdate()

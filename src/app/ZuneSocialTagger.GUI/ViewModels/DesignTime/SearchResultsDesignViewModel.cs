@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using ZuneSocialTagger.Core.ZuneWebsite;
+using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
 {
@@ -38,23 +39,23 @@ namespace ZuneSocialTagger.GUI.ViewModels.DesignTime
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
 
             this.SearchResultsDetailViewModel.SelectedAlbumTitle = "Hold Your Colour";
-            this.SearchResultsDetailViewModel.SelectedAlbumSongs = new ObservableCollection<WebTrack>();
+            this.SearchResultsDetailViewModel.SelectedAlbumSongs = new ObservableCollection<DetailRowSong>();
 
-            ObservableCollection<WebTrack> selectedAlbumSongs = this.SearchResultsDetailViewModel.SelectedAlbumSongs;
-            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "01", Title = "Prelude" });
-            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "02", Title = "Slam" });
-            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "03", Title = "Plasticworld" });
-            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "04", Title = "Fasten Your Seatbelt" });
-            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "05", Title = "Through The Loop" });
-            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "06", Title = "Sounds Of Life" });
-            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "07", Title = "Girl In The Fire" });
-            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "08", Title = "Tarantula" });
-            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "09", Title = "Out Here" });
-            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "10", Title = "Hold Your Colour" });
-            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "11", Title = "The Terminal" });
-            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "12", Title = "Streamline" });
-            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "13", Title = "Another Planet" });
-            selectedAlbumSongs.Add(new WebTrack { TrackNumber = "14", Title = "Still Grey" });
+            ObservableCollection<DetailRowSong> selectedAlbumSongs = this.SearchResultsDetailViewModel.SelectedAlbumSongs;
+            selectedAlbumSongs.Add(new DetailRowSong { TrackNumber = "1", TrackTitle = "Prelude" });
+            selectedAlbumSongs.Add(new DetailRowSong { TrackNumber = "2", TrackTitle = "Slam" });
+            selectedAlbumSongs.Add(new DetailRowSong { TrackNumber = "3", TrackTitle = "Plasticworld" });
+            selectedAlbumSongs.Add(new DetailRowSong { TrackNumber = "4", TrackTitle = "Fasten Your Seatbelt" });
+            selectedAlbumSongs.Add(new DetailRowSong { TrackNumber = "5", TrackTitle = "Through The Loop" });
+            selectedAlbumSongs.Add(new DetailRowSong { TrackNumber = "6", TrackTitle = "Sounds Of Life" });
+            selectedAlbumSongs.Add(new DetailRowSong { TrackNumber = "7", TrackTitle = "Girl In The Fire" });
+            selectedAlbumSongs.Add(new DetailRowSong { TrackNumber = "8", TrackTitle = "Tarantula" });
+            selectedAlbumSongs.Add(new DetailRowSong { TrackNumber = "9", TrackTitle = "Out Here" });
+            selectedAlbumSongs.Add(new DetailRowSong { TrackNumber = "10", TrackTitle = "Hold Your Colour" });
+            selectedAlbumSongs.Add(new DetailRowSong { TrackNumber = "11", TrackTitle = "The Terminal" });
+            selectedAlbumSongs.Add(new DetailRowSong { TrackNumber = "12", TrackTitle = "Streamline" });
+            selectedAlbumSongs.Add(new DetailRowSong { TrackNumber = "13", TrackTitle = "Another Planet" });
+            selectedAlbumSongs.Add(new DetailRowSong { TrackNumber = "14", TrackTitle = "Still Grey" });
         }
     }
 }

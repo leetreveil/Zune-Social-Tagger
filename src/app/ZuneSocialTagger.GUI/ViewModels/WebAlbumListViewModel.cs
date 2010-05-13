@@ -12,7 +12,7 @@ using ZuneSocialTagger.GUI.Properties;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class WebAlbumListViewModel : ViewModelBaseExtended
+    public class WebAlbumListViewModel : ViewModelBase
     {
         private readonly IZuneDatabaseReader _dbReader;
         private bool _canShowScanAllButton;

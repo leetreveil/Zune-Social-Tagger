@@ -1,17 +1,17 @@
 using System.Collections.ObjectModel;
-using ZuneSocialTagger.Core.ZuneWebsite;
+using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class SearchResultsDetailViewModel : ViewModelBaseExtended
+    public class SearchResultsDetailViewModel : ViewModelBase
     {
         private string _selectedAlbumTitle;
 
-        public ObservableCollection<WebTrack> SelectedAlbumSongs { get; set; }
+        public ObservableCollection<DetailRowSong> SelectedAlbumSongs { get; set; }
 
         public SearchResultsDetailViewModel()
         {
-            this.SelectedAlbumSongs = new ObservableCollection<WebTrack>();
+            this.SelectedAlbumSongs = new ObservableCollection<DetailRowSong>();
         }
 
         public string SelectedAlbumTitle

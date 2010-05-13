@@ -15,7 +15,7 @@ namespace ZuneSocialTagger.IntegrationTests
 
                 string searchString = Console.ReadLine();
 
-                IEnumerable<Artist> artists = ArtistSearch.SearchFor(searchString);
+                IEnumerable<WebArtist> artists = ArtistSearch.SearchFor(searchString);
 
                 Console.WriteLine("---ARTISTS---");
                 foreach (var artist in artists)
@@ -23,7 +23,7 @@ namespace ZuneSocialTagger.IntegrationTests
                     Console.WriteLine("Artist: {0}, Guid: {1}",artist.Name,artist.Id);
                 }
 
-                IEnumerable<Album> albums = AlbumSearch.SearchFor(searchString);
+                IEnumerable<WebAlbum> albums = AlbumSearch.SearchForAlbum(searchString);
 
                 Console.WriteLine("---ALBUMS---");
                 foreach (var album in albums)

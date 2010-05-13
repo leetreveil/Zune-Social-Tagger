@@ -94,9 +94,7 @@
     <Compile Include="Core\ZuneTagContainerFactoryTests.cs" />
     <Compile Include="Core\ID3Tagger\ZuneMP3TagContainerTests.cs" />
     <Compile Include="Core\WMATagger\ZuneWMATagContainerTests.cs" />
-    <Compile Include="Core\ZuneWebsite\AlbumSearchTests.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Core\ZuneWebsite\AlbumDocumentReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +127,9 @@
       <Project>{C5F5D93F-50BC-4BE1-9594-5D3D3CB5BCE6}</Project>
       <Name>ZuneSocialTagger.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\ZuneWebsite\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

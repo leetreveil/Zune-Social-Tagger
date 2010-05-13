@@ -13,7 +13,29 @@ namespace ZuneSocialTagger.GUI.Models
 {
     public static class SharedMethods
     {
-        public static ExpandedAlbumDetailsViewModel GetAlbumDetailsFrom(DbAlbum album)
+        /// <summary>
+        /// Converts 1 to 01 and 11 to 11 (the same)
+        /// </summary>
+        /// <param name="trackNumber"></param>
+        /// <returns></returns>
+        public static string ConvertTrackNumberToDoubleDigits(this string trackNumber)
+        {
+            int number;
+            if (!int.TryParse(trackNumber, out number))
+            {
+                throw new ArgumentException("number could not be converted");
+            }
+
+            //if we find a number with one digit then append a 0 to the start
+            if (trackNumber.Length == 1)
+            {
+                return "0" + trackNumber;
+            }
+
+            return trackNumber;
+        }
+
+        public static ExpandedAlbumDetailsViewModel GetAlbumDetailsFrom(this DbAlbum album)
         {
             return new ExpandedAlbumDetailsViewModel
             {
@@ -25,12 +47,25 @@ namespace ZuneSocialTagger.GUI.Models
             };
         }
 
+        public static ExpandedAlbumDetailsViewModel GetAlbumDetailsFrom(this WebAlbum albumMetaData)
+        {
+            return new ExpandedAlbumDetailsViewModel
+            {
+                Title = albumMetaData.Title,
+                Artist = albumMetaData.Artist,
+                ArtworkUrl = albumMetaData.ArtworkUrl,
+                Year = albumMetaData.ReleaseYear,
+                SongCount = albumMetaData.Tracks.Count().ToString()
+            };
+        }
+
+
         /// <summary>
         /// Converts Track numbers that are like 1/2 to just 1 or 4/11 to just 4
         /// </summary>
         /// <param name="trackNumber"></param>
         /// <returns></returns>
-        public static string TrackNumberConverter(string trackNumber)
+        public static string TrackNumberConverter(this string trackNumber)
         {
             if (String.IsNullOrEmpty(trackNumber)) return "0";
 
@@ -42,14 +77,14 @@ namespace ZuneSocialTagger.GUI.Models
         /// </summary>
         /// <param name="discNumber"></param>
         /// <returns></returns>
-        public static string DiscNumberConverter(string discNumber)
+        public static string DiscNumberConverter(this string discNumber)
         {
             if (String.IsNullOrEmpty(discNumber)) return "1";
 
             return discNumber.Contains('/') ? discNumber.Split('/').First() : discNumber;
         }
 
-        public static IZuneTagContainer GetContainer(string filePath)
+        public static IZuneTagContainer GetContainer(this string filePath)
         {
             try
             {
@@ -67,26 +102,6 @@ namespace ZuneSocialTagger.GUI.Models
         public static bool CheckIfZuneSoftwareIsRunning()
         {
             return Process.GetProcessesByName("Zune").Length != 0;
-        }
-
-        public static void SetAlbumDetails(WebAlbum dledAlbum, AlbumDetailsViewModel albumToSet)
-        {
-            if (dledAlbum == null)
-                albumToSet.LinkStatus = LinkStatus.Unavailable;
-            else
-            {
-                DbAlbum metaData = albumToSet.ZuneAlbumMetaData;
-
-                albumToSet.LinkStatus = GetAlbumLinkStatus(dledAlbum.Title, dledAlbum.Artist,
-                                                      metaData.Title, metaData.Artist);
-
-                albumToSet.WebAlbumMetaData = new WebAlbum
-                {
-                    Artist = dledAlbum.Artist,
-                    Title = dledAlbum.Title,
-                    ArtworkUrl = dledAlbum.ArtworkUrl
-                };
-            }
         }
 
         public static LinkStatus GetAlbumLinkStatus(string albumTitle, string albumArtist, 

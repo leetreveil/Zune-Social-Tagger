@@ -1,6 +1,4 @@
-using Id3Tag;
 using NUnit.Framework;
-using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.IO;
 
 namespace ZuneSocialTagger.IntegrationTests.Core

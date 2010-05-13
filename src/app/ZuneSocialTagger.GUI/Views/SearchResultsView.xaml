@@ -32,7 +32,7 @@
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type ZuneWebsite:Artist}">
+                    <DataTemplate DataType="{x:Type ZuneWebsite:WebArtist}">
                         <TextBlock Text="{Binding Name}" FontSize="20"/>
                     </DataTemplate>
                 </ResourceDictionary>

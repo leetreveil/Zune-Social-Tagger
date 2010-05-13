@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 namespace ZuneSocialTagger.GUI
 {
     [Serializable]
-    public class ViewModelBaseExtended : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
         public void RaisePropertyChanged<TProperty>(Expression<Func<TProperty>> propertyExpression)
         {

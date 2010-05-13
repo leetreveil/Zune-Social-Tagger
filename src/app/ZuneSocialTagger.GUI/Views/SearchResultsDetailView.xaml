@@ -24,10 +24,10 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Margin="3">
 
-                        <TextBlock Width="23" Text="{Binding TrackNumber,Converter={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" 
+                        <TextBlock Width="23" Text="{Binding TrackNumber}" 
                                    VerticalAlignment="Center" FontSize="18"/>
                         
-                        <TextBlock ToolTip="{Binding Title}" Text="{Binding Title}" 
+                        <TextBlock ToolTip="{Binding TrackTitle}" Text="{Binding TrackTitle}" 
                                    VerticalAlignment="Center" FontSize="13.333" Margin="10,0,0,0"/>
                     </StackPanel>
                 </DataTemplate>

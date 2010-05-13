@@ -3,7 +3,7 @@ using GalaSoft.MvvmLight.Messaging;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class SuccessViewModel : ViewModelBaseExtended
+    public class SuccessViewModel : ViewModelBase
     {
         public SuccessViewModel()
         {

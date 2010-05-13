@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class DetailsViewModel : ViewModelBaseExtended
+    public class DetailsViewModel : ViewModelBase
     {
         public DetailsViewModel()
         {

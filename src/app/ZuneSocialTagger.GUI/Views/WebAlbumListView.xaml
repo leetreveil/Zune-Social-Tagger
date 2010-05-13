@@ -28,9 +28,9 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListViewItem}">
                                     <Border CornerRadius="2" SnapsToDevicePixels="True"
-          BorderThickness="{TemplateBinding BorderThickness}" 
-          BorderBrush="{TemplateBinding BorderBrush}" 
-          Background="{TemplateBinding Background}">
+                                            BorderThickness="{TemplateBinding BorderThickness}" 
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            Background="{TemplateBinding Background}">
                                         <Border Name="InnerBorder" CornerRadius="1" BorderThickness="1">
                                             <Grid>
                                                 <Grid.RowDefinitions>
@@ -193,6 +193,11 @@
                                    Height="16"
                                    Source="../Assets/refresh.png" />
                         </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="More Info"
+                              IsEnabled="{Binding ElementName=lvAlbums, Path=SelectedItem.CanShowMoreInfo}"
+                              Command="{Binding ElementName=lvAlbums, Path=SelectedItem.MoreInfoCommand}">
                     </MenuItem>
 
                 </ContextMenu>

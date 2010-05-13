@@ -31,6 +31,10 @@
         <v:SuccessView/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vm:AlbumMoreInfoViewModel}">
+        <v:AlbumMoreInfoView/>
+    </DataTemplate>
+
     <converters:TextToVisibilityConverter x:Key="TextToVisConverter" />
     <converters:AlbumCountToStringConverter x:Key="AlbumCountToStringConverter" />
     <converters:NotConverter x:Key="NotConverter" />
@@ -39,7 +43,6 @@
     <converters:SortOrderToTextConverter x:Key="SortOrderToTextConverter" />
     <converters:ErrorModeToImageSourceConverter x:Key="ErrorModeToImageSourceConverter"/>
     <converters:SortOrderToVisibilityConverter x:Key="SortOrderToVisibilityConverter"/>
-    <converters:TrackNumberToDblDigitTrackNumberConverter x:Key="TrackNumberToDblDigitTrackNumberConverter"/>
     <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
 
     <Style TargetType="{x:Type Controls:RadioButtonExtended}">
@@ -942,8 +945,7 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock Width="23" Text="{Binding SongDetails.TrackNumber,
-                                                      Converter ={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" 
+                <TextBlock Width="23" Text="{Binding SongDetails.TrackNumber}"
                                                FontSize="18" VerticalAlignment="Center"  />
 
                 <TextBlock ToolTip="{Binding SongDetails.TrackTitle}" Text="{Binding SongDetails.TrackTitle}" 
@@ -965,8 +967,7 @@
 
                         <StackPanel Height="25" Orientation="Horizontal">
                             <TextBlock Width="15" 
-                                                           Text="{Binding TrackNumber,
-                                                                  Converter={StaticResource TrackNumberToDblDigitTrackNumberConverter}}" 
+                                                           Text="{Binding TrackNumber}" 
                                                            VerticalAlignment="Top" FontSize="12" 
                                                            FontWeight="Bold"/>
 

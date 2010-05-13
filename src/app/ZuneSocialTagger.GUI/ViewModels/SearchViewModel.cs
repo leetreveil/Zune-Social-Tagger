@@ -7,7 +7,7 @@ using ZuneSocialTagger.Core.ZuneWebsite;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class SearchViewModel : ViewModelBaseExtended
+    public class SearchViewModel : ViewModelBase
     {
         private string _searchText;
         private bool _isSearching;
@@ -97,7 +97,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             this.IsSearching = true;
             this.SearchResultsViewModel = null;
 
-            AlbumSearch.SearchForAsync(this.SearchText, albums => {
+            AlbumSearch.SearchForAlbumAsync(this.SearchText, albums => {
                 this.SearchResultsViewModel = new SearchResultsViewModel();
 
                 DispatcherHelper.CheckBeginInvokeOnUI(() => this.SearchResultsViewModel.LoadAlbums(albums));

@@ -12,7 +12,7 @@ using ZuneSocialTagger.GUI.Models;
 namespace ZuneSocialTagger.GUI.ViewModels
 {
     [Serializable]
-    public class AlbumDetailsViewModel : ViewModelBaseExtended
+    public class AlbumDetailsViewModel : ViewModelBase
     {
         [NonSerialized]
         private readonly IZuneDatabaseReader _dbReader;
@@ -27,6 +27,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
         private RelayCommand _delinkCommand;
         [NonSerialized]
         private RelayCommand _linkCommand;
+        [NonSerialized]
+        private RelayCommand _moreInfoCommand;
 
         [field: NonSerialized]
         public event Action AlbumDetailsDownloaded = delegate { };
@@ -38,11 +40,18 @@ namespace ZuneSocialTagger.GUI.ViewModels
             this.DelinkCommand = new RelayCommand(DelinkAlbum);
             this.LinkCommand = new RelayCommand(LinkAlbum);
             this.RefreshCommand = new RelayCommand(RefreshAlbum);
+            this.MoreInfoCommand = new RelayCommand(ShowMoreInfo);
         }
 
         public AlbumDetailsViewModel()
         {
             //used for serialization purposes
+        }
+
+        public RelayCommand MoreInfoCommand
+        {
+            get { return _moreInfoCommand; }
+            private set { _moreInfoCommand = value; }
         }
 
         public RelayCommand RefreshCommand
@@ -92,6 +101,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
                 RaisePropertyChanged(() => this.LinkStatus);
                 RaisePropertyChanged(() => this.CanDelink);
                 RaisePropertyChanged(() => this.CanLink);
+                RaisePropertyChanged(() => this.CanShowMoreInfo);
             }
         }
 
@@ -105,9 +115,21 @@ namespace ZuneSocialTagger.GUI.ViewModels
             get { return true; }
         }
 
+        public bool CanShowMoreInfo
+        {
+            get { return _linkStatus != LinkStatus.Unlinked && _linkStatus != LinkStatus.Unknown; }
+        }
+
+        private void ShowMoreInfo()
+        {
+            Messenger.Default.Send<Type,ApplicationViewModel>(typeof(AlbumMoreInfoViewModel));
+            Messenger.Default.Send<AlbumDetailsViewModel,AlbumMoreInfoViewModel>(this);
+        }
+
         public void LinkAlbum()
         {
             ApplicationViewModel.SongsFromFile = new List<Song>();
+
             var tracks = ApplicationViewModel.SongsFromFile;
             //TODO: instead of passing the selected album into the ctor, create it here and using the messaging system to
             //set it in the applicationviewmodel
@@ -201,10 +223,23 @@ namespace ZuneSocialTagger.GUI.ViewModels
             {
                 var downloader = new AlbumDetailsDownloader(String.Concat(Urls.Album, albumMediaId));
 
-                downloader.DownloadCompleted += (alb, state) => 
+                downloader.DownloadCompleted += (dledAlbum, state) => 
                 {
                     if (state == DownloadState.Success)
-                        SharedMethods.SetAlbumDetails(alb, this);
+                    {
+                        if (dledAlbum == null)
+                        {
+                            this.LinkStatus = LinkStatus.Unavailable;
+                        }
+                        else
+                        {
+                            this.LinkStatus = SharedMethods.GetAlbumLinkStatus(dledAlbum.Title, dledAlbum.Artist,
+                                this.ZuneAlbumMetaData.Title, this.ZuneAlbumMetaData.Artist);
+                        }
+
+                        this.WebAlbumMetaData = dledAlbum;
+
+                    }
                     else
                         this.LinkStatus = LinkStatus.Unavailable;
 

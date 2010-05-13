@@ -178,20 +178,62 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             ZuneQueryList zuneQueryList = _zuneLibrary.GetTracksByAlbum(0, albumId,
                                                                         EQuerySortType.eQuerySortOrderAscending,
                                                                         (uint) SchemaMap.kiIndex_AlbumID);
+
             for (int i = 0; i < zuneQueryList.Count; i++)
             {
                 var track = new ZuneQueryItem(zuneQueryList, i);
 
-                string filePath =
-                    (string) track.GetFieldValue(typeof (string), (uint) ZuneQueryList.AtomNameToAtom("SourceURL"));
+                string filePath = null;
+                Guid mediaId = Guid.Empty;
+                string trackTitle = null;
+                long trackNumber = 0;
 
-                Guid mediaId = GetFieldValue(track.ID, EListType.eTrackList,
-                    ZuneQueryList.AtomNameToAtom("ZuneMediaID"), Guid.Empty);
+                try
+                {
+                   
+                    filePath = 
+                        (string) track.GetFieldValue(typeof (string), (uint) ZuneQueryList.AtomNameToAtom("SourceURL"));
+
+                    mediaId = 
+                        (Guid) track.GetFieldValue(typeof (Guid), (uint) ZuneQueryList.AtomNameToAtom("ZuneMediaID"));
+
+                    trackTitle =
+                         (string) track.GetFieldValue(typeof (string), (uint) ZuneQueryList.AtomNameToAtom("Title"));
+
+                    trackNumber =
+                        (long)track.GetFieldValue(typeof(long), (uint)ZuneQueryList.AtomNameToAtom("WM/TrackNumber"));
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+
+                //for (int j = 0; j < 2000; j++)
+                //{
+                //    try
+                //    {
+                //        var test = track.GetFieldValue(typeof(long), (uint)j);
+
+                //        if (test != null)
+                //        {
+                //            Trace.WriteLine(ZuneQueryList.AtomToAtomName(j));
+                //            Trace.WriteLine(test);
+                //        }
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        Trace.WriteLine("FAILED ON");
+                //    }
+
+
+                //}
 
                 yield return new DbTrack
                  {
                      FilePath = filePath,
-                     MediaId = mediaId
+                     MediaId = mediaId,
+                     Title = trackTitle,
+                     TrackNumber = trackNumber.ToString()
                  };
             }
 

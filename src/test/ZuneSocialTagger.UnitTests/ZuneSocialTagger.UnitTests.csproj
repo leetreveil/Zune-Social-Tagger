@@ -85,13 +85,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\ExtensionMethodsTests.cs" />
+    <Compile Include="Core\ExtensionMethodsTests_ExtractGuidFromUrnUuid.cs" />
     <Compile Include="Core\ID3Tagger\ZuneMP3TagContainerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\SharedMethodsTests_DiscNumberConverter.cs" />
     <Compile Include="UI\SharedMethodsTests_GetAlbumLinkStatus.cs" />
     <Compile Include="UI\SharedMethodsTests_GetLinkStatusFromGuid.cs" />
     <Compile Include="UI\SharedMethodsTests_TrackNumberConverter.cs" />
+    <Compile Include="UI\SharedMethodsTests_ConvertTrackNumberToDoubleDigits.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\app\ZuneSocialTagger.Core\ZuneSocialTagger.Core.csproj">

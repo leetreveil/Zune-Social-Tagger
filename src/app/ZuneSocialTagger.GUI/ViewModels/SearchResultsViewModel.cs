@@ -2,18 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using ZuneSocialTagger.Core.ZuneWebsite;
+using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewModels
 {
-    public class SearchResultsViewModel : ViewModelBaseExtended
+    public class SearchResultsViewModel : ViewModelBase
     {
         private IEnumerable<WebAlbum> _albums;
-        private IEnumerable<Artist> _artists;
+        private IEnumerable<WebArtist> _artists;
         private bool _isLoading;
         private SearchResultsDetailViewModel _searchResultsDetailViewModel;
         private string _albumCount;
@@ -125,7 +125,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             reader.DownloadCompleted += (details, state) => {
                 if (state == DownloadState.Success)
                 {
-                    ApplicationViewModel.AlbumDetailsFromWeb = SetAlbumDetails(details);
+                    ApplicationViewModel.AlbumDetailsFromWeb = details.GetAlbumDetailsFrom();
                     ApplicationViewModel.SongsFromWebsite = details.Tracks.ToList();
 
                     UpdateDetail(details);
@@ -143,20 +143,20 @@ namespace ZuneSocialTagger.GUI.ViewModels
             reader.DownloadAsync();
         }
 
-        public void LoadAlbumsForArtist(Artist artist)
+        public void LoadAlbumsForArtist(WebArtist artist)
         {
-            ThreadPool.QueueUserWorkItem(_ => {
-                IEnumerable<WebAlbum> albums = AlbumSearch.GetAlbumsFromArtistGuid(artist.Id).ToList();
+            AlbumSearch.SearchForAlbumFromArtistGuidAsync(artist.Id, results =>
+            {
+                _albums = results.ToList();
 
-                _albums = albums;
-
-                DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
                     this.SearchResults.Clear();
 
                     foreach (var album in _albums)
                         this.SearchResults.Add(album);
 
-                    this.AlbumCount = String.Format("ALBUMS ({0})", albums.Count());
+                    this.AlbumCount = String.Format("ALBUMS ({0})", _albums.Count());
 
                     this.IsAlbumsEnabled = true;
                 });
@@ -169,6 +169,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
             foreach (var artist in _artists)
                 this.SearchResults.Add(artist);
+
+            RaisePropertyChanged(() => this.HasResults);
         }
 
         private void DisplayAlbums()
@@ -181,7 +183,7 @@ namespace ZuneSocialTagger.GUI.ViewModels
             RaisePropertyChanged(() => this.HasResults);
         }
 
-        public void LoadArtists(IEnumerable<Artist> artists)
+        public void LoadArtists(IEnumerable<WebArtist> artists)
         {
             _artists = artists;
             this.ArtistCount = String.Format("ARTISTS ({0})", artists.Count());
@@ -208,19 +210,6 @@ namespace ZuneSocialTagger.GUI.ViewModels
             Messenger.Default.Send<Type, ApplicationViewModel>(typeof(DetailsViewModel));
         }
 
-
-        private static ExpandedAlbumDetailsViewModel SetAlbumDetails(WebAlbum albumMetaData)
-        {
-            return new ExpandedAlbumDetailsViewModel
-                 {
-                     Title = albumMetaData.Title,
-                     Artist = albumMetaData.Artist,
-                     ArtworkUrl = albumMetaData.ArtworkUrl,
-                     Year = albumMetaData.ReleaseYear,
-                     SongCount = albumMetaData.Tracks.Count().ToString()
-                 };
-        }
-
         private void UpdateDetail(WebAlbum albumMetaData)
         {
              this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel
@@ -231,7 +220,14 @@ namespace ZuneSocialTagger.GUI.ViewModels
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
                 foreach (var track in albumMetaData.Tracks)
-                    this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(track);
+                {
+                    this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(new DetailRowSong
+                                                                                 {
+                                                                                     TrackNumber = track.TrackNumber,
+                                                                                     TrackTitle = track.Title
+                                                                                 });
+                }
+
             });
         }
 
@@ -245,8 +241,8 @@ namespace ZuneSocialTagger.GUI.ViewModels
 
         private void ResultClicked(object item)
         {
-            if (item.GetType() == typeof(Artist))
-                LoadAlbumsForArtist(item as Artist);
+            if (item.GetType() == typeof(WebArtist))
+                LoadAlbumsForArtist(item as WebArtist);
 
             if (item.GetType() == typeof(WebAlbum))
                 LoadAlbum(item as WebAlbum);

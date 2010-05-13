@@ -6,7 +6,6 @@ using Ninject;
 using Utilities;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Controls;
-using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewModels;
 using ZuneSocialTagger.GUI.Views;
@@ -62,9 +61,9 @@ namespace ZuneSocialTagger.GUI
             Container.Bind<SearchViewModel>().ToSelf().InSingletonScope();
         }
 
-        public static ViewModelBaseExtended GetViewForType(Type viewType)
+        public static ViewModelBase GetViewForType(Type viewType)
         {
-            return Container.Get(viewType) as ViewModelBaseExtended;
+            return Container.Get(viewType) as ViewModelBase;
         }
 
         private static void SetupUnhandledExceptionLogging()
@@ -103,10 +102,10 @@ namespace ZuneSocialTagger.GUI
                 }
                 finally 
                 {
-                    Current.Shutdown();
+                    //Current.Shutdown();
                 }
 
-            }, () => Current.Shutdown());
+            },null);
 
             e.Handled = true;
         }

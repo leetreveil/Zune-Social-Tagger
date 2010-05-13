@@ -101,11 +101,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\DiscHeader.cs" />
-    <Compile Include="ViewModelBaseExtended.cs" />
+    <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
+    <Compile Include="ViewModels\AlbumMoreInfoViewModel.cs" />
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\AlbumMoreInfoDesignViewModel.cs" />
+    <Compile Include="Models\AlbumMoreInfoRow.cs" />
     <Compile Include="ViewModels\DesignTime\DetailsDesignViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\SearchDesignViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\SearchResultsDesignViewModel.cs" />
@@ -190,7 +192,6 @@
     <Compile Include="Converters\SortOrderToTextConverter.cs" />
     <Compile Include="Converters\SortOrderToVisibilityConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
-    <Compile Include="Converters\TrackNumberToDblDigitTrackNumberConverter.cs" />
     <Compile Include="Models\ErrorMessage.cs" />
     <Compile Include="Models\ExtensionMethods.cs" />
     <Compile Include="Models\LinkStatus.cs" />
