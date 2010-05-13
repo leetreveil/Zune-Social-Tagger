@@ -3,7 +3,7 @@
              x:Class="ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.WebAlbumListView"
              mc:Ignorable="d" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:WebAlbumList="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList"
              xmlns:dt="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.DesignTime">
 
