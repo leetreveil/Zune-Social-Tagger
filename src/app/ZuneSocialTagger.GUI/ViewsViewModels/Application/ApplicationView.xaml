@@ -1,0 +1,163 @@
+﻿<Controls:DraggableWindow 
+    x:Class="ZuneSocialTagger.GUI.ViewsViewModels.Application.ApplicationView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls" 
+    Style="{DynamicResource DefaultWindowStyle}"
+    WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources/Resources.xaml" />
+                <ResourceDictionary>
+
+                    <Style x:Key="CloseButton"
+           TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Grid>
+
+                                        <Path x:Name="xPath"
+                              Stretch="Fill"
+                              Stroke="#A2ABAA"
+                              StrokeThickness="2">
+                                            <Path.Data>
+                                                <PathGeometry>
+                                                    <PathGeometry.Figures>
+                                                        <PathFigure StartPoint="0,0">
+                                                            <LineSegment Point="25,25" />
+                                                        </PathFigure>
+                                                        <PathFigure StartPoint="0,25">
+                                                            <LineSegment Point="25,0" />
+                                                        </PathFigure>
+                                                    </PathGeometry.Figures>
+                                                </PathGeometry>
+                                            </Path.Data>
+                                        </Path>
+
+                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          RecognizesAccessKey="True" />
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsFocused"
+                                 Value="True" />
+                                        <Trigger Property="IsDefaulted"
+                                 Value="True" />
+                                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                                            <Setter TargetName="xPath"
+                                    Property="Stroke"
+                                    Value="#7F8685" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed"
+                                 Value="True">
+                                            <Setter TargetName="xPath"
+                                    Property="Stroke"
+                                    Value="#717776" />
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled"
+                                 Value="False" />
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style x:Key="MinimizeButton"
+           TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Grid>
+                                        <Rectangle x:Name="rect"
+                                   Fill="#A2ABAA" />
+                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          RecognizesAccessKey="True" />
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsFocused"
+                                 Value="True" />
+                                        <Trigger Property="IsDefaulted"
+                                 Value="True" />
+                                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                                            <Setter TargetName="rect"
+                                    Property="Fill"
+                                    Value="#7F8685" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed"
+                                 Value="True">
+                                            <Setter TargetName="rect"
+                                    Property="Fill"
+                                    Value="#717776" />
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled"
+                                 Value="False" />
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="11"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Control Template="{DynamicResource Gradient}"/>
+
+        <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+
+            <Button ToolTip="About / Settings" Margin="0,0,30,0" Style="{StaticResource SmallGreyButtonNoBorder}"
+                    VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" Content="ABOUT / SETTINGS"
+                    Command="{Binding ShowAboutSettingsCommand}"/>
+
+            <Button Click="Minimize_Click" ToolTip="Minimize" Margin="0,0,9,0" Style="{StaticResource MinimizeButton}" 
+                    VerticalAlignment="Bottom" Width="10" Height="2"/>
+
+            <Button Command="{Binding CloseAppCommand}"
+                    ToolTip="Close" Width="10" Height="10" 
+                    VerticalAlignment="Bottom" Grid.Column="1" 
+                    Style="{StaticResource CloseButton}"/>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <TextBlock Grid.Column="0" FontSize="26.667" Text="ZUNE SOCIAL TAGGER 2"/>
+
+            <Button Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource BoolToVisConverter}}"
+                    Margin="10,5,0,0" Style="{StaticResource SmallGreyButtonWithBorder}" 
+                    VerticalAlignment="Top" Content="NEW UPDATE AVAILABLE"
+                    Command="{Binding UpdateCommand}"/>
+
+        </StackPanel>
+
+
+        <ContentControl Margin="0,20,0,0" Content="{Binding CurrentPage}" Grid.Row="2" Grid.ColumnSpan="2"/>
+
+        <Controls:InlineZuneMessage ShowMessage="{Binding ShouldShowErrorMessage,Mode=TwoWay}"
+                                    MessageText="{Binding ErrorMessageText}"
+                                    ErrorMode="{Binding ErrorMessageMode}"
+                                    Margin="0,20,0,0" MaxWidth="600" HorizontalAlignment="Left" 
+                                    Grid.ColumnSpan="2" 
+                                    Grid.Row="3" />
+    </Grid>
+</Controls:DraggableWindow>

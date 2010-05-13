@@ -14,11 +14,11 @@ namespace ZuneSocialTagger.GUI.Converters
             switch (errorMode)
             {
                 case ErrorMode.Error:
-                    return "../Assets/no.png";
+                    return "../Resources/Assets/no.png";
                 case ErrorMode.Warning:
-                    return "../Assets/warning.png";
+                    return "../Resources/Assets/warning.png";
                 case ErrorMode.Info:
-                    return "../Assets/information.png";
+                    return "../Resources/Assets/information.png";
                 default:
                     throw new ArgumentOutOfRangeException();
             }

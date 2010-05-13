@@ -14,7 +14,7 @@ namespace ZuneSocialTagger.GUI.Converters
             switch ((LinkStatus) value)
             {
                 case LinkStatus.Linked:
-                    urlToImageResource = "pack://application:,,,/Assets/yes.png";
+                    urlToImageResource = "pack://application:,,,/Resources/Assets/yes.png";
                     break;
                 case LinkStatus.Unlinked:
                     break;

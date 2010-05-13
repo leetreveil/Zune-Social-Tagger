@@ -69,9 +69,9 @@ namespace ZuneSocialTagger.GUI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("DateAdded")]
-        public global::ZuneSocialTagger.GUI.Models.SortOrder SortOrder {
+        public global::ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.SortOrder SortOrder {
             get {
-                return ((global::ZuneSocialTagger.GUI.Models.SortOrder)(this["SortOrder"]));
+                return ((global::ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.SortOrder)(this["SortOrder"]));
             }
             set {
                 this["SortOrder"] = value;

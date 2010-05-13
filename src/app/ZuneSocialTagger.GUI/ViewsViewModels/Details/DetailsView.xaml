@@ -1,0 +1,361 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="ZuneSocialTagger.GUI.ViewsViewModels.Details.DetailsView"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" 
+    xmlns:dt="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Details.DesignTime"
+    xmlns:Shared="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Shared" 
+    xmlns:Details="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Details" 
+    d:DesignHeight="350"
+    d:DesignWidth="619">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources/Resources.xaml"/>
+                <ResourceDictionary>
+
+                    <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="20" />
+                            </Grid.ColumnDefinitions>
+                            <Border
+      x:Name="Border" 
+      Grid.ColumnSpan="2"
+      BorderBrush="#CCCCCC"
+      BorderThickness="1" >
+
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <GradientStop Color="#F7F7F7" Offset="0" />
+                                        <GradientStop Color="#E0E0E0" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+
+                            </Border>
+                            <Path 
+      x:Name="Arrow"
+      Grid.Column="1"     
+      Fill="#404040"
+      HorizontalAlignment="Center"
+      VerticalAlignment="Center"
+      Data="M 0 0 L 4 4 L 8 0 Z"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="Border" Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                            <GradientStop Color="#EAEAEA" Offset="0" />
+                                            <GradientStop Color="#D5D5D5" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#FA6EC9" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="#EEEEEE" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#AAAAAA" />
+                                <Setter Property="Foreground" Value="#888888"/>
+                                <Setter TargetName="Arrow" Property="Fill" Value="#888888" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+
+                    <ControlTemplate x:Key="ComboBoxTextBox" TargetType="{x:Type TextBox}">
+                        <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}" />
+                    </ControlTemplate>
+
+                    <Style x:Key="SelectSongCombobox" TargetType="{x:Type ComboBox}">
+                        <Setter Property="SnapsToDevicePixels" Value="true"/>
+                        <Setter Property="OverridesDefaultStyle" Value="true"/>
+                        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                        <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+                        <Setter Property="MinWidth" Value="120"/>
+                        <Setter Property="MinHeight" Value="20"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ComboBox}">
+                                    <Grid>
+                                        <ToggleButton
+            Name="ToggleButton" 
+            Template="{StaticResource ComboBoxToggleButton}" 
+            Grid.Column="2" 
+            Focusable="false"
+            IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+            ClickMode="Press">
+                                        </ToggleButton>
+                                        <ContentPresenter
+                            Name="ContentSite"
+                            IsHitTestVisible="False" 
+                            Content="{TemplateBinding SelectionBoxItem}"
+                            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                            ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                            Margin="3,3,23,3"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left" />
+                                        <TextBox x:Name="PART_EditableTextBox"
+                            Style="{x:Null}" 
+                            Template="{StaticResource ComboBoxTextBox}" 
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Center" 
+                            Margin="3,3,23,3"
+                            Focusable="True" 
+                            Background="Transparent"
+                            FontWeight="Bold"
+                            Visibility="Hidden"
+                            Foreground="#858585"
+                            IsHitTestVisible="False"
+                            IsReadOnly="{TemplateBinding IsReadOnly}"
+                            Text="Please select a song title"/>
+                                        <Popup 
+                            Name="Popup"
+                            Placement="Bottom"
+                            IsOpen="{TemplateBinding IsDropDownOpen}"
+                            AllowsTransparency="True" 
+                            Focusable="False"
+                            PopupAnimation="Slide">
+                                            <Grid 
+                                  Name="DropDown"
+                                  SnapsToDevicePixels="True"                
+                                  MinWidth="{TemplateBinding ActualWidth}"
+                                  MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                                <Border 
+                                    x:Name="DropDownBorder"
+                                    Background="#FFFFFF"
+                                    BorderThickness="1"
+                                    BorderBrush="#888888"/>
+                                                <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                                    <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                                </ScrollViewer>
+                                            </Grid>
+                                        </Popup>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="HasItems" Value="false">
+                                            <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="false">
+                                            <Setter Property="Foreground" Value="#888888"/>
+                                        </Trigger>
+                                        <Trigger Property="IsGrouping" Value="true">
+                                            <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                                        </Trigger>
+                                        <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
+                                            <Setter TargetName="DropDownBorder" Property="BorderBrush" Value="#B3B3B3"/>
+                                        </Trigger>
+                                        <Trigger Property="IsEditable" Value="true">
+                                            <Setter Property="IsTabStop" Value="false"/>
+                                            <Setter TargetName="PART_EditableTextBox" Property="Visibility"	Value="Visible"/>
+                                            <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                                        </Trigger>
+                                        <Trigger Property="SelectedItem" Value="{x:Null}">
+                                            <Setter TargetName="PART_EditableTextBox" Property="Visibility"	Value="Visible"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                        </Style.Triggers>
+                    </Style>
+
+
+                    <DataTemplate DataType="{x:Type Details:DiscHeader}">
+                        <TextBlock VerticalAlignment="Center" FontWeight="SemiBold" 
+                                   FontSize="18" Text="{Binding DiscNumber}"/>
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type Details:DetailRow}" >
+
+                        <Grid Height="30">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="305"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Width="23" Text="{Binding SongDetails.TrackNumber}"
+                                               FontSize="18" VerticalAlignment="Center"  />
+
+                                <TextBlock ToolTip="{Binding SongDetails.TrackTitle}" Text="{Binding SongDetails.TrackTitle}" 
+                                              VerticalAlignment="Center" FontSize="13.333" Margin="10,0,0,0"/>
+                            </StackPanel>
+
+
+                            <ComboBox Style="{StaticResource SelectSongCombobox}" 
+                                          ItemsSource="{Binding AvailableZuneTracks}" 
+                                          SelectedItem="{Binding SelectedSong,Mode=TwoWay}" 
+                                          IsReadOnly="True" Grid.Column="1"  
+                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                          Width="280" VerticalAlignment="Center" Tag="Please select a song title"
+                                          Height="25">
+
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+
+                                        <StackPanel Height="25" Orientation="Horizontal">
+                                            <TextBlock Width="15" 
+                                                           Text="{Binding TrackNumber}" 
+                                                           VerticalAlignment="Top" FontSize="12" 
+                                                           FontWeight="Bold"/>
+
+                                            <TextBlock Text="{Binding TrackTitle}" VerticalAlignment="Top" Margin="10,0,0,0"/>
+
+                                        </StackPanel>
+
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+
+                            </ComboBox>
+                        </Grid>
+                    </DataTemplate>
+
+                    <Style TargetType="{x:Type CheckBox}">
+                        <Setter Property="SnapsToDevicePixels" Value="true"/>
+                        <Setter Property="OverridesDefaultStyle" Value="true"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type CheckBox}">
+                                    <BulletDecorator Background="Transparent">
+                                        <BulletDecorator.Bullet>
+                                            <Border x:Name="Border"  
+              Width="13" 
+              Height="13" 
+              CornerRadius="0" 
+              BorderThickness="1"
+              BorderBrush="#7F7F7F">
+                                                <Path
+                x:Name="CheckMark"
+                SnapsToDevicePixels="False" 
+                      HorizontalAlignment="Center"
+      VerticalAlignment="Center"
+                Stroke="#404040"
+                StrokeThickness="2"
+                Data="M 9 1 L 4 7 L 1 4"  />
+
+                                                <Border.Background>
+                                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                                        <GradientStop Color="#F7F7F7"
+                                                  Offset="0" />
+                                                        <GradientStop Color="#DFDFDF"
+                                                  Offset="1" />
+                                                    </LinearGradientBrush>
+                                                </Border.Background>
+
+                                            </Border>
+                                        </BulletDecorator.Bullet>
+                                        <ContentPresenter Margin="4,0,0,0"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
+            RecognizesAccessKey="True"/>
+                                    </BulletDecorator>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsChecked" Value="false">
+                                            <Setter TargetName="CheckMark" Property="Visibility" Value="Collapsed"/>
+                                        </Trigger>
+                                        <Trigger Property="IsChecked" Value="{x:Null}">
+                                            <Setter TargetName="CheckMark" Property="Data" Value="M 0 7 L 7 0" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter TargetName="Border" Property="BorderBrush" Value="Black" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="true">
+                                            <Setter TargetName="Border" Property="Background" Value="#E0E0E0" />
+                                            <Setter TargetName="Border" Property="BorderBrush" Value="#606060" />
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="false">
+                                            <Setter TargetName="Border" Property="Background" Value="#EEEEEE" />
+                                            <Setter TargetName="Border" Property="BorderBrush" Value="#AAAAAA" />
+                                            <Setter Property="Foreground" Value="#888888"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot" 
+          d:DataContext="{d:DesignInstance dt:DetailsDesignViewModel,IsDesignTimeCreatable=True}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+
+        <Grid Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Shared:ExpandedAlbumDetailsView DataContext="{Binding AlbumDetailsFromFile}" Margin="0,0,20,0" />
+            <Shared:ExpandedAlbumDetailsView DataContext="{Binding AlbumDetailsFromWebsite}" Grid.Column = "1" />
+
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,20,0,0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="SONG TITLES IN THIS ALBUM"  FontSize="12" FontWeight="Bold" />
+            <TextBlock Grid.Column="1" Text="SONG TITLES FROM ZUNE MARKETPLACE" 
+                       FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
+
+            <ItemsControl  MaxHeight="260" VerticalAlignment="Top"
+                           Grid.Row="1" Grid.ColumnSpan="2" 
+                           ItemsSource="{Binding Rows}">
+
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <ScrollViewer x:Name="ScrollViewer" 
+                                      VerticalScrollBarVisibility="Auto" 
+                                      Padding="{TemplateBinding Padding}">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+                
+            </ItemsControl>
+
+        </Grid>
+
+        <CheckBox Margin="0,10,0,0" IsChecked="{Binding UpdateAlbumInfo}" VerticalAlignment="Top" Grid.Row="2" 
+                  Content="Update album information (artist, title, etc)"
+                  ToolTip="Check this box to update album information inside of the audio files, if you don't the tracks will still be linked"/>
+
+        <StackPanel VerticalAlignment="Bottom" Margin="0,20,0,0" 
+                    Grid.Row="3" Grid.Column="2" 
+                    HorizontalAlignment="Right"  Orientation="Horizontal">
+
+            <Button Content="BACK" Margin="0,0,10,0" Command="{Binding MoveBackCommand}"/>
+
+            <Button Content="LINK" Command="{Binding SaveCommand}"/>
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>

@@ -100,72 +100,73 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\DiscHeader.cs" />
-    <Compile Include="ViewModelBase.cs" />
-    <Compile Include="ViewModels\AboutViewModel.cs" />
-    <Compile Include="ViewModels\AlbumDetailsViewModel.cs" />
-    <Compile Include="ViewModels\AlbumMoreInfoViewModel.cs" />
-    <Compile Include="ViewModels\ApplicationViewModel.cs" />
-    <Compile Include="ViewModels\DesignTime\AlbumMoreInfoDesignViewModel.cs" />
-    <Compile Include="Models\AlbumMoreInfoRow.cs" />
-    <Compile Include="ViewModels\DesignTime\DetailsDesignViewModel.cs" />
-    <Compile Include="ViewModels\DesignTime\SearchDesignViewModel.cs" />
-    <Compile Include="ViewModels\DesignTime\SearchResultsDesignViewModel.cs" />
-    <Compile Include="ViewModels\DesignTime\SearchResultsDetailDesignViewModel.cs" />
-    <Compile Include="ViewModels\DesignTime\SuccessDesignViewModel.cs" />
-    <Compile Include="ViewModels\DesignTime\WebAlbumListDesignViewModel.cs" />
-    <Compile Include="Models\DetailRow.cs" />
-    <Compile Include="Models\DetailRowSong.cs" />
-    <Compile Include="ViewModels\DetailsViewModel.cs" />
+    <Compile Include="Models\Song.cs" />
+    <Compile Include="ViewsViewModels\Details\DiscHeader.cs" />
+    <Compile Include="ViewsViewModels\Shared\ViewModelBase.cs" />
+    <Compile Include="ViewsViewModels\About\AboutViewModel.cs" />
+    <Compile Include="ViewsViewModels\WebAlbumList\AlbumDetailsViewModel.cs" />
+    <Compile Include="ViewsViewModels\MoreInfo\MoreInfoViewModel.cs" />
+    <Compile Include="ViewsViewModels\Application\ApplicationViewModel.cs" />
+    <Compile Include="ViewsViewModels\MoreInfo\DesignTime\AlbumMoreInfoDesignViewModel.cs" />
+    <Compile Include="ViewsViewModels\MoreInfo\MoreInfoRow.cs" />
+    <Compile Include="ViewsViewModels\Details\DesignTime\DetailsDesignViewModel.cs" />
+    <Compile Include="ViewsViewModels\Search\DesignTime\SearchDesignViewModel.cs" />
+    <Compile Include="ViewsViewModels\Search\DesignTime\SearchResultsDesignViewModel.cs" />
+    <Compile Include="ViewsViewModels\Search\DesignTime\SearchResultsDetailDesignViewModel.cs" />
+    <Compile Include="ViewsViewModels\Success\DesignTime\SuccessDesignViewModel.cs" />
+    <Compile Include="ViewsViewModels\WebAlbumList\DesignTime\WebAlbumListDesignViewModel.cs" />
+    <Compile Include="ViewsViewModels\Details\DetailRow.cs" />
+    <Compile Include="ViewsViewModels\Shared\TrackWithTrackNum.cs" />
+    <Compile Include="ViewsViewModels\Details\DetailsViewModel.cs" />
     <Compile Include="Models\ErrorMode.cs" />
-    <Compile Include="ViewModels\ExpandedAlbumDetailsViewModel.cs" />
-    <Compile Include="ViewModels\SearchResultsDetailViewModel.cs" />
-    <Compile Include="ViewModels\SearchResultsViewModel.cs" />
-    <Compile Include="ViewModels\SearchViewModel.cs" />
-    <Compile Include="ViewModels\SelectAudioFilesViewModel.cs" />
-    <Compile Include="ViewModels\SuccessViewModel.cs" />
-    <Compile Include="ViewModels\UpdateViewModel.cs" />
-    <Compile Include="ViewModels\WebAlbumListViewModel.cs" />
-    <Compile Include="Views\AboutView.xaml.cs">
+    <Compile Include="ViewsViewModels\Shared\ExpandedAlbumDetailsViewModel.cs" />
+    <Compile Include="ViewsViewModels\Search\SearchResultsDetailViewModel.cs" />
+    <Compile Include="ViewsViewModels\Search\SearchResultsViewModel.cs" />
+    <Compile Include="ViewsViewModels\Search\SearchViewModel.cs" />
+    <Compile Include="ViewsViewModels\SelectAudioFiles\SelectAudioFilesViewModel.cs" />
+    <Compile Include="ViewsViewModels\Success\SuccessViewModel.cs" />
+    <Compile Include="ViewsViewModels\Update\UpdateViewModel.cs" />
+    <Compile Include="ViewsViewModels\WebAlbumList\WebAlbumListViewModel.cs" />
+    <Compile Include="ViewsViewModels\About\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AlbumDetailsView.xaml.cs">
+    <Compile Include="ViewsViewModels\WebAlbumList\AlbumDetailsView.xaml.cs">
       <DependentUpon>AlbumDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AlbumMoreInfoView.xaml.cs">
-      <DependentUpon>AlbumMoreInfoView.xaml</DependentUpon>
+    <Compile Include="ViewsViewModels\MoreInfo\MoreInfoView.xaml.cs">
+      <DependentUpon>MoreInfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ApplicationView.xaml.cs">
+    <Compile Include="ViewsViewModels\Application\ApplicationView.xaml.cs">
       <DependentUpon>ApplicationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DetailsView.xaml.cs">
+    <Compile Include="ViewsViewModels\Details\DetailsView.xaml.cs">
       <DependentUpon>DetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ErrorReportDialog.xaml.cs">
       <DependentUpon>ErrorReportDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ExpandedAlbumDetailsView.xaml.cs">
+    <Compile Include="ViewsViewModels\Shared\ExpandedAlbumDetailsView.xaml.cs">
       <DependentUpon>ExpandedAlbumDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SearchResultsDetailView.xaml.cs">
+    <Compile Include="ViewsViewModels\Search\SearchResultsDetailView.xaml.cs">
       <DependentUpon>SearchResultsDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SearchResultsView.xaml.cs">
+    <Compile Include="ViewsViewModels\Search\SearchResultsView.xaml.cs">
       <DependentUpon>SearchResultsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SearchView.xaml.cs">
+    <Compile Include="ViewsViewModels\Search\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SelectAudioFilesView.xaml.cs">
+    <Compile Include="ViewsViewModels\SelectAudioFiles\SelectAudioFilesView.xaml.cs">
       <DependentUpon>SelectAudioFilesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SuccessView.xaml.cs">
+    <Compile Include="ViewsViewModels\Success\SuccessView.xaml.cs">
       <DependentUpon>SuccessView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UpdateView.xaml.cs">
+    <Compile Include="ViewsViewModels\Update\UpdateView.xaml.cs">
       <DependentUpon>UpdateView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WebAlbumListView.xaml.cs">
+    <Compile Include="ViewsViewModels\WebAlbumList\WebAlbumListView.xaml.cs">
       <DependentUpon>WebAlbumListView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -174,11 +175,11 @@
     <Compile Include="Controls\InlineZuneMessage.xaml.cs">
       <DependentUpon>InlineZuneMessage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\RadioButtonExtended.cs" />
-    <Compile Include="Controls\SearchBarControl.xaml.cs">
+    <Compile Include="ViewsViewModels\Search\RadioButtonExtended.cs" />
+    <Compile Include="ViewsViewModels\Search\SearchBarControl.xaml.cs">
       <DependentUpon>SearchBarControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SortControl.xaml.cs">
+    <Compile Include="ViewsViewModels\WebAlbumList\SortControl.xaml.cs">
       <DependentUpon>SortControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ZuneMessageBox.xaml.cs">
@@ -196,8 +197,7 @@
     <Compile Include="Models\ExtensionMethods.cs" />
     <Compile Include="Models\LinkStatus.cs" />
     <Compile Include="Models\SharedMethods.cs" />
-    <Compile Include="Models\Song.cs" />
-    <Compile Include="Models\SortOrder.cs" />
+    <Compile Include="ViewsViewModels\WebAlbumList\SortOrder.cs" />
     <Compile Include="Models\ZuneObservableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -224,36 +224,36 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\add.png" />
-    <Resource Include="Assets\alert.png" />
-    <Resource Include="Assets\arrow.png" />
-    <Resource Include="Assets\blankartwork.png" />
-    <Resource Include="Assets\delete.png" />
-    <Resource Include="Assets\error.png" />
-    <Resource Include="Assets\help.png" />
-    <Resource Include="Assets\information.png" />
-    <Resource Include="Assets\info_big.png" />
-    <Resource Include="Assets\magnifyingglass.png" />
-    <Resource Include="Assets\magnifyingglassblack.png" />
-    <Resource Include="Assets\magnifyingglass_light.png" />
-    <Resource Include="Assets\minus.png" />
-    <Resource Include="Assets\no.png" />
-    <Resource Include="Assets\refresh.png" />
-    <Resource Include="Assets\stop.png" />
-    <Resource Include="Assets\warning.png" />
-    <Resource Include="Assets\yes.png" />
-    <Resource Include="Assets\zuneicondark.ico" />
+    <Resource Include="Resources\Assets\add.png" />
+    <Resource Include="Resources\Assets\alert.png" />
+    <Resource Include="Resources\Assets\arrow.png" />
+    <Resource Include="Resources\Assets\blankartwork.png" />
+    <Resource Include="Resources\Assets\delete.png" />
+    <Resource Include="Resources\Assets\error.png" />
+    <Resource Include="Resources\Assets\help.png" />
+    <Resource Include="Resources\Assets\information.png" />
+    <Resource Include="Resources\Assets\info_big.png" />
+    <Resource Include="Resources\Assets\magnifyingglass.png" />
+    <Resource Include="Resources\Assets\magnifyingglassblack.png" />
+    <Resource Include="Resources\Assets\magnifyingglass_light.png" />
+    <Resource Include="Resources\Assets\minus.png" />
+    <Resource Include="Resources\Assets\no.png" />
+    <Resource Include="Resources\Assets\refresh.png" />
+    <Resource Include="Resources\Assets\stop.png" />
+    <Resource Include="Resources\Assets\warning.png" />
+    <Resource Include="Resources\Assets\yes.png" />
+    <Resource Include="Resources\Assets\zuneicondark.ico" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\InlineZuneMessage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\SearchBarControl.xaml">
+    <Page Include="ViewsViewModels\Search\SearchBarControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\SortControl.xaml">
+    <Page Include="ViewsViewModels\WebAlbumList\SortControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -261,27 +261,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources.xaml">
+    <Page Include="Resources\Resources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AboutView.xaml">
+    <Page Include="ViewsViewModels\About\AboutView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AlbumDetailsView.xaml">
+    <Page Include="ViewsViewModels\WebAlbumList\AlbumDetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AlbumMoreInfoView.xaml">
+    <Page Include="ViewsViewModels\MoreInfo\MoreInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ApplicationView.xaml">
+    <Page Include="ViewsViewModels\Application\ApplicationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DetailsView.xaml">
+    <Page Include="ViewsViewModels\Details\DetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -289,35 +289,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ExpandedAlbumDetailsView.xaml">
+    <Page Include="ViewsViewModels\Shared\ExpandedAlbumDetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SearchResultsDetailView.xaml">
+    <Page Include="ViewsViewModels\Search\SearchResultsDetailView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SearchResultsView.xaml">
+    <Page Include="ViewsViewModels\Search\SearchResultsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SearchView.xaml">
+    <Page Include="ViewsViewModels\Search\SearchView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SelectAudioFilesView.xaml">
+    <Page Include="ViewsViewModels\SelectAudioFiles\SelectAudioFilesView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SuccessView.xaml">
+    <Page Include="ViewsViewModels\Success\SuccessView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\UpdateView.xaml">
+    <Page Include="ViewsViewModels\Update\UpdateView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\WebAlbumListView.xaml">
+    <Page Include="ViewsViewModels\WebAlbumList\WebAlbumListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -348,6 +348,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

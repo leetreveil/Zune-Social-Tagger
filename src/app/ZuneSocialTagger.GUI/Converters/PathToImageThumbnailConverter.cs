@@ -30,7 +30,7 @@ namespace ZuneSocialTagger.GUI.Converters
         private static BitmapImage CreateBlankImage()
         {
             var image = new BitmapImage();
-            const string blankArtworkUrl = @"pack://application:,,,/Assets/blankartwork.png";
+            const string blankArtworkUrl = @"pack://application:,,,/Resources/Assets/blankartwork.png";
 
             image.BeginInit();
             image.UriSource = new Uri(blankArtworkUrl, UriKind.RelativeOrAbsolute);

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using GalaSoft.MvvmLight.Threading;
-using ZuneSocialTagger.GUI.ViewModels;
+using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 
 namespace ZuneSocialTagger.GUI.Models
 {

@@ -1,0 +1,63 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="ZuneSocialTagger.GUI.ViewsViewModels.Search.SearchView"
+    mc:Ignorable="d" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:Search="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Search"
+    xmlns:dt="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Search.DesignTime" 
+    xmlns:Shared="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Shared">
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="../../Resources/Resources.xaml" />
+    </UserControl.Resources>
+
+    <Grid d:DataContext="{d:DesignInstance dt:SearchDesignViewModel,IsDesignTimeCreatable=True}">    
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Shared:ExpandedAlbumDetailsView 
+            VerticalAlignment="Top" 
+            DataContext="{Binding AlbumDetails}" />
+
+        <Search:SearchBarControl Margin="20,0,0,0"
+            VerticalAlignment="Top" 
+            HorizontalAlignment="Right"
+            Grid.Column="1"
+            IsSearching="{Binding IsSearching}"
+            SearchText="{Binding Path=SearchText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+            Command="{Binding SearchCommand}"/>
+
+        <Search:SearchResultsView
+             d:DataContext="{d:DesignInstance dt:SearchResultsDesignViewModel,IsDesignTimeCreatable=True}"
+            Visibility="{Binding RelativeSource={RelativeSource FindAncestor,
+                                                AncestorType={x:Type UserControl}},
+                                                    Path=DataContext.CanShowResults,
+                                                        Converter={StaticResource BoolToVisConverter}}" 
+                                 Margin="0,30,0,0" MaxHeight="265" 
+                                 DataContext="{Binding SearchResultsViewModel}" 
+                                 Grid.Row="1" Grid.ColumnSpan="2">
+
+        </Search:SearchResultsView>
+        
+        <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" 
+                    HorizontalAlignment="Right" Margin="0,10,0,0">
+
+            <Button Content="BACK" Margin="0,0,10,0" Command="{Binding MoveBackCommand}"/>
+
+            <Button Content="NEXT" Command="{Binding MoveNextCommand}" 
+                    IsEnabled="{Binding CanMoveNext}"/>
+
+        </StackPanel>
+
+    </Grid>
+</UserControl>

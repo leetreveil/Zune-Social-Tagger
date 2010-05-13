@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterOwner">
 
     <Window.Resources>
-        <ResourceDictionary Source="../Resources.xaml" />
+        <ResourceDictionary Source="../Resources/Resources.xaml" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>

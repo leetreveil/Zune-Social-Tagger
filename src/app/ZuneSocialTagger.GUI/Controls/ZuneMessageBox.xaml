@@ -9,7 +9,7 @@
     ShowInTaskbar="False">
 
     <Window.Resources>
-        <ResourceDictionary Source="../Resources.xaml" />
+        <ResourceDictionary Source="../Resources/Resources.xaml" />
     </Window.Resources>
     
     <Grid>

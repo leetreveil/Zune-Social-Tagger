@@ -5,7 +5,7 @@
              x:Name="RootVisual">
 
     <UserControl.Resources>
-        <ResourceDictionary Source="../Resources.xaml" />
+        <ResourceDictionary Source="../Resources/Resources.xaml" />
     </UserControl.Resources>
    
     <Grid>
@@ -24,7 +24,7 @@
         </Viewbox>
 
         <Button Height="16" Grid.Column="2" Click="Ok_Click" 
-            Margin="10,0,0,0" Content="OK" Style="{StaticResource UpdateButton}"
+            Margin="10,0,0,0" Content="OK" Style="{StaticResource SmallGreyButtonWithBorder}"
             VerticalAlignment="Center"/>
     </Grid>
  

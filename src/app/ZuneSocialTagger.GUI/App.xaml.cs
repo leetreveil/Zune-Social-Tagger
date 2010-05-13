@@ -7,8 +7,10 @@ using Utilities;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Controls;
 using ZuneSocialTagger.GUI.Properties;
-using ZuneSocialTagger.GUI.ViewModels;
-using ZuneSocialTagger.GUI.Views;
+using ZuneSocialTagger.GUI.ViewsViewModels.Application;
+using ZuneSocialTagger.GUI.ViewsViewModels.Search;
+using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 
 namespace ZuneSocialTagger.GUI
 {

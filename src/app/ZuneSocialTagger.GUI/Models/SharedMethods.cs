@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core.IO;
-using ZuneSocialTagger.GUI.ViewModels;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.Core.ZuneDatabase;
+using ZuneSocialTagger.GUI.ViewsViewModels.Application;
+using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 
 namespace ZuneSocialTagger.GUI.Models
 {
