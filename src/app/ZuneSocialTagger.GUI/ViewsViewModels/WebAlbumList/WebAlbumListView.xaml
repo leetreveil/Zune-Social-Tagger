@@ -144,7 +144,8 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <WebAlbumList:SortControl 
+        <WebAlbumList:SortControl
+                        Visibility="{Binding CanShowSort, Converter={StaticResource BoolToVisConverter}}"
                         SortOrder="{Binding SortOrder,Mode=TwoWay}" 
                         HorizontalAlignment="Left" VerticalContentAlignment="Bottom" 
                         Margin="0,0,0,3"
@@ -265,14 +266,6 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
-
-            <Button Visibility="Collapsed"
-                    ToolTip="Refresh the zune database"
-                    IsEnabled="{Binding Path=CanShowReloadButton}"
-                    Margin="0,0,10,0"
-                    Command="{Binding LoadDatabaseCommand}"
-                    Content="REFRESH" />
 
             <Button ToolTip="Download the details for every album in the list"
                     IsEnabled="{Binding Path=CanShowScanAllButton}"

@@ -104,6 +104,9 @@
     <Compile Include="ViewsViewModels\Details\DiscHeader.cs" />
     <Compile Include="ViewsViewModels\Shared\ViewModelBase.cs" />
     <Compile Include="ViewsViewModels\About\AboutViewModel.cs" />
+    <Compile Include="ViewsViewModels\WebAlbumList\AlbumDetailsControl.xaml.cs">
+      <DependentUpon>AlbumDetailsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewsViewModels\WebAlbumList\AlbumDetailsViewModel.cs" />
     <Compile Include="ViewsViewModels\MoreInfo\MoreInfoViewModel.cs" />
     <Compile Include="ViewsViewModels\Application\ApplicationViewModel.cs" />
@@ -252,6 +255,10 @@
     <Page Include="ViewsViewModels\Search\SearchBarControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewsViewModels\WebAlbumList\AlbumDetailsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewsViewModels\WebAlbumList\SortControl.xaml">
       <Generator>MSBuild:Compile</Generator>

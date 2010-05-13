@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:WebAlbumList="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList" 
              mc:Ignorable="d"
              Name="root">
-
 
     <UserControl.Resources>
         <ResourceDictionary Source="../../Resources/Resources.xaml" />
@@ -50,18 +50,7 @@
                                         <StackPanel DataContext="{Binding WebAlbumMetaData}" Orientation="Horizontal">
                                             <Image Width="16" Height="16" Source="../../Resources/Assets/yes.png"
                                                                             Margin="0,0,10,0" />
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Height="50"
-                                                       Width="50"
-                                                       Source="{Binding Path=ArtworkUrl,
-                                                                Converter={StaticResource PathToImageThumbnailConverter}}"
-                                                       Margin="0,0,10,0" />
-                                                <StackPanel VerticalAlignment="Center">
-                                                    <TextBlock ToolTip="{Binding Title}" Text="{Binding Title}" />
-                                                    <TextBlock ToolTip="{Binding Artist}" Text="{Binding Artist}"  
-                                                               Foreground="#FF8A8D90" />
-                                                </StackPanel>
-                                            </StackPanel>
+                                            <WebAlbumList:AlbumDetailsControl/>
                                         </StackPanel>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -78,7 +67,7 @@
                                                            Source="../../Resources/Assets/help.png"
                                                            Margin="0,0,10,0" />
 
-                                            <Control Template="{DynamicResource AlbumDetails}" />
+                                            <WebAlbumList:AlbumDetailsControl/>
                                         </StackPanel>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -96,7 +85,7 @@
                                                        Source="../../Resources/Assets/warning.png"
                                                        Margin="0,0,10,0" />
 
-                                            <Control Template="{StaticResource AlbumDetails}" />
+                                            <WebAlbumList:AlbumDetailsControl/>
 
                                         </StackPanel>
                                     </ControlTemplate>

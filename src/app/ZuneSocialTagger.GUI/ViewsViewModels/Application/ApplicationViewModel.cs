@@ -72,6 +72,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             Messenger.Default.Register<ErrorMessage>(this, DisplayMessage);
 
             _albums = new ZuneObservableCollection<AlbumDetailsViewModel>();
+
+            _dbReader.FinishedReadingAlbums += _dbReader_FinishedReadingAlbums;
         }
 
         public void ViewHasLoaded()
@@ -167,6 +169,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void HandleMagicStrings(string message)
         {
+            if (message == "SORT")
+            {
+                SortData(Settings.Default.SortOrder);
+            }
             if (message == "SWITCHTODB")
             {
                 ReadActualDatabase();
@@ -268,6 +274,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
                         GetNewOrRemovedAlbumsFromZuneDb();
 
+                        Messenger.Default.Send<string,WebAlbumListViewModel>("FINISHEDLOADING");
                     });
                 }
                 catch (SerializationException)
@@ -312,7 +319,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     if (newAlbums.Count > 0 || removedAlbums.Count > 0)
                     {
                         //tell the WebAlbumListViewModel to sort its list because there may be new items
-                        Messenger.Default.Send<string, WebAlbumListViewModel>("SORT");
+                        SortData(Settings.Default.SortOrder);
 
                         TellViewThatUpdatesHaveBeenAdded(newAlbums.Count(), removedAlbums.Count());
                     }
@@ -358,6 +365,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
                     DispatcherHelper.CheckBeginInvokeOnUI(() => _albums.Add(advm));
                 }
+
+                Messenger.Default.Send<string, WebAlbumListViewModel>("FINISHEDLOADING");
             });
         }
 
@@ -439,6 +448,37 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     }
                 });
             }
+        }
+
+        private void SortData(SortOrder sortOrder)
+        {
+            Settings.Default.SortOrder = sortOrder;
+
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                switch (sortOrder)
+                {
+                    case SortOrder.DateAdded:
+                        _albums.SortDesc(x => x.ZuneAlbumMetaData.DateAdded);
+                        break;
+                    case SortOrder.Album:
+                        _albums.Sort(x => x.ZuneAlbumMetaData.Title);
+                        break;
+                    case SortOrder.Artist:
+                        _albums.Sort(x => x.ZuneAlbumMetaData.Artist);
+                        break;
+                    case SortOrder.LinkStatus:
+                        _albums.Sort(x => x.LinkStatus);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            });
+        }
+
+        void _dbReader_FinishedReadingAlbums()
+        {
+            SortData(Settings.Default.SortOrder);
         }
     }
 }
