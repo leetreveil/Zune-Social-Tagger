@@ -12,14 +12,16 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 {
     public class SearchViewModel : ViewModelBase
     {
+        private readonly ApplicationViewModel _avm;
         private string _searchText;
         private bool _isSearching;
         private bool _canMoveNext;
         private SearchResultsViewModel _searchResultsViewModel;
         private bool _canShowResults;
 
-        public SearchViewModel()
+        public SearchViewModel(ApplicationViewModel avm)
         {
+            _avm = avm;
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.MoveNextCommand = new RelayCommand(MoveNext);
             this.SearchCommand = new RelayCommand(Search);
@@ -36,7 +38,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         public RelayCommand MoveBackCommand { get; private set; }
         public RelayCommand MoveNextCommand { get; private set; }
         public RelayCommand SearchCommand { get; private set; }
-        public ExpandedAlbumDetailsViewModel AlbumDetails { get { return ApplicationViewModel.AlbumDetailsFromFile; } }
+        public ExpandedAlbumDetailsViewModel AlbumDetails { get { return _avm.AlbumDetailsFromFile; } }
 
         public SearchResultsViewModel SearchResultsViewModel
         {
@@ -101,7 +103,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             this.SearchResultsViewModel = null;
 
             AlbumSearch.SearchForAlbumAsync(this.SearchText, albums => {
-                this.SearchResultsViewModel = new SearchResultsViewModel();
+                this.SearchResultsViewModel = new SearchResultsViewModel(_avm);
 
                 DispatcherHelper.CheckBeginInvokeOnUI(() => this.SearchResultsViewModel.LoadAlbums(albums));
 
@@ -122,12 +124,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
         public void MoveBack()
         {
-            Messenger.Default.Send<string,ApplicationViewModel>("SWITCHTOFIRSTVIEW");
+            _avm.SwitchToFirstView();
         }
 
         public void MoveNext()
         {
-            Messenger.Default.Send<Type,ApplicationViewModel>(typeof(DetailsViewModel));
+            _avm.SwitchToView(typeof(DetailsViewModel));
         }
     }
 }

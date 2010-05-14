@@ -1,7 +1,8 @@
 using Machine.Specifications;
 using ZuneSocialTagger.GUI.Models;
 using System;
-namespace ZuneSocialTagger.UnitTests.UI
+
+namespace ZuneSocialTagger.UnitTests.UI.Models
 {
     [Subject("ConvertTrackNumberToDoubleDigits")]
     public class when_converting_a_track_number_with_a_single_digit

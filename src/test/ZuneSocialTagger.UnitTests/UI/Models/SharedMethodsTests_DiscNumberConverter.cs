@@ -2,7 +2,7 @@
 using ZuneSocialTagger.GUI.Models;
 using Machine.Specifications;
 
-namespace ZuneSocialTagger.UnitTests.UI
+namespace ZuneSocialTagger.UnitTests.UI.Models
 {
     [Subject("DiscNumberConverter")]
     public class when_converting_a_disc_number_separated_by_a_forward_slash

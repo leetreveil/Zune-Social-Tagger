@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
@@ -15,6 +14,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 {
     public class SearchResultsViewModel : ViewModelBase
     {
+        private readonly ApplicationViewModel _avm;
         private IEnumerable<WebAlbum> _albums;
         private IEnumerable<WebArtist> _artists;
         private bool _isLoading;
@@ -23,8 +23,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         private bool _isAlbumsEnabled;
         private string _artistCount;
 
-        public SearchResultsViewModel()
+        public SearchResultsViewModel(ApplicationViewModel avm)
         {
+            _avm = avm;
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
             this.SearchResults = new ObservableCollection<object>();
             this.SearchResults.CollectionChanged += SearchResults_CollectionChanged;
@@ -128,8 +129,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             reader.DownloadCompleted += (details, state) => {
                 if (state == DownloadState.Success)
                 {
-                    ApplicationViewModel.AlbumDetailsFromWeb = details.GetAlbumDetailsFrom();
-                    ApplicationViewModel.SongsFromWebsite = details.Tracks.ToList();
+                    _avm.AlbumDetailsFromWeb = details.GetAlbumDetailsFrom();
+                    _avm.SongsFromWebsite = details.Tracks.ToList();
 
                     UpdateDetail(details);
                     this.IsLoading = false;
@@ -203,14 +204,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             this.IsAlbumsEnabled = true;
         }
 
-        private static void MoveBack()
+        private void MoveBack()
         {
-            Messenger.Default.Send<Type, ApplicationViewModel>(typeof(SearchViewModel));
+            _avm.SwitchToView(typeof(SearchViewModel));
         }
 
-        private static void MoveNext()
+        private void MoveNext()
         {
-            Messenger.Default.Send<Type, ApplicationViewModel>(typeof(DetailsViewModel));
+            _avm.SwitchToView(typeof(DetailsViewModel));
         }
 
         private void UpdateDetail(WebAlbum albumMetaData)

@@ -68,6 +68,7 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GalaSoft.MvvmLight, Version=3.0.0.31869, Culture=neutral, PublicKeyToken=3e875cdb3903c512, processorArchitecture=MSIL" />
     <Reference Include="ID3Tag.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=59639b700fcbf7ba, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\id3tag.net\ID3Tag.Net.dll</HintPath>
@@ -79,6 +80,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\nunit\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\..\libs\rhinomocks\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -88,11 +93,12 @@
     <Compile Include="Core\ExtensionMethodsTests_ExtractGuidFromUrnUuid.cs" />
     <Compile Include="Core\ID3Tagger\ZuneMP3TagContainerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\SharedMethodsTests_DiscNumberConverter.cs" />
-    <Compile Include="UI\SharedMethodsTests_GetAlbumLinkStatus.cs" />
-    <Compile Include="UI\SharedMethodsTests_GetLinkStatusFromGuid.cs" />
-    <Compile Include="UI\SharedMethodsTests_TrackNumberConverter.cs" />
-    <Compile Include="UI\SharedMethodsTests_ConvertTrackNumberToDoubleDigits.cs" />
+    <Compile Include="UI\Models\SharedMethodsTests_DiscNumberConverter.cs" />
+    <Compile Include="UI\Models\SharedMethodsTests_GetAlbumLinkStatus.cs" />
+    <Compile Include="UI\Models\SharedMethodsTests_GetLinkStatusFromGuid.cs" />
+    <Compile Include="UI\Models\SharedMethodsTests_TrackNumberConverter.cs" />
+    <Compile Include="UI\Models\SharedMethodsTests_ConvertTrackNumberToDoubleDigits.cs" />
+    <Compile Include="UI\ViewsViewModels\Success\SuccessViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\app\ZuneSocialTagger.Core\ZuneSocialTagger.Core.csproj">

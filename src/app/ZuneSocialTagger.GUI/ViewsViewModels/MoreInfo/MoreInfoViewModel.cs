@@ -14,8 +14,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo
 {
     public class MoreInfoViewModel : ViewModelBase
     {
-        public MoreInfoViewModel()
+        private readonly ApplicationViewModel _avm;
+
+        public MoreInfoViewModel(ApplicationViewModel avm)
         {
+            _avm = avm;
             Messenger.Default.Register<AlbumDetailsViewModel>(this, GotAlbumDetails);
 
             this.MoveBackCommand = new RelayCommand(MoveBack);
@@ -70,7 +73,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo
 
         private void MoveBack()
         {
-            Messenger.Default.Send<string, ApplicationViewModel>("SWITCHTOFIRSTVIEW");
+            _avm.SwitchToFirstView();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Machine.Specifications;
 using ZuneSocialTagger.GUI.Models;
 
-namespace ZuneSocialTagger.UnitTests.UI
+namespace ZuneSocialTagger.UnitTests.UI.Models
 {
     [Subject("GetAlbumLinkStatus")]
     public class when_getting_then_album_link_status_for_shape_of_punk_to_come_with_THE_prefix

@@ -2,7 +2,7 @@
 using Machine.Specifications;
 using ZuneSocialTagger.GUI.Models;
 
-namespace ZuneSocialTagger.UnitTests.UI
+namespace ZuneSocialTagger.UnitTests.UI.Models
 {
     [Subject("TrackNumberConverter")]
     public class when_converting_a_track_number_separated_by_a_forward_slash

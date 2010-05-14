@@ -6,6 +6,7 @@ using Ninject;
 using Utilities;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Controls;
+using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewsViewModels.Application;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
@@ -19,7 +20,7 @@ namespace ZuneSocialTagger.GUI
     /// </summary>
     public partial class App
     {
-        private static readonly StandardKernel Container = new StandardKernel();
+        public static readonly StandardKernel Container = new StandardKernel();
         private static readonly ExceptionLogger LoggerForStrings = new ExceptionLogger();
         private static readonly StringLogger StringLogger = new StringLogger();
         private static readonly ExceptionLogger LoggerForEmail = new ExceptionLogger();
@@ -61,6 +62,7 @@ namespace ZuneSocialTagger.GUI
             //downloading data while linking etc
             Container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
             Container.Bind<SearchViewModel>().ToSelf().InSingletonScope();
+            Container.Bind<ZuneObservableCollection<AlbumDetailsViewModel>>().ToSelf().InSingletonScope();
         }
 
         public static ViewModelBase GetViewForType(Type viewType)

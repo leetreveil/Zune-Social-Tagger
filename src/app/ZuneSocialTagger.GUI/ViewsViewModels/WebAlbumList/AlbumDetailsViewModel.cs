@@ -21,6 +21,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         [NonSerialized]
         private readonly IZuneDatabaseReader _dbReader;
 
+        [NonSerialized]
+        private readonly ApplicationViewModel _avm;
+
         private DbAlbum _zuneAlbumMetaData;
         private WebAlbum _webAlbumMetaData;
         private LinkStatus _linkStatus;
@@ -37,9 +40,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         [field: NonSerialized]
         public event Action AlbumDetailsDownloaded = delegate { };
 
-        public AlbumDetailsViewModel(IZuneDatabaseReader dbReader)
+        public AlbumDetailsViewModel(IZuneDatabaseReader dbReader,
+                                        ApplicationViewModel avm)
         {
             _dbReader = dbReader;
+            _avm = avm;
 
             this.DelinkCommand = new RelayCommand(DelinkAlbum);
             this.LinkCommand = new RelayCommand(LinkAlbum);
@@ -132,11 +137,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public void LinkAlbum()
         {
-            ApplicationViewModel.SongsFromFile = new List<Song>();
+            _avm.SongsFromFile = new List<Song>();
 
-            var tracks = ApplicationViewModel.SongsFromFile;
-            //TODO: instead of passing the selected album into the ctor, create it here and using the messaging system to
-            //set it in the applicationviewmodel
             var albumDetails = this.ZuneAlbumMetaData;
 
             DoesAlbumExistInDbAndDisplayError(albumDetails);
@@ -148,15 +150,15 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 var zuneTagContainer = SharedMethods.GetContainer(track.FilePath);
 
                 if (zuneTagContainer != null)
-                    tracks.Add(new Song(track.FilePath, zuneTagContainer));
+                    _avm.SongsFromFile.Add(new Song(track.FilePath, zuneTagContainer));
                 else
                     return;
             }
 
-            ApplicationViewModel.AlbumDetailsFromFile = SharedMethods.GetAlbumDetailsFrom(albumDetails);
+            _avm.AlbumDetailsFromFile = SharedMethods.GetAlbumDetailsFrom(albumDetails);
 
             //tell the application to switch to the search view
-            Messenger.Default.Send<Type, ApplicationViewModel>(typeof(SearchViewModel));
+            _avm.SwitchToView(typeof(SearchViewModel));
             //send the search text to the search view model after it has been constructed
             Messenger.Default.Send<string, SearchViewModel>(albumDetails.Title + " " + albumDetails.Artist);
         }

@@ -101,6 +101,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\Song.cs" />
+    <Compile Include="ViewsViewModels\Application\IApplicationViewModel.cs" />
     <Compile Include="ViewsViewModels\Details\DiscHeader.cs" />
     <Compile Include="ViewsViewModels\Shared\ViewModelBase.cs" />
     <Compile Include="ViewsViewModels\About\AboutViewModel.cs" />

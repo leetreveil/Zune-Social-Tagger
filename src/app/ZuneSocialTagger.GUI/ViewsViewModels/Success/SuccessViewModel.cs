@@ -1,5 +1,5 @@
+using System;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.GUI.ViewsViewModels.Application;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 
@@ -7,15 +7,21 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Success
 {
     public class SuccessViewModel : ViewModelBase
     {
-        public SuccessViewModel()
-        {
-            this.AlbumDetailsFromFile = ApplicationViewModel.AlbumDetailsFromFile;
-            this.AlbumDetailsFromWebsite = ApplicationViewModel.AlbumDetailsFromWeb;
+        private readonly IApplicationViewModel _avm;
 
-            this.OKCommand =new RelayCommand(() => {
-                Messenger.Default.Send<string, ApplicationViewModel>("SWITCHTOFIRSTVIEW");
-                Messenger.Default.Send<string, ApplicationViewModel>("ALBUMLINKED");
-            });
+        public SuccessViewModel(IApplicationViewModel avm)
+        {
+            _avm = avm;
+            this.AlbumDetailsFromFile = avm.AlbumDetailsFromFile;
+            this.AlbumDetailsFromWebsite = avm.AlbumDetailsFromWeb;
+
+            this.OKCommand = new RelayCommand(OkClicked);
+        }
+
+        private void OkClicked()
+        {
+            _avm.SwitchToFirstView();
+            _avm.NotifyAppThatAnAlbumHasBeenLinked();
         }
 
         public RelayCommand OKCommand { get; private set; }

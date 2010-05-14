@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
@@ -17,10 +16,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 {
     public class DetailsViewModel : ViewModelBase
     {
-        public DetailsViewModel()
+        private readonly ApplicationViewModel _avm;
+
+        public DetailsViewModel(ApplicationViewModel avm)
         {
-            this.AlbumDetailsFromWebsite = ApplicationViewModel.AlbumDetailsFromWeb;
-            this.AlbumDetailsFromFile = ApplicationViewModel.AlbumDetailsFromFile;
+            _avm = avm;
+            this.AlbumDetailsFromWebsite = _avm.AlbumDetailsFromWeb;
+            this.AlbumDetailsFromFile = _avm.AlbumDetailsFromFile;
 
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.SaveCommand = new RelayCommand(Save);
@@ -31,26 +33,27 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 
         private void PopulateRows()
         {
-            var tracksFromFile = ApplicationViewModel.SongsFromFile;
+            var tracksFromFile = _avm.SongsFromFile;
 
             //get lists of tracks by discNumer
             var tracksByDiscNumber =
                 tracksFromFile.Select(x => x.MetaData.DiscNumber).Distinct().Select(
                     number => tracksFromFile.Where(x => x.MetaData.DiscNumber == number));
 
+            //if the disc count is just one then dont add any headers
             if (tracksByDiscNumber.Count() == 1)
                 tracksByDiscNumber.First().ForEach(AddRow);
             else
             {
                 foreach (IEnumerable<Song> discTracks in tracksByDiscNumber)
                 {
-                    AddHeader(discTracks.First()); //add header for each disc before adding the tracks
+                    AddHeaderRow(discTracks.First()); //add header for each disc before adding the tracks
                     discTracks.ForEach(AddRow);
                 }
             }
         }
 
-        private void AddHeader(Song track)
+        private void AddHeaderRow(Song track)
         {
             this.Rows.Add(new DiscHeader
                               {
@@ -69,7 +72,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
                                             TrackTitle = track.MetaData.Title
                                         };
 
-            foreach (WebTrack webTrack in ApplicationViewModel.SongsFromWebsite)
+            foreach (WebTrack webTrack in _avm.SongsFromWebsite)
             {
                 detailRow.AvailableZuneTracks.Add(new TrackWithTrackNum
                                                       {
@@ -107,7 +110,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 
             var uaeExceptions = new List<UnauthorizedAccessException>();
 
-            foreach (var row in ApplicationViewModel.SongsFromFile)
+            foreach (var row in _avm.SongsFromFile)
             {
                 try
                 {
@@ -145,20 +148,20 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 
             if (uaeExceptions.Count > 0)
                 //usually occurs when a file is readonly
-                Messenger.Default.Send<ErrorMessage, ApplicationViewModel>(
-                    new ErrorMessage(ErrorMode.Error,
+                _avm.DisplayMessage(new ErrorMessage(ErrorMode.Error,
                                      "One or more files could not be written to. Have you checked the files are not marked read-only?"));
+
             else
             {
-                Messenger.Default.Send<Type, ApplicationViewModel>(typeof(SuccessViewModel));
+                _avm.SwitchToView(typeof(SuccessViewModel));
             }
 
             Mouse.OverrideCursor = null;
         }
 
-        private static void MoveBack()
+        private void MoveBack()
         {
-            Messenger.Default.Send<Type, ApplicationViewModel>(typeof (SearchViewModel));
+            _avm.SwitchToView(typeof(SearchViewModel));
         }
     }
 }

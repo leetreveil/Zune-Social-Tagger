@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Threading;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Taskbar;
@@ -18,6 +16,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
     public class WebAlbumListViewModel : ViewModelBase
     {
         private readonly IZuneDatabaseReader _dbReader;
+        private readonly ApplicationViewModel _applicationViewModel;
         private bool _canShowScanAllButton;
         private int _loadingProgress;
         private bool _canShowProgressBar;
@@ -26,9 +25,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private bool _canShowSort;
         private ZuneObservableCollection<AlbumDetailsViewModel> _albums;
 
-        public WebAlbumListViewModel(IZuneDatabaseReader dbReader)
+        public WebAlbumListViewModel(IZuneDatabaseReader dbReader, 
+                                     ApplicationViewModel applicationViewModel,
+                                     ZuneObservableCollection<AlbumDetailsViewModel> albums)
         {
+            this.Albums = albums;
+
             _dbReader = dbReader;
+            _applicationViewModel = applicationViewModel;
             _dbReader.ProgressChanged += DbAdapterProgressChanged;
             _dbReader.StartedReadingAlbums += _dbAdapter_StartedReadingAlbums;
 
@@ -50,13 +54,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             {
                 this.SelectedAlbum.RefreshAlbum();
             }
-            if (message == "FINISHEDLOADING")
-            {
-                this.CanShowScanAllButton = true;
-                ResetLoadingProgress();
-                this.SortOrder = Settings.Default.SortOrder;
-                this.CanShowSort = true;
-            }
+        }
+
+        public void DataHasLoaded()
+        {
+            this.CanShowScanAllButton = true;
+            ResetLoadingProgress();
+            this.SortOrder = Settings.Default.SortOrder;
+            this.CanShowSort = true;
         }
 
         private void SetupCommandBindings()
@@ -91,7 +96,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         public ZuneObservableCollection<AlbumDetailsViewModel> Albums
         {
             get { return _albums; }
-            set
+            private set
             {
                 _albums = value;
                 _albums.NeedsUpdating += UpdateLinkTotals;
@@ -204,7 +209,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public void SwitchToClassicMode()
         {
-            Messenger.Default.Send<Type,ApplicationViewModel>(typeof(SelectAudioFilesViewModel));
+            _applicationViewModel.SwitchToView(typeof(SelectAudioFilesViewModel));
         }
 
         private void _dbAdapter_StartedReadingAlbums()
@@ -246,7 +251,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         private void Sort()
         {
-            Messenger.Default.Send<string,ApplicationViewModel>("SORT");
+            _applicationViewModel.SortData();
         }
 
         private void UpdateLinkTotals()

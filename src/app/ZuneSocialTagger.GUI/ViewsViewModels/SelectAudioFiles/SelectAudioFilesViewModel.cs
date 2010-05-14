@@ -16,8 +16,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 {
     public class SelectAudioFilesViewModel : ViewModelBase
     {
-        public SelectAudioFilesViewModel()
+        private readonly ApplicationViewModel _avm;
+
+        public SelectAudioFilesViewModel(ApplicationViewModel avm)
         {
+            _avm = avm;
             this.CanSwitchToNewMode = true;
             this.SelectFilesCommand = new RelayCommand(SelectFiles);
             this.SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);    
@@ -29,7 +32,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 
         public void SwitchToNewMode()
         {
-            Messenger.Default.Send<Type, ApplicationViewModel>(typeof(WebAlbumListViewModel));
+            _avm.SwitchToView(typeof(WebAlbumListViewModel));
         }
 
         public void SelectFiles()
@@ -59,8 +62,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 
         private void ReadFiles(IEnumerable<string> files)
         {
-            ApplicationViewModel.SongsFromFile = new List<Song>();
-            var tracks = ApplicationViewModel.SongsFromFile;
+            _avm.SongsFromFile = new List<Song>();
+            var tracks = _avm.SongsFromFile;
 
             foreach (var file in files)
             {
@@ -84,9 +87,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
                 Year = firstTrackMetaData.Year
             };
 
-            ApplicationViewModel.AlbumDetailsFromFile = albumMetaData;
+            _avm.AlbumDetailsFromFile = albumMetaData;
 
-            Messenger.Default.Send<Type, ApplicationViewModel>(typeof(SearchViewModel));
+            _avm.SwitchToView(typeof(SearchViewModel));
             Messenger.Default.Send<string, SearchViewModel>(firstTrackMetaData.AlbumName + " " + firstTrackMetaData.AlbumArtist);
         }
     }
