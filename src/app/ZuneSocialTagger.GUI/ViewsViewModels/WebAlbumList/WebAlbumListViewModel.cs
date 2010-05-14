@@ -16,7 +16,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
     public class WebAlbumListViewModel : ViewModelBase
     {
         private readonly IZuneDatabaseReader _dbReader;
-        private readonly ApplicationViewModel _applicationViewModel;
+        private readonly IApplicationViewModel _applicationViewModel;
+        private readonly IViewModelLocator _locator;
         private bool _canShowScanAllButton;
         private int _loadingProgress;
         private bool _canShowProgressBar;
@@ -26,13 +27,15 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private ZuneObservableCollection<AlbumDetailsViewModel> _albums;
 
         public WebAlbumListViewModel(IZuneDatabaseReader dbReader, 
-                                     ApplicationViewModel applicationViewModel,
-                                     ZuneObservableCollection<AlbumDetailsViewModel> albums)
+                                     IApplicationViewModel applicationViewModel,
+                                     ZuneObservableCollection<AlbumDetailsViewModel> albums,
+                                     IViewModelLocator locator)
         {
             this.Albums = albums;
 
             _dbReader = dbReader;
             _applicationViewModel = applicationViewModel;
+            _locator = locator;
             _dbReader.ProgressChanged += DbAdapterProgressChanged;
             _dbReader.StartedReadingAlbums += _dbAdapter_StartedReadingAlbums;
 
@@ -209,7 +212,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public void SwitchToClassicMode()
         {
-            _applicationViewModel.SwitchToView(typeof(SelectAudioFilesViewModel));
+            _locator.SwitchToViewModel<SelectAudioFilesViewModel>();
         }
 
         private void _dbAdapter_StartedReadingAlbums()

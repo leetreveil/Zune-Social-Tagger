@@ -1,27 +1,16 @@
-using System;
 using GalaSoft.MvvmLight.Command;
-using ZuneSocialTagger.GUI.ViewsViewModels.Application;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Success
 {
     public class SuccessViewModel : ViewModelBase
     {
-        private readonly IApplicationViewModel _avm;
-
-        public SuccessViewModel(IApplicationViewModel avm)
+        public SuccessViewModel(IViewModelLocator locator)
         {
-            _avm = avm;
-            this.AlbumDetailsFromFile = avm.AlbumDetailsFromFile;
-            this.AlbumDetailsFromWebsite = avm.AlbumDetailsFromWeb;
+            //this.AlbumDetailsFromFile = avm.AlbumDetailsFromFile;
+            //this.AlbumDetailsFromWebsite = avm.AlbumDetailsFromWeb;
 
-            this.OKCommand = new RelayCommand(OkClicked);
-        }
-
-        private void OkClicked()
-        {
-            _avm.SwitchToFirstView();
-            _avm.NotifyAppThatAnAlbumHasBeenLinked();
+            this.OKCommand = new RelayCommand(locator.SwitchToFirstViewModel);
         }
 
         public RelayCommand OKCommand { get; private set; }

@@ -33,14 +33,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         void ViewHasLoaded();
         void DisplayMessage(ErrorMessage message);
-        void NotifyAppThatAnAlbumHasBeenLinked();
-        void SwitchToFirstView();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="viewType">Must inherit from ViewModelBase</param>
-        void SwitchToView(Type viewType);
+        void AlbumBeenLinked();
 
         void SortData();
     }

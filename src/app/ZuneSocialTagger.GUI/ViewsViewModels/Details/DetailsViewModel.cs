@@ -1,44 +1,56 @@
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using System.Linq;
-using ZuneSocialTagger.GUI.ViewsViewModels.Application;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
-using ZuneSocialTagger.GUI.ViewsViewModels.Success;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 {
     public class DetailsViewModel : ViewModelBase
     {
-        private readonly ApplicationViewModel _avm;
+        private readonly IViewModelLocator _locator;
+        internal IEnumerable<WebTrack> _tracksFromWeb;
+        internal IEnumerable<Song> _tracksFromFile;
 
-        public DetailsViewModel(ApplicationViewModel avm)
+        public DetailsViewModel(IViewModelLocator locator)
         {
-            _avm = avm;
-            this.AlbumDetailsFromWebsite = _avm.AlbumDetailsFromWeb;
-            this.AlbumDetailsFromFile = _avm.AlbumDetailsFromFile;
+            _locator = locator;
 
             this.MoveBackCommand = new RelayCommand(MoveBack);
-            this.SaveCommand = new RelayCommand(Save);
+           // this.SaveCommand = new RelayCommand(Save);
 
-            this.Rows = new ObservableCollection<object>();
-            PopulateRows();
+            this.Rows = new List<object>();
         }
 
-        private void PopulateRows()
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
+        public RelayCommand MoveBackCommand { get; private set; }
+        public RelayCommand SaveCommand { get; private set; }
+        public List<object> Rows { get; private set; }
+
+        public bool UpdateAlbumInfo
         {
-            var tracksFromFile = _avm.SongsFromFile;
+            get { return Settings.Default.UpdateAlbumInfo; }
+            set
+            {
+                if (value != UpdateAlbumInfo)
+                {
+                    Settings.Default.UpdateAlbumInfo = value;
+                }
+            }
+        }
+
+        public void PopulateRows()
+        {
+            this.Rows.Clear();
 
             //get lists of tracks by discNumer
             var tracksByDiscNumber =
-                tracksFromFile.Select(x => x.MetaData.DiscNumber).Distinct().Select(
-                    number => tracksFromFile.Where(x => x.MetaData.DiscNumber == number));
+                _tracksFromFile.Select(x => x.MetaData.DiscNumber).Distinct().Select(
+                    number => _tracksFromFile.Where(x => x.MetaData.DiscNumber == number));
 
             //if the disc count is just one then dont add any headers
             if (tracksByDiscNumber.Count() == 1)
@@ -56,10 +68,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
         private void AddHeaderRow(Song track)
         {
             this.Rows.Add(new DiscHeader
-                              {
-                                  DiscNumber = "Disc " +
-                                               SharedMethods.DiscNumberConverter(track.MetaData.DiscNumber)
-                              });
+            {
+                DiscNumber = "Disc " +
+                             SharedMethods.DiscNumberConverter(track.MetaData.DiscNumber)
+            });
         }
 
         private void AddRow(Song track)
@@ -67,18 +79,18 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
             var detailRow = new DetailRow();
 
             detailRow.SongDetails = new TrackWithTrackNum
-                                        {
-                                            TrackNumber = SharedMethods.TrackNumberConverter(track.MetaData.TrackNumber),
-                                            TrackTitle = track.MetaData.Title
-                                        };
+            {
+                TrackNumber = SharedMethods.TrackNumberConverter(track.MetaData.TrackNumber),
+                TrackTitle = track.MetaData.Title
+            };
 
-            foreach (WebTrack webTrack in _avm.SongsFromWebsite)
+            foreach (WebTrack webTrack in _tracksFromWeb)
             {
                 detailRow.AvailableZuneTracks.Add(new TrackWithTrackNum
-                                                      {
-                                                          TrackNumber = webTrack.TrackNumber,
-                                                          TrackTitle = webTrack.Title
-                                                      });
+                {
+                    TrackNumber = webTrack.TrackNumber,
+                    TrackTitle = webTrack.Title
+                });
             }
 
             detailRow.MatchTheSelectedSongToTheAvailableSongs();
@@ -86,82 +98,64 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
             this.Rows.Add(detailRow);
         }
 
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; private set; }
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; private set; }
-        public RelayCommand MoveBackCommand { get; private set; }
-        public RelayCommand SaveCommand { get; private set; }
-        public ObservableCollection<object> Rows { get; private set; }
+        //private void Save()
+        //{
+        //    Mouse.OverrideCursor = Cursors.Wait;
 
-        public bool UpdateAlbumInfo
-        {
-            get { return Settings.Default.UpdateAlbumInfo; }
-            set
-            {
-                if (value != UpdateAlbumInfo)
-                {
-                    Settings.Default.UpdateAlbumInfo = value;
-                }
-            }
-        }
+        //    var uaeExceptions = new List<UnauthorizedAccessException>();
 
-        private void Save()
-        {
-            Mouse.OverrideCursor = Cursors.Wait;
+        //    foreach (var row in _avm.SongsFromFile)
+        //    {
+        //        try
+        //        {
+        //            //if (row.SelectedSong != null)
+        //            //{
+        //            //    var container = row.Container;
 
-            var uaeExceptions = new List<UnauthorizedAccessException>();
+        //            //    if (row.SelectedSong.HasAllZuneIds)
+        //            //    {
+        //            //        container.RemoveZuneAttribute("WM/WMContentID");
+        //            //        container.RemoveZuneAttribute("WM/WMCollectionID");
+        //            //        container.RemoveZuneAttribute("WM/WMCollectionGroupID");
+        //            //        container.RemoveZuneAttribute("ZuneCollectionID");
+        //            //        container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
 
-            foreach (var row in _avm.SongsFromFile)
-            {
-                try
-                {
-                    //if (row.SelectedSong != null)
-                    //{
-                    //    var container = row.Container;
+        //            //        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, row.SelectedSong.AlbumMediaId));
+        //            //        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, row.SelectedSong.ArtistMediaId));
+        //            //        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, row.SelectedSong.MediaId));
 
-                    //    if (row.SelectedSong.HasAllZuneIds)
-                    //    {
-                    //        container.RemoveZuneAttribute("WM/WMContentID");
-                    //        container.RemoveZuneAttribute("WM/WMCollectionID");
-                    //        container.RemoveZuneAttribute("WM/WMCollectionGroupID");
-                    //        container.RemoveZuneAttribute("ZuneCollectionID");
-                    //        container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
+        //            //        //if (Settings.Default.UpdateAlbumInfo)
+        //            //        //container.AddMetaData(row.SelectedSong.MetaData);
 
-                    //        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, row.SelectedSong.AlbumMediaId));
-                    //        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, row.SelectedSong.ArtistMediaId));
-                    //        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, row.SelectedSong.MediaId));
+        //            //        container.WriteToFile(row.FilePath);
+        //            //    }
 
-                    //        //if (Settings.Default.UpdateAlbumInfo)
-                    //        //container.AddMetaData(row.SelectedSong.MetaData);
+        //            //    //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
+        //            //}
+        //        }
+        //        catch (UnauthorizedAccessException uae)
+        //        {
+        //            uaeExceptions.Add(uae);
+        //            //TODO: better error handling
+        //        }
+        //    }
 
-                    //        container.WriteToFile(row.FilePath);
-                    //    }
+        //    if (uaeExceptions.Count > 0)
+        //        //usually occurs when a file is readonly
+        //        _avm.DisplayMessage(new ErrorMessage(ErrorMode.Error,
+        //                             "One or more files could not be written to. Have you checked the files are not marked read-only?"));
 
-                    //    //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
-                    //}
-                }
-                catch (UnauthorizedAccessException uae)
-                {
-                    uaeExceptions.Add(uae);
-                    //TODO: better error handling
-                }
-            }
+        //    else
+        //    {
+        //        _locator.SwitchToViewModel<SuccessViewModel>();
+        //    }
 
-            if (uaeExceptions.Count > 0)
-                //usually occurs when a file is readonly
-                _avm.DisplayMessage(new ErrorMessage(ErrorMode.Error,
-                                     "One or more files could not be written to. Have you checked the files are not marked read-only?"));
-
-            else
-            {
-                _avm.SwitchToView(typeof(SuccessViewModel));
-            }
-
-            Mouse.OverrideCursor = null;
-        }
+        //    Mouse.OverrideCursor = null;
+        //}
 
         private void MoveBack()
         {
-            _avm.SwitchToView(typeof(SearchViewModel));
+            _locator.SwitchToViewModel<SearchViewModel>();
         }
     }
 }

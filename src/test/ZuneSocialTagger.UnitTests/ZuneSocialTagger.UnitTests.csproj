@@ -98,6 +98,7 @@
     <Compile Include="UI\Models\SharedMethodsTests_GetLinkStatusFromGuid.cs" />
     <Compile Include="UI\Models\SharedMethodsTests_TrackNumberConverter.cs" />
     <Compile Include="UI\Models\SharedMethodsTests_ConvertTrackNumberToDoubleDigits.cs" />
+    <Compile Include="UI\ViewsViewModels\Details\DetailsViewModelTests.cs" />
     <Compile Include="UI\ViewsViewModels\Success\SuccessViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>

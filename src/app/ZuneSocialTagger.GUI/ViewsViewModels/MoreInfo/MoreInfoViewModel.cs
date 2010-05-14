@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using System.Linq;
-using ZuneSocialTagger.GUI.ViewsViewModels.Application;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 
@@ -14,18 +12,17 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo
 {
     public class MoreInfoViewModel : ViewModelBase
     {
-        private readonly ApplicationViewModel _avm;
+        private readonly IViewModelLocator _locator;
 
-        public MoreInfoViewModel(ApplicationViewModel avm)
+        public MoreInfoViewModel(IViewModelLocator locator)
         {
-            _avm = avm;
-            Messenger.Default.Register<AlbumDetailsViewModel>(this, GotAlbumDetails);
+            _locator = locator;
 
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.Tracks = new List<MoreInfoRow>();
         }
 
-        private void GotAlbumDetails(AlbumDetailsViewModel albumDetails)
+        public void SetAlbumDetails(AlbumDetailsViewModel albumDetails)
         {
             this.AlbumDetailsFromFile = albumDetails.ZuneAlbumMetaData.GetAlbumDetailsFrom();
             this.AlbumDetailsFromWebsite = albumDetails.WebAlbumMetaData.GetAlbumDetailsFrom();
@@ -73,7 +70,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo
 
         private void MoveBack()
         {
-            _avm.SwitchToFirstView();
+            _locator.SwitchToFirstViewModel();
         }
     }
 }

@@ -6,7 +6,6 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
-using ZuneSocialTagger.GUI.ViewsViewModels.Application;
 using ZuneSocialTagger.GUI.ViewsViewModels.Details;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 
@@ -14,7 +13,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 {
     public class SearchResultsViewModel : ViewModelBase
     {
-        private readonly ApplicationViewModel _avm;
         private IEnumerable<WebAlbum> _albums;
         private IEnumerable<WebArtist> _artists;
         private bool _isLoading;
@@ -23,15 +21,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         private bool _isAlbumsEnabled;
         private string _artistCount;
 
-        public SearchResultsViewModel(ApplicationViewModel avm)
+        internal WebAlbum _downloadedAlbum;
+
+        public SearchResultsViewModel()
         {
-            _avm = avm;
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
             this.SearchResults = new ObservableCollection<object>();
             this.SearchResults.CollectionChanged += SearchResults_CollectionChanged;
   
-            this.MoveNextCommand = new RelayCommand(MoveNext);
-            this.MoveBackCommand = new RelayCommand(MoveBack);
             this.ArtistCommand = new RelayCommand(DisplayArtists);
             this.AlbumCommand = new RelayCommand(DisplayAlbums);
             this.ResultClickedCommand = new RelayCommand<object>(ResultClicked);
@@ -43,8 +40,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         #region Bindings
 
         public ObservableCollection<object> SearchResults { get; set; }
-        public RelayCommand MoveNextCommand { get; private set; }
-        public RelayCommand MoveBackCommand { get; private set; }
         public RelayCommand ArtistCommand { get; private set; }
         public RelayCommand AlbumCommand { get; private set; }
         public RelayCommand<object>ResultClickedCommand { get; private set; }
@@ -129,9 +124,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             reader.DownloadCompleted += (details, state) => {
                 if (state == DownloadState.Success)
                 {
-                    _avm.AlbumDetailsFromWeb = details.GetAlbumDetailsFrom();
-                    _avm.SongsFromWebsite = details.Tracks.ToList();
-
+                    _downloadedAlbum = details;
                     UpdateDetail(details);
                     this.IsLoading = false;
                 }
@@ -204,15 +197,18 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             this.IsAlbumsEnabled = true;
         }
 
-        private void MoveBack()
-        {
-            _avm.SwitchToView(typeof(SearchViewModel));
-        }
+        //private void MoveBack()
+        //{
+        //    _locator.SwitchToViewModel<SearchViewModel>();
+        //}
 
-        private void MoveNext()
-        {
-            _avm.SwitchToView(typeof(DetailsViewModel));
-        }
+        //private void MoveNext()
+        //{
+        //    var detailsViewModel = _locator.SwitchToViewModel<DetailsViewModel>();
+        //    detailsViewModel.AlbumDetailsFromWebsite = _downloadedAlbum.GetAlbumDetailsFrom();
+        //    detailsViewModel._tracksFromWeb = _downloadedAlbum.Tracks;
+        //    detailsViewModel.PopulateRows();
+        //}
 
         private void UpdateDetail(WebAlbum albumMetaData)
         {

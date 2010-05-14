@@ -9,9 +9,10 @@ using ZuneSocialTagger.GUI.Controls;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewsViewModels.Application;
+using ZuneSocialTagger.GUI.ViewsViewModels.Details;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
-using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
+using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 
 namespace ZuneSocialTagger.GUI
 {
@@ -20,7 +21,7 @@ namespace ZuneSocialTagger.GUI
     /// </summary>
     public partial class App
     {
-        public static readonly StandardKernel Container = new StandardKernel();
+        private static readonly StandardKernel Container = new StandardKernel();
         private static readonly ExceptionLogger LoggerForStrings = new ExceptionLogger();
         private static readonly StringLogger StringLogger = new StringLogger();
         private static readonly ExceptionLogger LoggerForEmail = new ExceptionLogger();
@@ -56,18 +57,15 @@ namespace ZuneSocialTagger.GUI
         private static void SetupBindings()
         {
             Container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
-            Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
+            Container.Bind<IApplicationViewModel>().To<ApplicationViewModel>().InSingletonScope();
+            Container.Bind<IViewModelLocator>().To<ViewModelLocator>().InSingletonScope();
 
             //we need the web view model to be a singleton because we want to be able to continue
             //downloading data while linking etc
             Container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
             Container.Bind<SearchViewModel>().ToSelf().InSingletonScope();
+            Container.Bind<DetailsViewModel>().ToSelf().InSingletonScope();
             Container.Bind<ZuneObservableCollection<AlbumDetailsViewModel>>().ToSelf().InSingletonScope();
-        }
-
-        public static ViewModelBase GetViewForType(Type viewType)
-        {
-            return Container.Get(viewType) as ViewModelBase;
         }
 
         private static void SetupUnhandledExceptionLogging()

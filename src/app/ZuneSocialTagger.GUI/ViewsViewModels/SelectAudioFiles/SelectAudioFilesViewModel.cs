@@ -1,26 +1,24 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.GUI.Models;
-using ZuneSocialTagger.GUI.ViewsViewModels.Application;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
+using ZuneSocialTagger.GUI.ViewsViewModels.Details;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 {
     public class SelectAudioFilesViewModel : ViewModelBase
     {
-        private readonly ApplicationViewModel _avm;
+        private readonly IViewModelLocator _locator;
 
-        public SelectAudioFilesViewModel(ApplicationViewModel avm)
+        public SelectAudioFilesViewModel(IViewModelLocator locator)
         {
-            _avm = avm;
+            _locator = locator;
             this.CanSwitchToNewMode = true;
             this.SelectFilesCommand = new RelayCommand(SelectFiles);
             this.SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);    
@@ -32,7 +30,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 
         public void SwitchToNewMode()
         {
-            _avm.SwitchToView(typeof(WebAlbumListViewModel));
+            _locator.SwitchToViewModel<WebAlbumListViewModel>();
         }
 
         public void SelectFiles()
@@ -62,8 +60,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 
         private void ReadFiles(IEnumerable<string> files)
         {
-            _avm.SongsFromFile = new List<Song>();
-            var tracks = _avm.SongsFromFile;
+            var tracks = new List<Song>();
 
             foreach (var file in files)
             {
@@ -87,10 +84,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
                 Year = firstTrackMetaData.Year
             };
 
-            _avm.AlbumDetailsFromFile = albumMetaData;
+            var detailsViewModel = _locator.Resolve<DetailsViewModel>();
+            detailsViewModel.AlbumDetailsFromFile = albumMetaData;
+            detailsViewModel._tracksFromFile = tracks;
 
-            _avm.SwitchToView(typeof(SearchViewModel));
-            Messenger.Default.Send<string, SearchViewModel>(firstTrackMetaData.AlbumName + " " + firstTrackMetaData.AlbumArtist);
+            var searchVm = _locator.SwitchToViewModel<SearchViewModel>();
+            searchVm.AlbumDetails = albumMetaData;
+            searchVm.SearchText = firstTrackMetaData.AlbumName + " " + firstTrackMetaData.AlbumArtist;
+            searchVm.Search();
         }
     }
 }

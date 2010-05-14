@@ -25,10 +25,6 @@
         <Details:DetailsView/>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type Search:SearchResultsViewModel}">
-        <Search:SearchResultsView/>
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type Success:SuccessViewModel}">
         <Success:SuccessView/>
     </DataTemplate>

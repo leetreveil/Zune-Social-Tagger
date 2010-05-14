@@ -9,6 +9,7 @@ using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.ViewsViewModels.Application;
+using ZuneSocialTagger.GUI.ViewsViewModels.Details;
 using ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
@@ -22,7 +23,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private readonly IZuneDatabaseReader _dbReader;
 
         [NonSerialized]
-        private readonly ApplicationViewModel _avm;
+        private readonly IViewModelLocator _locator;
 
         private DbAlbum _zuneAlbumMetaData;
         private WebAlbum _webAlbumMetaData;
@@ -41,10 +42,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         public event Action AlbumDetailsDownloaded = delegate { };
 
         public AlbumDetailsViewModel(IZuneDatabaseReader dbReader,
-                                        ApplicationViewModel avm)
+                                     IViewModelLocator locator)
         {
             _dbReader = dbReader;
-            _avm = avm;
+            _locator = locator;
 
             this.DelinkCommand = new RelayCommand(DelinkAlbum);
             this.LinkCommand = new RelayCommand(LinkAlbum);
@@ -131,36 +132,32 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         private void ShowMoreInfo()
         {
-            Messenger.Default.Send<Type,ApplicationViewModel>(typeof(MoreInfoViewModel));
-            Messenger.Default.Send<AlbumDetailsViewModel,MoreInfoViewModel>(this);
+            var moreInfoViewModel = _locator.SwitchToViewModel<MoreInfoViewModel>();
+            moreInfoViewModel.SetAlbumDetails(this);
         }
 
         public void LinkAlbum()
         {
-            _avm.SongsFromFile = new List<Song>();
-
             var albumDetails = this.ZuneAlbumMetaData;
 
             DoesAlbumExistInDbAndDisplayError(albumDetails);
 
             IEnumerable<DbTrack> tracksForAlbum = _dbReader.GetTracksForAlbum(albumDetails.MediaId);
 
-            foreach (DbTrack track in tracksForAlbum)
-            {
-                var zuneTagContainer = SharedMethods.GetContainer(track.FilePath);
+            var detailsViewModel = _locator.Resolve<DetailsViewModel>();
 
-                if (zuneTagContainer != null)
-                    _avm.SongsFromFile.Add(new Song(track.FilePath, zuneTagContainer));
-                else
-                    return;
-            }
+            detailsViewModel.AlbumDetailsFromFile = this.ZuneAlbumMetaData.GetAlbumDetailsFrom();
 
-            _avm.AlbumDetailsFromFile = SharedMethods.GetAlbumDetailsFrom(albumDetails);
+            detailsViewModel._tracksFromFile = (from track in tracksForAlbum
+                                          let zuneTagContainer = SharedMethods.GetContainer(track.FilePath)
+                                          where zuneTagContainer != null
+                                          select new Song(track.FilePath, zuneTagContainer));
 
-            //tell the application to switch to the search view
-            _avm.SwitchToView(typeof(SearchViewModel));
-            //send the search text to the search view model after it has been constructed
-            Messenger.Default.Send<string, SearchViewModel>(albumDetails.Title + " " + albumDetails.Artist);
+
+            var searchVm = _locator.SwitchToViewModel<SearchViewModel>();
+            searchVm.AlbumDetails = SharedMethods.GetAlbumDetailsFrom(albumDetails);
+            searchVm.SearchText = albumDetails.Title + " " + albumDetails.Artist;
+            searchVm.Search();
         }
 
         public void DelinkAlbum()
@@ -218,6 +215,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             this.ZuneAlbumMetaData = albumMetaData;
             this.LinkStatus = LinkStatus.Unknown;
             this.WebAlbumMetaData = null;
+
             GetAlbumDetailsFromWebsite();
         }
 
