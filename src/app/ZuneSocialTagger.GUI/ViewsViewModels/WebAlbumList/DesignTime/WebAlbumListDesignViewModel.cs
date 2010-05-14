@@ -86,6 +86,18 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.DesignTime
                                                 ReleaseYear = "2010",
                                             }
                                 });
+
+            this.Albums.Add(new AlbumDetailsViewModel
+            {
+                LinkStatus = LinkStatus.Unknown,
+                ZuneAlbumMetaData =
+                    new DbAlbum
+                    {
+                        Artist = "AFI",
+                        Title = "A new AFI record",
+                        ReleaseYear = "2010",
+                    }
+            });
         }
     }
 }

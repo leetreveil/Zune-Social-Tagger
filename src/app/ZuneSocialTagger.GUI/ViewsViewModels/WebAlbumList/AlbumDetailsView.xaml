@@ -4,14 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:WebAlbumList="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList" 
+             xmlns:dt="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.DesignTime"
              mc:Ignorable="d"
              Name="root">
 
     <UserControl.Resources>
-        <ResourceDictionary Source="../../Resources/Resources.xaml" />
+        <ResourceDictionary Source="../../Resources/Resources.xaml">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
+
+    <Grid d:DataContext="{d:DesignInstance dt:AlbumDetailsDesignViewModel,IsDesignTimeCreatable=True}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />
             <ColumnDefinition Width="20"/>
@@ -61,14 +69,35 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                        <StackPanel DataContext="{Binding WebAlbumMetaData}"
-                                                                                Orientation="Horizontal">
-                                            <Image Width="16" Height="16"
-                                                           Source="../../Resources/Assets/help.png"
-                                                           Margin="0,0,10,0" />
+                                            <Image Name="UnknownImage" 
+                                                   Width="16" Height="16"
+                                                   Source="../../Resources/Assets/help.png"
+                                                   Margin="0,0,10,0" 
+                                                   HorizontalAlignment="Left">
+                                                
+                                                <Image.RenderTransform>
+                                                    <RotateTransform x:Name="TransRotate" CenterX="8" CenterY="8" Angle="0" />
+                                                </Image.RenderTransform>
+                                                
+                                                <Image.Triggers>
+                                                <EventTrigger RoutedEvent="Image.Loaded">
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation 
+                                                                     Storyboard.TargetName="TransRotate" 
+                                                                     Storyboard.TargetProperty="Angle"
+                                                                     By="360" 
+                                                                     Duration="0:0:1"  
+                                                                     AutoReverse="False" 
+                                                                     RepeatBehavior="Forever" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
 
-                                            <WebAlbumList:AlbumDetailsControl/>
-                                        </StackPanel>
+                                                </Image.Triggers>
+
+                                            </Image>
+
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>

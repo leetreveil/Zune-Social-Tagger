@@ -120,6 +120,7 @@
     <Compile Include="ViewsViewModels\Search\DesignTime\SearchResultsDesignViewModel.cs" />
     <Compile Include="ViewsViewModels\Search\DesignTime\SearchResultsDetailDesignViewModel.cs" />
     <Compile Include="ViewsViewModels\Success\DesignTime\SuccessDesignViewModel.cs" />
+    <Compile Include="ViewsViewModels\WebAlbumList\DesignTime\AlbumDetailsDesignViewModel.cs" />
     <Compile Include="ViewsViewModels\WebAlbumList\DesignTime\WebAlbumListDesignViewModel.cs" />
     <Compile Include="ViewsViewModels\Details\DetailRow.cs" />
     <Compile Include="ViewsViewModels\Shared\TrackWithTrackNum.cs" />

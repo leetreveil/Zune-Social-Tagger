@@ -25,6 +25,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         [NonSerialized]
         private readonly IViewModelLocator _locator;
 
+        [NonSerialized]
+        private bool _isDownloadingDetails;
+
         private DbAlbum _zuneAlbumMetaData;
         private WebAlbum _webAlbumMetaData;
         private LinkStatus _linkStatus;
@@ -115,6 +118,16 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             }
         }
 
+        public bool IsDownloadingDetails
+        {
+            get { return _isDownloadingDetails; }
+            set
+            {
+                _isDownloadingDetails = value;
+                RaisePropertyChanged(() => this.IsDownloadingDetails);
+            }
+        }
+
         public bool CanDelink
         {
             get { return _linkStatus != LinkStatus.Unlinked && _linkStatus != LinkStatus.Unknown; }
@@ -129,6 +142,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         {
             get { return _linkStatus != LinkStatus.Unlinked && _linkStatus != LinkStatus.Unknown; }
         }
+
+
 
         private void ShowMoreInfo()
         {
@@ -227,6 +242,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             {
                 var downloader = new AlbumDetailsDownloader(String.Concat(Urls.Album, albumMediaId));
 
+                this.IsDownloadingDetails = true;
+
                 downloader.DownloadCompleted += (dledAlbum, state) => 
                 {
                     if (state == DownloadState.Success)
@@ -247,6 +264,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                     else
                         this.LinkStatus = LinkStatus.Unavailable;
 
+                    this.IsDownloadingDetails = false;
                     AlbumDetailsDownloaded.Invoke();
                 };
 
