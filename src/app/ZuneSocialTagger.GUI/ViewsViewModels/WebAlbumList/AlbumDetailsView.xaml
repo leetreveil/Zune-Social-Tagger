@@ -9,7 +9,28 @@
              Name="root">
 
     <UserControl.Resources>
-        <ResourceDictionary Source="../../Resources/Resources.xaml"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources/Resources.xaml"/>
+                <ResourceDictionary>
+                    <ControlTemplate x:Key="AlbumDetails">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="50" Width="50"
+                                   Source="{Binding Path=ArtworkUrl,
+                                            Converter={StaticResource PathToImageThumbnailConverter}}"
+                                   Margin="0,0,10,0" />
+
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock ToolTip="{Binding Title}" Text="{Binding Title}" />
+
+                                <TextBlock ToolTip="{Binding Artist}" Text="{Binding Artist}"  
+                                            Foreground="#FF8A8D90" />
+                            </StackPanel>
+                        </StackPanel>
+                    </ControlTemplate>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid d:DataContext="{d:DesignInstance dt:AlbumDetailsDesignViewModel,IsDesignTimeCreatable=True}">
@@ -19,7 +40,7 @@
             <ColumnDefinition  />
         </Grid.ColumnDefinitions>
 
-		<WebAlbumList:AlbumDetailsControl DataContext="{Binding ZuneAlbumMetaData}"/>
+		<ContentControl Template="{StaticResource AlbumDetails}" DataContext="{Binding ZuneAlbumMetaData}"/>
 
         <ContentControl Grid.Column="2" HorizontalAlignment="Left">
             <ContentControl.Style>
@@ -33,7 +54,7 @@
                                         <StackPanel DataContext="{Binding WebAlbumMetaData}" Orientation="Horizontal">
                                             <Image Width="16" Height="16" Source="../../Resources/Assets/yes.png"
                                                                             Margin="0,0,10,0" />
-                                            <WebAlbumList:AlbumDetailsControl/>
+                                            <ContentControl Template="{StaticResource AlbumDetails}"/>
                                         </StackPanel>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -111,7 +132,7 @@
                                                        Source="../../Resources/Assets/warning.png"
                                                        Margin="0,0,10,0" />
 
-                                            <WebAlbumList:AlbumDetailsControl/>
+                                            <ContentControl Template="{StaticResource AlbumDetails}"/>
 
                                         </StackPanel>
                                     </ControlTemplate>
