@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Taskbar;
@@ -7,7 +9,6 @@ using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Controls;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
-using ZuneSocialTagger.GUI.ViewsViewModels.Application;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 
@@ -16,7 +17,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
     public class WebAlbumListViewModel : ViewModelBase
     {
         private readonly IZuneDatabaseReader _dbReader;
-        private readonly IApplicationViewModel _applicationViewModel;
         private readonly IViewModelLocator _locator;
         private bool _canShowScanAllButton;
         private int _loadingProgress;
@@ -26,15 +26,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private bool _canShowSort;
         private ZuneObservableCollection<AlbumDetailsViewModel> _albums;
 
-        public WebAlbumListViewModel(IZuneDatabaseReader dbReader, 
-                                     IApplicationViewModel applicationViewModel,
+        public WebAlbumListViewModel(IZuneDatabaseReader dbReader,
                                      ZuneObservableCollection<AlbumDetailsViewModel> albums,
                                      IViewModelLocator locator)
         {
             this.Albums = albums;
 
             _dbReader = dbReader;
-            _applicationViewModel = applicationViewModel;
             _locator = locator;
             _dbReader.ProgressChanged += DbAdapterProgressChanged;
             _dbReader.StartedReadingAlbums += _dbAdapter_StartedReadingAlbums;
@@ -253,7 +251,34 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         private void Sort()
         {
-            _applicationViewModel.SortData();
+            Settings.Default.SortOrder = this.SortOrder;
+            SortData(this.SortOrder);
+        }
+
+        private void SortData(SortOrder sortOrder)
+        {
+            Settings.Default.SortOrder = sortOrder;
+
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                switch (sortOrder)
+                {
+                    case SortOrder.DateAdded:
+                        _albums.SortDesc(x => x.ZuneAlbumMetaData.DateAdded);
+                        break;
+                    case SortOrder.Album:
+                        _albums.Sort(x => x.ZuneAlbumMetaData.Title);
+                        break;
+                    case SortOrder.Artist:
+                        _albums.Sort(x => x.ZuneAlbumMetaData.Artist);
+                        break;
+                    case SortOrder.LinkStatus:
+                        _albums.Sort(x => x.LinkStatus);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            });
         }
 
         private void UpdateLinkTotals()

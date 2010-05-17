@@ -245,7 +245,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
                     downloader.DownloadCompleted += (dledAlbum, state) =>
                     {
-                        //Thread.Sleep(3000);
                         if (state == DownloadState.Success)
                         {
                             if (dledAlbum == null)

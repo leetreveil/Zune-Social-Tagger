@@ -38,7 +38,7 @@ namespace ZuneSocialTagger.GUI.Models
             base.OnCollectionChanged(e);
         }
 
-        /// <summary>
+        ///<summary>
         /// Sorts the items of the collection in ascending order according to a key.
         /// </summary>
         /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
@@ -54,29 +54,16 @@ namespace ZuneSocialTagger.GUI.Models
         }
 
         /// <summary>
-        /// Sorts the items of the collection in ascending order according to a key.
-        /// </summary>
-        /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
-        /// <param name="keySelector">A function to extract a key from an item.</param>
-        /// <param name="comparer">An <see cref="IComparer{T}"/> to compare keys.</param>
-        public void Sort<TKey>(Func<T, TKey> keySelector, IComparer<TKey> comparer)
-        {
-            InternalSort(Items.OrderBy(keySelector, comparer));
-        }
-
-        /// <summary>
         /// Moves the items of the collection so that their orders are the same as those of the items provided.
         /// </summary>
         /// <param name="sortedItems">An <see cref="IEnumerable{T}"/> to provide item orders.</param>
         private void InternalSort(IEnumerable<T> sortedItems)
         {
-            var sortedItemsList = sortedItems.ToList();
-
-            foreach (var item in sortedItemsList)
-            {
-                T item1 = item;
-                DispatcherHelper.CheckBeginInvokeOnUI(() => Move(IndexOf(item1), sortedItemsList.IndexOf(item1)));
-            }
+            List<T> sortedToList = sortedItems.ToList();
+             DispatcherHelper.CheckBeginInvokeOnUI(()=> {
+                 this.Clear();
+                 sortedToList.ForEach(this.Add);
+             });
         }
-    }
+    }  
 }

@@ -68,6 +68,7 @@
     <Reference Include="leetreveil.AutoUpdate.Framework">
       <HintPath>..\..\..\libs\leetreveil.AutoUpdate\leetreveil.AutoUpdate.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions" />
     <Reference Include="Microsoft.WindowsAPICodePack">
       <HintPath>..\..\..\libs\win7apicodepack\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
