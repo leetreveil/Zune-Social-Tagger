@@ -12,5 +12,6 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         public Guid AlbumMediaId { get; set; }
         public string ReleaseYear { get; set; }
         public IEnumerable<WebTrack> Tracks { get; set; }
+        public string Genre { get; set; }
     }
 }

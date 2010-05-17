@@ -66,7 +66,8 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                              AlbumMediaId = item.Id.ExtractGuidFromUrnUuid(),
                              Artist = item.GetArtist(),
                              ArtworkUrl = item.GetArtworkUrl(),
-                             ReleaseYear = item.GetReleaseYear()
+                             ReleaseYear = item.GetReleaseYear(),
+                             Genre = item.GetGenre()
                          };
                 }
             }

@@ -17,10 +17,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search.DesignTime
                                     };
 
             this.SearchText = "Immersion Pendulum";
+            this.CanShowResults = true;
+            this.IsSearching = true;
         }
 
         public ExpandedAlbumDetailsViewModel AlbumDetails { get; set; }
         public string SearchText { get; set; }
+        public bool CanShowResults { get; set; }
+        public bool IsSearching { get; set; }
     }
 
 }

@@ -97,6 +97,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                            ArtworkUrl = _feed.GetArtworkUrl(),
                            ReleaseYear = _feed.GetReleaseYear(),
                            Tracks = GetTracks(),
+                           Genre = _feed.GetGenre(),
                            AlbumMediaId = _feed.Id.ExtractGuidFromUrnUuid()
                        };
         }

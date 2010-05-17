@@ -51,6 +51,13 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             return primaryGenreElement != null ? primaryGenreElement.Elements().Last().Value : null;
         }
 
+        public static string GetGenre(this SyndicationFeed item)
+        {
+            XElement primaryGenreElement = GetElement(item, "primaryGenre");
+
+            return primaryGenreElement != null ? primaryGenreElement.Elements().Last().Value : null;
+        }
+
         public static Guid GetAlbumMediaIdFromTrack(this SyndicationItem item)
         {
             XElement albumElement = GetElement(item, "album");

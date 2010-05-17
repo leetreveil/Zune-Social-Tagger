@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -14,6 +15,22 @@ namespace ZuneSocialTagger.GUI.Models
 {
     public static class SharedMethods
     {
+
+        public static TrackWithTrackNum GetMatchingTrack(IEnumerable<TrackWithTrackNum> tracksToMatchWith, TrackWithTrackNum trackToMatch)
+        {
+            //this matches album songs to zune website songs in the details view
+            //Hold Your Colour ---- hold your colour (Album) = MATCH
+            //Hold your colour ---- hold your face = NO MATCH
+            return tracksToMatchWith.Where(song => song.TrackTitle.ToLower()
+                    .Contains(trackToMatch.TrackTitle.ToLower()))
+                    .FirstOrDefault();
+        }
+
+        public static bool DoesAlbumTitleMatch(IEnumerable<string> albumTitlesToMatch, string albumTitleToMatch)
+        {
+            return albumTitlesToMatch.Any(albumTitle => albumTitle.ToLower().Contains(albumTitleToMatch.ToLower()));
+        }
+
         /// <summary>
         /// Converts 1 to 01 and 11 to 11 (the same)
         /// </summary>

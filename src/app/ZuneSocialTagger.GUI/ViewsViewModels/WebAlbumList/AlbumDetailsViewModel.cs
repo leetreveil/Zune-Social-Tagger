@@ -160,18 +160,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
             IEnumerable<DbTrack> tracksForAlbum = _dbReader.GetTracksForAlbum(albumDetails.MediaId);
 
-            var detailsViewModel = _locator.Resolve<DetailsViewModel>();
-
-            detailsViewModel.AlbumDetailsFromFile = this.ZuneAlbumMetaData.GetAlbumDetailsFrom();
-
-            detailsViewModel._tracksFromFile = (from track in tracksForAlbum
-                                          let zuneTagContainer = SharedMethods.GetContainer(track.FilePath)
-                                          where zuneTagContainer != null
-                                          select new Song(track.FilePath, zuneTagContainer));
-
-
             var searchVm = _locator.SwitchToViewModel<SearchViewModel>();
-            searchVm.AlbumDetails = SharedMethods.GetAlbumDetailsFrom(albumDetails);
+            searchVm.TracksFromFile = (from track in tracksForAlbum
+                                       let zuneTagContainer = SharedMethods.GetContainer(track.FilePath)
+                                       where zuneTagContainer != null
+                                       select new Song(track.FilePath, zuneTagContainer));
+            searchVm.AlbumDetails = albumDetails.GetAlbumDetailsFrom();
             searchVm.SearchText = albumDetails.Title + " " + albumDetails.Artist;
             searchVm.Search();
         }

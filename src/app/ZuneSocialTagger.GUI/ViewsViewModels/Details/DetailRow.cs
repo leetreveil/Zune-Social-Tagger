@@ -22,14 +22,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
         /// <returns></returns>
         public void MatchTheSelectedSongToTheAvailableSongs()
         {
-            //this matches album songs to zune website songs in the details view
-            //Hold Your Colour ---- hold your colour (Album) = MATCH
-            //Hold your colour ---- hold your face = NO MATCH
-            TrackWithTrackNum foundSongTitle =
-                this.AvailableZuneTracks.Where(
-                    song => song.TrackTitle.ToLower().Contains(this.SongDetails.TrackTitle.ToLower())).FirstOrDefault();
-
-            this.SelectedSong = foundSongTitle ?? new TrackWithTrackNum();
+            this.SelectedSong = SharedMethods.GetMatchingTrack(this.AvailableZuneTracks,this.SongDetails);
         }
     }
 }

@@ -3,6 +3,9 @@ using System.Windows.Controls;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 {
+    /// <summary>
+    /// RadioButton that IsChecked can be bound to correctly
+    /// </summary>
     public class RadioButtonExtended : RadioButton
     {
         static bool _mBIsChanging;

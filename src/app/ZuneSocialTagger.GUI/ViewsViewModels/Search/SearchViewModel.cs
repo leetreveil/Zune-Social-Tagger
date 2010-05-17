@@ -5,6 +5,7 @@ using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.ViewsViewModels.Details;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using System.Collections.Generic;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 {
@@ -16,6 +17,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         private bool _canMoveNext;
         private SearchResultsViewModel _searchResultsViewModel;
         private bool _canShowResults;
+
+        internal IEnumerable<Song> TracksFromFile;
 
         public SearchViewModel(IViewModelLocator locator)
         {
@@ -120,11 +123,48 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
         public void MoveNext()
         {
-            var detailsViewModel = _locator.SwitchToViewModel<DetailsViewModel>();
+            WebAlbum downloadedAlbum = _searchResultsViewModel._downloadedAlbum;
+            IEnumerable<WebTrack> downloadedTracks = downloadedAlbum.Tracks;
+           // var detailsViewModel = _locator.SwitchToViewModel<DetailsViewModel>();
 
-            detailsViewModel.AlbumDetailsFromWebsite = _searchResultsViewModel._downloadedAlbum.GetAlbumDetailsFrom();
-            detailsViewModel._tracksFromWeb = _searchResultsViewModel._downloadedAlbum.Tracks;
-            detailsViewModel.PopulateRows();
+            //do all tracks match, if they do then switch to completed, otherwise switch to selector
+            if (DoAllTracksHaveMatchingTrackTitles(downloadedTracks))
+            {
+                var detailsRoVm = _locator.SwitchToViewModel<DetailsReadyOnly.DetailsReadOnlyViewModel>();
+
+                detailsRoVm.Genre = downloadedAlbum.Genre;
+                detailsRoVm.ImageUrl = downloadedAlbum.ArtworkUrl;
+                detailsRoVm.ReleaseYear = downloadedAlbum.ReleaseYear;
+                detailsRoVm.AlbumTitle = downloadedAlbum.Title;
+                detailsRoVm.Artist = downloadedAlbum.Artist;
+                detailsRoVm.TrackCount = downloadedAlbum.Tracks.Count().ToString();
+
+                foreach (var downloadedTrack in downloadedTracks)
+                {
+                    detailsRoVm.Tracks.Add(new TrackWithTrackNum
+                    {
+                        TrackTitle = downloadedTrack.Title,
+                        TrackNumber = downloadedTrack.TrackNumber
+                    });
+                }
+            }
+            else
+            {
+                var detailsVm = _locator.SwitchToViewModel<DetailsViewModel>();
+                detailsVm.AlbumDetailsFromFile = this.AlbumDetails;
+                detailsVm.AlbumDetailsFromWebsite = _searchResultsViewModel._downloadedAlbum.GetAlbumDetailsFrom();
+                detailsVm._tracksFromWeb = _searchResultsViewModel._downloadedAlbum.Tracks;
+                detailsVm._tracksFromFile = TracksFromFile;
+                detailsVm.PopulateRows();
+            }
+        }
+
+        public bool DoAllTracksHaveMatchingTrackTitles(IEnumerable<WebTrack> downloadedTracks)
+        {
+            return
+                TracksFromFile.Any(
+                    track =>
+                    SharedMethods.DoesAlbumTitleMatch(downloadedTracks.Select(x => x.Title), track.MetaData.Title));
         }
     }
 }
