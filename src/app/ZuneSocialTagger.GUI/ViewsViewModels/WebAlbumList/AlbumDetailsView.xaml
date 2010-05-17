@@ -9,44 +9,19 @@
              Name="root">
 
     <UserControl.Resources>
-        <ResourceDictionary Source="../../Resources/Resources.xaml">
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary>
-
-                </ResourceDictionary>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <ResourceDictionary Source="../../Resources/Resources.xaml"/>
     </UserControl.Resources>
-
 
     <Grid d:DataContext="{d:DesignInstance dt:AlbumDetailsDesignViewModel,IsDesignTimeCreatable=True}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="300"  />
             <ColumnDefinition Width="20"/>
-            <ColumnDefinition />
+            <ColumnDefinition  />
         </Grid.ColumnDefinitions>
 
-        <StackPanel DataContext="{Binding ZuneAlbumMetaData}" Orientation="Horizontal">
-            <StackPanel Orientation="Horizontal">
+		<WebAlbumList:AlbumDetailsControl DataContext="{Binding ZuneAlbumMetaData}"/>
 
-                <Image Height="50"  Width="50"
-                           Source="{Binding Path=ArtworkUrl,
-                                    Converter={StaticResource PathToImageThumbnailConverter}}"
-                           Margin="0,0,10,0" />
-
-                <StackPanel VerticalAlignment="Center">
-                    <TextBlock ToolTip="{Binding Title}"
-                                                       Text="{Binding Title}" />
-
-                    <TextBlock ToolTip="{Binding Artist}"
-                                                       Text="{Binding Artist}"
-                                                       Foreground="#FF8A8D90" />
-                </StackPanel>
-            </StackPanel>
-        </StackPanel>
-
-
-        <ContentControl Grid.Column="2" >
+        <ContentControl Grid.Column="2" HorizontalAlignment="Left">
             <ContentControl.Style>
                 <Style TargetType="{x:Type ContentControl}">
                     <Style.Triggers>
@@ -69,39 +44,61 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                            <Image Name="UnknownImage" 
+                                        <Image x:Name="UnknownImage" 
                                                    Width="16" Height="16"
                                                    Source="../../Resources/Assets/help.png"
+                                                   Margin="0,0,10,0" 
+                                                   HorizontalAlignment="Left"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+							<MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsDownloadingDetails}" Value="True"/>
+								<Condition Binding="{Binding LinkStatus}" Value="Unknown"/>
+							</MultiDataTrigger.Conditions>
+							
+							<Setter Property="Template">
+								<Setter.Value>
+									<ControlTemplate>
+                                            <Image Width="16" Height="16"
+                                                   Source="../../Resources/Assets/refresh.png"
                                                    Margin="0,0,10,0" 
                                                    HorizontalAlignment="Left">
                                                 
                                                 <Image.RenderTransform>
                                                     <RotateTransform x:Name="TransRotate" CenterX="8" CenterY="8" Angle="0" />
                                                 </Image.RenderTransform>
-                                                
-                                                <Image.Triggers>
-                                                <EventTrigger RoutedEvent="Image.Loaded">
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <DoubleAnimation 
-                                                                     Storyboard.TargetName="TransRotate" 
-                                                                     Storyboard.TargetProperty="Angle"
-                                                                     By="360" 
-                                                                     Duration="0:0:1"  
-                                                                     AutoReverse="False" 
-                                                                     RepeatBehavior="Forever" />
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </EventTrigger>
+												
+												<Image.Triggers>
+													<EventTrigger RoutedEvent="Image.Loaded">
+														<EventTrigger.Actions>
+															<BeginStoryboard>
+																<Storyboard>
+	                                                				<DoubleAnimation 
+	                                                					Storyboard.TargetName="TransRotate" 
+	                                                					Storyboard.TargetProperty="Angle"
+	                                                					By="360" 
+	                                                					Duration="0:0:0.5"  
+	                                                					AutoReverse="False" 
+	                                                					RepeatBehavior="Forever" />
+	                                                			</Storyboard>
+															</BeginStoryboard>
+														</EventTrigger.Actions>
 
-                                                </Image.Triggers>
-
+													</EventTrigger>
+												</Image.Triggers>             
                                             </Image>
 
                                     </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
+								</Setter.Value>
+							</Setter>
+						
+						</MultiDataTrigger>
+						
+					
 
                         <DataTrigger Binding="{Binding LinkStatus}" Value="AlbumOrArtistMismatch">
                             <Setter Property="Template">

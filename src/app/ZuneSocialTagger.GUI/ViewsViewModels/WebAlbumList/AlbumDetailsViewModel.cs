@@ -13,6 +13,7 @@ using ZuneSocialTagger.GUI.ViewsViewModels.Details;
 using ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using System.Threading;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {
@@ -240,35 +241,35 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
             if (albumMediaId != Guid.Empty)
             {
-                var downloader = new AlbumDetailsDownloader(String.Concat(Urls.Album, albumMediaId));
+                    var downloader = new AlbumDetailsDownloader(String.Concat(Urls.Album, albumMediaId));
 
-                this.IsDownloadingDetails = true;
-
-                downloader.DownloadCompleted += (dledAlbum, state) => 
-                {
-                    if (state == DownloadState.Success)
+                    downloader.DownloadCompleted += (dledAlbum, state) =>
                     {
-                        if (dledAlbum == null)
+                        //Thread.Sleep(3000);
+                        if (state == DownloadState.Success)
                         {
-                            this.LinkStatus = LinkStatus.Unavailable;
+                            if (dledAlbum == null)
+                            {
+                                this.LinkStatus = LinkStatus.Unavailable;
+                            }
+                            else
+                            {
+                                this.LinkStatus = SharedMethods.GetAlbumLinkStatus(dledAlbum.Title, dledAlbum.Artist,
+                                    this.ZuneAlbumMetaData.Title, this.ZuneAlbumMetaData.Artist);
+                            }
+
+                            this.WebAlbumMetaData = dledAlbum;
+
                         }
                         else
-                        {
-                            this.LinkStatus = SharedMethods.GetAlbumLinkStatus(dledAlbum.Title, dledAlbum.Artist,
-                                this.ZuneAlbumMetaData.Title, this.ZuneAlbumMetaData.Artist);
-                        }
+                            this.LinkStatus = LinkStatus.Unavailable;
 
-                        this.WebAlbumMetaData = dledAlbum;
+                        this.IsDownloadingDetails = false;
+                        AlbumDetailsDownloaded.Invoke();
+                    };
 
-                    }
-                    else
-                        this.LinkStatus = LinkStatus.Unavailable;
-
-                    this.IsDownloadingDetails = false;
-                    AlbumDetailsDownloaded.Invoke();
-                };
-
-                downloader.DownloadAsync();
+                    downloader.DownloadAsync();
+                    this.IsDownloadingDetails = true;
             }
             else
                 this.LinkStatus = LinkStatus.Unlinked;

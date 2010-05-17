@@ -187,22 +187,21 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 this.CanShowScanAllButton = false;
 
                 //skip the unlinked albums that cant be downloaded
-                var totalToDownload = this.Albums.Where(x => x.LinkStatus != LinkStatus.Unlinked).ToList();
+                var albumsToDownload = this.Albums.Where(x => x.LinkStatus != LinkStatus.Unlinked).ToList();
 
-                int counter = 0;
-                foreach (var album in totalToDownload)
+                foreach (var album in albumsToDownload)
                 {
                     album.LinkStatus = LinkStatus.Unknown; // reset the linkstatus so we can scan all multiple times
                     album.WebAlbumMetaData = null;
 
-                    int counter1 = counter;
                     album.AlbumDetailsDownloaded += () =>
                     {
-                        ReportProgress(counter1++, totalToDownload.Count);
+                        var albumsToBeDownloaded = this.Albums.Where(x => x.LinkStatus == LinkStatus.Unknown);
 
-                        var toBeDownloaded = this.Albums.Where(x => x.LinkStatus == LinkStatus.Unknown);
+                        int totalDownloaded = albumsToDownload.Count - albumsToBeDownloaded.Count();
 
-                        if (toBeDownloaded.Count() == 0) ResetLoadingProgress();
+                        ReportProgress(totalDownloaded, albumsToDownload.Count);
+                        if (albumsToBeDownloaded.Count() == 0) ResetLoadingProgress();
                     };
 
                     album.GetAlbumDetailsFromWebsite();

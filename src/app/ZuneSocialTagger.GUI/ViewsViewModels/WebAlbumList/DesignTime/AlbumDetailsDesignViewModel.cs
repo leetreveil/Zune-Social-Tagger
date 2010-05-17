@@ -1,4 +1,4 @@
-using ZuneSocialTagger.Core.ZuneDatabase;
+﻿using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.Core.ZuneWebsite;
 
@@ -9,12 +9,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.DesignTime
         public LinkStatus LinkStatus { get; set; }
         public WebAlbum WebAlbumMetaData { get; set; }
         public DbAlbum ZuneAlbumMetaData { get; set; }
-        public bool IsDownloadingAlbumDetails { get; set; }
+        public bool IsDownloadingDetails { get; set; }
 
         public AlbumDetailsDesignViewModel()
         {
-            this.IsDownloadingAlbumDetails = true;
-            this.LinkStatus = LinkStatus.Linked;
+            this.IsDownloadingDetails = true;
+            this.LinkStatus = LinkStatus.Unknown;
             this.ZuneAlbumMetaData = new DbAlbum
                     {
                         Artist = "AFI",

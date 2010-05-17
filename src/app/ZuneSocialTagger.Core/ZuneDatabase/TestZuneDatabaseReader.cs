@@ -26,7 +26,10 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             try
             {
                 using (var fs = new FileStream(@"ZuneDatabase\testzunedatabase.xml", FileMode.Open))
-                    _deserializedAlbums = fs.XmlDeserializeFromStream<List<DbAlbum>>();
+                {
+                    //_deserializedAlbums = fs.XmlDeserializeFromStream<List<DbAlbum>>();
+                }
+                   
 
                 return true;
             }

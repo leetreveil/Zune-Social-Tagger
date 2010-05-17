@@ -229,6 +229,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     var binaryFormatter = new BinaryFormatter();
                     var deserialized = (IEnumerable<AlbumDetailsViewModel>) binaryFormatter.Deserialize(fs);
 
+                    if (deserialized.Count() == 0)
+                        ReadActualDatabase();
+
                     DispatcherHelper.CheckBeginInvokeOnUI(() => {
                         foreach (var album in deserialized)
                         {
@@ -317,7 +320,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void ReadActualDatabase()
         {
-            _albums.Clear();
+            DispatcherHelper.CheckBeginInvokeOnUI(() => _albums.Clear());
 
             ThreadPool.QueueUserWorkItem(_ => {
                 foreach (DbAlbum newAlbum in _dbReader.ReadAlbums())
