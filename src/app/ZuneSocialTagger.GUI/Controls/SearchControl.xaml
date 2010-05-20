@@ -21,7 +21,7 @@
                                 <ControlTemplate TargetType="{x:Type Button}">
                                     <Grid>
                                         <Image x:Name="btnImage"
-                               Source="../Resources/Assets/magnifyingglass.png" />
+                                            Source="../Resources/Assets/magnifyingglass.png" />
                                     </Grid>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsCancel" Value="False" />
@@ -64,7 +64,7 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
 
-                            <Button IsEnabled="{Binding ElementName=tbSearch,Path=Text,Converter={StaticResource TextToVisConverter}}"
+                            <Button IsEnabled="{Binding ElementName=tbSearch,Path=Text,Converter={StaticResource TextToBoolConverter}}"
                                     Style="{DynamicResource SearchButton}"
                                     Grid.Column="1" />
 
@@ -75,6 +75,12 @@
                                     CanContentScroll="{TemplateBinding CanContentScroll}"
                                     CanHorizontallyScroll="False"
                                     CanVerticallyScroll="False" />
+									
+                            <TextBlock Text="SEARCH" FontWeight="Bold" 
+										Foreground="#828689" HorizontalAlignment="Left" 
+										VerticalAlignment="Center" FontSize="10.667" 
+										Margin="5,0,0,0" Opacity="0.6"
+										Visibility="{Binding ElementName=tbSearch,Path=Text,Converter={StaticResource TextToVisibilityConverter}}"/>
                         </Grid>
                     </ControlTemplate>
 

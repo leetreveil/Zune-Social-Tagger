@@ -107,6 +107,7 @@
     <Compile Include="Controls\SearchControl.xaml.cs">
       <DependentUpon>SearchControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Models\Song.cs" />
     <Compile Include="ViewsViewModels\Application\IApplicationViewModel.cs" />
     <Compile Include="ViewsViewModels\DetailsReadyOnly\DesignTime\DetailsReadOnlyDesignViewModel.cs" />
@@ -211,7 +212,7 @@
     <Compile Include="Converters\PathToImageThumbnailConverter.cs" />
     <Compile Include="Converters\SortOrderToTextConverter.cs" />
     <Compile Include="Converters\SortOrderToVisibilityConverter.cs" />
-    <Compile Include="Converters\TextToVisibilityConverter.cs" />
+    <Compile Include="Converters\TextToBoolConverter.cs" />
     <Compile Include="Models\ErrorMessage.cs" />
     <Compile Include="Models\ExtensionMethods.cs" />
     <Compile Include="Models\LinkStatus.cs" />

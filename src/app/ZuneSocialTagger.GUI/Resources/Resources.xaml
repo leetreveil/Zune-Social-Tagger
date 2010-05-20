@@ -38,7 +38,8 @@
         <DetailsReadyOnly:DetailsReadOnlyView/>
     </DataTemplate>
 
-    <converters:TextToVisibilityConverter x:Key="TextToVisConverter" />
+	<converters:TextToVisibilityConverter x:Key="TextToVisibilityConverter"/>
+    <converters:TextToBoolConverter x:Key="TextToBoolConverter" />
     <converters:AlbumCountToStringConverter x:Key="AlbumCountToStringConverter" />
     <converters:NotConverter x:Key="NotConverter" />
     <converters:LinkStatusToImageConverter x:Key="LinkStatusToImageConverter" />
