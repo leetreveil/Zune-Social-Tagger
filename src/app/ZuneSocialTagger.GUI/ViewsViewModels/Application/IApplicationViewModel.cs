@@ -34,7 +34,5 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         void ViewHasLoaded();
         void DisplayMessage(ErrorMessage message);
         void AlbumBeenLinked();
-
-        void SortData();
     }
 }

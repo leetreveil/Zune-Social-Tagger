@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
-using GalaSoft.MvvmLight.Threading;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 
 namespace ZuneSocialTagger.GUI.Models
@@ -36,34 +33,6 @@ namespace ZuneSocialTagger.GUI.Models
             }
 
             base.OnCollectionChanged(e);
-        }
-
-        ///<summary>
-        /// Sorts the items of the collection in ascending order according to a key.
-        /// </summary>
-        /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
-        /// <param name="keySelector">A function to extract a key from an item.</param>
-        public void Sort<TKey>(Func<T, TKey> keySelector)
-        {
-            InternalSort(Items.OrderBy(keySelector));
-        }
-
-        public void SortDesc<TKey>(Func<T, TKey> keySelector)
-        {
-            InternalSort(Items.OrderByDescending(keySelector));
-        }
-
-        /// <summary>
-        /// Moves the items of the collection so that their orders are the same as those of the items provided.
-        /// </summary>
-        /// <param name="sortedItems">An <see cref="IEnumerable{T}"/> to provide item orders.</param>
-        private void InternalSort(IEnumerable<T> sortedItems)
-        {
-            List<T> sortedToList = sortedItems.ToList();
-             DispatcherHelper.CheckBeginInvokeOnUI(()=> {
-                 this.Clear();
-                 sortedToList.ForEach(this.Add);
-             });
         }
     }  
 }

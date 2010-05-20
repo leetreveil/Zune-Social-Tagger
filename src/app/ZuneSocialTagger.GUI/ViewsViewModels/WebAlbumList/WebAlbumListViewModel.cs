@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
-using System.Threading;
+using System.Windows.Data;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Taskbar;
@@ -31,11 +32,15 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                                      IViewModelLocator locator)
         {
             this.Albums = albums;
+            this.AlbumsViewSource = new CollectionViewSource();
+            this.AlbumsViewSource.Filter += AlbumsViewSource_Filter;
+            this.AlbumsViewSource.Source = this.Albums;
 
             _dbReader = dbReader;
             _locator = locator;
             _dbReader.ProgressChanged += DbAdapterProgressChanged;
-            _dbReader.StartedReadingAlbums += _dbAdapter_StartedReadingAlbums;
+            _dbReader.StartedReadingAlbums += delegate { this.CanShowScanAllButton = false; };
+            _dbReader.FinishedReadingAlbums += delegate { Sort(); };
 
             _isTaskbarSupported = TaskbarManager.IsPlatformSupported;
 
@@ -47,6 +52,22 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             this.SortOrder = Settings.Default.SortOrder;
 
             Messenger.Default.Register<string>(this, HandleMessages);
+        }
+
+        void AlbumsViewSource_Filter(object sender, FilterEventArgs e)
+        {
+            if (e.Item != null && this.FilterText != null)
+            {
+                var details = (AlbumDetailsViewModel) e.Item;
+
+                e.Accepted = (details.ZuneAlbumMetaData.Artist
+                    .ToLower()
+                    .StartsWith(this.FilterText.ToLower()) 
+                    ||
+                    details.ZuneAlbumMetaData.Title.ToLower()
+                    .StartsWith(this.FilterText.ToLower()));
+
+            }
         }
 
         private void HandleMessages(string message)
@@ -70,6 +91,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
             this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
             this.SortCommand = new RelayCommand(Sort);
+            this.SearchCommand = new RelayCommand<string>(Search);
+        }
+
+        private void Search(string obj)
+        {
+            this.AlbumsViewSource.View.Refresh();
+            this.AlbumsViewSource.View.Refresh();
+            //_albums.Filter(x=> x.ZuneAlbumMetaData.Artist.ToLower().StartsWith(obj.ToLower()));
         }
 
         #region View Binding Properties
@@ -91,6 +120,18 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 return true;
             }
         }
+
+        private string _filterText;
+        public string FilterText
+        {
+            get { return _filterText; }
+            set
+            {
+                _filterText = value;
+            }
+        }
+
+        public CollectionViewSource AlbumsViewSource { get; set; }
 
         public AlbumDetailsViewModel SelectedAlbum { get; set; }
 
@@ -175,6 +216,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         public RelayCommand CancelDownloadingCommand { get; private set; }
         public RelayCommand SwitchToClassicModeCommand { get; private set; }
         public RelayCommand SortCommand { get; private set; }
+        public RelayCommand<string > SearchCommand { get; set; }
 
         #endregion
 
@@ -212,15 +254,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             _locator.SwitchToViewModel<SelectAudioFilesViewModel>();
         }
 
-        private void _dbAdapter_StartedReadingAlbums()
-        {
-            this.CanShowProgressBar = true;
-            this.CanShowScanAllButton = false;
-        }
-
         private void DbAdapterProgressChanged(int arg1, int arg2)
         {
-            ReportProgress(arg1, arg2);
+            if (!this.CanShowProgressBar)
+            {
+                this.CanShowProgressBar = true;
+                ReportProgress(arg1, arg2);
+            }
         }
 
         private void ResetLoadingProgress()
@@ -249,36 +289,33 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             }
         }
 
-        private void Sort()
+        public void Sort()
         {
-            Settings.Default.SortOrder = this.SortOrder;
-            SortData(this.SortOrder);
-        }
-
-        private void SortData(SortOrder sortOrder)
-        {
-            Settings.Default.SortOrder = sortOrder;
-
-            ThreadPool.QueueUserWorkItem(_ =>
+            this.AlbumsViewSource.SortDescriptions.Clear();
+            
+            switch (this.SortOrder)
             {
-                switch (sortOrder)
-                {
-                    case SortOrder.DateAdded:
-                        _albums.SortDesc(x => x.ZuneAlbumMetaData.DateAdded);
-                        break;
-                    case SortOrder.Album:
-                        _albums.Sort(x => x.ZuneAlbumMetaData.Title);
-                        break;
-                    case SortOrder.Artist:
-                        _albums.Sort(x => x.ZuneAlbumMetaData.Artist);
-                        break;
-                    case SortOrder.LinkStatus:
-                        _albums.Sort(x => x.LinkStatus);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            });
+                case SortOrder.DateAdded:
+                    this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("DateAdded", ListSortDirection.Descending));
+                    break;;
+                case SortOrder.Album:
+                    this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("AlbumTitle", ListSortDirection.Ascending));
+                    break;
+                case SortOrder.Artist:
+                    this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("AlbumArtist", ListSortDirection.Ascending));
+                    break;
+                case SortOrder.LinkStatus:
+                    this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("LinkStatus", ListSortDirection.Ascending));
+                    break;
+                case SortOrder.NotSorted:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            this.AlbumsViewSource.View.Refresh();
+
+            Settings.Default.SortOrder = this.SortOrder;
         }
 
         private void UpdateLinkTotals()

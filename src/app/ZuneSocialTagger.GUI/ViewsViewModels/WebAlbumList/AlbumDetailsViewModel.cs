@@ -62,6 +62,21 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             //used for serialization purposes
         }
 
+        public string AlbumTitle
+        {
+            get { return this.ZuneAlbumMetaData.Title; }
+        }
+
+        public string AlbumArtist
+        {
+            get { return this.ZuneAlbumMetaData.Artist; }
+        }
+
+        public DateTime DateAdded
+        {
+            get { return this.ZuneAlbumMetaData.DateAdded; }
+        }
+
         public RelayCommand MoreInfoCommand
         {
             get { return _moreInfoCommand; }

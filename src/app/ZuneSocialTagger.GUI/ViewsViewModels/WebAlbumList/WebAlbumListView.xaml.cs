@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {

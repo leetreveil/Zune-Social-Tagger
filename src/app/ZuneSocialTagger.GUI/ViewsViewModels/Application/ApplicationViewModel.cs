@@ -70,8 +70,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             locator.SwitchToViewModelRequested += viewModel => {
                 this.CurrentPage = viewModel;
             };
-
-            _dbReader.FinishedReadingAlbums += _dbReader_FinishedReadingAlbums;
         }
 
         public void ViewHasLoaded()
@@ -286,9 +284,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
                     if (newAlbums.Count > 0 || removedAlbums.Count > 0)
                     {
-                        //tell the WebAlbumListViewModel to sort its list because there may be new items
-                        SortData(Settings.Default.SortOrder);
-
+                        _webAlbumListViewModel.Sort();
                         TellViewThatUpdatesHaveBeenAdded(newAlbums.Count(), removedAlbums.Count());
                     }
                 });
@@ -414,42 +410,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     }
                 });
             }
-        }
-
-        public void SortData()
-        {
-            SortData(Settings.Default.SortOrder);
-        }
-
-        private void SortData(SortOrder sortOrder)
-        {
-            Settings.Default.SortOrder = sortOrder;
-
-            ThreadPool.QueueUserWorkItem(_ =>
-            {
-                switch (sortOrder)
-                {
-                    case SortOrder.DateAdded:
-                        _albums.SortDesc(x => x.ZuneAlbumMetaData.DateAdded);
-                        break;
-                    case SortOrder.Album:
-                        _albums.Sort(x => x.ZuneAlbumMetaData.Title);
-                        break;
-                    case SortOrder.Artist:
-                        _albums.Sort(x => x.ZuneAlbumMetaData.Artist);
-                        break;
-                    case SortOrder.LinkStatus:
-                        _albums.Sort(x => x.LinkStatus);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            });
-        }
-
-        void _dbReader_FinishedReadingAlbums()
-        {
-            SortData(Settings.Default.SortOrder);
         }
     }
 }
