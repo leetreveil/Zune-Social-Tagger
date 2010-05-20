@@ -185,6 +185,9 @@
     <Compile Include="ViewsViewModels\WebAlbumList\WebAlbumListView.xaml.cs">
       <DependentUpon>WebAlbumListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewsViewModels\WebAlbumList\ZuneProgressBar.xaml.cs">
+      <DependentUpon>ZuneProgressBar.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\DraggableWindow.cs" />
@@ -343,6 +346,10 @@
     <Page Include="ViewsViewModels\WebAlbumList\WebAlbumListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewsViewModels\WebAlbumList\ZuneProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

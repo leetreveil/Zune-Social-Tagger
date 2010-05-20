@@ -234,12 +234,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public void RefreshAlbum()
         {
+            this.LinkStatus = LinkStatus.Unknown;
+            this.IsDownloadingDetails = true;
+
             DoesAlbumExistInDbAndDisplayError(this.ZuneAlbumMetaData);
 
             DbAlbum albumMetaData = _dbReader.GetAlbum(this.ZuneAlbumMetaData.MediaId);
             this.ZuneAlbumMetaData = albumMetaData;
-            this.LinkStatus = LinkStatus.Unknown;
-            this.WebAlbumMetaData = null;
 
             GetAlbumDetailsFromWebsite();
         }
@@ -280,16 +281,15 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                     this.IsDownloadingDetails = true;
             }
             else
+            {
                 this.LinkStatus = LinkStatus.Unlinked;
+                this.IsDownloadingDetails = false;
+            }
+
         }
 
         private void DoesAlbumExistInDbAndDisplayError(DbAlbum selectedAlbum)
         {
-            //if (!SharedMethods.CheckIfZuneSoftwareIsRunning())
-            //{
-            //    Messenger.Default.Send<ErrorMessage,ApplicationViewModel>(new ErrorMessage(ErrorMode.Warning, 
-            //        "Any albums you link / delink will not show their changes until the zune software is running."));
-            //}
             if (!_dbReader.DoesAlbumExist(selectedAlbum.MediaId))
             {
                 Messenger.Default.Send<ErrorMessage,ApplicationViewModel>(new ErrorMessage(ErrorMode.Error,

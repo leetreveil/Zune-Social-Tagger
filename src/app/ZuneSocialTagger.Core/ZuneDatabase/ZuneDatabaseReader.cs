@@ -81,8 +81,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
                 object uniqueId = uniqueIds[i];
 
                 yield return GetAlbum((int) uniqueId);
-
-                ProgressChanged.Invoke(i, uniqueIds.Count);
+                ProgressChanged.Invoke(i, uniqueIds.Count -1);
             }
 
             FinishedReadingAlbums.Invoke();
@@ -183,30 +182,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             {
                 var track = new ZuneQueryItem(zuneQueryList, i);
 
-                string filePath = null;
-                Guid mediaId = Guid.Empty;
-                string trackTitle = null;
-                long trackNumber = 0;
-
-                try
-                {
-                   
-                    filePath = 
-                        (string) track.GetFieldValue(typeof (string), (uint) ZuneQueryList.AtomNameToAtom("SourceURL"));
-
-                    mediaId = 
-                        (Guid) track.GetFieldValue(typeof (Guid), (uint) ZuneQueryList.AtomNameToAtom("ZuneMediaID"));
-
-                    trackTitle =
-                         (string) track.GetFieldValue(typeof (string), (uint) ZuneQueryList.AtomNameToAtom("Title"));
-
-                    trackNumber =
-                        (long)track.GetFieldValue(typeof(long), (uint)ZuneQueryList.AtomNameToAtom("WM/TrackNumber"));
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex);
-                }
 
                 //for (int j = 0; j < 2000; j++)
                 //{
@@ -230,14 +205,26 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
                 yield return new DbTrack
                  {
-                     FilePath = filePath,
-                     MediaId = mediaId,
-                     Title = trackTitle,
-                     TrackNumber = trackNumber.ToString()
+                     FilePath = GetTrackValue<string>(track, "SourceURL"),
+                     MediaId = GetTrackValue<Guid>(track, "ZuneMediaID"),
+                     Title = GetTrackValue<string>(track, "Title"),
+                     TrackNumber = GetTrackValue<long>(track, "WM/TrackNumber").ToString()
                  };
             }
 
             zuneQueryList.Dispose();
+        }
+
+        private static T GetTrackValue<T>(ZuneQueryItem item, string fieldName)
+        {
+            try
+            {
+                return (T) item.GetFieldValue(typeof (T), (uint) ZuneQueryList.AtomNameToAtom(fieldName));
+            }
+            catch (Exception)
+            {
+                return default(T);
+            }
         }
 
         public void RemoveAlbumFromDatabase(int albumId)

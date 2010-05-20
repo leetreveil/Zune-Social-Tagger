@@ -17,30 +17,6 @@
                 
                 <ResourceDictionary>
 
-                    <Style x:Key="GradientProgressbar"
-           TargetType="{x:Type ProgressBar}">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ProgressBar}">
-                                    <Grid>
-                                        <Border Name="PART_Track" />
-                                        <Border Name="PART_Indicator"
-                                HorizontalAlignment="Left">
-                                            <Border.Background>
-                                                <LinearGradientBrush>
-                                                    <GradientStop Color="#F89C38"
-                                                  Offset="0" />
-                                                    <GradientStop Color="#EC1293"
-                                                  Offset="1" />
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-
                     <LinearGradientBrush x:Key="ListItemHoverFill" EndPoint="0,1" StartPoint="0,0">
                         <GradientStop Color="#FFF1FBFF" Offset="0"/>
                         <GradientStop Color="#FFD5F1FE" Offset="1"/>
@@ -270,13 +246,14 @@
             
         </ListView>
 
-        <ProgressBar Visibility="{Binding Path=CanShowProgressBar,Converter={StaticResource BoolToVisConverter}}"
-                     Margin="0,10,0,0"
-                     Width="Auto"
-                     Style="{StaticResource GradientProgressbar}"
-                     Height="5"
-                     Grid.Row="3"
-                     Value="{Binding LoadingProgress}" />
+        <WebAlbumList:ZuneProgressBar
+            Visibility="Collapsed"
+            Maximum="100"
+            Margin="0,10,0,0"
+            Width="Auto"
+            Height="5"
+            Grid.Row="3"
+            Value="{Binding LoadingProgress}" />
 
         <Grid Margin ="0,10,0,0"
               Grid.Row="4">

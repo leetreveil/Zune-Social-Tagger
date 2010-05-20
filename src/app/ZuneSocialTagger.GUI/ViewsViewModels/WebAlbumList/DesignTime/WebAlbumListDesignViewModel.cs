@@ -8,6 +8,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.DesignTime
     public class WebAlbumListDesignViewModel
     {
         public List<AlbumDetailsViewModel> Albums { get; set; }
+        public double LoadingProgress { get; set; }
 
         public string ScanAllText
         {
@@ -16,6 +17,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.DesignTime
 
         public WebAlbumListDesignViewModel()
         {
+            this.LoadingProgress = 50;
             this.Albums = new List<AlbumDetailsViewModel>();
 
             this.Albums.Add(new AlbumDetailsViewModel

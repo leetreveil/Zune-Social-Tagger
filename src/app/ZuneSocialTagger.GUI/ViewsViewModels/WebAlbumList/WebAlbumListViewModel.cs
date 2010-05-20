@@ -14,6 +14,7 @@ using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using GalaSoft.MvvmLight.Threading;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {
@@ -23,7 +24,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private readonly IViewModelLocator _locator;
         private bool _canShowScanAllButton;
         private int _loadingProgress;
-        private bool _canShowProgressBar;
         private readonly bool _isTaskbarSupported;
         private SortOrder _sortOrder;
         private bool _canShowSort;
@@ -56,11 +56,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
             _dbReader = dbReader;
             _locator = locator;
-            _dbReader.ProgressChanged += DbAdapterProgressChanged;
-            _dbReader.StartedReadingAlbums += delegate { this.CanShowScanAllButton = false; };
-            _dbReader.FinishedReadingAlbums += delegate {
-                DispatcherHelper.CheckBeginInvokeOnUI(Sort);
-            };
+            _dbReader.ProgressChanged += ReportProgress;
+            _dbReader.StartedReadingAlbums += () => this.CanShowScanAllButton = false;
+            _dbReader.FinishedReadingAlbums += () => DispatcherHelper.CheckBeginInvokeOnUI(Sort);
 
             _isTaskbarSupported = TaskbarManager.IsPlatformSupported;
 
@@ -149,16 +147,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public ObservableCollection<AlbumDetailsViewModel> Albums { get; set; }
 
-        public bool CanShowProgressBar
-        {
-            get { return _canShowProgressBar; }
-            set
-            {
-                _canShowProgressBar = value;
-                RaisePropertyChanged(() => this.CanShowProgressBar);
-            }
-        }
-
         public SortOrder SortOrder
         {
             get { return _sortOrder; }
@@ -213,14 +201,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         public RelayCommand CancelDownloadingCommand { get; private set; }
         public RelayCommand SwitchToClassicModeCommand { get; private set; }
         public RelayCommand SortCommand { get; private set; }
-        public RelayCommand<string > SearchCommand { get; set; }
+        public RelayCommand<string> SearchCommand { get; set; }
 
         #endregion
 
         public void LoadFromZuneWebsite()
         {
             ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning,"This process could take a very long time, are you sure?"),() => {
-                this.CanShowProgressBar = true;
                 this.CanShowScanAllButton = false;
 
                 //skip the unlinked albums that cant be downloaded
@@ -251,20 +238,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             _locator.SwitchToViewModel<SelectAudioFilesViewModel>();
         }
 
-        private void DbAdapterProgressChanged(int arg1, int arg2)
-        {
-            if (!this.CanShowProgressBar)
-            {
-                this.CanShowProgressBar = true;
-            }
-            ReportProgress(arg1, arg2);
-        }
-
         private void ResetLoadingProgress()
         {
             this.CanShowScanAllButton = true;
-            this.CanShowProgressBar = false;
-            this.LoadingProgress = 0;
 
             if (_isTaskbarSupported)
                 TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
@@ -272,17 +248,24 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         private void ReportProgress(int current, int total)
         {
-            this.LoadingProgress = current * 100 / total;
+            double percent = current * 100 / total;
 
-            try
+            //make sure we dont report progress on every single count
+            //just report when the percentage changes
+            if (this.LoadingProgress != percent)
             {
-                if (_isTaskbarSupported)
-                    TaskbarManager.Instance.SetProgressValue(current, total);
-            }
-            catch (InvalidOperationException ex)
-            {
-                //needs ignoring because it is possible that we try to report progress before a window has been
-                //created, this will throw an InvalidOperationException
+                this.LoadingProgress = (int) percent;
+
+                try
+                {
+                    if (_isTaskbarSupported)
+                        TaskbarManager.Instance.SetProgressValue(current, total);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    //needs ignoring because it is possible that we try to report progress before a window has been
+                    //created, this will throw an InvalidOperationException
+                }
             }
         }
 
