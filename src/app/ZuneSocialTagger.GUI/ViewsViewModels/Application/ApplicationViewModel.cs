@@ -20,7 +20,6 @@ using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.GUI.ViewsViewModels.Update;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
-using Ninject;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 {
@@ -207,88 +206,88 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             }
         }
 
+        /// <summary>
+        /// Read cache on user thread so the results instantly appear
+        /// </summary>
         private void ReadCachedDatabase()
         {
             string filePath = Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.dat");
 
-            ThreadPool.QueueUserWorkItem(_ => {
-                FileStream fs;
-                try
-                {
-                    fs = new FileStream(filePath, FileMode.Open);
-                }
-                catch (Exception)
-                {
-                    DispatcherHelper.CheckBeginInvokeOnUI(ReadActualDatabase);
-                    return;
-                }
+            FileStream fs;
+            try
+            {
+                fs = new FileStream(filePath, FileMode.Open);
+            }
+            catch (Exception)
+            {
+                ReadActualDatabase();
+                return;
+            }
 
-                try
-                {
-                    var binaryFormatter = new BinaryFormatter();
-                    var deserialized = (IEnumerable<AlbumDetailsViewModel>) binaryFormatter.Deserialize(fs);
+            try
+            {
+                var binaryFormatter = new BinaryFormatter();
+                var deserialized = (IEnumerable<AlbumDetailsViewModel>) binaryFormatter.Deserialize(fs);
 
-                    if (deserialized.Count() == 0)
-                        ReadActualDatabase();
+                if (deserialized.Count() == 0) ReadActualDatabase();
 
-                    DispatcherHelper.CheckBeginInvokeOnUI(() => {
-                        foreach (var album in deserialized)
-                        {
-                            var albumDetailsViewModel = _locator.Resolve<AlbumDetailsViewModel>();
-                            albumDetailsViewModel.WebAlbumMetaData = album.WebAlbumMetaData;
-                            albumDetailsViewModel.ZuneAlbumMetaData = album.ZuneAlbumMetaData;
-                            albumDetailsViewModel.LinkStatus = album.LinkStatus;
+                    foreach (var album in deserialized)
+                    {
+                        var albumDetailsViewModel = _locator.Resolve<AlbumDetailsViewModel>();
+                        albumDetailsViewModel.WebAlbumMetaData = album.WebAlbumMetaData;
+                        albumDetailsViewModel.ZuneAlbumMetaData = album.ZuneAlbumMetaData;
+                        albumDetailsViewModel.LinkStatus = album.LinkStatus;
 
-                            _albums.Add(albumDetailsViewModel);
-                        }
+                        _albums.Add(albumDetailsViewModel);
+                    }
 
-                        GetNewOrRemovedAlbumsFromZuneDb();
+                    GetNewOrRemovedAlbumsFromZuneDb();
 
-                        _webAlbumListViewModel.DataHasLoaded();
-                    });
-                }
-                catch (SerializationException)
-                {
-                    //TODO: log error
-                    ReadActualDatabase();
-                }
-                finally
-                {
-                    fs.Close();
-                }
-            });
+                    _webAlbumListViewModel.DataHasLoaded();
+
+            }
+            catch (SerializationException)
+            {
+                //TODO: log error
+                ReadActualDatabase();
+            }
+            finally
+            {
+                fs.Close();
+            }
         }
 
         private void GetNewOrRemovedAlbumsFromZuneDb()
         {
             ThreadPool.QueueUserWorkItem(_ => {
-                var currentMediaIds = _albums.Select(x => x.ZuneAlbumMetaData.MediaId);
+                var currentMediaIds = _albums.Select(x => x.ZuneAlbumMetaData.MediaId).ToList();
 
                 var newAlbums = _dbReader.GetNewAlbums(currentMediaIds).ToList();
                 var removedAlbums = _dbReader.GetRemovedAlbums(currentMediaIds).ToList();
 
-                DispatcherHelper.CheckBeginInvokeOnUI(() => {
-                    foreach (var album in newAlbums)
+                if (newAlbums.Count > 0 || removedAlbums.Count > 0)
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
                     {
-                        var albumDetailsViewModel = _locator.Resolve<AlbumDetailsViewModel>();
-                        albumDetailsViewModel.LinkStatus = album.AlbumMediaId.GetLinkStatusFromGuid();
-                        albumDetailsViewModel.ZuneAlbumMetaData = album;
-                        _albums.Add(albumDetailsViewModel);
-                    }
+                        foreach (var album in newAlbums)
+                        {
+                            var albumDetailsViewModel = _locator.Resolve<AlbumDetailsViewModel>();
+                            albumDetailsViewModel.LinkStatus = album.AlbumMediaId.GetLinkStatusFromGuid();
+                            albumDetailsViewModel.ZuneAlbumMetaData = album;
+                            _albums.Add(albumDetailsViewModel);
+                        }
 
-                    foreach (var albumToBeRemoved in
-                        removedAlbums.Select(id => _albums.Where(x => x.ZuneAlbumMetaData.MediaId == id).First()))
-                    {
-                        AlbumDetailsViewModel toBeRemoved = albumToBeRemoved;
-                        _albums.Remove(toBeRemoved);
-                    }
+                        foreach (var albumToBeRemoved in
+                            removedAlbums.Select(id => _albums.Where(x => x.ZuneAlbumMetaData.MediaId == id).First()))
+                        {
+                            AlbumDetailsViewModel toBeRemoved = albumToBeRemoved;
+                            _albums.Remove(toBeRemoved);
+                        }
 
-                    if (newAlbums.Count > 0 || removedAlbums.Count > 0)
-                    {
                         _webAlbumListViewModel.Sort();
                         TellViewThatUpdatesHaveBeenAdded(newAlbums.Count(), removedAlbums.Count());
-                    }
-                });
+                    }); 
+                }
             });
         }
 

@@ -242,8 +242,15 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         {
             this.CanShowScanAllButton = true;
 
-            if (_isTaskbarSupported)
-                TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
+            try
+            {
+                if (_isTaskbarSupported)
+                    TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         private void ReportProgress(int current, int total)
