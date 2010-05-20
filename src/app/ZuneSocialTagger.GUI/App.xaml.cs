@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Threading;
@@ -65,7 +66,7 @@ namespace ZuneSocialTagger.GUI
             Container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
             Container.Bind<SearchViewModel>().ToSelf().InSingletonScope();
             Container.Bind<DetailsViewModel>().ToSelf().InSingletonScope();
-            Container.Bind<ZuneObservableCollection<AlbumDetailsViewModel>>().ToSelf().InSingletonScope();
+            Container.Bind<ObservableCollection<AlbumDetailsViewModel>>().ToSelf().InSingletonScope();
         }
 
         private static void SetupUnhandledExceptionLogging()

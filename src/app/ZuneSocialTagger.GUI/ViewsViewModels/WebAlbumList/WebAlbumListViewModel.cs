@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -12,6 +13,7 @@ using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using GalaSoft.MvvmLight.Threading;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {
@@ -25,10 +27,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private readonly bool _isTaskbarSupported;
         private SortOrder _sortOrder;
         private bool _canShowSort;
-        private ZuneObservableCollection<AlbumDetailsViewModel> _albums;
 
         public WebAlbumListViewModel(IZuneDatabaseReader dbReader,
-                                     ZuneObservableCollection<AlbumDetailsViewModel> albums,
+                                     ObservableCollection<AlbumDetailsViewModel> albums,
                                      IViewModelLocator locator)
         {
             this.Albums = albums;
@@ -36,11 +37,30 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             this.AlbumsViewSource.Filter += AlbumsViewSource_Filter;
             this.AlbumsViewSource.Source = this.Albums;
 
+            //manually hook up property changes
+            this.Albums.CollectionChanged += (sender, args) =>
+            {
+                if (args.Action == NotifyCollectionChangedAction.Add)
+                {
+                    foreach (AlbumDetailsViewModel item in args.NewItems)
+                        item.PropertyChanged += delegate { UpdateLinkTotals(); };
+
+                    UpdateLinkTotals();
+                }
+                if (args.Action == NotifyCollectionChangedAction.Remove ||
+                    args.Action == NotifyCollectionChangedAction.Reset)
+                {
+                    UpdateLinkTotals();
+                }
+            };
+
             _dbReader = dbReader;
             _locator = locator;
             _dbReader.ProgressChanged += DbAdapterProgressChanged;
             _dbReader.StartedReadingAlbums += delegate { this.CanShowScanAllButton = false; };
-            _dbReader.FinishedReadingAlbums += delegate { Sort(); };
+            _dbReader.FinishedReadingAlbums += delegate {
+                DispatcherHelper.CheckBeginInvokeOnUI(Sort);
+            };
 
             _isTaskbarSupported = TaskbarManager.IsPlatformSupported;
 
@@ -121,36 +141,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             }
         }
 
-        private string _filterText;
-        public string FilterText
-        {
-            get { return _filterText; }
-            set
-            {
-                _filterText = value;
-            }
-        }
+        public string FilterText { get; set; }
 
         public CollectionViewSource AlbumsViewSource { get; set; }
 
         public AlbumDetailsViewModel SelectedAlbum { get; set; }
 
-        public ZuneObservableCollection<AlbumDetailsViewModel> Albums
-        {
-            get { return _albums; }
-            private set
-            {
-                _albums = value;
-                _albums.NeedsUpdating += UpdateLinkTotals;
-                _albums.CollectionChanged += (sender, args) => {
-                    if (args.Action == NotifyCollectionChangedAction.Add || 
-                        args.Action ==  NotifyCollectionChangedAction.Remove)
-                    {
-                        UpdateLinkTotals();
-                    }
-                };
-            }
-        }
+        public ObservableCollection<AlbumDetailsViewModel> Albums { get; set; }
 
         public bool CanShowProgressBar
         {
@@ -259,8 +256,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             if (!this.CanShowProgressBar)
             {
                 this.CanShowProgressBar = true;
-                ReportProgress(arg1, arg2);
             }
+            ReportProgress(arg1, arg2);
         }
 
         private void ResetLoadingProgress()
@@ -282,7 +279,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 if (_isTaskbarSupported)
                     TaskbarManager.Instance.SetProgressValue(current, total);
             }
-            catch 
+            catch (InvalidOperationException ex)
             {
                 //needs ignoring because it is possible that we try to report progress before a window has been
                 //created, this will throw an InvalidOperationException

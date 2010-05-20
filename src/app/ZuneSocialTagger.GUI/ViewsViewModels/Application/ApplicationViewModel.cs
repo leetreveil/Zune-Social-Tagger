@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -28,7 +29,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
     {
 
         private readonly IZuneDatabaseReader _dbReader;
-        private readonly ZuneObservableCollection<AlbumDetailsViewModel> _albums;
+        private readonly ObservableCollection<AlbumDetailsViewModel> _albums;
         private readonly IViewModelLocator _locator;
         private ViewModelBase _currentPage;
         private bool _updateAvailable;
@@ -51,7 +52,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         public List<Song> SongsFromFile { get; set; }
 
         public ApplicationViewModel(IZuneDatabaseReader dbReader,
-                                    ZuneObservableCollection<AlbumDetailsViewModel> albums,
+                                    ObservableCollection<AlbumDetailsViewModel> albums,
                                     IViewModelLocator locator)
         {
             _dbReader = dbReader;

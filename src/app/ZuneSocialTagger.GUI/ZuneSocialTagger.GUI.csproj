@@ -214,7 +214,6 @@
     <Compile Include="Models\LinkStatus.cs" />
     <Compile Include="Models\SharedMethods.cs" />
     <Compile Include="ViewsViewModels\WebAlbumList\SortOrder.cs" />
-    <Compile Include="Models\ZuneObservableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
