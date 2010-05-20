@@ -196,9 +196,6 @@
       <DependentUpon>InlineZuneMessage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsViewModels\Search\RadioButtonExtended.cs" />
-    <Compile Include="ViewsViewModels\Search\SearchBarControl.xaml.cs">
-      <DependentUpon>SearchBarControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewsViewModels\WebAlbumList\SortControl.xaml.cs">
       <DependentUpon>SortControl.xaml</DependentUpon>
     </Compile>
@@ -275,10 +272,6 @@
     <Page Include="ViewsViewModels\DetailsReadyOnly\DetailsReadOnlyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ViewsViewModels\Search\SearchBarControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="ViewsViewModels\WebAlbumList\SortControl.xaml">
       <Generator>MSBuild:Compile</Generator>
