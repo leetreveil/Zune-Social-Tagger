@@ -26,9 +26,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
     public class ApplicationViewModel : ViewModelBase, IApplicationViewModel
     {
-
         private readonly IZuneDatabaseReader _dbReader;
-        private readonly ObservableCollection<AlbumDetailsViewModel> _albums;
+        private readonly IList<AlbumDetailsViewModel> _albums;
         private readonly IViewModelLocator _locator;
         private ViewModelBase _currentPage;
         private bool _updateAvailable;
@@ -37,18 +36,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         private string _errorMessageText;
         private WebAlbumListViewModel _webAlbumListViewModel;
 
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWeb { get; set; }
-
-        /// <summary>
-        /// The downloaded album songs after searching
-        /// </summary>
-        public List<WebTrack> SongsFromWebsite { get; set; }
-
-        /// <summary>
-        /// The actual track details from the audio files
-        /// </summary>
-        public List<Song> SongsFromFile { get; set; }
 
         public ApplicationViewModel(IZuneDatabaseReader dbReader,
                                     ObservableCollection<AlbumDetailsViewModel> albums,
@@ -227,15 +214,15 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             try
             {
                 var binaryFormatter = new BinaryFormatter();
-                var deserialized = (IEnumerable<AlbumDetailsViewModel>) binaryFormatter.Deserialize(fs);
+                var deserialized = (IEnumerable<SerializedAlbum>) binaryFormatter.Deserialize(fs);
 
                 if (deserialized.Count() == 0) ReadActualDatabase();
 
                     foreach (var album in deserialized)
                     {
                         var albumDetailsViewModel = _locator.Resolve<AlbumDetailsViewModel>();
-                        albumDetailsViewModel.WebAlbumMetaData = album.WebAlbumMetaData;
-                        albumDetailsViewModel.ZuneAlbumMetaData = album.ZuneAlbumMetaData;
+                        albumDetailsViewModel.WebAlbumMetaData = album.WebAlbum;
+                        albumDetailsViewModel.ZuneAlbumMetaData = album.DbAlbum;
                         albumDetailsViewModel.LinkStatus = album.LinkStatus;
 
                         _albums.Add(albumDetailsViewModel);
@@ -345,10 +332,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void WriteCacheToFile()
         {
-            var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.dat"), FileMode.Create);
-            var binaryFormatter = new BinaryFormatter();
-            binaryFormatter.Serialize(fs, _albums);
-            fs.Close();
+            using (var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.dat"), FileMode.Create))
+            {
+                var binaryFormatter = new BinaryFormatter();
+                IEnumerable<SerializedAlbum> serializedAlbumsFromSource = CreateSerializedAlbumsFromSource(_albums);
+                binaryFormatter.Serialize(fs, serializedAlbumsFromSource);
+                fs.Close();
+            }
             //try
             //{
 
@@ -361,6 +351,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             //{
 
             //}
+        }
+
+        private static IEnumerable<SerializedAlbum> CreateSerializedAlbumsFromSource(IEnumerable<AlbumDetailsViewModel> source)
+        {
+            return source.Select(albumDetailsViewModel => new SerializedAlbum(
+                                                              albumDetailsViewModel.ZuneAlbumMetaData,
+                                                              albumDetailsViewModel.WebAlbumMetaData,
+                                                              albumDetailsViewModel.LinkStatus)).ToList();
         }
 
         private static void ShowUpdate()

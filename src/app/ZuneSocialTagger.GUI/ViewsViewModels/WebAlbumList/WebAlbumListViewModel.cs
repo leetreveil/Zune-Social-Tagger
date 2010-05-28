@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -27,12 +28,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private readonly bool _isTaskbarSupported;
         private SortOrder _sortOrder;
         private bool _canShowSort;
+        private string _filterText;
 
         public WebAlbumListViewModel(IZuneDatabaseReader dbReader,
                                      ObservableCollection<AlbumDetailsViewModel> albums,
                                      IViewModelLocator locator)
         {
-            this.Albums = albums;
+            this.Albums  = albums;
+
             this.AlbumsViewSource = new CollectionViewSource();
             this.AlbumsViewSource.Filter += AlbumsViewSource_Filter;
             this.AlbumsViewSource.Source = this.Albums;
@@ -74,16 +77,17 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         void AlbumsViewSource_Filter(object sender, FilterEventArgs e)
         {
-            if (e.Item != null && this.FilterText != null)
+            if (e.Item != null && _filterText != null)
             {
                 var details = (AlbumDetailsViewModel) e.Item;
 
+                //match the artist or the album title
                 e.Accepted = (details.ZuneAlbumMetaData.Artist
                     .ToLower()
-                    .StartsWith(this.FilterText.ToLower()) 
+                    .StartsWith(_filterText.ToLower()) 
                     ||
                     details.ZuneAlbumMetaData.Title.ToLower()
-                    .StartsWith(this.FilterText.ToLower()));
+                    .StartsWith(_filterText.ToLower()));
 
             }
         }
@@ -114,9 +118,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         private void Search(string obj)
         {
+            this._filterText = obj;
             this.AlbumsViewSource.View.Refresh();
-            this.AlbumsViewSource.View.Refresh();
-            //_albums.Filter(x=> x.ZuneAlbumMetaData.Artist.ToLower().StartsWith(obj.ToLower()));
         }
 
         #region View Binding Properties
@@ -138,8 +141,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 return true;
             }
         }
-
-        public string FilterText { get; set; }
 
         public CollectionViewSource AlbumsViewSource { get; set; }
 

@@ -93,7 +93,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WPFToolkit" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -108,7 +107,7 @@
       <DependentUpon>SearchControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
-    <Compile Include="Models\Song.cs" />
+    <Compile Include="Models\SerializedAlbum.cs" />
     <Compile Include="ViewsViewModels\Application\IApplicationViewModel.cs" />
     <Compile Include="ViewsViewModels\DetailsReadyOnly\DesignTime\DetailsReadOnlyDesignViewModel.cs" />
     <Compile Include="ViewsViewModels\DetailsReadyOnly\DetailsReadOnlyView.xaml.cs">
@@ -116,6 +115,8 @@
     </Compile>
     <Compile Include="ViewsViewModels\DetailsReadyOnly\DetailsReadOnlyViewModel.cs" />
     <Compile Include="ViewsViewModels\Details\DiscHeader.cs" />
+    <Compile Include="ViewsViewModels\Shared\SharedModel.cs" />
+    <Compile Include="ViewsViewModels\Shared\DetailsViewSwitcher.cs" />
     <Compile Include="ViewsViewModels\Shared\IViewModelLocator.cs" />
     <Compile Include="ViewsViewModels\Shared\ViewModelBase.cs" />
     <Compile Include="ViewsViewModels\About\AboutViewModel.cs" />
@@ -203,7 +204,6 @@
       <DependentUpon>ZuneMessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\AlbumCountToStringConverter.cs" />
-    <Compile Include="Converters\ErrorModeToImageSourceConverter.cs" />
     <Compile Include="Converters\LinkStatusToImageConverter.cs" />
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\PathToImageThumbnailConverter.cs" />
@@ -211,7 +211,6 @@
     <Compile Include="Converters\SortOrderToVisibilityConverter.cs" />
     <Compile Include="Converters\TextToBoolConverter.cs" />
     <Compile Include="Models\ErrorMessage.cs" />
-    <Compile Include="Models\ExtensionMethods.cs" />
     <Compile Include="Models\LinkStatus.cs" />
     <Compile Include="Models\SharedMethods.cs" />
     <Compile Include="ViewsViewModels\WebAlbumList\SortOrder.cs" />

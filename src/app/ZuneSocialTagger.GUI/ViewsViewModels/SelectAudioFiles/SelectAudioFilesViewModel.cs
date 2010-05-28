@@ -1,24 +1,33 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.GUI.Models;
+using ZuneSocialTagger.GUI.ViewsViewModels.Application;
+using ZuneSocialTagger.GUI.ViewsViewModels.Details;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
-using ZuneSocialTagger.GUI.ViewsViewModels.Details;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 {
     public class SelectAudioFilesViewModel : ViewModelBase
     {
         private readonly IViewModelLocator _locator;
+        private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
+        private readonly IZuneAudioFileRetriever _fileRetriever;
 
-        public SelectAudioFilesViewModel(IViewModelLocator locator)
+        public SelectAudioFilesViewModel(IViewModelLocator locator,
+                                         [File]ExpandedAlbumDetailsViewModel albumDetailsFromFile,
+                                         IZuneAudioFileRetriever fileRetriever)
         {
             _locator = locator;
+            _albumDetailsFromFile = albumDetailsFromFile;
+            _fileRetriever = fileRetriever;
             this.CanSwitchToNewMode = true;
             this.SelectFilesCommand = new RelayCommand(SelectFiles);
             this.SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);    
@@ -60,38 +69,27 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 
         private void ReadFiles(IEnumerable<string> files)
         {
-            var tracks = new List<Song>();
-
-            foreach (var file in files)
+            try
             {
-                var zuneTagContainer = SharedMethods.GetContainer(file);
+                //get the files and sort by trackNumber
+                _fileRetriever.GetContainers(files);
+                _fileRetriever.SortByTrackNumber();
 
-                if (zuneTagContainer != null)
-                    tracks.Add(new Song(file, zuneTagContainer));
-                else
-                    return;
+                //get the first tracks metadata which is used to set some details
+                MetaData firstTrackMetaData = _fileRetriever.Containers.First().MetaData;
+
+                //set the album details that is used throughout the app
+                SharedMethods.SetAlbumDetails(_albumDetailsFromFile, firstTrackMetaData, _fileRetriever.Containers.Count);
+
+                //as soon as the view has switched start searching
+                var searchVm = _locator.SwitchToViewModel<SearchViewModel>();
+                searchVm.Search(firstTrackMetaData.AlbumName, firstTrackMetaData.AlbumArtist);
             }
-
-            tracks = tracks.OrderBy(SharedMethods.SortByTrackNumber()).ToList();
-
-            MetaData firstTrackMetaData = tracks.First().MetaData;
-
-            var albumMetaData = new ExpandedAlbumDetailsViewModel
+            catch (Exception ex)
             {
-                Artist = firstTrackMetaData.AlbumArtist,
-                Title = firstTrackMetaData.AlbumName,
-                SongCount = tracks.Count.ToString(),
-                Year = firstTrackMetaData.Year
-            };
-
-            var detailsViewModel = _locator.Resolve<DetailsViewModel>();
-            detailsViewModel.AlbumDetailsFromFile = albumMetaData;
-            detailsViewModel._tracksFromFile = tracks;
-
-            var searchVm = _locator.SwitchToViewModel<SearchViewModel>();
-            searchVm.AlbumDetails = albumMetaData;
-            searchVm.SearchText = firstTrackMetaData.AlbumName + " " + firstTrackMetaData.AlbumArtist;
-            searchVm.Search();
+                Messenger.Default.Send<ErrorMessage, ApplicationViewModel>(new ErrorMessage(ErrorMode.Error, ex.Message));
+                return;  //if we hit an error on any track in the albums then just fail and dont read anymore
+            }
         }
     }
 }

@@ -13,43 +13,33 @@ using ZuneSocialTagger.GUI.ViewsViewModels.Details;
 using ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
-using System.Threading;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {
-    [Serializable]
     public class AlbumDetailsViewModel : ViewModelBase
     {
-        [NonSerialized]
+
         private readonly IZuneDatabaseReader _dbReader;
-
-        [NonSerialized]
         private readonly IViewModelLocator _locator;
-
-        [NonSerialized]
+        private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
+        private readonly IZuneAudioFileRetriever _fileRetriever;
         private bool _isDownloadingDetails;
 
         private DbAlbum _zuneAlbumMetaData;
         private WebAlbum _webAlbumMetaData;
         private LinkStatus _linkStatus;
 
-        [NonSerialized]
-        private RelayCommand _refreshCommand;
-        [NonSerialized]
-        private RelayCommand _delinkCommand;
-        [NonSerialized]
-        private RelayCommand _linkCommand;
-        [NonSerialized]
-        private RelayCommand _moreInfoCommand;
-
-        [field: NonSerialized]
         public event Action AlbumDetailsDownloaded = delegate { };
 
         public AlbumDetailsViewModel(IZuneDatabaseReader dbReader,
-                                     IViewModelLocator locator)
+                                     IViewModelLocator locator,
+                                     [File]ExpandedAlbumDetailsViewModel albumDetailsFromFile,
+                                     IZuneAudioFileRetriever fileRetriever)
         {
             _dbReader = dbReader;
             _locator = locator;
+            _albumDetailsFromFile = albumDetailsFromFile;
+            _fileRetriever = fileRetriever;
 
             this.DelinkCommand = new RelayCommand(DelinkAlbum);
             this.LinkCommand = new RelayCommand(LinkAlbum);
@@ -61,6 +51,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         {
             //used for serialization purposes
         }
+
+        #region View Bindings
 
         public string AlbumTitle
         {
@@ -77,29 +69,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             get { return this.ZuneAlbumMetaData.DateAdded; }
         }
 
-        public RelayCommand MoreInfoCommand
-        {
-            get { return _moreInfoCommand; }
-            private set { _moreInfoCommand = value; }
-        }
-
-        public RelayCommand RefreshCommand
-        {
-            get { return _refreshCommand; }
-            private set { _refreshCommand = value; }
-        }
-
-        public RelayCommand LinkCommand
-        {
-            get { return _linkCommand; }
-            private set { _linkCommand = value; }
-        }
-
-        public RelayCommand DelinkCommand
-        {
-            get { return _delinkCommand; }
-            private set { _delinkCommand = value; }
-        }
+        public RelayCommand MoreInfoCommand { get; private set; }
+        public RelayCommand RefreshCommand { get; private set; }
+        public RelayCommand LinkCommand { get; private set; }
+        public RelayCommand DelinkCommand { get; private set; }
 
         public DbAlbum ZuneAlbumMetaData
         {
@@ -159,7 +132,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             get { return _linkStatus != LinkStatus.Unlinked && _linkStatus != LinkStatus.Unknown; }
         }
 
-
+        #endregion
 
         private void ShowMoreInfo()
         {
@@ -169,20 +142,23 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public void LinkAlbum()
         {
-            var albumDetails = this.ZuneAlbumMetaData;
+            DbAlbum zuneAlbumMetaData = this.ZuneAlbumMetaData;
 
-            DoesAlbumExistInDbAndDisplayError(albumDetails);
+            DoesAlbumExistInDbAndDisplayError(zuneAlbumMetaData);
+            SharedMethods.SetAlbumDetails(_albumDetailsFromFile, zuneAlbumMetaData);
 
-            IEnumerable<DbTrack> tracksForAlbum = _dbReader.GetTracksForAlbum(albumDetails.MediaId);
-
-            var searchVm = _locator.SwitchToViewModel<SearchViewModel>();
-            searchVm.TracksFromFile = (from track in tracksForAlbum
-                                       let zuneTagContainer = SharedMethods.GetContainer(track.FilePath)
-                                       where zuneTagContainer != null
-                                       select new Song(track.FilePath, zuneTagContainer));
-            searchVm.AlbumDetails = albumDetails.GetAlbumDetailsFrom();
-            searchVm.SearchText = albumDetails.Title + " " + albumDetails.Artist;
-            searchVm.Search();
+            try
+            {
+                IEnumerable<string> filePaths = _dbReader.GetTracksForAlbum(zuneAlbumMetaData.MediaId).Select(x => x.FilePath);
+                _fileRetriever.GetContainers(filePaths);
+                var searchVm = _locator.SwitchToViewModel<SearchViewModel>();
+                searchVm.Search(zuneAlbumMetaData.Title, zuneAlbumMetaData.Artist);
+            }
+            catch (Exception ex)
+            {
+                Messenger.Default.Send<ErrorMessage, ApplicationViewModel>(new ErrorMessage(ErrorMode.Error, ex.Message));
+                return;  //if we hit an error on any track in the albums then just fail and dont read anymore
+            }
         }
 
         public void DelinkAlbum()
@@ -193,31 +169,23 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
             //TODO: fix bug where application crashes when removing an album that is currently playing
 
-            List<DbTrack> tracksForAlbum = _dbReader.GetTracksForAlbum(this.ZuneAlbumMetaData.MediaId).ToList();
+            var filePaths = _dbReader.GetTracksForAlbum(this.ZuneAlbumMetaData.MediaId).Select(x=> x.FilePath);
 
-            foreach (var track in tracksForAlbum)
+            _fileRetriever.GetContainers(filePaths);
+
+            foreach (var container in _fileRetriever.Containers)
             {
-                IZuneTagContainer zuneTagContainer = SharedMethods.GetContainer(track.FilePath);
-
-                if (zuneTagContainer != null)
-                {
-                    zuneTagContainer.RemoveZuneAttribute("WM/WMContentID");
-                    zuneTagContainer.RemoveZuneAttribute("WM/WMCollectionID");
-                    zuneTagContainer.RemoveZuneAttribute("WM/WMCollectionGroupID");
-                    zuneTagContainer.RemoveZuneAttribute("ZuneCollectionID");
-                    zuneTagContainer.RemoveZuneAttribute("WM/UniqueFileIdentifier");
-                    zuneTagContainer.RemoveZuneAttribute("ZuneCollectionID");
-                    zuneTagContainer.RemoveZuneAttribute("ZuneUserEditedFields");
-                    zuneTagContainer.RemoveZuneAttribute(ZuneIds.Album);
-                    zuneTagContainer.RemoveZuneAttribute(ZuneIds.Artist);
-                    zuneTagContainer.RemoveZuneAttribute(ZuneIds.Track);
-
-                    zuneTagContainer.WriteToFile(track.FilePath);
-                }
-                else
-                {
-                    return;
-                }
+                container.RemoveZuneAttribute("WM/WMContentID");
+                container.RemoveZuneAttribute("WM/WMCollectionID");
+                container.RemoveZuneAttribute("WM/WMCollectionGroupID");
+                container.RemoveZuneAttribute("ZuneCollectionID");
+                container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
+                container.RemoveZuneAttribute("ZuneCollectionID");
+                container.RemoveZuneAttribute("ZuneUserEditedFields");
+                container.RemoveZuneAttribute(ZuneIds.Album);
+                container.RemoveZuneAttribute(ZuneIds.Artist);
+                container.RemoveZuneAttribute(ZuneIds.Track);
+                container.WriteToFile();
             }
 
             Mouse.OverrideCursor = null;
@@ -240,9 +208,17 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             DoesAlbumExistInDbAndDisplayError(this.ZuneAlbumMetaData);
 
             DbAlbum albumMetaData = _dbReader.GetAlbum(this.ZuneAlbumMetaData.MediaId);
-            this.ZuneAlbumMetaData = albumMetaData;
 
-            GetAlbumDetailsFromWebsite();
+            if (albumMetaData != null)
+            {
+                this.ZuneAlbumMetaData = albumMetaData;
+                GetAlbumDetailsFromWebsite();
+            }
+            else
+            {
+                this.LinkStatus = LinkStatus.Unlinked;
+                this.IsDownloadingDetails = false;
+            }
         }
 
         public void GetAlbumDetailsFromWebsite()

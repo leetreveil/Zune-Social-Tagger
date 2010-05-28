@@ -22,7 +22,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
         /// <returns></returns>
         public void MatchTheSelectedSongToTheAvailableSongs()
         {
-            this.SelectedSong = SharedMethods.GetMatchingTrack(this.AvailableZuneTracks,this.SongDetails);
+            this.SelectedSong = SharedMethods.GetMatchingTrack(this.AvailableZuneTracks, this.SongDetails);
         }
     }
 }

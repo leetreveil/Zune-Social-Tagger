@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace ZuneSocialTagger.Core.ZuneDatabase
 {
@@ -27,10 +28,10 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             {
                 using (var fs = new FileStream(@"ZuneDatabase\testzunedatabase.xml", FileMode.Open))
                 {
-                    //_deserializedAlbums = fs.XmlDeserializeFromStream<List<DbAlbum>>();
+                    var serializer = new XmlSerializer(typeof(List<DbAlbum>));
+                    _deserializedAlbums = serializer.Deserialize(fs) as List<DbAlbum>;
                 }
                    
-
                 return true;
             }
             catch

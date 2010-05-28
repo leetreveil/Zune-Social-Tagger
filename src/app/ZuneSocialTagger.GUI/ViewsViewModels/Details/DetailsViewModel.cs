@@ -1,28 +1,43 @@
 using System.Collections.Generic;
 using GalaSoft.MvvmLight.Command;
+using ZuneSocialTagger.Core;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using System.Linq;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using ZuneSocialTagger.Core.IO;
+using System;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 {
+    public class FileAttribute : Attribute{}
+    public class WebAttribute : Attribute {}
+
     public class DetailsViewModel : ViewModelBase
     {
         private readonly IViewModelLocator _locator;
-        internal IEnumerable<WebTrack> _tracksFromWeb;
-        internal IEnumerable<Song> _tracksFromFile;
+        private readonly IEnumerable<IZuneTagContainer> _fileTracks;
+        private readonly WebAlbum _webAlbum;
 
-        public DetailsViewModel(IViewModelLocator locator)
+        public DetailsViewModel(IViewModelLocator locator, 
+            [File]ExpandedAlbumDetailsViewModel albumdetailsFromFile,
+            [Web]ExpandedAlbumDetailsViewModel albumDetailsFromWeb)
         {
             _locator = locator;
+            //_fileTracks = sharedModel.SongsFromFile;
+           // _webAlbum = sharedModel.WebAlbum;
+
+            this.AlbumDetailsFromFile = albumdetailsFromFile;
+            this.AlbumDetailsFromWebsite = albumDetailsFromWeb;
 
             this.MoveBackCommand = new RelayCommand(MoveBack);
            // this.SaveCommand = new RelayCommand(Save);
 
             this.Rows = new List<object>();
+
+            PopulateRows();
         }
 
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
@@ -49,23 +64,23 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 
             //get lists of tracks by discNumer
             var tracksByDiscNumber =
-                _tracksFromFile.Select(x => x.MetaData.DiscNumber).Distinct().Select(
-                    number => _tracksFromFile.Where(x => x.MetaData.DiscNumber == number));
+                _fileTracks.Select(x => x.MetaData.DiscNumber).Distinct().Select(
+                    number => _fileTracks.Where(x => x.MetaData.DiscNumber == number));
 
             //if the disc count is just one then dont add any headers
             if (tracksByDiscNumber.Count() == 1)
-                tracksByDiscNumber.First().ForEach(AddRow);
+                tracksByDiscNumber.First().ForEach(AddTrackRow);
             else
             {
-                foreach (IEnumerable<Song> discTracks in tracksByDiscNumber)
+                foreach (IEnumerable<IZuneTagContainer> discTracks in tracksByDiscNumber)
                 {
                     AddHeaderRow(discTracks.First()); //add header for each disc before adding the tracks
-                    discTracks.ForEach(AddRow);
+                    discTracks.ForEach(AddTrackRow);
                 }
             }
         }
 
-        private void AddHeaderRow(Song track)
+        private void AddHeaderRow(IZuneTagContainer track)
         {
             this.Rows.Add(new DiscHeader
             {
@@ -74,7 +89,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
             });
         }
 
-        private void AddRow(Song track)
+        private void AddTrackRow(IZuneTagContainer track)
         {
             var detailRow = new DetailRow();
 
@@ -84,7 +99,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
                 TrackTitle = track.MetaData.Title
             };
 
-            foreach (WebTrack webTrack in _tracksFromWeb)
+            foreach (WebTrack webTrack in _webAlbum.Tracks)
             {
                 detailRow.AvailableZuneTracks.Add(new TrackWithTrackNum
                 {

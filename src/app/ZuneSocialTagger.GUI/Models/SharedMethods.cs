@@ -4,11 +4,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.Core.ZuneDatabase;
-using ZuneSocialTagger.GUI.ViewsViewModels.Application;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 
 namespace ZuneSocialTagger.GUI.Models
@@ -41,7 +39,7 @@ namespace ZuneSocialTagger.GUI.Models
             int number;
             if (!int.TryParse(trackNumber, out number))
             {
-                throw new ArgumentException("number could not be converted");
+                return String.Empty;
             }
 
             //if we find a number with one digit then append a 0 to the start
@@ -77,6 +75,33 @@ namespace ZuneSocialTagger.GUI.Models
             };
         }
 
+        public static ExpandedAlbumDetailsViewModel GetAlbumDetailsFrom(MetaData metaData, int trackCount)
+        {
+            return new ExpandedAlbumDetailsViewModel
+            {
+                Artist = metaData.AlbumArtist,
+                Title = metaData.AlbumName,
+                SongCount = trackCount.ToString(),
+                Year = metaData.Year
+            };
+        }
+
+        public static void SetAlbumDetails(ExpandedAlbumDetailsViewModel details, DbAlbum album)
+        {
+            details.Artist = album.Artist;
+            details.Title = album.Title;
+            details.ArtworkUrl = album.ArtworkUrl;
+            details.SongCount = album.TrackCount.ToString();
+            details.Year = album.ReleaseYear;
+        }
+
+        public static void SetAlbumDetails(ExpandedAlbumDetailsViewModel details, MetaData metaData, int trackCount)
+        {
+            details.Artist = metaData.AlbumArtist;
+            details.Title = metaData.AlbumName;
+            details.SongCount = trackCount.ToString();
+            details.Year = metaData.Year;
+        }
 
         /// <summary>
         /// Converts Track numbers that are like 1/2 to just 1 or 4/11 to just 4
@@ -100,21 +125,6 @@ namespace ZuneSocialTagger.GUI.Models
             if (String.IsNullOrEmpty(discNumber)) return "1";
 
             return discNumber.Contains('/') ? discNumber.Split('/').First() : discNumber;
-        }
-
-        public static IZuneTagContainer GetContainer(this string filePath)
-        {
-            try
-            {
-                IZuneTagContainer container = ZuneTagContainerFactory.GetContainer(filePath);
-                return container;
-            }
-            catch (Exception ex)
-            {
-                Messenger.Default.Send<ErrorMessage,ApplicationViewModel>(new ErrorMessage(ErrorMode.Error, ex.Message));
-                //if we hit an error on any track in the albums then just fail and dont read anymore
-                return null;
-            }
         }
 
         public static bool CheckIfZuneSoftwareIsRunning()
@@ -191,17 +201,6 @@ namespace ZuneSocialTagger.GUI.Models
             }
 
             return (sb.ToString().Normalize(NormalizationForm.FormC));
-        }
-
-        public static Func<Song, int> SortByTrackNumber()
-        {
-            return arg =>
-            {
-                int result;
-                Int32.TryParse(arg.MetaData.TrackNumber, out result);
-
-                return result;
-            };
         }
 
 

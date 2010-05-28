@@ -5,27 +5,29 @@ using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.ViewsViewModels.Details;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
-using System.Collections.Generic;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 {
     public class SearchViewModel : ViewModelBase
     {
         private readonly IViewModelLocator _locator;
+        private readonly SharedModel _header;
         private string _searchText;
         private bool _isSearching;
         private bool _canMoveNext;
         private SearchResultsViewModel _searchResultsViewModel;
         private bool _canShowResults;
 
-        internal IEnumerable<Song> TracksFromFile;
 
-        public SearchViewModel(IViewModelLocator locator)
+        public SearchViewModel(IViewModelLocator locator, SharedModel header,
+                               [File]ExpandedAlbumDetailsViewModel albumDetailsFromFile )
         {
             _locator = locator;
+            _header = header;
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.MoveNextCommand = new RelayCommand(MoveNext);
             this.SearchCommand = new RelayCommand(Search);
+            this.AlbumDetails = albumDetailsFromFile;
         }
 
         public RelayCommand MoveBackCommand { get; private set; }
@@ -88,7 +90,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             this.IsSearching = true;
         }
 
-        public void Search()
+        public void Search(string artist,string album)
+        {
+            this.SearchText = string.Format("{0} {1}",album,artist);
+            Search();
+        }
+
+        private void Search()
         {
             this.CanShowResults = false;
             this.CanMoveNext = false;
@@ -123,48 +131,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
         public void MoveNext()
         {
-            WebAlbum downloadedAlbum = _searchResultsViewModel._downloadedAlbum;
-            IEnumerable<WebTrack> downloadedTracks = downloadedAlbum.Tracks;
-           // var detailsViewModel = _locator.SwitchToViewModel<DetailsViewModel>();
+            _header.WebAlbum = _searchResultsViewModel._downloadedAlbum;
+            _header.AlbumDetailsFromWeb = SharedMethods.GetAlbumDetailsFrom(_header.WebAlbum);
 
-            //do all tracks match, if they do then switch to completed, otherwise switch to selector
-            if (DoAllTracksHaveMatchingTrackTitles(downloadedTracks))
-            {
-                var detailsRoVm = _locator.SwitchToViewModel<DetailsReadyOnly.DetailsReadOnlyViewModel>();
-
-                detailsRoVm.Genre = downloadedAlbum.Genre;
-                detailsRoVm.ImageUrl = downloadedAlbum.ArtworkUrl;
-                detailsRoVm.ReleaseYear = downloadedAlbum.ReleaseYear;
-                detailsRoVm.AlbumTitle = downloadedAlbum.Title;
-                detailsRoVm.Artist = downloadedAlbum.Artist;
-                detailsRoVm.TrackCount = downloadedAlbum.Tracks.Count().ToString();
-
-                foreach (var downloadedTrack in downloadedTracks)
-                {
-                    detailsRoVm.Tracks.Add(new TrackWithTrackNum
-                    {
-                        TrackTitle = downloadedTrack.Title,
-                        TrackNumber = downloadedTrack.TrackNumber
-                    });
-                }
-            }
-            else
-            {
-                var detailsVm = _locator.SwitchToViewModel<DetailsViewModel>();
-                detailsVm.AlbumDetailsFromFile = this.AlbumDetails;
-                detailsVm.AlbumDetailsFromWebsite = _searchResultsViewModel._downloadedAlbum.GetAlbumDetailsFrom();
-                detailsVm._tracksFromWeb = _searchResultsViewModel._downloadedAlbum.Tracks;
-                detailsVm._tracksFromFile = TracksFromFile;
-                detailsVm.PopulateRows();
-            }
-        }
-
-        public bool DoAllTracksHaveMatchingTrackTitles(IEnumerable<WebTrack> downloadedTracks)
-        {
-            return
-                TracksFromFile.Any(
-                    track =>
-                    SharedMethods.DoesAlbumTitleMatch(downloadedTracks.Select(x => x.Title), track.MetaData.Title));
+            var detailsViewSwitcher = _locator.Resolve<DetailsViewSwitcher>();
+            detailsViewSwitcher.SwitchToCorrectView();
         }
     }
 }

@@ -11,6 +11,9 @@ namespace ZuneSocialTagger.Core.IO
     {
         public static IZuneTagContainer GetContainer(string path)
         {
+            if (!File.Exists(path))
+                throw new FileNotFoundException(String.Format("File does not exist: {0}",path), path);
+
             string extension = Path.GetExtension(path);
 
             if (extension.ToLower() == ".mp3")
@@ -26,7 +29,7 @@ namespace ZuneSocialTagger.Core.IO
                     if (status.Id3V1TagFound && !status.Id3V2TagFound)
                         throw new Id3TagException("cannot read id3v1.1");
 
-                    return new ZuneMP3TagContainer(tagManager.ReadV2Tag(path));
+                    return new ZuneMP3TagContainer(tagManager.ReadV2Tag(path),path);
                 }
                 catch (Id3TagException ex)
                 {
@@ -41,7 +44,7 @@ namespace ZuneSocialTagger.Core.IO
             {
                 try
                 {
-                    return new ZuneWMATagContainer(ASFTagManager.ReadTag(path));
+                    return new ZuneWMATagContainer(ASFTagManager.ReadTag(path),path);
                 }
                 catch (Exception ex)
                 {
@@ -49,7 +52,8 @@ namespace ZuneSocialTagger.Core.IO
                 }
             }
 
-            throw new AudioFileReadException("The " + Path.GetExtension(path) + " file extension is not supported with zune social tagger.");
+            throw new AudioFileReadException("The " + Path.GetExtension(path) + 
+                " file extension is not supported with zune social tagger.");
         }
     }
 }

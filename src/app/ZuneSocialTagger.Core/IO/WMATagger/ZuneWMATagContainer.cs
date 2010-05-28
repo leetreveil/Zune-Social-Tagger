@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using ASFTag;
 using Attribute = ASFTag.Attribute;
@@ -10,23 +9,45 @@ namespace ZuneSocialTagger.Core.IO.WMATagger
     public class ZuneWMATagContainer : IZuneTagContainer
     {
         private readonly TagContainer _container;
+        private readonly string _filePath;
 
         public ZuneWMATagContainer(TagContainer container)
         {
             _container = container;
+        }
 
-            foreach (var item in container)
+        public ZuneWMATagContainer(TagContainer container, string filePath)
+        {
+            _container = container;
+            _filePath = filePath;
+        }
+
+        public MetaData MetaData
+        {
+            get
             {
-                Trace.WriteLine(item.Name);
-                Trace.WriteLine(item.Value);
+                return new MetaData
+                {
+                    AlbumArtist = GetValue(ASFAttributes.AlbumArtist),
+                    AlbumName = GetValue(ASFAttributes.AlbumName),
+                    ContributingArtists = GetValues(ASFAttributes.ContributingArtists),
+                    DiscNumber = GetValue(ASFAttributes.DiscNumber),
+                    Genre = GetValue(ASFAttributes.Genre),
+                    Title = GetValue(ASFAttributes.Title),
+                    TrackNumber = GetValue(ASFAttributes.TrackNumber),
+                    Year = GetValue(ASFAttributes.Year)
+                };
             }
         }
 
-        public IEnumerable<ZuneAttribute> ReadZuneAttributes()
+        public IEnumerable<ZuneAttribute> ZuneAttributes
         {
-            return from tag in _container
-                   where ZuneIds.GetAll.Contains(tag.Name)
-                   select new ZuneAttribute(tag.Name, new Guid(tag.Value));
+            get
+            {
+                return from tag in _container
+                       where ZuneIds.GetAll.Contains(tag.Name)
+                       select new ZuneAttribute(tag.Name, new Guid(tag.Value));
+            }
         }
 
         public void AddZuneAttribute(ZuneAttribute zuneAttribute)
@@ -34,21 +55,6 @@ namespace ZuneSocialTagger.Core.IO.WMATagger
             RemoveZuneAttribute(zuneAttribute.Name);
 
             _container.Add(new Attribute(zuneAttribute.Name, zuneAttribute.Guid.ToString(), WMT_ATTR_DATATYPE.WMT_TYPE_GUID));
-        }
-
-        public MetaData ReadMetaData()
-        {
-            return new MetaData
-                   {
-                       AlbumArtist = GetValue(ASFAttributes.AlbumArtist),
-                       AlbumName = GetValue(ASFAttributes.AlbumName),
-                       ContributingArtists = GetValues(ASFAttributes.ContributingArtists),
-                       DiscNumber = GetValue(ASFAttributes.DiscNumber),
-                       Genre = GetValue(ASFAttributes.Genre),
-                       Title = GetValue(ASFAttributes.Title),
-                       TrackNumber = GetValue(ASFAttributes.TrackNumber),
-                       Year = GetValue(ASFAttributes.Year)
-                   };
         }
 
         public void AddMetaData(MetaData metaData)
@@ -65,9 +71,12 @@ namespace ZuneSocialTagger.Core.IO.WMATagger
             }
         }
 
-        public void WriteToFile(string filePath)
+        public void WriteToFile()
         {
-            ASFTagManager.WriteTag(filePath, _container);
+            if (String.IsNullOrEmpty(_filePath))
+                throw new ArgumentException("filePath is not set");
+
+            ASFTagManager.WriteTag(_filePath, _container);
         }
 
         public void RemoveZuneAttribute(string name)

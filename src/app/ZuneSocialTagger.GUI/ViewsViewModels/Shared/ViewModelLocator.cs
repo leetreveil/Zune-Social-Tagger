@@ -5,6 +5,9 @@ using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
 {
+    /// <summary>
+    /// Handles switching between viewmodels, also remembers when the first view model has been switched
+    /// </summary>
     public class ViewModelLocator : IViewModelLocator
     {
         private readonly IKernel _container;

@@ -45,7 +45,6 @@
     <converters:LinkStatusToImageConverter x:Key="LinkStatusToImageConverter" />
     <converters:PathToImageThumbnailConverter x:Key="PathToImageThumbnailConverter" />
     <converters:SortOrderToTextConverter x:Key="SortOrderToTextConverter" />
-    <converters:ErrorModeToImageSourceConverter x:Key="ErrorModeToImageSourceConverter"/>
     <converters:SortOrderToVisibilityConverter x:Key="SortOrderToVisibilityConverter"/>
     <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
     

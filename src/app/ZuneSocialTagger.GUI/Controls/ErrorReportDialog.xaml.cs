@@ -51,7 +51,9 @@ namespace ZuneSocialTagger.GUI.Controls
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            _cancelCallback();
+            if (_cancelCallback != null) _cancelCallback();
+
+            this.Close();
         }
     }
 }

@@ -95,10 +95,12 @@
     <Compile Include="IO\AudioFileReadException.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IO\ID3Tagger\ID3Frames.cs" />
+    <Compile Include="IO\IZuneAudioFileRetriever.cs" />
     <Compile Include="IO\WMATagger\ASFAttributes.cs" />
     <Compile Include="IO\WMATagger\ZuneWMATagContainer.cs" />
     <Compile Include="IO\IZuneTagContainer.cs" />
     <Compile Include="IO\ZuneAttribute.cs" />
+    <Compile Include="IO\ZuneAudioFileRetriever.cs" />
     <Compile Include="ZuneDatabase\DbAlbum.cs" />
     <Compile Include="ZuneDatabase\DbTrack.cs" />
     <Compile Include="ZuneDatabase\IZuneDatabaseReader.cs" />

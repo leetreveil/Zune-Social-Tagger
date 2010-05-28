@@ -1,6 +1,5 @@
 using Machine.Specifications;
 using ZuneSocialTagger.GUI.Models;
-using System;
 
 namespace ZuneSocialTagger.UnitTests.UI.Models
 {
@@ -29,7 +28,23 @@ namespace ZuneSocialTagger.UnitTests.UI.Models
     public class when_converting_a_text_string
     {
         It should_throw_an_argument_exception = () =>
-            Catch.Exception(() => SharedMethods.ConvertTrackNumberToDoubleDigits("HELLO"))
-            .ShouldBeOfType<ArgumentException>();
+            SharedMethods.ConvertTrackNumberToDoubleDigits("HELLO")
+            .ShouldBeEmpty();
+    }
+
+    [Subject("ConvertTrackNumberToDoubleDigits")]
+    public class when_converting_a_null_value
+    {
+        It should_return_an_empty_string = () =>
+            SharedMethods.ConvertTrackNumberToDoubleDigits(null)
+            .ShouldBeEmpty();
+    }
+
+    [Subject("ConvertTrackNumberToDoubleDigits")]
+    public class when_converting_an_empty_string
+    {
+        It should_return_a_empty_string = () =>
+            SharedMethods.ConvertTrackNumberToDoubleDigits("")
+            .ShouldBeEmpty();
     }
 }

@@ -14,22 +14,47 @@ namespace ZuneSocialTagger.Core.IO.ID3Tagger
     public class ZuneMP3TagContainer : IZuneTagContainer
     {
         private readonly TagContainer _container;
+        private readonly string _filePath;
 
         public ZuneMP3TagContainer(TagContainer container)
         {
             _container = container;
         }
 
-        public IEnumerable<ZuneAttribute> ReadZuneAttributes()
+        public ZuneMP3TagContainer(TagContainer container,string filePath)
         {
-            //OfType instead of cast because the container could contain other types other than private frames 
-            //and we only want private frames
-
-            //select all available zune attributes from the mp3 file
-            return from frame in _container.OfType<PrivateFrame>()
-                   where ZuneIds.GetAll.Contains(frame.Owner)
-                   select new ZuneAttribute(frame.Owner, new Guid(frame.Data.ToArray()));
+            _container = container;
+            _filePath = filePath;
         }
+
+        public MetaData MetaData
+        {
+            get
+            {
+                return new MetaData
+                {
+                    AlbumArtist = GetValue(ID3Frames.AlbumArtist),
+                    ContributingArtists = GetValue(ID3Frames.ContributingArtists).Split('/'),
+                    AlbumName = GetValue(ID3Frames.AlbumName),
+                    Title = GetValue(ID3Frames.Title),
+                    Year = GetValue(ID3Frames.Year),
+                    DiscNumber = GetValue(ID3Frames.DiscNumber),
+                    Genre = GetValue(ID3Frames.Genre),
+                    TrackNumber = GetValue(ID3Frames.TrackNumber)
+                };
+            }
+        }
+
+        public IEnumerable<ZuneAttribute> ZuneAttributes
+        {
+            get
+            {
+                return from frame in _container.OfType<PrivateFrame>()
+                       where ZuneIds.GetAll.Contains(frame.Owner)
+                       select new ZuneAttribute(frame.Owner, new Guid(frame.Data.ToArray()));
+            }
+        }
+
 
         public void AddZuneAttribute(ZuneAttribute zuneAttribute)
         {
@@ -43,22 +68,6 @@ namespace ZuneSocialTagger.Core.IO.ID3Tagger
             _container.OfType<PrivateFrame>().Where(frame => frame.Owner == name).ToList().ForEach(
                 privFrame => _container.Remove(privFrame));
         }
-
-        public MetaData ReadMetaData()
-        {
-            return new MetaData
-               {
-                   AlbumArtist = GetValue(ID3Frames.AlbumArtist),
-                   ContributingArtists = GetValue(ID3Frames.ContributingArtists).Split('/'),
-                   AlbumName = GetValue(ID3Frames.AlbumName),
-                   Title = GetValue(ID3Frames.Title),
-                   Year = GetValue(ID3Frames.Year),
-                   DiscNumber = GetValue(ID3Frames.DiscNumber),
-                   Genre = GetValue(ID3Frames.Genre),
-                   TrackNumber = GetValue(ID3Frames.TrackNumber)
-               };
-        }
-
 
         public void AddMetaData(MetaData metaData)
         {
@@ -84,9 +93,12 @@ namespace ZuneSocialTagger.Core.IO.ID3Tagger
             }
         }
 
-        public void WriteToFile(string filePath)
+        public void WriteToFile()
         {
-            new Id3TagManager().WriteV2Tag(filePath,_container);
+            if (String.IsNullOrEmpty(_filePath))
+                throw new ArgumentException("filePath is not set");
+
+            new Id3TagManager().WriteV2Tag(_filePath, _container);
         }
 
         private static IEnumerable<TextFrame> CreateTextFramesFromMetaData(MetaData metaData)
