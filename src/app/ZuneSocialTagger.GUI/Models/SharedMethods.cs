@@ -86,15 +86,6 @@ namespace ZuneSocialTagger.GUI.Models
             };
         }
 
-        public static void SetAlbumDetails(ExpandedAlbumDetailsViewModel details, DbAlbum album)
-        {
-            details.Artist = album.Artist;
-            details.Title = album.Title;
-            details.ArtworkUrl = album.ArtworkUrl;
-            details.SongCount = album.TrackCount.ToString();
-            details.Year = album.ReleaseYear;
-        }
-
         public static void SetAlbumDetails(ExpandedAlbumDetailsViewModel details, MetaData metaData, int trackCount)
         {
             details.Artist = metaData.AlbumArtist;

@@ -24,7 +24,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
         private readonly IZuneAudioFileRetriever _fileRetriever;
         private bool _isDownloadingDetails;
-
         private DbAlbum _zuneAlbumMetaData;
         private WebAlbum _webAlbumMetaData;
         private LinkStatus _linkStatus;
@@ -41,7 +40,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             _albumDetailsFromFile = albumDetailsFromFile;
             _fileRetriever = fileRetriever;
 
-            this.DelinkCommand = new RelayCommand(DelinkAlbum);
             this.LinkCommand = new RelayCommand(LinkAlbum);
             this.RefreshCommand = new RelayCommand(RefreshAlbum);
             this.MoreInfoCommand = new RelayCommand(ShowMoreInfo);
@@ -49,7 +47,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public AlbumDetailsViewModel()
         {
-            //used for serialization purposes
+            //used for design-time purposes
         }
 
         #region View Bindings
@@ -72,7 +70,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         public RelayCommand MoreInfoCommand { get; private set; }
         public RelayCommand RefreshCommand { get; private set; }
         public RelayCommand LinkCommand { get; private set; }
-        public RelayCommand DelinkCommand { get; private set; }
 
         public DbAlbum ZuneAlbumMetaData
         {
@@ -101,7 +98,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             {
                 _linkStatus = value;
                 RaisePropertyChanged(() => this.LinkStatus);
-                RaisePropertyChanged(() => this.CanDelink);
                 RaisePropertyChanged(() => this.CanLink);
                 RaisePropertyChanged(() => this.CanShowMoreInfo);
             }
@@ -115,11 +111,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 _isDownloadingDetails = value;
                 RaisePropertyChanged(() => this.IsDownloadingDetails);
             }
-        }
-
-        public bool CanDelink
-        {
-            get { return _linkStatus != LinkStatus.Unlinked && _linkStatus != LinkStatus.Unknown; }
         }
 
         public bool CanLink
@@ -145,11 +136,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             DbAlbum zuneAlbumMetaData = this.ZuneAlbumMetaData;
 
             DoesAlbumExistInDbAndDisplayError(zuneAlbumMetaData);
-            SharedMethods.SetAlbumDetails(_albumDetailsFromFile, zuneAlbumMetaData);
+            //set the expanded album details view mod that is used throughout the app
+            SetAlbumDetails(_albumDetailsFromFile, zuneAlbumMetaData);
 
             try
             {
-                IEnumerable<string> filePaths = _dbReader.GetTracksForAlbum(zuneAlbumMetaData.MediaId).Select(x => x.FilePath);
+                IEnumerable<string> filePaths = zuneAlbumMetaData.Tracks.Select(x => x.FilePath);
                 _fileRetriever.GetContainers(filePaths);
                 var searchVm = _locator.SwitchToViewModel<SearchViewModel>();
                 searchVm.Search(zuneAlbumMetaData.Title, zuneAlbumMetaData.Artist);
@@ -159,45 +151,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 Messenger.Default.Send<ErrorMessage, ApplicationViewModel>(new ErrorMessage(ErrorMode.Error, ex.Message));
                 return;  //if we hit an error on any track in the albums then just fail and dont read anymore
             }
-        }
-
-        public void DelinkAlbum()
-        {
-            DoesAlbumExistInDbAndDisplayError(this.ZuneAlbumMetaData);
-
-            Mouse.OverrideCursor = Cursors.Wait;
-
-            //TODO: fix bug where application crashes when removing an album that is currently playing
-
-            var filePaths = _dbReader.GetTracksForAlbum(this.ZuneAlbumMetaData.MediaId).Select(x=> x.FilePath);
-
-            _fileRetriever.GetContainers(filePaths);
-
-            foreach (var container in _fileRetriever.Containers)
-            {
-                container.RemoveZuneAttribute("WM/WMContentID");
-                container.RemoveZuneAttribute("WM/WMCollectionID");
-                container.RemoveZuneAttribute("WM/WMCollectionGroupID");
-                container.RemoveZuneAttribute("ZuneCollectionID");
-                container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
-                container.RemoveZuneAttribute("ZuneCollectionID");
-                container.RemoveZuneAttribute("ZuneUserEditedFields");
-                container.RemoveZuneAttribute(ZuneIds.Album);
-                container.RemoveZuneAttribute(ZuneIds.Artist);
-                container.RemoveZuneAttribute(ZuneIds.Track);
-                container.WriteToFile();
-            }
-
-            Mouse.OverrideCursor = null;
-
-            Messenger.Default.Send<ErrorMessage,ApplicationViewModel>(new ErrorMessage(ErrorMode.Warning,
-                                                    "Album should now be de-linked. You may need to " +
-                                                    "remove then re-add the album for the changes to take effect."));
-
-            //force a refresh on the album to see if the de-link worked
-            //this probably wont work because the zunedatabase does not correctly change the albums
-            //details when delinking, but does when linking
-            RefreshAlbum();
         }
 
         public void RefreshAlbum()
@@ -262,6 +215,15 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 this.IsDownloadingDetails = false;
             }
 
+        }
+
+        private static void SetAlbumDetails(ExpandedAlbumDetailsViewModel details, DbAlbum album)
+        {
+            details.Artist = album.Artist;
+            details.Title = album.Title;
+            details.ArtworkUrl = album.ArtworkUrl;
+            details.SongCount = album.TrackCount.ToString();
+            details.Year = album.ReleaseYear;
         }
 
         private void DoesAlbumExistInDbAndDisplayError(DbAlbum selectedAlbum)

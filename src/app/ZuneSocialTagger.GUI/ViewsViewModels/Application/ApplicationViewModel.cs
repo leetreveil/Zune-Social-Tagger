@@ -339,18 +339,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                 binaryFormatter.Serialize(fs, serializedAlbumsFromSource);
                 fs.Close();
             }
-            //try
-            //{
-
-            //}
-            //catch (SerializationException e)
-            //{
-            //    Debug.WriteLine(e);
-            //}
-            //finally
-            //{
-
-            //}
         }
 
         private static IEnumerable<SerializedAlbum> CreateSerializedAlbumsFromSource(IEnumerable<AlbumDetailsViewModel> source)

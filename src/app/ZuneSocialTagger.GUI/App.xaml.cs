@@ -63,19 +63,17 @@ namespace ZuneSocialTagger.GUI
 #else
             Container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
 #endif
-            Container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
-            Container.Bind<IApplicationViewModel>().To<ApplicationViewModel>().InSingletonScope();
+            Container.Bind<IApplicationViewModel>().To<ApplicationViewModel>();
             Container.Bind<IViewModelLocator>().To<ViewModelLocator>().InSingletonScope();
 
+            //songs the user loads from file are stored here
+            Container.Bind<IZuneAudioFileRetriever>().To<ZuneAudioFileRetriever>().InSingletonScope();
 
             //these are the headers each viewmodel has, they may have both or just one
             Container.Bind<ExpandedAlbumDetailsViewModel>()
                 .ToSelf().WhenTargetHas<FileAttribute>().InSingletonScope();
             Container.Bind<ExpandedAlbumDetailsViewModel>()
                 .ToSelf().WhenTargetHas<WebAttribute>().InSingletonScope();
-
-            //songs the user loads from file are stored here
-            Container.Bind<IZuneAudioFileRetriever>().To<ZuneAudioFileRetriever>().InSingletonScope();
 
             //we need the web view model to be a singleton because we want to be able to continue
             //downloading data while linking etc
