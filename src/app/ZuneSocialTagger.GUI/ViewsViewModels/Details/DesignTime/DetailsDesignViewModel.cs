@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Details.DesignTime

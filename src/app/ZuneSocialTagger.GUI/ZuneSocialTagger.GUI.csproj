@@ -48,7 +48,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\..\Program Files\Zune\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\..\..\Program Files\Zune\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -109,14 +109,8 @@
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Models\SerializedAlbum.cs" />
     <Compile Include="ViewsViewModels\Application\IApplicationViewModel.cs" />
-    <Compile Include="ViewsViewModels\DetailsReadyOnly\DesignTime\DetailsReadOnlyDesignViewModel.cs" />
-    <Compile Include="ViewsViewModels\DetailsReadyOnly\DetailsReadOnlyView.xaml.cs">
-      <DependentUpon>DetailsReadOnlyView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewsViewModels\DetailsReadyOnly\DetailsReadOnlyViewModel.cs" />
     <Compile Include="ViewsViewModels\Details\DiscHeader.cs" />
     <Compile Include="ViewsViewModels\Shared\SharedModel.cs" />
-    <Compile Include="ViewsViewModels\Shared\DetailsViewSwitcher.cs" />
     <Compile Include="ViewsViewModels\Shared\IViewModelLocator.cs" />
     <Compile Include="ViewsViewModels\Shared\ViewModelBase.cs" />
     <Compile Include="ViewsViewModels\About\AboutViewModel.cs" />
@@ -265,10 +259,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\SearchControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ViewsViewModels\DetailsReadyOnly\DetailsReadOnlyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

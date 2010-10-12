@@ -23,6 +23,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private readonly IViewModelLocator _locator;
         private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
         private readonly IZuneAudioFileRetriever _fileRetriever;
+        private readonly SharedModel _sharedModel;
         private bool _isDownloadingDetails;
         private DbAlbum _zuneAlbumMetaData;
         private WebAlbum _webAlbumMetaData;
@@ -33,12 +34,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         public AlbumDetailsViewModel(IZuneDatabaseReader dbReader,
                                      IViewModelLocator locator,
                                      [File]ExpandedAlbumDetailsViewModel albumDetailsFromFile,
-                                     IZuneAudioFileRetriever fileRetriever)
+                                     IZuneAudioFileRetriever fileRetriever,
+                                     SharedModel sharedModel)
         {
             _dbReader = dbReader;
             _locator = locator;
             _albumDetailsFromFile = albumDetailsFromFile;
             _fileRetriever = fileRetriever;
+            _sharedModel = sharedModel;
 
             this.LinkCommand = new RelayCommand(LinkAlbum);
             this.RefreshCommand = new RelayCommand(RefreshAlbum);
@@ -142,7 +145,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             try
             {
                 IEnumerable<string> filePaths = zuneAlbumMetaData.Tracks.Select(x => x.FilePath);
-                _fileRetriever.GetContainers(filePaths);
+                _sharedModel.SongsFromFile = _fileRetriever.GetContainers(filePaths);
+                _sharedModel.AlbumDetailsFromFile = _albumDetailsFromFile;
                 var searchVm = _locator.SwitchToViewModel<SearchViewModel>();
                 searchVm.Search(zuneAlbumMetaData.Title, zuneAlbumMetaData.Artist);
             }

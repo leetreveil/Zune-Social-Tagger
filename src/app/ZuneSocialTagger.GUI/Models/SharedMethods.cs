@@ -29,6 +29,11 @@ namespace ZuneSocialTagger.GUI.Models
             return albumTitlesToMatch.Any(albumTitle => albumTitle.ToLower().Contains(albumTitleToMatch.ToLower()));
         }
 
+        public static bool DoesAlbumTitleMatchExactly(IEnumerable<string> albumTitlesToMatch, string albumTitleToMatch)
+        {
+            return albumTitlesToMatch.Any(albumTitle => albumTitle.ToLower() == albumTitleToMatch.ToLower());
+        }
+
         /// <summary>
         /// Converts 1 to 01 and 11 to 11 (the same)
         /// </summary>

@@ -5,11 +5,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Success
 {
     public class SuccessViewModel : ViewModelBase
     {
-        public SuccessViewModel(IViewModelLocator locator)
+        public SuccessViewModel(IViewModelLocator locator, SharedModel sharedModel)
         {
-            //this.AlbumDetailsFromFile = avm.AlbumDetailsFromFile;
-            //this.AlbumDetailsFromWebsite = avm.AlbumDetailsFromWeb;
-
+            this.AlbumDetailsFromFile = sharedModel.AlbumDetailsFromFile;
+            this.AlbumDetailsFromWebsite = sharedModel.AlbumDetailsFromWeb;
             this.OKCommand = new RelayCommand(locator.SwitchToFirstViewModel);
         }
 

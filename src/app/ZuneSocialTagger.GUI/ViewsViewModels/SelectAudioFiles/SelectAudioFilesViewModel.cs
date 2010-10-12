@@ -20,11 +20,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
         private readonly IViewModelLocator _locator;
         private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
         private readonly IZuneAudioFileRetriever _fileRetriever;
+        private readonly SharedModel _sharedModel;
 
         public SelectAudioFilesViewModel(IViewModelLocator locator,
                                          [File]ExpandedAlbumDetailsViewModel albumDetailsFromFile,
-                                         IZuneAudioFileRetriever fileRetriever)
+                                         IZuneAudioFileRetriever fileRetriever,
+                                         SharedModel sharedModel)
         {
+            _sharedModel = sharedModel;
             _locator = locator;
             _albumDetailsFromFile = albumDetailsFromFile;
             _fileRetriever = fileRetriever;
@@ -72,14 +75,16 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
             try
             {
                 //get the files and sort by trackNumber
-                _fileRetriever.GetContainers(files);
-                _fileRetriever.SortByTrackNumber();
+                var containers = _fileRetriever.GetContainers(files);
+                containers = ZuneAudioFileRetriever.SortByTrackNumber(containers);
 
                 //get the first tracks metadata which is used to set some details
-                MetaData firstTrackMetaData = _fileRetriever.Containers.First().MetaData;
+                MetaData firstTrackMetaData = containers.First().MetaData;
 
                 //set the album details that is used throughout the app
-                SharedMethods.SetAlbumDetails(_albumDetailsFromFile, firstTrackMetaData, _fileRetriever.Containers.Count);
+                SharedMethods.SetAlbumDetails(_albumDetailsFromFile, firstTrackMetaData, containers.Count);
+
+                _sharedModel.SongsFromFile = containers;
 
                 //as soon as the view has switched start searching
                 var searchVm = _locator.SwitchToViewModel<SearchViewModel>();

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.Core.ZuneWebsite;
+using ZuneSocialTagger.Core.IO;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
 {
@@ -8,8 +8,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
     {
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromWeb { get; set; }
-
-        public List<IZuneTagContainer> SongsFromFile { get; set; }
+        public IList<IZuneTagContainer> SongsFromFile { get; set; }
         public WebAlbum WebAlbum { get; set; }
     }
 }

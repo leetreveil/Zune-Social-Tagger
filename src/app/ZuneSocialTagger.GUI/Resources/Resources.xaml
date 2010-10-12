@@ -7,8 +7,7 @@
                     xmlns:Details="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Details" 
                     xmlns:MoreInfo="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo" 
                     xmlns:Success="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Success" 
-                    xmlns:SelectAudioFiles="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles" 
-                    xmlns:DetailsReadyOnly="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.DetailsReadyOnly">
+                    xmlns:SelectAudioFiles="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles">
 
     <DataTemplate DataType="{x:Type SelectAudioFiles:SelectAudioFilesViewModel}">
         <SelectAudioFiles:SelectAudioFilesView/>
@@ -32,10 +31,6 @@
 
     <DataTemplate DataType="{x:Type MoreInfo:MoreInfoViewModel}">
         <MoreInfo:MoreInfoView/>
-    </DataTemplate>
-    
-    <DataTemplate DataType="{x:Type DetailsReadyOnly:DetailsReadOnlyViewModel}">
-        <DetailsReadyOnly:DetailsReadOnlyView/>
     </DataTemplate>
 
 	<converters:TextToVisibilityConverter x:Key="TextToVisibilityConverter"/>

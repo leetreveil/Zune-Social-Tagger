@@ -11,7 +11,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
     public class SearchViewModel : ViewModelBase
     {
         private readonly IViewModelLocator _locator;
-        private readonly SharedModel _header;
+        private readonly SharedModel _sharedModel;
         private string _searchText;
         private bool _isSearching;
         private bool _canMoveNext;
@@ -19,11 +19,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         private bool _canShowResults;
 
 
-        public SearchViewModel(IViewModelLocator locator, SharedModel header,
+        public SearchViewModel(IViewModelLocator locator, SharedModel sharedModel,
                                [File]ExpandedAlbumDetailsViewModel albumDetailsFromFile )
         {
             _locator = locator;
-            _header = header;
+            _sharedModel = sharedModel;
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.MoveNextCommand = new RelayCommand(MoveNext);
             this.SearchCommand = new RelayCommand(Search);
@@ -131,11 +131,17 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
         public void MoveNext()
         {
-            _header.WebAlbum = _searchResultsViewModel._downloadedAlbum;
-            _header.AlbumDetailsFromWeb = SharedMethods.GetAlbumDetailsFrom(_header.WebAlbum);
+            //_sharedModel.WebAlbum = _searchResultsViewModel._downloadedAlbum;
+            //_sharedModel.AlbumDetailsFromWeb = SharedMethods.GetAlbumDetailsFrom(_sharedModel.WebAlbum);
 
-            var detailsViewSwitcher = _locator.Resolve<DetailsViewSwitcher>();
-            detailsViewSwitcher.SwitchToCorrectView();
+
+            var detailsViewModel = _locator.SwitchToViewModel<DetailsViewModel>();
+            detailsViewModel.AlbumDetailsFromWebsite = SharedMethods.GetAlbumDetailsFrom(_searchResultsViewModel._downloadedAlbum);
+            detailsViewModel.AlbumDetailsFromFile = _sharedModel.AlbumDetailsFromFile;
+            detailsViewModel.WebAlbum = _searchResultsViewModel._downloadedAlbum;
+            detailsViewModel.FileTracks = _sharedModel.SongsFromFile;
+
+            detailsViewModel.PopulateRows();
         }
     }
 }

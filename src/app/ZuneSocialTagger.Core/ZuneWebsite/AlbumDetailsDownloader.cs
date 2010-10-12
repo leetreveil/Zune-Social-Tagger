@@ -115,7 +115,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                 Genre = item.GetGenre(),
                 ContributingArtists = item.GetContributingArtists().ToList(),
                 Artist = item.GetArtist()
-            });
+            }).ToList();
         }
     }
 }

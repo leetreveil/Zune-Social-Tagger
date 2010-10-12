@@ -15,5 +15,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
         }
 
         public string TrackTitle { get; set; }
+
+        public object BackingData { get; set; }
     }
 }

@@ -6,22 +6,16 @@ namespace ZuneSocialTagger.Core.IO
 {
     public class ZuneAudioFileRetriever : IZuneAudioFileRetriever
     {
-        public ZuneAudioFileRetriever()
+        public IList<IZuneTagContainer> GetContainers(IEnumerable<string> filePaths)
         {
-            this.Containers = new List<IZuneTagContainer>();
-        }
-        public List<IZuneTagContainer> Containers { get; private set; }
-
-        public void GetContainers(IEnumerable<string> filePaths)
-        {
-            this.Containers = (from filePath in filePaths
+            return (from filePath in filePaths
                                let container = ZuneTagContainerFactory.GetContainer(filePath)
                                select container).ToList();
         }
 
-        public void SortByTrackNumber()
+        public static IList<IZuneTagContainer> SortByTrackNumber(IList<IZuneTagContainer> containers)
         {
-            this.Containers = this.Containers.OrderBy(SortByTrackNumberImpl()).ToList();
+            return containers.OrderBy(SortByTrackNumberImpl()).ToList();
         }
 
         private static Func<IZuneTagContainer, int> SortByTrackNumberImpl()
