@@ -91,12 +91,15 @@ namespace ZuneSocialTagger.GUI.Models
             };
         }
 
-        public static void SetAlbumDetails(ExpandedAlbumDetailsViewModel details, MetaData metaData, int trackCount)
+        public static ExpandedAlbumDetailsViewModel SetAlbumDetails(MetaData metaData, int trackCount)
         {
-            details.Artist = metaData.AlbumArtist;
-            details.Title = metaData.AlbumName;
-            details.SongCount = trackCount.ToString();
-            details.Year = metaData.Year;
+            return new ExpandedAlbumDetailsViewModel
+                   {
+                       Artist = metaData.AlbumArtist,
+                       Title = metaData.AlbumName,
+                       SongCount = trackCount.ToString(),
+                       Year = metaData.Year
+                   };
         }
 
         /// <summary>

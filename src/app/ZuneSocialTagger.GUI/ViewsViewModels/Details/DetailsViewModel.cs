@@ -21,25 +21,22 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
     public class DetailsViewModel : ViewModelBase
     {
         private readonly IViewModelLocator _locator;
+        private readonly SharedModel _sharedModel;
 
         public DetailsViewModel(IViewModelLocator locator, SharedModel sharedModel)
         {
             _locator = locator;
-
-            this.FileTracks = sharedModel.SongsFromFile;
-            this.WebAlbum = sharedModel.WebAlbum;
-            this.AlbumDetailsFromFile = sharedModel.AlbumDetailsFromFile;
-            this.AlbumDetailsFromWebsite = sharedModel.AlbumDetailsFromWeb;
+            _sharedModel = sharedModel;
 
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.SaveCommand = new RelayCommand(Save);
             this.Rows = new List<object>();
         }
 
-        public WebAlbum WebAlbum { get; set; }
-        public IEnumerable<IZuneTagContainer> FileTracks {get;set;}
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
+        public WebAlbum WebAlbum { get { return _sharedModel.WebAlbum; } }
+        public IEnumerable<IZuneTagContainer> FileTracks { get { return _sharedModel.SongsFromFile; } }
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get { return _sharedModel.AlbumDetailsFromWeb; } }
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get { return _sharedModel.AlbumDetailsFromFile; } }
         public RelayCommand MoveBackCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
         public List<object> Rows { get; private set; }

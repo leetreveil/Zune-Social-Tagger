@@ -313,8 +313,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
                     DispatcherHelper.CheckBeginInvokeOnUI(() => _albums.Add(albumDetailsViewModel));
                 }
-
-                _webAlbumListViewModel.DataHasLoaded();
+                DispatcherHelper.CheckBeginInvokeOnUI(_webAlbumListViewModel.DataHasLoaded);
             });
         }
 

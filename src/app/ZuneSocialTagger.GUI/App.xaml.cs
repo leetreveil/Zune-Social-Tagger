@@ -27,7 +27,6 @@ namespace ZuneSocialTagger.GUI
         private static readonly StandardKernel Container = new StandardKernel();
         private static readonly ExceptionLogger LoggerForStrings = new ExceptionLogger();
         private static readonly StringLogger StringLogger = new StringLogger();
-        //private static readonly ExceptionLogger LoggerForEmail = new ExceptionLogger();
 
         public App()
         {
@@ -36,9 +35,9 @@ namespace ZuneSocialTagger.GUI
 
         void App_Startup(object sender, System.Windows.StartupEventArgs e)
         {
-            SetupUnhandledExceptionLogging();
+            //SetupUnhandledExceptionLogging();
 
-            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+           // this.DispatcherUnhandledException += App_DispatcherUnhandledException;
 
             DispatcherHelper.Initialize();
 
@@ -98,7 +97,7 @@ namespace ZuneSocialTagger.GUI
         private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             LoggerForStrings.LogException(e.Exception);
-            ErrorReportDialog.Show(StringLogger.ErrorLog, () => Current.Shutdown());
+            ErrorReportDialog.Show(StringLogger.ErrorLog,null);
             e.Handled = true;
         }
     }

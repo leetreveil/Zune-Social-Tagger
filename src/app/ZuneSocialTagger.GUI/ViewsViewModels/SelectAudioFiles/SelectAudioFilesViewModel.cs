@@ -8,7 +8,6 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.ViewsViewModels.Application;
-using ZuneSocialTagger.GUI.ViewsViewModels.Details;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
@@ -18,18 +17,15 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
     public class SelectAudioFilesViewModel : ViewModelBase
     {
         private readonly IViewModelLocator _locator;
-        private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
         private readonly IZuneAudioFileRetriever _fileRetriever;
         private readonly SharedModel _sharedModel;
 
         public SelectAudioFilesViewModel(IViewModelLocator locator,
-                                         [File]ExpandedAlbumDetailsViewModel albumDetailsFromFile,
                                          IZuneAudioFileRetriever fileRetriever,
                                          SharedModel sharedModel)
         {
             _sharedModel = sharedModel;
             _locator = locator;
-            _albumDetailsFromFile = albumDetailsFromFile;
             _fileRetriever = fileRetriever;
             this.CanSwitchToNewMode = true;
             this.SelectFilesCommand = new RelayCommand(SelectFiles);
@@ -82,8 +78,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
                 MetaData firstTrackMetaData = containers.First().MetaData;
 
                 //set the album details that is used throughout the app
-                SharedMethods.SetAlbumDetails(_albumDetailsFromFile, firstTrackMetaData, containers.Count);
-
+                _sharedModel.AlbumDetailsFromFile = SharedMethods.SetAlbumDetails(firstTrackMetaData,containers.Count);
                 _sharedModel.SongsFromFile = containers;
 
                 //as soon as the view has switched start searching

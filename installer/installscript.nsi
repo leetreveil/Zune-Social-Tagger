@@ -78,7 +78,19 @@ Section "Dummy Section" SecDummy
   ;ADD YOUR OWN FILES HERE...
   File "installfiles\Zune Social Tagger.exe"
   File "installfiles\Zune Social Tagger.exe.config"
-  File "installfiles\Zune Social Tagger.XmlSerializers.dll"
+  File "installfiles\ASFTag.Net.dll"
+  File "installfiles\ExceptionLogger.dll"
+  File "installfiles\GalaSoft.MvvmLight.dll"
+  File "installfiles\GalaSoft.MvvmLight.Extras.dll"
+  File "installfiles\Id3Tag.Net.dll"
+  File "installfiles\leetreveil.AutoUpdate.Framework.dll"
+  File "installfiles\Microsoft.Expression.Interactions.dll"
+  File "installfiles\Microsoft.WindowsAPICodePack.dll"
+  File "installfiles\Microsoft.WindowsAPICodePack.Shell.dll"
+  File "installfiles\Ninject.dll"
+  File "installfiles\System.Windows.Interactivity.dll"
+  File "installfiles\WPFToolkit.dll"
+  File "installfiles\ZuneSocialTagger.Core.dll"
   
   ;Store installation folder
   WriteRegStr HKCU "Software\Zune Social Tagger" "" $INSTDIR
@@ -119,7 +131,19 @@ Section "Uninstall"
   Delete "$INSTDIR\ZuneSocialTaggerUninstall.exe"
   Delete "$INSTDIR\Zune Social Tagger.exe"
   Delete "$INSTDIR\Zune Social Tagger.exe.config"
-  Delete "$INSTDIR\Zune Social Tagger.XmlSerializers.dll"
+  Delete "$INSTDIR\ASFTag.Net.dll"
+  Delete "$INSTDIR\ExceptionLogger.dll"
+  Delete "$INSTDIR\GalaSoft.MvvmLight.dll"
+  Delete "$INSTDIR\GalaSoft.MvvmLight.Extras.dll"
+  Delete "$INSTDIR\Id3Tag.Net.dll"
+  Delete "$INSTDIR\leetreveil.AutoUpdate.Framework.dll"
+  Delete "$INSTDIR\Microsoft.Expression.Interactions.dll"
+  Delete "$INSTDIR\Microsoft.WindowsAPICodePack.dll"
+  Delete "$INSTDIR\Microsoft.WindowsAPICodePack.Shell"
+  Delete "$INSTDIR\Ninject.dll"
+  Delete "$INSTDIR\System.Windows.Interactivity.dll"
+  Delete "$INSTDIR\WPFToolkit.dll"
+  Delete "$INSTDIR\ZuneSocialTagger.Core.dll"
   
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
     

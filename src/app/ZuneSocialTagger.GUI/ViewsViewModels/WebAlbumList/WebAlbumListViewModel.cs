@@ -210,7 +210,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             //this.SortOrder = Settings.Default.SortOrder;
             this.CanShowSort = true;
             Sort();
-            this.SelectedAlbum = this.AlbumsViewSource.View.Cast<AlbumDetailsViewModel>().First();
+            //this.SelectedAlbum = this.AlbumsViewSource.View.Cast<AlbumDetailsViewModel>().First();
         }
 
         private void SetupCommandBindings()
