@@ -2,7 +2,8 @@ using System;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using ZuneSocialTagger.GUI.Models;
-using ZuneSocialTagger.GUI.ViewModels;
+using ZuneSocialTagger.GUI.ViewsViewModels;
+using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 
 namespace ZuneSocialTagger.GUI.Controls
 {
@@ -52,11 +53,11 @@ namespace ZuneSocialTagger.GUI.Controls
             switch (mode)
             {
                 case ErrorMode.Error:
-                    return "pack://application:,,,/Assets/error.png";
+                    return "pack://application:,,,/Resources/Assets/error.png";
                 case ErrorMode.Warning:
-                    return "pack://application:,,,/Assets/alert.png";
+                    return "pack://application:,,,/Resources/Assets/alert.png";
                 case ErrorMode.Info:
-                    return "pack://application:,,,/Assets/info_big.png";
+                    return "pack://application:,,,/Resources/Assets/info_big.png";
                 default:
                     throw new ArgumentOutOfRangeException();
             }

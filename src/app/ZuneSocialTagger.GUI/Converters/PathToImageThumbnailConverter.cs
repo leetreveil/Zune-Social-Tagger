@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
-using System.IO;
 
 namespace ZuneSocialTagger.GUI.Converters
 {
@@ -9,15 +8,10 @@ namespace ZuneSocialTagger.GUI.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            string artworkUrl = value as string;
+            var artworkUrl = value as string;
 
             if (String.IsNullOrEmpty(artworkUrl)) return CreateBlankImage();
 
-            if (!artworkUrl.StartsWith("http://"))
-            {
-                if (!File.Exists(artworkUrl)) return CreateBlankImage();
-            }
-            
             try
             {
                 var image = new BitmapImage();
@@ -36,7 +30,9 @@ namespace ZuneSocialTagger.GUI.Converters
         private static BitmapImage CreateBlankImage()
         {
             var image = new BitmapImage();
-            var blankArtworkUrl = @"pack://application:,,,/Assets/blankartwork.png";
+
+			const string blankArtworkUrl =
+                @"pack://application:,,,/Resources/Assets/blankartwork.png";
 
             image.BeginInit();
             image.UriSource = new Uri(blankArtworkUrl, UriKind.RelativeOrAbsolute);

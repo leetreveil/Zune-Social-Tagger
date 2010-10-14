@@ -3,8 +3,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ZuneSocialTagger.GUI.Converters;
-using ZuneSocialTagger.GUI.ViewModels;
+using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.Controls
 {
@@ -26,9 +25,7 @@ namespace ZuneSocialTagger.GUI.Controls
             };
 
             //set default image
-            var imageSource =
-                (string) new ErrorModeToImageSourceConverter().Convert(ErrorMode.Error, typeof (ErrorMode), null, null);
-
+            var imageSource = GetErrorImageFor(ErrorMode.Error);
             this.imgError.Source = new BitmapImage(new Uri(imageSource, UriKind.RelativeOrAbsolute));
         }
 
@@ -77,8 +74,7 @@ namespace ZuneSocialTagger.GUI.Controls
         {
             var view = (InlineZuneMessage)d;
 
-            var imageSource =
-                (string)new ErrorModeToImageSourceConverter().Convert(e.NewValue, typeof(ErrorMode), null, null);
+            var imageSource = GetErrorImageFor((ErrorMode) e.NewValue);
 
             view.imgError.Source = new BitmapImage(new Uri(imageSource, UriKind.RelativeOrAbsolute));
         }
@@ -94,6 +90,21 @@ namespace ZuneSocialTagger.GUI.Controls
             {
                 view._timer.Interval = 20000;
                 view._timer.Start();
+            }
+        }
+
+        private static string GetErrorImageFor(ErrorMode errorMode)
+        {
+            switch (errorMode)
+            {
+                case ErrorMode.Error:
+                    return "../Resources/Assets/no.png";
+                case ErrorMode.Warning:
+                    return "../Resources/Assets/warning.png";
+                case ErrorMode.Info:
+                    return "../Resources/Assets/information.png";
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 

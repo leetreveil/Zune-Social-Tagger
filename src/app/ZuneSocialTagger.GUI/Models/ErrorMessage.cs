@@ -1,6 +1,4 @@
-﻿using ZuneSocialTagger.GUI.ViewModels;
-
-namespace ZuneSocialTagger.GUI.Models
+﻿namespace ZuneSocialTagger.GUI.Models
 {
     public class ErrorMessage
     {

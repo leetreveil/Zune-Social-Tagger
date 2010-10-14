@@ -4,26 +4,34 @@ using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading;
 using System.Xml;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     public class ArtistSearch
     {
-        public static IEnumerable<Artist> SearchFor(string searchString)
+        public static IEnumerable<WebArtist> SearchFor(string searchString)
         {
             string searchUrl = String.Format("{0}?q={1}", Urls.Artist, searchString);
 
-            XmlReader reader = XmlReader.Create(searchUrl);
+            try
+            {
+                return ReadArtistsFromXmlDocument(XmlReader.Create(searchUrl));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
 
-            return ReadArtistsFromXmlDocument(reader);
+            return new List<WebArtist>();
         }
 
-        public static void SearchForAsync(string searchString,Action<IEnumerable<Artist>> callback)
+        public static void SearchForAsync(string searchString,Action<IEnumerable<WebArtist>> callback)
         {
             ThreadPool.QueueUserWorkItem(_ => callback(SearchFor(searchString).ToList()));
         }
 
-        private static IEnumerable<Artist> ReadArtistsFromXmlDocument(XmlReader reader)
+        private static IEnumerable<WebArtist> ReadArtistsFromXmlDocument(XmlReader reader)
         {
             SyndicationFeed feed = SyndicationFeed.Load(reader);
 
@@ -31,7 +39,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             {
                 foreach (var item in feed.Items)
                 {
-                    yield return new Artist
+                    yield return new WebArtist
                                      {
                                          Name = item.Title.Text,
                                          Id = item.Id.ExtractGuidFromUrnUuid()

@@ -1,21 +1,20 @@
-using System;
-using System.Globalization;
+﻿using System;
+using System.Windows;
 using System.Windows.Data;
-
+using System.Globalization;
 
 namespace ZuneSocialTagger.GUI.Converters
 {
-    [ValueConversion(typeof(string), typeof(bool))]
-    public class TextToVisibilityConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return (string)value != "";
-        }
+		public class TextToVisibilityConverter : IValueConverter
+		{
+			public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+			{
+			    return String.IsNullOrEmpty((string) value) ? Visibility.Visible : Visibility.Collapsed;
+			}
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return null;
-        }
-    }
+		    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+			{
+				return null;
+			}
+		}
 }

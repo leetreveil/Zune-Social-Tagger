@@ -1,833 +1,833 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ArrayOfAlbum xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Album>
-    <AlbumTitle>Voodoo People</AlbumTitle>
-    <AlbumArtist>Pendulum</AlbumArtist>
+<ArrayOfDbAlbum xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DbAlbum>
+    <Title>Voodoo People</Title>
+    <Artist>Pendulum</Artist>
     <ArtworkUrl />
     <DateAdded>2009-05-11T21:52:43</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Loose\01 Voodoo People (Pendulum Remix).m4a</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{65368900-0100-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>453</MediaId>
     <ReleaseYear>2006</ReleaseYear>
     <TrackCount>1</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>When Your Heart Stops Beating (Parental Advisory)</AlbumTitle>
-    <AlbumArtist>+44</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>When Your Heart Stops Beating (Parental Advisory)</Title>
+    <Artist>+44</Artist>
     <ArtworkUrl />
     <DateAdded>2009-05-11T21:52:48</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\+44 - When Your Heart Stops Beating\01 - Lycanthrope.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\+44 - When Your Heart Stops Beating\02 - Baby Come On.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\+44 - When Your Heart Stops Beating\03 - When Your Heart Stops Beating.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\+44 - When Your Heart Stops Beating\04 - Little Death.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\+44 - When Your Heart Stops Beating\05 - 155.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\+44 - When Your Heart Stops Beating\06 - Lillian.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\+44 - When Your Heart Stops Beating\07 - Cliffdiving.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\+44 - When Your Heart Stops Beating\08 - Interlude.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\+44 - When Your Heart Stops Beating\09 - Weatherman.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\+44 - When Your Heart Stops Beating\10 - No, It Isn't.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\+44 - When Your Heart Stops Beating\11 - Make You Smile.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\+44 - When Your Heart Stops Beating\12 - Chapter 13.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{65368900-0100-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>1</MediaId>
     <ReleaseYear>2006</ReleaseYear>
     <TrackCount>12</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>The Autumn Effect</AlbumTitle>
-    <AlbumArtist>10 Years</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>The Autumn Effect</Title>
+    <Artist>10 Years</Artist>
     <ArtworkUrl>file://C:\Users\Lee\AppData\Local\Microsoft\Zune\Art Cache\ZuneArt_{0A372734-9C1C-47C0-832D-634C50605474}.jpg</ArtworkUrl>
     <DateAdded>2009-05-11T21:52:57</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\10 Years - The Autumn Effect\01 - Waking Up.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\10 Years - The Autumn Effect\02 - Fault Line.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\10 Years - The Autumn Effect\03 - The Recipe.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\10 Years - The Autumn Effect\04 - Cast It Out.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\10 Years - The Autumn Effect\05 - Wasteland.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\10 Years - The Autumn Effect\06 - Seasons To Cycles.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\10 Years - The Autumn Effect\07 - Half Life.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\10 Years - The Autumn Effect\08 - Through The Iris.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\10 Years - The Autumn Effect\09 - Empires.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\10 Years - The Autumn Effect\10 - Prey.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\10 Years - The Autumn Effect\11 - Insects.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\10 Years - The Autumn Effect\12 - Paralyzing Kings.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\10 Years - The Autumn Effect\13 - The Autumn Effect.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{A1584800-0100-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>3</MediaId>
     <ReleaseYear>2005</ReleaseYear>
     <TrackCount>13</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>Smiley Smile</AlbumTitle>
-    <AlbumArtist>The Beach Boys</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>Smiley Smile</Title>
+    <Artist>The Beach Boys</Artist>
     <ArtworkUrl>file://C:\Users\Lee\AppData\Local\Microsoft\Zune\Art Cache\ZuneArt_{B9DF539C-5049-4CCB-AAEB-9628B51940D2}.jpg</ArtworkUrl>
     <DateAdded>2009-06-22T15:33:07</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1967b - Smiley Smile\03 - Fall Breaks And Back To Winter.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1967b - Smiley Smile\01 - Heroes And Villains.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1967b - Smiley Smile\02 - Vegetables.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1967b - Smiley Smile\04 - She's Goin' Bald.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1967b - Smiley Smile\05 - Little Pad.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1967b - Smiley Smile\06 - Good Vibrations.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1967b - Smiley Smile\07 - With Me Tonight.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1967b - Smiley Smile\08 - Wind Chimes.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1967b - Smiley Smile\09 - Gettin' Hungry.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1967b - Smiley Smile\10 - Wonderful.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1967b - Smiley Smile\11 - Whistle In.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{A5AD0C00-0100-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>4</MediaId>
     <ReleaseYear>1967</ReleaseYear>
     <TrackCount>11</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>Sunflower</AlbumTitle>
-    <AlbumArtist>The Beach Boys</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>Sunflower</Title>
+    <Artist>The Beach Boys</Artist>
     <ArtworkUrl>file://C:\Users\Lee\AppData\Local\Microsoft\Zune\Art Cache\ZuneArt_{778028D7-6F4E-4F32-842F-051214369E89}.jpg</ArtworkUrl>
     <DateAdded>2009-06-22T15:33:09</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1970 - Sunflower\01 - Slip On Through.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1970 - Sunflower\02 - This Whole World.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1970 - Sunflower\03 - Add Some Music To Your Day.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1970 - Sunflower\04 - Got To Know The Woman.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1970 - Sunflower\05 - Deirdre.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1970 - Sunflower\06 - It's About Time.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1970 - Sunflower\07 - Tears In The Morning.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1970 - Sunflower\08 - All I Wanna Do.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1970 - Sunflower\09 - Forever.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1970 - Sunflower\10 - Our Sweet Love.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1970 - Sunflower\11 - At My Window.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\1970 - Sunflower\12 - Cool, Cool Water.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{A7BB0C00-0100-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>5</MediaId>
     <ReleaseYear>1970</ReleaseYear>
     <TrackCount>12</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>How Strange, Innocence</AlbumTitle>
-    <AlbumArtist>Explosions In The Sky</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>How Strange, Innocence</Title>
+    <Artist>Explosions In The Sky</Artist>
     <ArtworkUrl>file://C:\Users\Lee\AppData\Local\Microsoft\Zune\Art Cache\ZuneArt_{EA69F851-B81D-43A8-A977-A31347572874}.jpg</ArtworkUrl>
     <DateAdded>2009-06-28T12:28:29</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2000 - How Strange, Innocence\Explosions In The Sky - 01 - A Song For Our Fathers.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2000 - How Strange, Innocence\Explosions In The Sky - 02 - Snow And Lights.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2000 - How Strange, Innocence\Explosions In The Sky - 03 - Magic Hours.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2000 - How Strange, Innocence\Explosions In The Sky - 04 - Look Into The Air.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2000 - How Strange, Innocence\Explosions In The Sky - 05 - Glittering Blackness.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2000 - How Strange, Innocence\Explosions In The Sky - 06 - Time Stops.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2000 - How Strange, Innocence\Explosions In The Sky - 07 - Remember Me As A Time Of Day.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{A52B0C00-0400-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>6</MediaId>
     <ReleaseYear>2005</ReleaseYear>
     <TrackCount>7</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>The Earth Is Not a Cold Dead Place</AlbumTitle>
-    <AlbumArtist>Explosions In The Sky</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>The Earth Is Not a Cold Dead Place</Title>
+    <Artist>Explosions In The Sky</Artist>
     <ArtworkUrl>file://C:\Users\Lee\AppData\Local\Microsoft\Zune\Art Cache\ZuneArt_{EFF68A6D-31F1-44DA-9442-5C9DDCE4F98F}.jpg</ArtworkUrl>
     <DateAdded>2009-06-28T12:27:45</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2003 - The Earth Is Not A Cold Dead Place\Explosions In The Sky - 01 - First Breath After Coma.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2003 - The Earth Is Not A Cold Dead Place\Explosions In The Sky - 02 - The Only Monent We Were Alone.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2003 - The Earth Is Not A Cold Dead Place\Explosions In The Sky - 03 - Six Days At The Bottom Of The Ocean.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2003 - The Earth Is Not A Cold Dead Place\Explosions In The Sky - 04 - Memorial.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2003 - The Earth Is Not A Cold Dead Place\Explosions In The Sky - 05 - Your Hand In Mine.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{7E1E0A00-0400-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>7</MediaId>
     <ReleaseYear>2003</ReleaseYear>
     <TrackCount>5</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>Friday Night Lights [Original Movie Soundtrack]</AlbumTitle>
-    <AlbumArtist>Soundtrack</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>Friday Night Lights [Original Movie Soundtrack]</Title>
+    <Artist>Soundtrack</Artist>
     <ArtworkUrl>file://C:\Users\Lee\AppData\Local\Microsoft\Zune\Art Cache\ZuneArt_{9966EDD7-4818-426F-AD79-8E68DC5F6B31}.jpg</ArtworkUrl>
     <DateAdded>2009-06-28T12:28:52</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2004 - Friday Night Lights (OST)\01. Explosions In The Sky - From West Texas.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2004 - Friday Night Lights (OST)\02. Explosions In The Sky - Your Hand In Mine (wstrings).mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2004 - Friday Night Lights (OST)\03. Explosions In The Sky - Our Last Days As Children.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2004 - Friday Night Lights (OST)\04. Explosions In The Sky - An Ugly Fact Of Life.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2004 - Friday Night Lights (OST)\05. Explosions In The Sky - Home.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2004 - Friday Night Lights (OST)\06. Daniel Lanois - Sonho Dourado.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2004 - Friday Night Lights (OST)\07. Explosions In The Sky - To West Texas.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2004 - Friday Night Lights (OST)\08. Explosions In The Sky - Your Hand In Mine (Goodbye).mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2004 - Friday Night Lights (OST)\09. Explosions In The Sky - Inside It All Feels The Same.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2004 - Friday Night Lights (OST)\10. David Torn - Do You Ever Feel Cursed.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2004 - Friday Night Lights (OST)\11. Explosions In The Sky - Lonely Train.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2004 - Friday Night Lights (OST)\12. Bad Company - Seagull.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2004 - Friday Night Lights (OST)\13. Explosions In The Sky - The Sky Above, The Field Below.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2004 - Friday Night Lights (OST)\14. Explosions In The Sky - A Slow Dance.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{5FE90A00-0400-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>8</MediaId>
     <ReleaseYear>2004</ReleaseYear>
     <TrackCount>14</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>All of a Sudden I Miss Everyone</AlbumTitle>
-    <AlbumArtist>Explosions In The Sky</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>All of a Sudden I Miss Everyone</Title>
+    <Artist>Explosions In The Sky</Artist>
     <ArtworkUrl>file://C:\Users\Lee\AppData\Local\Microsoft\Zune\Art Cache\ZuneArt_{A874FEA0-52F2-4030-B1DA-A125E7CE4C8C}.jpg</ArtworkUrl>
     <DateAdded>2009-06-28T12:25:53</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 - All of a Sudden I Miss Everyone\Explosions In The Sky - 01 - The Birth And The Death Of Day.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 - All of a Sudden I Miss Everyone\Explosions In The Sky - 02 - Welcome, Ghosts.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 - All of a Sudden I Miss Everyone\Explosions In The Sky - 03 - It's Natural To Be Afraid.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 - All of a Sudden I Miss Everyone\Explosions In The Sky - 04 - What Do You Go Home To.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 - All of a Sudden I Miss Everyone\Explosions In The Sky - 05 - Catastrophe And The Cure.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 - All of a Sudden I Miss Everyone\Explosions In The Sky - 06 - So Long, Lonesome.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{FB599300-0100-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>9</MediaId>
     <ReleaseYear>2007</ReleaseYear>
     <TrackCount>6</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>The Emperor's New Clothes</AlbumTitle>
-    <AlbumArtist>Klute</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>The Emperor's New Clothes</Title>
+    <Artist>Klute</Artist>
     <ArtworkUrl />
     <DateAdded>2009-08-06T01:11:07</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\1-01 We Control the Vertical.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\1-02 Toiler.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\1-03 The Struggle.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\1-04 Never Never.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\1-05 Revolution.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\1-06 Pissed Jeans.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\1-07 Shirtless.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\1-08 Learning Curve.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\1-09 Flight 720.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\1-10 Property is Theft.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\1-11 Outside.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\2-01 174 BPM.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\2-02 Freedom Come.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\2-03 Come Back 2 Me.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\2-04 Sold Out.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\2-05 Our Leader.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\2-06 Hell Hath No Fury.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\2-07 Why We Fight.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\2-08 Escape Let Go.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2007 [BBSCD 031] The Emperor's New Clothes (US)\2-09 There Is a Point.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{ED92A200-0100-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>10</MediaId>
     <ReleaseYear>2007</ReleaseYear>
     <TrackCount>20</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>Return to Forever</AlbumTitle>
-    <AlbumArtist>Seba</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>Return to Forever</Title>
+    <Artist>Seba</Artist>
     <ArtworkUrl>file://C:\Users\Lee\AppData\Local\Microsoft\Zune\Art Cache\ZuneArt_{6DCBF083-884E-4CFD-9D34-7B6B6635D81D}.jpg</ArtworkUrl>
     <DateAdded>2009-10-20T20:01:38</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2008-[CORE060]-Return_To_Forever-LP-WEB\01-External-Reality--Shapeshifted.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2008-[CORE060]-Return_To_Forever-LP-WEB\02-Silicone.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2008-[CORE060]-Return_To_Forever-LP-WEB\03-Blaze-and-fade-out--Album-Version-.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2008-[CORE060]-Return_To_Forever-LP-WEB\04-As-long-as-it-takes.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2008-[CORE060]-Return_To_Forever-LP-WEB\05-Breaks-Selection--Jesper-Dahlb-ck-Remix-.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2008-[CORE060]-Return_To_Forever-LP-WEB\06-Special-Ops.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2008-[CORE060]-Return_To_Forever-LP-WEB\07-Forever.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2008-[CORE060]-Return_To_Forever-LP-WEB\08-Day-by-night.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2008-[CORE060]-Return_To_Forever-LP-WEB\09-Tomorrow.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\2008-[CORE060]-Return_To_Forever-LP-WEB\10-Crockett.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <MediaId>11</MediaId>
     <ReleaseYear>2008</ReleaseYear>
     <TrackCount>10</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>Wake Pig</AlbumTitle>
-    <AlbumArtist>3</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>Wake Pig</Title>
+    <Artist>3</Artist>
     <ArtworkUrl>file://C:\Users\Lee\AppData\Local\Microsoft\Zune\Art Cache\ZuneArt_{F130FBE3-DD2C-4D60-92F3-F09220584DFF}.jpg</ArtworkUrl>
     <DateAdded>2009-05-11T21:53:02</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 - Wake Pig\01 - Alien Angel.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 - Wake Pig\02 - Where's Max.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 - Wake Pig\03 - Dregs.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 - Wake Pig\04 - Wake Pig.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 - Wake Pig\05 - Bramfatura.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 - Wake Pig\06 - Trust.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 - Wake Pig\07 - Dogs of War.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 - Wake Pig\08 - Souls to Sell.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 - Wake Pig\09 - Queen.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 - Wake Pig\10 - Monster.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 - Wake Pig\11 - Amazedisgrace.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{B2FE0A00-0400-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>12</MediaId>
     <ReleaseYear>2004</ReleaseYear>
     <TrackCount>11</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>3 Doors Down</AlbumTitle>
-    <AlbumArtist>3 Doors Down</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>3 Doors Down</Title>
+    <Artist>3 Doors Down</Artist>
     <ArtworkUrl>file://C:\Users\Lee\AppData\Local\Microsoft\Zune\Art Cache\ZuneArt_{D1069BBE-B795-46AA-903E-237940BB9626}.jpg</ArtworkUrl>
     <DateAdded>2009-05-11T21:53:07</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - 3 Doors Down\01 - Train.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - 3 Doors Down\02 - Citizen-Soldier.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - 3 Doors Down\03 - It's Not My Time.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - 3 Doors Down\04 - Let Me Be Myself.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - 3 Doors Down\05 - Pages.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - 3 Doors Down\06 - It's The Only One You've Got.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - 3 Doors Down\07 - Give It To Me.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - 3 Doors Down\08 - These Days.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - 3 Doors Down\09 - Your Arms Feel Like Home.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - 3 Doors Down\10 - Runaway.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - 3 Doors Down\11 - When It's Over.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - 3 Doors Down\12 - She Don't Want The World.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{4725D500-0100-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>13</MediaId>
     <ReleaseYear>2008</ReleaseYear>
     <TrackCount>12</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>Away From The Sun</AlbumTitle>
-    <AlbumArtist>3 Doors Down</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>Away From The Sun</Title>
+    <Artist>3 Doors Down</Artist>
     <ArtworkUrl>file://C:\Users\Lee\AppData\Local\Microsoft\Zune\Art Cache\ZuneArt_{AD6E6446-4A09-493C-A52B-3FE227FC360E}.jpg</ArtworkUrl>
     <DateAdded>2009-05-11T21:53:10</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Away From The Sun\01 - When I'm Gone.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Away From The Sun\02 - Away From The Sun.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Away From The Sun\03 - The Road I'm On.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Away From The Sun\04 - Ticket To Heaven.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Away From The Sun\05 - Running Out Of Days.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Away From The Sun\06 - Here Without You.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Away From The Sun\07 - I Feel You.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Away From The Sun\08 - Dangerous Game.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Away From The Sun\09 - Changes.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Away From The Sun\10 - Going Down In Flames.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Away From The Sun\11 - Sarah Yellin'.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{B9F50B00-0100-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>14</MediaId>
     <ReleaseYear>2002</ReleaseYear>
     <TrackCount>11</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>Seventeen Days</AlbumTitle>
-    <AlbumArtist>3 Doors Down</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>Seventeen Days</Title>
+    <Artist>3 Doors Down</Artist>
     <ArtworkUrl>file://C:\Users\Lee\AppData\Local\Microsoft\Zune\Art Cache\ZuneArt_{CCEE17CA-E365-4283-A386-D36D84C90EA8}.jpg</ArtworkUrl>
     <DateAdded>2009-05-11T21:53:12</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Seventeen Days\01 - Right Where I Belong.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Seventeen Days\02 - It's Not Me.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Seventeen Days\03 - Let Me Go.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Seventeen Days\04 - Be Somebody.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Seventeen Days\05 - Landing In London (Featuring Bob Seger).mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Seventeen Days\06 - The Real Life.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Seventeen Days\07 - Behind Those Eyes.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Seventeen Days\08 - Never Will I Break.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Seventeen Days\09 - Father's Son.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Seventeen Days\10 - Live For Today.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Seventeen Days\11 - My World.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - Seventeen Days\12 - Here By Me.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{E5120B00-0400-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>15</MediaId>
     <ReleaseYear>2005</ReleaseYear>
     <TrackCount>12</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>The Better Life</AlbumTitle>
-    <AlbumArtist>3 Doors Down</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>The Better Life</Title>
+    <Artist>3 Doors Down</Artist>
     <ArtworkUrl>file://C:\Users\Lee\AppData\Local\Microsoft\Zune\Art Cache\ZuneArt_{4CF9CB32-8C8F-4FC2-AE6D-54493020F379}.jpg</ArtworkUrl>
     <DateAdded>2009-05-11T21:53:15</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - The Better Life\01 - Kryptonite.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - The Better Life\02 - Loser.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - The Better Life\03 - Duck And Run.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - The Better Life\04 - Not Enough.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - The Better Life\05 - Be Like That.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - The Better Life\06 - Life Of My Own.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - The Better Life\07 - Better Life.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - The Better Life\08 - Down Poison.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - The Better Life\09 - By My Side.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - The Better Life\10 - Smack.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3 Doors Down - The Better Life\11 - So I Need You.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{7BF40A00-0100-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>16</MediaId>
     <ReleaseYear>2000</ReleaseYear>
     <TrackCount>11</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>This Is War</AlbumTitle>
-    <AlbumArtist>30 Seconds to Mars</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>This Is War</Title>
+    <Artist>30 Seconds to Mars</Artist>
     <ArtworkUrl>file://C:\Users\Lee\AppData\Local\Microsoft\Zune\Art Cache\ZuneArt_{E3A7BFB7-F429-4501-ACD6-162E39AC8343}.jpg</ArtworkUrl>
     <DateAdded>2009-12-08T22:56:35</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\30 Seconds To Mars - This Is War [2009][CD+Cov]320Kbps\01 Escape.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\30 Seconds To Mars - This Is War [2009][CD+Cov]320Kbps\02 Night Of The Hunter.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\30 Seconds To Mars - This Is War [2009][CD+Cov]320Kbps\03 Kings And Queens.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\30 Seconds To Mars - This Is War [2009][CD+Cov]320Kbps\04 This Is War.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\30 Seconds To Mars - This Is War [2009][CD+Cov]320Kbps\05 100 Suns.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\30 Seconds To Mars - This Is War [2009][CD+Cov]320Kbps\06 Hurricane feat. Kanye West.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\30 Seconds To Mars - This Is War [2009][CD+Cov]320Kbps\07 Closer To The Edge.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\30 Seconds To Mars - This Is War [2009][CD+Cov]320Kbps\08 Vox Populi.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\30 Seconds To Mars - This Is War [2009][CD+Cov]320Kbps\09 Search &amp; Destroy.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\30 Seconds To Mars - This Is War [2009][CD+Cov]320Kbps\10 Alibi.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\30 Seconds To Mars - This Is War [2009][CD+Cov]320Kbps\11 Stranger In A Strange Land.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\30 Seconds To Mars - This Is War [2009][CD+Cov]320Kbps\12 L490.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{A48F1900-0400-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>17</MediaId>
     <ReleaseYear>2009</ReleaseYear>
     <TrackCount>12</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>Want</AlbumTitle>
-    <AlbumArtist>3OH!3</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>Want</Title>
+    <Artist>3OH!3</Artist>
     <ArtworkUrl />
     <DateAdded>2009-12-28T20:53:22</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3OH!3 - Want\01 - 3OH!3 - Tapp.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3OH!3 - Want\02 - 3OH!3 - Punk Bitch.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3OH!3 - Want\03 - 3OH!3 - Dont Trust Me.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3OH!3 - Want\04 - 3OH!3 - Chokechain.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3OH!3 - Want\05 - 3OH!3 - Im Not Your Boyfriend Baby.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3OH!3 - Want\06 - 3OH!3 - I Cant Do It Alone.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3OH!3 - Want\07 - 3OH!3 - Starstrukk.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3OH!3 - Want\08 - 3OH!3 - Richman.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3OH!3 - Want\09 - 3OH!3 - Photofinnish.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3OH!3 - Want\10 - 3OH!3 - Still Around.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3OH!3 - Want\11 - 3OH!3 - Holler Til You Pass Out.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\3OH!3 - Want\12 - 3OH!3 - Colorado Sunrise.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{F1B6E400-0100-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>18</MediaId>
     <ReleaseYear>2008</ReleaseYear>
     <TrackCount>12</TrackCount>
-  </Album>
-  <Album>
-    <AlbumTitle>One Time for All Time</AlbumTitle>
-    <AlbumArtist>65daysofstatic</AlbumArtist>
+  </DbAlbum>
+  <DbAlbum>
+    <Title>One Time for All Time</Title>
+    <Artist>65daysofstatic</Artist>
     <ArtworkUrl />
     <DateAdded>2009-05-11T21:53:18</DateAdded>
     <Tracks>
-      <Track>
+      <DbTrack>
         <FilePath>E:\Music\Albums\65daysofstatic - One Time For All Time\01 - Drove Through Ghosts To Get Here.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\65daysofstatic - One Time For All Time\02 - Await Rescue.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\65daysofstatic - One Time For All Time\03 - 23kid.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\65daysofstatic - One Time For All Time\04 - Welcome To The Times.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\65daysofstatic - One Time For All Time\05 - Mean Low Water.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\65daysofstatic - One Time For All Time\06 - Climbing On Roofs (Desperate Edit).mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\65daysofstatic - One Time For All Time\07 - The Big Afraid.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\65daysofstatic - One Time For All Time\08 - 65 Doesn't Understand You.mp3</FilePath>
-      </Track>
-      <Track>
+      </DbTrack>
+      <DbTrack>
         <FilePath>E:\Music\Albums\65daysofstatic - One Time For All Time\09 - Radio Protector.mp3</FilePath>
-      </Track>
+      </DbTrack>
     </Tracks>
     <AlbumMediaId>{3D198400-0100-11DB-89CA-0019B92A3933}</AlbumMediaId>
     <MediaId>19</MediaId>
     <ReleaseYear>2006</ReleaseYear>
     <TrackCount>9</TrackCount>
-  </Album>
-</ArrayOfAlbum>
+  </DbAlbum>
+</ArrayOfDbAlbum>

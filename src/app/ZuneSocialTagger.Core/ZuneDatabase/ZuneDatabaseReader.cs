@@ -64,7 +64,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         }
 
 
-        public IEnumerable<Album> ReadAlbums()
+        public IEnumerable<DbAlbum> ReadAlbums()
         {
             this.StartedReadingAlbums.Invoke();
 
@@ -81,8 +81,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
                 object uniqueId = uniqueIds[i];
 
                 yield return GetAlbum((int) uniqueId);
-
-                ProgressChanged.Invoke(i, uniqueIds.Count);
+                ProgressChanged.Invoke(i, uniqueIds.Count -1);
             }
 
             FinishedReadingAlbums.Invoke();
@@ -91,7 +90,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             albums.Dispose();
         }
 
-        public IEnumerable<Album> GetNewAlbums(IEnumerable<int> albumIds)
+        public IEnumerable<DbAlbum> GetNewAlbums(IEnumerable<int> albumIds)
         {
             ZuneQueryList albums = GetAlbumQueryList();
 
@@ -113,21 +112,21 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
             return albumIds.Except(uniqueIds);
         }
-        
-        public Album GetAlbumByAlbumTitle(string albumTitle)
+
+        public DbAlbum GetAlbumByAlbumTitle(string albumTitle)
         {
-            throw new NotImplementedException("SearchForString is not working as I expect, needs investigating");
+            ////querying all albums, creates a property bag inside this method to query the database
+            ////thats why we can pass null for the propertybag
+            //ZuneQueryList albums = _zuneLibrary.QueryDatabase(EQueryType.eQueryTypeAllAlbums, 0,
+            //                                                  EQuerySortType.eQuerySortOrderAscending,
+            //                                                  (uint) SchemaMap.kiIndex_AlbumID, null);
 
-            //querying all albums, creates a property bag inside this method to query the database
-            //thats why we can pass null for the propertybag
-            ZuneQueryList albums = _zuneLibrary.QueryDatabase(EQueryType.eQueryTypeAllAlbums, 0,
-                                                              EQuerySortType.eQuerySortOrderAscending,
-                                                              (uint) SchemaMap.kiIndex_AlbumID, null);
-
-            int searchForString = albums.SearchForString((uint) SchemaMap.kiIndex_WMAlbumArtist, false, albumTitle);
+            //int searchForString = albums.SearchForString((uint) SchemaMap.kiIndex_WMAlbumArtist, false, albumTitle);
 
 
-            var album = GetAlbum(searchForString);
+            //var album = GetAlbum(searchForString);
+
+            return null;
         }
 
         public bool DoesAlbumExist(int index)
@@ -144,7 +143,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             }
         }
 
-        public Album GetAlbum(int index)
+        public DbAlbum GetAlbum(int index)
         {
             AlbumMetadata albumMetadata = _zuneLibrary.GetAlbumMetadata(index);
 
@@ -154,15 +153,15 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             var dateAdded = GetFieldValue(index, EListType.eAlbumList,
                                           ZuneQueryList.AtomNameToAtom("DateAdded"), new DateTime());
 
-            var album = new Album
+            var album = new DbAlbum
                             {
                                 AlbumMediaId = albumMediaId,
                                 DateAdded = dateAdded,
-                                AlbumTitle = albumMetadata.AlbumTitle,
-                                AlbumArtist = albumMetadata.AlbumArtist,
+                                Title = albumMetadata.AlbumTitle,
+                                Artist = albumMetadata.AlbumArtist,
                                 ArtworkUrl = albumMetadata.CoverUrl,
                                 MediaId = albumMetadata.MediaId,
-                                ReleaseYear = albumMetadata.ReleaseYear,
+                                ReleaseYear = albumMetadata.ReleaseYear.ToString(),
                                 TrackCount = (int) albumMetadata.TrackCount,
                                 Tracks = GetTracksForAlbum(albumMetadata.MediaId).ToList()
                             };
@@ -173,29 +172,59 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             return album;
         }
 
-        public IEnumerable<Track> GetTracksForAlbum(int albumId)
+        public IEnumerable<DbTrack> GetTracksForAlbum(int albumId)
         {
             ZuneQueryList zuneQueryList = _zuneLibrary.GetTracksByAlbum(0, albumId,
                                                                         EQuerySortType.eQuerySortOrderAscending,
                                                                         (uint) SchemaMap.kiIndex_AlbumID);
+
             for (int i = 0; i < zuneQueryList.Count; i++)
             {
                 var track = new ZuneQueryItem(zuneQueryList, i);
 
-                string filePath =
-                    (string) track.GetFieldValue(typeof (string), (uint) ZuneQueryList.AtomNameToAtom("SourceURL"));
 
-                Guid mediaId = GetFieldValue(track.ID, EListType.eTrackList, 
-                    ZuneQueryList.AtomNameToAtom("ZuneMediaID"), Guid.Empty);
+                //for (int j = 0; j < 2000; j++)
+                //{
+                //    try
+                //    {
+                //        var test = track.GetFieldValue(typeof(long), (uint)j);
 
-                yield return new Track
+                //        if (test != null)
+                //        {
+                //            Trace.WriteLine(ZuneQueryList.AtomToAtomName(j));
+                //            Trace.WriteLine(test);
+                //        }
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        Trace.WriteLine("FAILED ON");
+                //    }
+
+
+                //}
+
+                yield return new DbTrack
                  {
-                     FilePath = filePath,
-                     MediaId = mediaId
+                     FilePath = GetTrackValue<string>(track, "SourceURL"),
+                     MediaId = GetTrackValue<Guid>(track, "ZuneMediaID"),
+                     Title = GetTrackValue<string>(track, "Title"),
+                     TrackNumber = GetTrackValue<long>(track, "WM/TrackNumber").ToString()
                  };
             }
 
             zuneQueryList.Dispose();
+        }
+
+        private static T GetTrackValue<T>(ZuneQueryItem item, string fieldName)
+        {
+            try
+            {
+                return (T) item.GetFieldValue(typeof (T), (uint) ZuneQueryList.AtomNameToAtom(fieldName));
+            }
+            catch (Exception)
+            {
+                return default(T);
+            }
         }
 
         public void RemoveAlbumFromDatabase(int albumId)
@@ -227,20 +256,10 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             {
                 //The version that this program was written to support, in future versions methods could change
                 //so updates will probably be needed
-                var supportedVersion = new Version(4, 2, 202, 0);
 
                 if (!File.Exists("ZuneDBApi.dll"))
                     throw new FileNotFoundException(
                         "Could not find ZuneDBApi.dll. Are you sure Zune Social Tagger is installed in the Zune application folder?");
-
-                var fileVersionInfo = FileVersionInfo.GetVersionInfo("ZuneDBApi.dll");
-
-                var fileVersion = new Version(fileVersionInfo.ProductVersion);
-
-                if (fileVersion != supportedVersion)
-                    throw new NotSupportedException(
-                        "Zune Social Tagger was not designed to work with this version of the Zune software, please wait for an update!");
-
                 return true;
             }
         }
