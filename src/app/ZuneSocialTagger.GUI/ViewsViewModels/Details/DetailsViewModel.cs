@@ -22,12 +22,17 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
     {
         private readonly IViewModelLocator _locator;
 
-        public DetailsViewModel(IViewModelLocator locator)
+        public DetailsViewModel(IViewModelLocator locator, SharedModel sharedModel)
         {
             _locator = locator;
+
+            this.FileTracks = sharedModel.SongsFromFile;
+            this.WebAlbum = sharedModel.WebAlbum;
+            this.AlbumDetailsFromFile = sharedModel.AlbumDetailsFromFile;
+            this.AlbumDetailsFromWebsite = sharedModel.AlbumDetailsFromWeb;
+
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.SaveCommand = new RelayCommand(Save);
-
             this.Rows = new List<object>();
         }
 

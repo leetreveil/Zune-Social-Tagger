@@ -27,7 +27,7 @@
             <TextBlock TextWrapping="Wrap" >Unfortunately an error occured that is unrecoverable. 
             We have created an error report that can help improve Zune Social Tagger.
             This report is completely anonymous, please click more info to see the exact contents of the report and
-                <TextBlock FontWeight="Bold"  Text="please submit."/>
+            e-mail it to leetreveil@gmail.com, Thankyou.
             </TextBlock>
 
             <TextBlock TextWrapping="Wrap" Margin="0,10,0,0">Thank you.</TextBlock>
@@ -39,7 +39,7 @@
                       VerticalAlignment="Top" ExpandDirection="Down" Width="Auto">
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="200">
-                    <TextBlock x:Name="tbErrorReport" TextWrapping="Wrap"/>
+                    <TextBox x:Name="tbErrorReport" TextWrapping="Wrap" Background="Transparent" BorderThickness="0" BorderBrush="Transparent"/>
                 </ScrollViewer>
 
                 <Expander.Style>
@@ -59,9 +59,7 @@
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Click="btnSendErrorRep_Click" x:Name="btnSendErrorRep" 
-                        Width="140" Margin="0,-20,0,0" Content="SEND ERROR REPORT" />
-                <Button Click="btnCancel_Click" x:Name="btnCancel" 
-                        Width="70" Margin="10,-20,0,0"  Content="CANCEL" />
+                        Margin="0,-20,0,0" Content="OK" />
             </StackPanel>
         </StackPanel>
 

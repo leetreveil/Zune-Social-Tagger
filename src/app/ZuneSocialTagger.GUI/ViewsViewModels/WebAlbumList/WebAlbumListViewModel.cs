@@ -61,7 +61,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             _locator = locator;
             _dbReader.ProgressChanged += ReportProgress;
             _dbReader.StartedReadingAlbums += () => this.CanShowScanAllButton = false;
-            _dbReader.FinishedReadingAlbums += () => DispatcherHelper.CheckBeginInvokeOnUI(Sort);
+            _dbReader.FinishedReadingAlbums += delegate
+            {
+                
+                DispatcherHelper.CheckBeginInvokeOnUI(Sort);
+            };
 
             _isTaskbarSupported = TaskbarManager.IsPlatformSupported;
 
@@ -69,60 +73,16 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
             this.CanShowSort = false;
             this.CanShowScanAllButton = true;
-
             this.SortOrder = Settings.Default.SortOrder;
+            this.FirstLoad = true;
 
             Messenger.Default.Register<string>(this, HandleMessages);
         }
 
-        void AlbumsViewSource_Filter(object sender, FilterEventArgs e)
-        {
-            if (e.Item != null && _filterText != null)
-            {
-                var details = (AlbumDetailsViewModel) e.Item;
-
-                //match the artist or the album title
-                e.Accepted = (details.ZuneAlbumMetaData.Artist
-                    .ToLower()
-                    .StartsWith(_filterText.ToLower()) 
-                    ||
-                    details.ZuneAlbumMetaData.Title.ToLower()
-                    .StartsWith(_filterText.ToLower()));
-
-            }
-        }
-
-        private void HandleMessages(string message)
-        {
-            if (message == "REFRESHCURRENTALBUM")
-            {
-                this.SelectedAlbum.RefreshAlbum();
-            }
-        }
-
-        public void DataHasLoaded()
-        {
-            this.CanShowScanAllButton = true;
-            ResetLoadingProgress();
-            this.SortOrder = Settings.Default.SortOrder;
-            this.CanShowSort = true;
-        }
-
-        private void SetupCommandBindings()
-        {
-            this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
-            this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
-            this.SortCommand = new RelayCommand(Sort);
-            this.SearchCommand = new RelayCommand<string>(Search);
-        }
-
-        private void Search(string obj)
-        {
-            this._filterText = obj;
-            this.AlbumsViewSource.View.Refresh();
-        }
 
         #region View Binding Properties
+
+        public bool FirstLoad { get; set; }
 
         public bool CanShowSort
         {
@@ -144,7 +104,16 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public CollectionViewSource AlbumsViewSource { get; set; }
 
-        public AlbumDetailsViewModel SelectedAlbum { get; set; }
+        private AlbumDetailsViewModel _selectedAlbum;
+        public AlbumDetailsViewModel SelectedAlbum
+        {
+            get { return _selectedAlbum; }
+            set
+            {
+                _selectedAlbum = value;
+                RaisePropertyChanged(() => this.SelectedAlbum);
+            }
+        }
 
         public ObservableCollection<AlbumDetailsViewModel> Albums { get; set; }
 
@@ -153,7 +122,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             get { return _sortOrder; }
             set
             {
-                _sortOrder = value; 
+                _sortOrder = value;
+                Settings.Default.SortOrder = value;
                 RaisePropertyChanged(() => this.SortOrder);
             }
         }
@@ -197,6 +167,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             get { return this.Albums.Where(x => x.LinkStatus == LinkStatus.AlbumOrArtistMismatch).Count(); }
         }
 
+        public int SelectedIndex { get; set; }
+
         public RelayCommand LoadDatabaseCommand { get; private set; }
         public RelayCommand LoadFromZuneWebsiteCommand { get; private set; }
         public RelayCommand CancelDownloadingCommand { get; private set; }
@@ -205,6 +177,56 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         public RelayCommand<string> SearchCommand { get; set; }
 
         #endregion
+
+        void AlbumsViewSource_Filter(object sender, FilterEventArgs e)
+        {
+            if (e.Item != null && _filterText != null)
+            {
+                var details = (AlbumDetailsViewModel)e.Item;
+
+                //match the artist or the album title
+                e.Accepted = (details.ZuneAlbumMetaData.Artist
+                    .ToLower()
+                    .StartsWith(_filterText.ToLower())
+                    ||
+                    details.ZuneAlbumMetaData.Title.ToLower()
+                    .StartsWith(_filterText.ToLower()));
+
+            }
+        }
+
+        private void HandleMessages(string message)
+        {
+            if (message == "REFRESHCURRENTALBUM")
+            {
+                this.SelectedAlbum.RefreshAlbum();
+            }
+        }
+
+        public void DataHasLoaded()
+        {
+            this.CanShowScanAllButton = true;
+            ResetLoadingProgress();
+            //this.SortOrder = Settings.Default.SortOrder;
+            this.CanShowSort = true;
+            Sort();
+            this.SelectedAlbum = this.AlbumsViewSource.View.Cast<AlbumDetailsViewModel>().First();
+        }
+
+        private void SetupCommandBindings()
+        {
+            this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
+            this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
+            this.SortCommand = new RelayCommand(Sort);
+            this.SearchCommand = new RelayCommand<string>(Search);
+        }
+
+        private void Search(string obj)
+        {
+            this._filterText = obj;
+            this.AlbumsViewSource.View.Refresh();
+        }
+
 
         public void LoadFromZuneWebsite()
         {
@@ -302,8 +324,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             }
 
             this.AlbumsViewSource.View.Refresh();
-
-            Settings.Default.SortOrder = this.SortOrder;
         }
 
         private void UpdateLinkTotals()

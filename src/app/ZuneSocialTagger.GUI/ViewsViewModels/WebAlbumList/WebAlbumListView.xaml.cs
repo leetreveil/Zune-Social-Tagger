@@ -21,12 +21,19 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         void WebAlbumListView_Loaded(object sender, RoutedEventArgs e)
         {
-            if (lvAlbums.SelectedItem != null)
+            // first load is a hack around the view not respecting the selected album in the view model before view load
+            var dcon = (WebAlbumListViewModel)this.DataContext;
+            if (lvAlbums.SelectedItem != null && !dcon.FirstLoad)
             {
+                dcon.FirstLoad = false;
                 lvAlbums.ScrollIntoView(lvAlbums.SelectedItem);
                 var item = (ListViewItem)lvAlbums.ItemContainerGenerator.
                     ContainerFromItem(lvAlbums.SelectedItem);
                 item.Focus();
+            }
+            else
+            {
+                lvAlbums.SelectedIndex = 0;
             }
 
             e.Handled = true;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 
 namespace ZuneSocialTagger.GUI.Controls
 {
@@ -10,17 +9,15 @@ namespace ZuneSocialTagger.GUI.Controls
     public partial class ErrorReportDialog : DraggableWindow
     {
         private readonly Action _sendErrorCallback;
-        private readonly Action _cancelCallback;
 
-        public static void Show(string errorReport, Action sendErrorCallback, Action cancelCallback)
+        public static void Show(string errorReport, Action sendErrorCallback)
         {
-            new ErrorReportDialog(errorReport,sendErrorCallback,cancelCallback).Show();
+            new ErrorReportDialog(errorReport,sendErrorCallback).Show();
         }
 
-        public ErrorReportDialog(string errorReport, Action sendErrorCallback, Action cancelCallback)
+        public ErrorReportDialog(string errorReport, Action sendErrorCallback)
         {
             _sendErrorCallback = sendErrorCallback;
-            _cancelCallback = cancelCallback;
             InitializeComponent();
 
             this.tbErrorReport.Text = errorReport;
@@ -31,13 +28,11 @@ namespace ZuneSocialTagger.GUI.Controls
             //hack to get the buttons at the bottom to be in the correct position after the 
             //expander control has expanded
             this.btnSendErrorRep.Margin = new Thickness(0,20,0,0);
-            this.btnCancel.Margin = new Thickness(10,20,0,0);
         }
 
         private void expMoreInfo_Collapsed(object sender, RoutedEventArgs e)
         {
             this.btnSendErrorRep.Margin = new Thickness(0, -20, 0, 0);
-            this.btnCancel.Margin = new Thickness(10, -20, 0, 0);
         }
 
         private void btnSendErrorRep_Click(object sender, RoutedEventArgs e)
@@ -47,13 +42,6 @@ namespace ZuneSocialTagger.GUI.Controls
             _sendErrorCallback();
 
             this.Cursor = null;
-        }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            if (_cancelCallback != null) _cancelCallback();
-
-            this.Close();
         }
     }
 }

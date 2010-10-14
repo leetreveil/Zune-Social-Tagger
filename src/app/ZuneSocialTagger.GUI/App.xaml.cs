@@ -15,6 +15,7 @@ using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.Core.IO;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace ZuneSocialTagger.GUI
 {
@@ -24,7 +25,7 @@ namespace ZuneSocialTagger.GUI
     public partial class App
     {
         private static readonly StandardKernel Container = new StandardKernel();
-       // private static readonly ExceptionLogger LoggerForStrings = new ExceptionLogger();
+        private static readonly ExceptionLogger LoggerForStrings = new ExceptionLogger();
         private static readonly StringLogger StringLogger = new StringLogger();
         //private static readonly ExceptionLogger LoggerForEmail = new ExceptionLogger();
 
@@ -35,9 +36,9 @@ namespace ZuneSocialTagger.GUI
 
         void App_Startup(object sender, System.Windows.StartupEventArgs e)
         {
-            //SetupUnhandledExceptionLogging();
+            SetupUnhandledExceptionLogging();
 
-            //this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
 
             DispatcherHelper.Initialize();
 
@@ -69,12 +70,6 @@ namespace ZuneSocialTagger.GUI
             //songs the user loads from file are stored here
             Container.Bind<IZuneAudioFileRetriever>().To<ZuneAudioFileRetriever>().InSingletonScope();
 
-            //these are the headers each viewmodel has, they may have both or just one
-            Container.Bind<ExpandedAlbumDetailsViewModel>()
-                .ToSelf().WhenTargetHas<FileAttribute>().InSingletonScope();
-            Container.Bind<ExpandedAlbumDetailsViewModel>()
-                .ToSelf().WhenTargetHas<WebAttribute>().InSingletonScope();
-
             //we need the web view model to be a singleton because we want to be able to continue
             //downloading data while linking etc
             Container.Bind<SharedModel>().ToSelf().InSingletonScope();
@@ -86,15 +81,7 @@ namespace ZuneSocialTagger.GUI
 
         private static void SetupUnhandledExceptionLogging()
         {
-            //var emailLogger = new EmailLogger
-            //{
-            //    EmailFrom = "error@zunesocialtagger.net",
-            //    EmailServer = "smtp.ntlworld.com",
-            //    EmailTo = "leetreveil@gmail.com"
-            //};
-
-            //LoggerForStrings.AddLogger(StringLogger);
-            //LoggerForEmail.AddLogger(emailLogger);
+            LoggerForStrings.AddLogger(StringLogger);
         }
 
         private static string GetUserDataPath()
@@ -110,22 +97,9 @@ namespace ZuneSocialTagger.GUI
 
         private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            //LoggerForStrings.LogException(e.Exception);
-
-            //ErrorReportDialog.Show(StringLogger.ErrorLog,() => 
-            //{
-            //    try
-            //    {
-            //        LoggerForEmail.LogException(e.Exception);
-            //    }
-            //    finally 
-            //    {
-            //        //Current.Shutdown();
-            //    }
-
-            //},null);
-
-            //e.Handled = true;
+            LoggerForStrings.LogException(e.Exception);
+            ErrorReportDialog.Show(StringLogger.ErrorLog, () => Current.Shutdown());
+            e.Handled = true;
         }
     }
 

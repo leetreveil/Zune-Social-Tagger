@@ -19,15 +19,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         private bool _canShowResults;
 
 
-        public SearchViewModel(IViewModelLocator locator, SharedModel sharedModel,
-                               [File]ExpandedAlbumDetailsViewModel albumDetailsFromFile )
+        public SearchViewModel(IViewModelLocator locator, SharedModel sharedModel)
         {
             _locator = locator;
             _sharedModel = sharedModel;
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.MoveNextCommand = new RelayCommand(MoveNext);
             this.SearchCommand = new RelayCommand(Search);
-            this.AlbumDetails = albumDetailsFromFile;
+            this.AlbumDetails = sharedModel.AlbumDetailsFromFile;
         }
 
         public RelayCommand MoveBackCommand { get; private set; }
@@ -131,16 +130,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
         public void MoveNext()
         {
-            //_sharedModel.WebAlbum = _searchResultsViewModel._downloadedAlbum;
-            //_sharedModel.AlbumDetailsFromWeb = SharedMethods.GetAlbumDetailsFrom(_sharedModel.WebAlbum);
-
+            _sharedModel.WebAlbum = _searchResultsViewModel._downloadedAlbum;
+            _sharedModel.AlbumDetailsFromWeb = SharedMethods.GetAlbumDetailsFrom(_searchResultsViewModel._downloadedAlbum);
 
             var detailsViewModel = _locator.SwitchToViewModel<DetailsViewModel>();
-            detailsViewModel.AlbumDetailsFromWebsite = SharedMethods.GetAlbumDetailsFrom(_searchResultsViewModel._downloadedAlbum);
-            detailsViewModel.AlbumDetailsFromFile = _sharedModel.AlbumDetailsFromFile;
-            detailsViewModel.WebAlbum = _searchResultsViewModel._downloadedAlbum;
-            detailsViewModel.FileTracks = _sharedModel.SongsFromFile;
-
             detailsViewModel.PopulateRows();
         }
     }
