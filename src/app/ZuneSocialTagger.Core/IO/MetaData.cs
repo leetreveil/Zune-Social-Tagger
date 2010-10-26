@@ -11,6 +11,6 @@ namespace ZuneSocialTagger.Core.IO
         public string Title { get; set; }
         public string AlbumArtist { get; set; }
         public string TrackNumber { get; set; }
-        public IEnumerable<string> ContributingArtists { get; set; }
+        public List<string> ContributingArtists { get; set; }
     }
 }

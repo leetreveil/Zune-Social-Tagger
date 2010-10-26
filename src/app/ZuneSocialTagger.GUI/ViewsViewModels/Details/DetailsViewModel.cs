@@ -142,7 +142,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
                             container.AddMetaData(CreateMetaDataFromWebDetails((WebTrack) row.SelectedSong.BackingData));  
                         }
 
-
                         container.WriteToFile();
 
                         //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
@@ -170,7 +169,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 
         private MetaData CreateMetaDataFromWebDetails(WebTrack webTrack)
         {
-            return new MetaData
+            var metaData = new MetaData
                    {
                        AlbumArtist = this.WebAlbum.Artist,
                        AlbumName = this.WebAlbum.Title,
@@ -181,6 +180,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
                        TrackNumber = webTrack.TrackNumber,
                        Year = this.WebAlbum.ReleaseYear
                    };
+
+            //use album artist as song artist if there are no contributing artists
+            if (metaData.ContributingArtists.Count() == 0)
+                metaData.ContributingArtists.Add(metaData.AlbumArtist);
+
+            return metaData;
         }
 
         private void MoveBack()

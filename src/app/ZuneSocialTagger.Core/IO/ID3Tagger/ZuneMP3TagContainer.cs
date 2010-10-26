@@ -34,7 +34,7 @@ namespace ZuneSocialTagger.Core.IO.ID3Tagger
                 return new MetaData
                 {
                     AlbumArtist = GetValue(ID3Frames.AlbumArtist),
-                    ContributingArtists = GetValue(ID3Frames.ContributingArtists).Split('/'),
+                    ContributingArtists = GetValue(ID3Frames.ContributingArtists).Split('/').ToList(),
                     AlbumName = GetValue(ID3Frames.AlbumName),
                     Title = GetValue(ID3Frames.Title),
                     Year = GetValue(ID3Frames.Year),

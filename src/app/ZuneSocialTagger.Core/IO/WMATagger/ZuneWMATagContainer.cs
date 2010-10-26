@@ -30,7 +30,7 @@ namespace ZuneSocialTagger.Core.IO.WMATagger
                 {
                     AlbumArtist = GetValue(ASFAttributes.AlbumArtist),
                     AlbumName = GetValue(ASFAttributes.AlbumName),
-                    ContributingArtists = GetValues(ASFAttributes.ContributingArtists),
+                    ContributingArtists = GetValues(ASFAttributes.ContributingArtists).ToList(),
                     DiscNumber = GetValue(ASFAttributes.DiscNumber),
                     Genre = GetValue(ASFAttributes.Genre),
                     Title = GetValue(ASFAttributes.Title),
