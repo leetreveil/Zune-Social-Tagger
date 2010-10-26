@@ -176,7 +176,7 @@
                         <Grid Height="30">
 
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="305"/>
+                                <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
 
@@ -188,13 +188,12 @@
                                               VerticalAlignment="Center" FontSize="13.333" Margin="10,0,0,0"/>
                             </StackPanel>
 
-
                             <ComboBox Style="{StaticResource SelectSongCombobox}" 
                                           ItemsSource="{Binding AvailableZuneTracks}" 
                                           SelectedItem="{Binding SelectedSong,Mode=TwoWay}" 
                                           IsReadOnly="True" Grid.Column="1"  
                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                                          Width="280" VerticalAlignment="Center" Tag="Please select a song title"
+                                          VerticalAlignment="Center" Tag="Please select a song title"
                                           Height="25">
 
                                 <ComboBox.ItemTemplate>
@@ -323,7 +322,7 @@
 
             <TextBlock Text="SONG TITLES IN THIS ALBUM"  FontSize="12" FontWeight="Bold" />
             <TextBlock Grid.Column="1" Text="SONG TITLES FROM ZUNE MARKETPLACE" 
-                       FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
+                       FontSize="12" FontWeight="Bold" Margin="0,0,0,0" />
 
             <ItemsControl  MaxHeight="260" VerticalAlignment="Top"
                            Grid.Row="1" Grid.ColumnSpan="2" 
@@ -343,7 +342,7 @@
 
         </Grid>
 
-        <CheckBox Margin="0,10,0,0" IsChecked="{Binding UpdateAlbumInfo}" VerticalAlignment="Top" Grid.Row="2" 
+        <CheckBox Margin="0,20,0,0" IsChecked="{Binding UpdateAlbumInfo}" VerticalAlignment="Top" Grid.Row="3"
                   Content="Update album information (artist, title, etc)"
                   ToolTip="Check this box to update album information inside of the audio files, if you don't the tracks will still be linked"/>
 
