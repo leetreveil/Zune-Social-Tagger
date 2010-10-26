@@ -16,6 +16,7 @@ using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.Core.IO;
 using System.Collections.Generic;
 using System.Windows;
+using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 
 namespace ZuneSocialTagger.GUI
 {
@@ -72,6 +73,7 @@ namespace ZuneSocialTagger.GUI
             //we need the web view model to be a singleton because we want to be able to continue
             //downloading data while linking etc
             Container.Bind<SharedModel>().ToSelf().InSingletonScope();
+            Container.Bind<SelectAudioFilesViewModel>().ToSelf().InSingletonScope();
             Container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
             Container.Bind<SearchViewModel>().ToSelf().InSingletonScope();
             Container.Bind<DetailsViewModel>().ToSelf().InSingletonScope();
