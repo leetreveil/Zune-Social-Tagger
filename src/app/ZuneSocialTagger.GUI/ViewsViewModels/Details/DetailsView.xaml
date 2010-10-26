@@ -76,7 +76,6 @@
                         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
                         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
                         <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
-                        <Setter Property="MinWidth" Value="120"/>
                         <Setter Property="MinHeight" Value="20"/>
                         <Setter Property="Template">
                             <Setter.Value>
@@ -173,11 +172,11 @@
 
                     <DataTemplate DataType="{x:Type Details:DetailRow}" >
 
-                        <Grid Height="30">
+                        <Grid ShowGridLines="True" Height="30">
 
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="295"/>
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Orientation="Horizontal">
@@ -193,7 +192,8 @@
                                           SelectedItem="{Binding SelectedSong,Mode=TwoWay}" 
                                           IsReadOnly="True" Grid.Column="1"  
                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                                          VerticalAlignment="Center" Tag="Please select a song title"
+                                          ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                          VerticalAlignment="Center" HorizontalAlignment="Stretch" Tag="Please select a song title"
                                           Height="25">
 
                                 <ComboBox.ItemTemplate>
@@ -308,7 +308,7 @@
 
         </Grid>
 
-        <Grid Grid.Row="1" Margin="0,20,0,0">
+        <Grid Grid.Row="1" ShowGridLines="True" Margin="0,20,0,0">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"/>
@@ -322,17 +322,17 @@
 
             <TextBlock Text="SONG TITLES IN THIS ALBUM"  FontSize="12" FontWeight="Bold" />
             <TextBlock Grid.Column="1" Text="SONG TITLES FROM ZUNE MARKETPLACE" 
-                       FontSize="12" FontWeight="Bold" Margin="0,0,0,0" />
+                       FontSize="12" FontWeight="Bold"/>
 
-            <ItemsControl  MaxHeight="260" VerticalAlignment="Top"
+            <ItemsControl  x:Name="itemsControl"
+                           MaxHeight="260" VerticalAlignment="Top"
                            Grid.Row="1" Grid.ColumnSpan="2" 
                            ItemsSource="{Binding Rows}">
 
                 <ItemsControl.Template>
                     <ControlTemplate>
                         <ScrollViewer x:Name="ScrollViewer" 
-                                      VerticalScrollBarVisibility="Auto" 
-                                      Padding="{TemplateBinding Padding}">
+                                      VerticalScrollBarVisibility="Visible">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </ControlTemplate>
