@@ -1,5 +1,6 @@
 using GalaSoft.MvvmLight.Command;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Success
 {
@@ -9,7 +10,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Success
         {
             this.AlbumDetailsFromFile = sharedModel.AlbumDetailsFromFile;
             this.AlbumDetailsFromWebsite = sharedModel.AlbumDetailsFromWeb;
-            this.OKCommand = new RelayCommand(locator.SwitchToFirstViewModel);
+            this.OKCommand = new RelayCommand(delegate
+            {
+                var webAlbumListViewModel = locator.SwitchToViewModel<WebAlbumListViewModel>();
+                webAlbumListViewModel.SelectedAlbum.RefreshAlbum();
+            });
         }
 
         public RelayCommand OKCommand { get; private set; }
