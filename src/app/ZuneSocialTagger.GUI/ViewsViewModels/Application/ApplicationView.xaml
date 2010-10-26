@@ -114,8 +114,8 @@
 
         <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
 
-            <Button ToolTip="About / Settings" Margin="0,0,30,0" Style="{StaticResource SmallGreyButtonNoBorder}"
-                    VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" Content="ABOUT / SETTINGS"
+            <Button ToolTip="About" Margin="0,0,30,0" Style="{StaticResource SmallGreyButtonNoBorder}"
+                    VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" Content="ABOUT"
                     Command="{Binding ShowAboutSettingsCommand}"/>
 
             <Button Click="Minimize_Click" ToolTip="Minimize" Margin="0,0,9,0" Style="{StaticResource MinimizeButton}" 

@@ -27,8 +27,7 @@
         <StackPanel Grid.Row="0">
             <Control Template="{DynamicResource Gradient}"/>
             <TextBlock FontSize="26.667">
-                <Run Text="ABOUT"/>
-                <Run Text=" / SETTINGS"/>
+                ABOUT
             </TextBlock>
         </StackPanel>
 
