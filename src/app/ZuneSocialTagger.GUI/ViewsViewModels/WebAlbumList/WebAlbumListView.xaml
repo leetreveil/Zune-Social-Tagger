@@ -128,7 +128,8 @@
             x:Name="SearchControl"
             HorizontalAlignment="Right" 
             Width="200" 
-            Margin="0,0,0,10">
+            Margin="0,0,0,10"
+            Text="{Binding SearchText, Mode=TwoWay}">
 
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="TextChanged">

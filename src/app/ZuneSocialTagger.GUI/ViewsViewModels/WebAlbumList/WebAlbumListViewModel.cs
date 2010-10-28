@@ -168,6 +168,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         }
 
         public int SelectedIndex { get; set; }
+        public string SearchText { get; set; }
 
         public RelayCommand LoadDatabaseCommand { get; private set; }
         public RelayCommand LoadFromZuneWebsiteCommand { get; private set; }

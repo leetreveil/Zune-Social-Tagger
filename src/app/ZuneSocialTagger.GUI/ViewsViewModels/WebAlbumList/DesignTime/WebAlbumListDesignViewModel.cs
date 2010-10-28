@@ -9,6 +9,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.DesignTime
     {
         public List<AlbumDetailsViewModel> Albums { get; set; }
         public double LoadingProgress { get; set; }
+        public string SearchText
+        {
+            get { return "AFI";}
+        }
 
         public string ScanAllText
         {
