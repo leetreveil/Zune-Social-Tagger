@@ -18,7 +18,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {
     public class AlbumDetailsViewModel : ViewModelBase
     {
-
         private readonly IZuneDatabaseReader _dbReader;
         private readonly IViewModelLocator _locator;
         private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
@@ -28,8 +27,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private DbAlbum _zuneAlbumMetaData;
         private WebAlbum _webAlbumMetaData;
         private LinkStatus _linkStatus;
-
-        public event Action AlbumDetailsDownloaded = delegate { };
 
         public AlbumDetailsViewModel(IZuneDatabaseReader dbReader,
                                      IViewModelLocator locator,
@@ -171,7 +168,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 if (albumMetaData != null)
                 {
                     this.ZuneAlbumMetaData = albumMetaData;
-                    GetAlbumDetailsFromWebsite();
+                    GetAlbumDetailsFromWebsite(null);
                 }
                 else
                 {
@@ -181,14 +178,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             }
         }
 
-        public void GetAlbumDetailsFromWebsite()
+        public void GetAlbumDetailsFromWebsite(Action callback)
         {
             Guid albumMediaId = this.ZuneAlbumMetaData.AlbumMediaId;
 
             if (albumMediaId != Guid.Empty)
             {
                 var url = String.Concat(Urls.Album, albumMediaId);
-                AlbumDetailsDownloader.DownloadAsync(url, (album) =>
+                AlbumDetailsDownloader.DownloadAsync(url, album =>
                 {
                     if (album != null)
                     {                              
@@ -202,8 +199,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                     }
 
                     this.IsDownloadingDetails = false;
-                    AlbumDetailsDownloaded.Invoke();
-
+                    callback.Invoke();
                 });
             }
             else

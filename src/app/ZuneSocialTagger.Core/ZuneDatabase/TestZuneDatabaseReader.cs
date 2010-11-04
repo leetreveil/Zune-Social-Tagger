@@ -98,7 +98,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         {
             var albumDetails = _deserializedAlbums.Where(x => x.MediaId == albumId).First();
 
-            return albumDetails.Tracks.Select(track => new DbTrack() {FilePath = track.FilePath});
+            return albumDetails.Tracks.Select(track => new DbTrack {FilePath = track.FilePath});
         }
 
         public DbAlbum GetAlbumByAlbumTitle(string albumTitle)

@@ -231,7 +231,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public void LoadFromZuneWebsite()
         {
-            ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning,"This process could take a very long time, are you sure?"),() => {
+            var warningMsg = new ErrorMessage(ErrorMode.Warning,"This process could take a very long time, are you sure?");
+            ZuneMessageBox.Show(warningMsg, () => {
                 this.CanShowScanAllButton = false;
 
                 //skip the unlinked albums that cant be downloaded
@@ -242,7 +243,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                     album.LinkStatus = LinkStatus.Unknown; // reset the linkstatus so we can scan all multiple times
                     album.WebAlbumMetaData = null;
 
-                    album.AlbumDetailsDownloaded += () =>
+                    album.GetAlbumDetailsFromWebsite(()=>
                     {
                         var albumsToBeDownloaded = this.Albums.Where(x => x.LinkStatus == LinkStatus.Unknown);
 
@@ -250,11 +251,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
                         ReportProgress(totalDownloaded, albumsToDownload.Count);
                         if (albumsToBeDownloaded.Count() == 0) ResetLoadingProgress();
-                    };
-
-                    album.GetAlbumDetailsFromWebsite();
+                    });
                 } 
-            } );
+            });
         }
 
         public void SwitchToClassicMode()
@@ -302,29 +301,30 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public void Sort()
         {
-            this.AlbumsViewSource.SortDescriptions.Clear();
-            
-            switch (this.SortOrder)
+            using (this.AlbumsViewSource.DeferRefresh())
             {
-                case SortOrder.DateAdded:
-                    this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("DateAdded", ListSortDirection.Descending));
-                    break;;
-                case SortOrder.Album:
-                    this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("AlbumTitle", ListSortDirection.Ascending));
-                    break;
-                case SortOrder.Artist:
-                    this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("AlbumArtist", ListSortDirection.Ascending));
-                    break;
-                case SortOrder.LinkStatus:
-                    this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("LinkStatus", ListSortDirection.Ascending));
-                    break;
-                case SortOrder.NotSorted:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                this.AlbumsViewSource.SortDescriptions.Clear();
 
-            this.AlbumsViewSource.View.Refresh();
+                switch (this.SortOrder)
+                {
+                    case SortOrder.DateAdded:
+                        this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("DateAdded", ListSortDirection.Descending));
+                        break;
+                    case SortOrder.Album:
+                        this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("AlbumTitle", ListSortDirection.Ascending));
+                        break;
+                    case SortOrder.Artist:
+                        this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("AlbumArtist", ListSortDirection.Ascending));
+                        break;
+                    case SortOrder.LinkStatus:
+                        this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("LinkStatus", ListSortDirection.Ascending));
+                        break;
+                    case SortOrder.NotSorted:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
         }
 
         private void UpdateLinkTotals()
