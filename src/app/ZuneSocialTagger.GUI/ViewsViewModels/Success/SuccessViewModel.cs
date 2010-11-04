@@ -6,13 +6,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Success
 {
     public class SuccessViewModel : ViewModelBase
     {
-        public SuccessViewModel(IViewModelLocator locator, SharedModel sharedModel)
+        public SuccessViewModel(IViewLocator locator, SharedModel sharedModel)
         {
             this.AlbumDetailsFromFile = sharedModel.AlbumDetailsFromFile;
             this.AlbumDetailsFromWebsite = sharedModel.AlbumDetailsFromWeb;
             this.OKCommand = new RelayCommand(delegate
             {
-                var webAlbumListViewModel = locator.SwitchToViewModel<WebAlbumListViewModel>();
+                var webAlbumListViewModel = locator.SwitchToView<WebAlbumListView,WebAlbumListViewModel>();
                 webAlbumListViewModel.SelectedAlbum.RefreshAlbum();
             });
         }

@@ -34,21 +34,21 @@ namespace ZuneSocialTagger.UnitTests.UI.ViewsViewModels.Success
     {
         Establish context = () =>
         {
-            locator = MockRepository.GenerateMock<IViewModelLocator>();
+            locator = MockRepository.GenerateMock<IViewLocator>();
             sut = new SuccessViewModel(locator);
         };
 
         Because of = () =>
         {
-            locator.Expect(x => x.SwitchToFirstViewModel());
+            locator.Expect(x => x.SwitchToFirstView());
             sut.OKCommand.Execute(null);
         };
 
         It should_tell_the_application_to_switch_to_the_first_view = () =>
-            locator.AssertWasCalled(x => x.SwitchToFirstViewModel());
+            locator.AssertWasCalled(x => x.SwitchToFirstView());
 
 
         static SuccessViewModel sut;
-        static IViewModelLocator locator;
+        static IViewLocator locator;
     }
 }

@@ -116,13 +116,12 @@
     </Compile>
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Models\SerializedAlbum.cs" />
-    <Compile Include="ViewsViewModels\Application\IApplicationViewModel.cs" />
     <Compile Include="ViewsViewModels\Details\DiscHeader.cs" />
     <Compile Include="ViewsViewModels\Shared\SharedModel.cs" />
-    <Compile Include="ViewsViewModels\Shared\IViewModelLocator.cs" />
+    <Compile Include="ViewsViewModels\Shared\IViewLocator.cs" />
     <Compile Include="ViewsViewModels\Shared\ViewModelBase.cs" />
     <Compile Include="ViewsViewModels\About\AboutViewModel.cs" />
-    <Compile Include="ViewsViewModels\Shared\ViewModelLocator.cs" />
+    <Compile Include="ViewsViewModels\Shared\ViewLocator.cs" />
     <Compile Include="ViewsViewModels\WebAlbumList\AlbumDetailsViewModel.cs" />
     <Compile Include="ViewsViewModels\MoreInfo\MoreInfoViewModel.cs" />
     <Compile Include="ViewsViewModels\Application\ApplicationViewModel.cs" />

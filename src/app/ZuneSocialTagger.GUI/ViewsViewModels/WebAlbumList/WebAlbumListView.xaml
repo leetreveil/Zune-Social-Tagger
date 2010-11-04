@@ -128,8 +128,7 @@
             x:Name="SearchControl"
             HorizontalAlignment="Right" 
             Width="200" 
-            Margin="0,0,0,10"
-            Text="{Binding SearchText, Mode=TwoWay}">
+            Margin="0,0,0,10">
 
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="TextChanged">
@@ -183,7 +182,7 @@
         </StackPanel>
 
 
-        <ListView SelectedItem="{Binding SelectedAlbum,Mode=TwoWay}"
+        <ListView SelectedItem="{Binding SelectedAlbum, Mode=TwoWay}"
                   SelectionMode="Single"
                   Grid.Row="2"
                   x:Name="lvAlbums"

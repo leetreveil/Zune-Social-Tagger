@@ -64,8 +64,8 @@ namespace ZuneSocialTagger.GUI
 #else
             Container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
 #endif
-            Container.Bind<IApplicationViewModel>().To<ApplicationViewModel>();
-            Container.Bind<IViewModelLocator>().To<ViewModelLocator>().InSingletonScope();
+            //Container.Bind<IApplicationViewModel>().To<ApplicationViewModel>();
+            Container.Bind<IViewLocator>().To<ViewLocator>().InSingletonScope();
 
             //songs the user loads from file are stored here
             Container.Bind<IZuneAudioFileRetriever>().To<ZuneAudioFileRetriever>().InSingletonScope();
@@ -78,6 +78,9 @@ namespace ZuneSocialTagger.GUI
             Container.Bind<SearchViewModel>().ToSelf().InSingletonScope();
             Container.Bind<DetailsViewModel>().ToSelf().InSingletonScope();
             Container.Bind<ObservableCollection<AlbumDetailsViewModel>>().ToSelf().InSingletonScope();
+
+            //set some views to remember their state
+            Container.Bind<WebAlbumListView>().ToSelf().InSingletonScope();
         }
 
         private static void SetupUnhandledExceptionLogging()

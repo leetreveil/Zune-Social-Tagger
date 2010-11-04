@@ -12,9 +12,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo
 {
     public class MoreInfoViewModel : ViewModelBase
     {
-        private readonly IViewModelLocator _locator;
+        private readonly IViewLocator _locator;
 
-        public MoreInfoViewModel(IViewModelLocator locator)
+        public MoreInfoViewModel(IViewLocator locator)
         {
             _locator = locator;
 
@@ -70,7 +70,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo
 
         private void MoveBack()
         {
-            _locator.SwitchToFirstViewModel();
+            _locator.SwitchToFirstView();
         }
     }
 }

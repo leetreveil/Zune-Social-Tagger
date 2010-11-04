@@ -19,7 +19,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
     public class AlbumDetailsViewModel : ViewModelBase
     {
         private readonly IZuneDatabaseReader _dbReader;
-        private readonly IViewModelLocator _locator;
+        private readonly IViewLocator _locator;
         private readonly ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
         private readonly IZuneAudioFileRetriever _fileRetriever;
         private readonly SharedModel _sharedModel;
@@ -29,7 +29,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private LinkStatus _linkStatus;
 
         public AlbumDetailsViewModel(IZuneDatabaseReader dbReader,
-                                     IViewModelLocator locator,
+                                     IViewLocator locator,
                                      [File]ExpandedAlbumDetailsViewModel albumDetailsFromFile,
                                      IZuneAudioFileRetriever fileRetriever,
                                      SharedModel sharedModel)
@@ -127,7 +127,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         private void ShowMoreInfo()
         {
-            var moreInfoViewModel = _locator.SwitchToViewModel<MoreInfoViewModel>();
+            var moreInfoViewModel = _locator.SwitchToView<MoreInfoView,MoreInfoViewModel>();
             moreInfoViewModel.SetAlbumDetails(this);
         }
 
@@ -144,7 +144,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 IEnumerable<string> filePaths = zuneAlbumMetaData.Tracks.Select(x => x.FilePath);
                 _sharedModel.SongsFromFile = _fileRetriever.GetContainers(filePaths);
                 _sharedModel.AlbumDetailsFromFile = _albumDetailsFromFile;
-                var searchVm = _locator.SwitchToViewModel<SearchViewModel>();
+                var searchVm = _locator.SwitchToView<SearchView,SearchViewModel>();
                 searchVm.Search(zuneAlbumMetaData.Artist, zuneAlbumMetaData.Title);
             }
             catch (Exception ex)

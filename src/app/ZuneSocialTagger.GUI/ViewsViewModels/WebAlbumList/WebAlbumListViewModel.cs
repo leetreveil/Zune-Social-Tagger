@@ -22,7 +22,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
     public class WebAlbumListViewModel : ViewModelBase
     {
         private readonly IZuneDatabaseReader _dbReader;
-        private readonly IViewModelLocator _locator;
+        private readonly IViewLocator _locator;
         private bool _canShowScanAllButton;
         private int _loadingProgress;
         private readonly bool _isTaskbarSupported;
@@ -32,13 +32,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public WebAlbumListViewModel(IZuneDatabaseReader dbReader,
                                      ObservableCollection<AlbumDetailsViewModel> albums,
-                                     IViewModelLocator locator)
+                                     IViewLocator locator)
         {
             this.Albums  = albums;
 
             this.AlbumsViewSource = new CollectionViewSource();
-            this.AlbumsViewSource.Filter += AlbumsViewSource_Filter;
             this.AlbumsViewSource.Source = this.Albums;
+            this.AlbumsViewSource.Filter += AlbumsViewSource_Filter;
 
             //manually hook up property changes
             this.Albums.CollectionChanged += (sender, args) =>
@@ -74,15 +74,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             this.CanShowSort = false;
             this.CanShowScanAllButton = true;
             this.SortOrder = Settings.Default.SortOrder;
-            this.FirstLoad = true;
-
-            Messenger.Default.Register<string>(this, HandleMessages);
         }
 
 
         #region View Binding Properties
-
-        public bool FirstLoad { get; set; }
 
         public bool CanShowSort
         {
@@ -91,14 +86,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             {
                 _canShowSort = value;
                 RaisePropertyChanged(() => this.CanShowSort);
-            }
-        }
-
-        public bool IsCurrentAlbumLinkable
-        {
-            get
-            {
-                return true;
             }
         }
 
@@ -167,9 +154,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             get { return this.Albums.Where(x => x.LinkStatus == LinkStatus.AlbumOrArtistMismatch).Count(); }
         }
 
-        public int SelectedIndex { get; set; }
-        public string SearchText { get; set; }
-
         public RelayCommand LoadDatabaseCommand { get; private set; }
         public RelayCommand LoadFromZuneWebsiteCommand { get; private set; }
         public RelayCommand CancelDownloadingCommand { get; private set; }
@@ -196,22 +180,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             }
         }
 
-        private void HandleMessages(string message)
-        {
-            if (message == "REFRESHCURRENTALBUM")
-            {
-                this.SelectedAlbum.RefreshAlbum();
-            }
-        }
-
         public void DataHasLoaded()
         {
             this.CanShowScanAllButton = true;
             ResetLoadingProgress();
-            //this.SortOrder = Settings.Default.SortOrder;
             this.CanShowSort = true;
             Sort();
-            //this.SelectedAlbum = this.AlbumsViewSource.View.Cast<AlbumDetailsViewModel>().First();
         }
 
         private void SetupCommandBindings()
@@ -258,7 +232,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public void SwitchToClassicMode()
         {
-            _locator.SwitchToViewModel<SelectAudioFilesViewModel>();
+            _locator.SwitchToView<SelectAudioFilesView,SelectAudioFilesViewModel>();
         }
 
         private void ResetLoadingProgress()

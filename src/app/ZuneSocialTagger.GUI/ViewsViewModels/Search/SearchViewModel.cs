@@ -10,7 +10,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 {
     public class SearchViewModel : ViewModelBase
     {
-        private readonly IViewModelLocator _locator;
+        private readonly IViewLocator _locator;
         private readonly SharedModel _sharedModel;
         private string _searchText;
         private bool _isSearching;
@@ -19,7 +19,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         private bool _canShowResults;
 
 
-        public SearchViewModel(IViewModelLocator locator, SharedModel sharedModel)
+        public SearchViewModel(IViewLocator locator, SharedModel sharedModel)
         {
             _locator = locator;
             _sharedModel = sharedModel;
@@ -128,7 +128,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
         public void MoveBack()
         {
-            _locator.SwitchToFirstViewModel();
+            _locator.SwitchToFirstView();
         }
 
         public void MoveNext()
@@ -136,7 +136,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             _sharedModel.WebAlbum = _searchResultsViewModel._downloadedAlbum;
             _sharedModel.AlbumDetailsFromWeb = SharedMethods.GetAlbumDetailsFrom(_searchResultsViewModel._downloadedAlbum);
 
-            var detailsViewModel = _locator.SwitchToViewModel<DetailsViewModel>();
+            var detailsViewModel = _locator.SwitchToView<DetailsView,DetailsViewModel>();
             detailsViewModel.PopulateRows();
         }
     }

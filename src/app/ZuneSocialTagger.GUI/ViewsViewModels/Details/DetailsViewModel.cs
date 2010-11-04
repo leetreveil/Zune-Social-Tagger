@@ -20,10 +20,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 
     public class DetailsViewModel : ViewModelBase
     {
-        private readonly IViewModelLocator _locator;
+        private readonly IViewLocator _locator;
         private readonly SharedModel _sharedModel;
 
-        public DetailsViewModel(IViewModelLocator locator, SharedModel sharedModel)
+        public DetailsViewModel(IViewLocator locator, SharedModel sharedModel)
         {
             _locator = locator;
             _sharedModel = sharedModel;
@@ -161,7 +161,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
             }
             else
             {
-                _locator.SwitchToViewModel<SuccessViewModel>();
+                _locator.SwitchToView<SuccessView, SuccessViewModel>();
             }
 
             Mouse.OverrideCursor = null;
@@ -190,7 +190,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 
         private void MoveBack()
         {
-            _locator.SwitchToViewModel<SearchViewModel>();
+            _locator.SwitchToView<SearchView,SearchViewModel>();
         }
     }
 }

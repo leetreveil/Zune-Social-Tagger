@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading;
+using System.Windows.Controls;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
@@ -23,12 +24,11 @@ using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 {
 
-    public class ApplicationViewModel : ViewModelBase, IApplicationViewModel
+    public class ApplicationViewModel : ViewModelBase
     {
         private readonly IZuneDatabaseReader _dbReader;
         private readonly IList<AlbumDetailsViewModel> _albums;
-        private readonly IViewModelLocator _locator;
-        private ViewModelBase _currentPage;
+        private readonly IViewLocator _locator;
         private bool _updateAvailable;
         private bool _shouldShowErrorMessage;
         private ErrorMode _errorMessageMode;
@@ -38,7 +38,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         public ApplicationViewModel(IZuneDatabaseReader dbReader,
                                     ObservableCollection<AlbumDetailsViewModel> albums,
-                                    IViewModelLocator locator)
+                                    IViewLocator locator)
         {
             _dbReader = dbReader;
 
@@ -53,8 +53,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
             _albums = albums;
             _locator = locator;
-            locator.SwitchToViewModelRequested += viewModel => {
-                this.CurrentPage = viewModel;
+            locator.SwitchToViewRequested += view => {
+                this.CurrentPage = view;
             };
         }
 
@@ -110,7 +110,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             }
         }
 
-        public ViewModelBase CurrentPage
+        private UserControl _currentPage;
+        public UserControl CurrentPage
         {
             get { return _currentPage; }
             private set
@@ -129,12 +130,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             //if we cannot load the database then switch to the other view
             if (dbLoaded)
             {
-                _webAlbumListViewModel = _locator.SwitchToViewModel<WebAlbumListViewModel>();
+                _webAlbumListViewModel = _locator.SwitchToView<WebAlbumListView,WebAlbumListViewModel>();
                 ReadCachedDatabase();
             }
             else
             {
-                var selectAudioFilesViewModel = _locator.SwitchToViewModel<SelectAudioFilesViewModel>();
+                var selectAudioFilesViewModel = _locator.SwitchToView<SelectAudioFilesView,SelectAudioFilesViewModel>();
                 selectAudioFilesViewModel.CanSwitchToNewMode = false;
             }
         }

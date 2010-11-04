@@ -16,11 +16,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 {
     public class SelectAudioFilesViewModel : ViewModelBase
     {
-        private readonly IViewModelLocator _locator;
+        private readonly IViewLocator _locator;
         private readonly IZuneAudioFileRetriever _fileRetriever;
         private readonly SharedModel _sharedModel;
 
-        public SelectAudioFilesViewModel(IViewModelLocator locator,
+        public SelectAudioFilesViewModel(IViewLocator locator,
                                          IZuneAudioFileRetriever fileRetriever,
                                          SharedModel sharedModel)
         {
@@ -38,7 +38,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 
         public void SwitchToNewMode()
         {
-            _locator.SwitchToViewModel<WebAlbumListViewModel>();
+            _locator.SwitchToView<WebAlbumListView,WebAlbumListViewModel>();
         }
 
         public void SelectFiles()
@@ -82,7 +82,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
                 _sharedModel.SongsFromFile = containers;
 
                 //as soon as the view has switched start searching
-                var searchVm = _locator.SwitchToViewModel<SearchViewModel>();
+                var searchVm = _locator.SwitchToView<SearchView,SearchViewModel>();
                 searchVm.Search(firstTrackMetaData.AlbumArtist, firstTrackMetaData.AlbumName);
             }
             catch (Exception ex)
