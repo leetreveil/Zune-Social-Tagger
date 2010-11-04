@@ -11,6 +11,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 {
     public class SearchResultsViewModel : ViewModelBase
     {
+        private readonly SearchViewModel _parent;
         private IEnumerable<WebAlbum> _albums;
         private IEnumerable<WebArtist> _artists;
         private bool _isLoading;
@@ -21,8 +22,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
         internal WebAlbum _downloadedAlbum;
 
-        public SearchResultsViewModel()
+        public SearchResultsViewModel(SearchViewModel parent)
         {
+            _parent = parent;
             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
             this.SearchResults = new ObservableCollection<object>();
             this.SearchResults.CollectionChanged += SearchResults_CollectionChanged;
@@ -117,35 +119,33 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
             string fullUrlToAlbumXmlDetails = String.Concat(Urls.Album, album.AlbumMediaId);
 
-            var reader = new AlbumDetailsDownloader(fullUrlToAlbumXmlDetails);
-
-            reader.DownloadCompleted += (details, state) => {
-                if (state == DownloadState.Success)
+            AlbumDetailsDownloader.DownloadAsync(fullUrlToAlbumXmlDetails, (webAlbum)=>
+            {
+                if (webAlbum != null)
                 {
-                    _downloadedAlbum = details;
-                    UpdateDetail(details);
-                    this.IsLoading = false;
+                    _downloadedAlbum = webAlbum;
+                    UpdateDetail(_downloadedAlbum);
                 }
                 else
                 {
                     this.SearchResultsDetailViewModel.SelectedAlbumTitle =
                         "Could not get album details";
-
-                    this.IsLoading = false;
                 }
-            };
-            
-            reader.DownloadAsync();
+
+                this.IsLoading = false;
+            });
         }
 
         public void LoadAlbumsForArtist(WebArtist artist)
         {
+            _parent.IsSearching = true;
             AlbumSearch.SearchForAlbumFromArtistGuidAsync(artist.Id, results =>
             {
                 _albums = results.ToList();
 
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {
+                    _parent.IsSearching = false;
                     this.SearchResults.Clear();
 
                     foreach (var album in _albums)
@@ -239,11 +239,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
         private void ResultClicked(object item)
         {
-            if (item.GetType() == typeof(WebArtist))
-                LoadAlbumsForArtist(item as WebArtist);
+            if (item != null)
+            {
+                if (item.GetType() == typeof(WebArtist))
+                    LoadAlbumsForArtist(item as WebArtist);
 
-            if (item.GetType() == typeof(WebAlbum))
-                LoadAlbum(item as WebAlbum);
+                if (item.GetType() == typeof(WebAlbum))
+                    LoadAlbum(item as WebAlbum);
+            }
         }
     }
 }

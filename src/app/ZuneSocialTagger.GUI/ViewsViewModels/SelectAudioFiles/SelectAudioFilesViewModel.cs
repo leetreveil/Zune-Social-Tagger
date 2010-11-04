@@ -83,7 +83,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 
                 //as soon as the view has switched start searching
                 var searchVm = _locator.SwitchToViewModel<SearchViewModel>();
-                searchVm.Search(firstTrackMetaData.AlbumName, firstTrackMetaData.AlbumArtist);
+                searchVm.Search(firstTrackMetaData.AlbumArtist, firstTrackMetaData.AlbumName);
             }
             catch (Exception ex)
             {

@@ -11,100 +11,62 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
     /// <summary>
     /// Downloads the album details from the zune album's xml document
     /// </summary>
-    public class AlbumDetailsDownloader
+    public static class AlbumDetailsDownloader
     {
-        private readonly string _url;
-        private XmlReader _reader;
-        private SyndicationFeed _feed;
-        private readonly WebClient _client;
-
-        public event Action<WebAlbum,DownloadState> DownloadCompleted = delegate { };
-
-        public AlbumDetailsDownloader(string url)
+        public static void DownloadAsync(string url, Action<WebAlbum> callback)
         {
-            _url = url;
-            _client = new WebClient();
-            _client.DownloadDataCompleted += ClientDownloadDataCompleted;
-        }
+            var client = new WebClient();
+            client.DownloadDataAsync(new Uri(url));
 
-        public void Cancel()
-        {
-            _client.CancelAsync();
-        }
-
-        public void DownloadAsync()
-        {
-            _client.DownloadDataAsync(new Uri(_url));
-        }
-
-        public WebAlbum Download()
-        {
-            byte[] downloadData = _client.DownloadData(new Uri(_url));
-
-            _reader = XmlReader.Create(new MemoryStream(downloadData));
-
-            return Read();
-        }
-
-        void ClientDownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
-        {
-            if (e.Cancelled)
-                this.DownloadCompleted.Invoke(null, DownloadState.Cancelled);
-            else
+            client.DownloadDataCompleted += (sender, args) =>
             {
-                if (e.Error == null)
+                if (args.Cancelled || args.Error != null)
                 {
-                    WebAlbum album = null;
-                    try
-                    {
-                        _reader = XmlReader.Create(new MemoryStream(e.Result));
-                        album = Read();
-                    }
-                    catch{ }
-                    finally
-                    {
-                        if (album != null)
-                        {
-                            this.DownloadCompleted.Invoke(album, DownloadState.Success);
-                        }
-                        else
-                        {
-                            this.DownloadCompleted.Invoke(null, DownloadState.Error);
-                        }
-                        
-                    }
+                    callback.Invoke(null);
                 }
                 else
                 {
-                    this.DownloadCompleted.Invoke(null, DownloadState.Error);
+                    try
+                    {
+                        var reader = XmlReader.Create(new MemoryStream(args.Result));
+                        var album = GetAlbumDetails(reader);
+                        if (album == null)
+                            throw new NullReferenceException();
+
+                        callback.Invoke(album);
+                    }
+                    catch
+                    {
+                        callback.Invoke(null);
+                    }
                 }
+            };
+        }
+
+        private static WebAlbum GetAlbumDetails(XmlReader reader)
+        {
+            var feed = SyndicationFeed.Load(reader);
+
+            if (feed != null)
+            {
+                return new WebAlbum
+                {
+                    Title = feed.Title.Text,
+                    Artist = feed.GetArtist(),
+                    ArtworkUrl = feed.GetArtworkUrl(),
+                    ReleaseYear = feed.GetReleaseYear(),
+                    Tracks = GetTracks(feed),
+                    Genre = feed.GetGenre(),
+                    AlbumMediaId = feed.Id.ExtractGuidFromUrnUuid()
+                };
             }
+
+            return null;
         }
 
-        private WebAlbum Read()
+        private static IEnumerable<WebTrack> GetTracks(SyndicationFeed feed)
         {
-            _feed = SyndicationFeed.Load(_reader);
-
-            return _feed != null ? GetAlbumDetails() : null;
-        }
-
-        private WebAlbum GetAlbumDetails()
-        {
-            return new WebAlbum
-                       {
-                           Title = _feed.Title.Text,
-                           Artist = _feed.GetArtist(),
-                           ArtworkUrl = _feed.GetArtworkUrl(),
-                           ReleaseYear = _feed.GetReleaseYear(),
-                           Tracks = GetTracks(),
-                           Genre = _feed.GetGenre(),
-                           AlbumMediaId = _feed.Id.ExtractGuidFromUrnUuid()
-                       };
-        }
-
-        private IEnumerable<WebTrack> GetTracks()
-        {
-            return _feed.Items.Select(item => new WebTrack
+            return feed.Items.Select(item => new WebTrack
             {
                 MediaId = item.Id.ExtractGuidFromUrnUuid(),
                 ArtistMediaId = item.GetArtistMediaIdFromTrack(),

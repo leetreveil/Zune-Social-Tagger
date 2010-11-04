@@ -172,7 +172,7 @@
 
                     <DataTemplate DataType="{x:Type Details:DetailRow}" >
 
-                        <Grid ShowGridLines="True" Height="30">
+                        <Grid Height="30">
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -308,7 +308,7 @@
 
         </Grid>
 
-        <Grid Grid.Row="1" ShowGridLines="True" Margin="0,20,0,0">
+        <Grid Grid.Row="1" Margin="0,20,0,0">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"/>

@@ -25,14 +25,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             _sharedModel = sharedModel;
             this.MoveBackCommand = new RelayCommand(MoveBack);
             this.MoveNextCommand = new RelayCommand(MoveNext);
-            this.SearchCommand = new RelayCommand(Search);
-            this.AlbumDetails = sharedModel.AlbumDetailsFromFile;
+            this.SearchCommand = new RelayCommand(SearchButtonClicked);
         }
 
         public RelayCommand MoveBackCommand { get; private set; }
         public RelayCommand MoveNextCommand { get; private set; }
         public RelayCommand SearchCommand { get; private set; }
-        public ExpandedAlbumDetailsViewModel AlbumDetails { get; set; }
+        public ExpandedAlbumDetailsViewModel AlbumDetails { get { return _sharedModel.AlbumDetailsFromFile; } }
 
         public SearchResultsViewModel SearchResultsViewModel
         {
@@ -84,42 +83,46 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             }
         }
 
-        public void SearchClicked()
+        public void SearchButtonClicked()
         {
-            this.IsSearching = true;
+            SearchImpl(this.SearchText, this.SearchText);
         }
 
-        public void Search(string artist,string album)
+        public void Search(string artist, string album)
         {
-            this.SearchText = string.Format("{0} {1}",album,artist);
-            Search();
+            this.SearchText = string.Format("{0} {1}", album, artist);
+            //use the artist as part of the album search for greater accuracy
+            SearchImpl(this.SearchText, artist);
         }
 
-        private void Search()
+        private void SearchImpl(string album, string artist)
         {
             this.CanShowResults = false;
             this.CanMoveNext = false;
             this.IsSearching = true;
             this.SearchResultsViewModel = null;
+            this.SearchResultsViewModel = new SearchResultsViewModel(this);
 
-            AlbumSearch.SearchForAlbumAsync(this.SearchText, albums =>
+            SearchForAlbums(album);
+            SearchForArtists(artist);
+        }
+
+        private void SearchForAlbums(string album)
+        {
+            AlbumSearch.SearchForAlbumAsync(album, albums =>
             {
-                this.SearchResultsViewModel = new SearchResultsViewModel();
-
-                DispatcherHelper.CheckBeginInvokeOnUI(() => this.SearchResultsViewModel.LoadAlbums(albums));
-
+                this.SearchResultsViewModel.LoadAlbums(albums);
                 this.CanMoveNext = albums.Count() > 0;
                 this.CanShowResults = true;
-
-                SearchForArtists();
+                this.IsSearching = false;
             });
         }
 
-        private void SearchForArtists()
+        private void SearchForArtists(string artist)
         {
-            ArtistSearch.SearchForAsync(this.SearchText, artists => {
+            ArtistSearch.SearchForAsync(artist, artists =>
+            {
                 this.SearchResultsViewModel.LoadArtists(artists);
-                this.IsSearching = false;
             });
         }
 
