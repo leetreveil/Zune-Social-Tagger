@@ -1,0 +1,9 @@
+put de-link back?
+When starting a scan using scan all, the scan should start from whatever order the view is sorted in
+need re-load db button back
+fix bug where sometimes the next button won't show on the search panel
+improve start-up time by showing the main app window before anything else
+Shouldn't be able to refresh an album when the zune software isn't running, refresh queries the zune database and wont be updated until after zune has ran
+
+MAJOR:
+Needs the ability to update .m4a files

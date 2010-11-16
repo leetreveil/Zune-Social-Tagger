@@ -199,7 +199,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                     }
 
                     this.IsDownloadingDetails = false;
-                    callback.Invoke();
+
+                    if (callback != null)
+                        callback.Invoke();
                 });
             }
             else
