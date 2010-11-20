@@ -1,6 +1,6 @@
 put de-link back?
-need re-load db button back
 fix bug where sometimes the next button won't show on the search panel
+add logo to left of app text and remove the 2
 
 MAJOR:
 Needs the ability to update .m4a files

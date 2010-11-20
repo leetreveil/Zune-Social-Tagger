@@ -31,7 +31,7 @@
             </TextBlock>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" >
+        <StackPanel Margin="0,0,0,20" Grid.Row="1" >
             <TextBlock Text="Zune Social Tagger" FontSize="21.333"/>
             <TextBlock Text="{Binding Version}"/>
             <TextBlock Text="Developed by: Lee Treveil"/>
@@ -44,6 +44,8 @@
             <TextBlock VerticalAlignment="Bottom" Text="© 2009 Lee Treveil"/>
         </StackPanel>
 
+        <Button Content="RELOAD DATABASE"  Grid.Row="2"
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Command="{Binding ReloadDbCommand}" Click="Button_Click" />
 
         <Button Content="CLOSE"  Grid.Row="2"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click" />

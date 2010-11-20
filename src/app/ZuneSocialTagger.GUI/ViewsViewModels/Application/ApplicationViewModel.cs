@@ -193,9 +193,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             }
         }
 
-        /// <summary>
-        /// Read cache on user thread so the results instantly appear
-        /// </summary>
         private void ReadCachedDatabase()
         {
             string filePath = Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.dat");
@@ -298,7 +295,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             }
         }
 
-        private void ReadActualDatabase()
+        public void ReadActualDatabase()
         {
             _albums.Clear();
 
@@ -352,9 +349,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             updateView.Show();
         }
 
-        private static void ShowAboutSettings()
+        private void ShowAboutSettings()
         {
-            new AboutView {DataContext = new AboutViewModel()}.Show();
+            new AboutView {DataContext = _locator.Resolve<AboutViewModel>()}.Show();
         }
 
         private void CheckForUpdates()

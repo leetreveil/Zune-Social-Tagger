@@ -75,6 +75,7 @@ namespace ZuneSocialTagger.GUI
             Container.Bind<SearchViewModel>().ToSelf().InSingletonScope();
             Container.Bind<DetailsViewModel>().ToSelf().InSingletonScope();
             Container.Bind<SafeObservableCollection<AlbumDetailsViewModel>>().ToSelf().InSingletonScope();
+            Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
 
             //set some views to remember their state
             Container.Bind<WebAlbumListView>().ToSelf().InSingletonScope();
