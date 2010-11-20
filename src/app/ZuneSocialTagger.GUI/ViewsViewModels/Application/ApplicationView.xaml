@@ -98,7 +98,7 @@
     
     <Grid>
         <Grid.RowDefinitions>
-        	<RowDefinition Height="11"/>
+        	<RowDefinition Height="Auto"/>
         	<RowDefinition Height="Auto"/>
         	<RowDefinition Height="Auto"/>
         	<RowDefinition Height="Auto" />
@@ -109,12 +109,11 @@
         	<ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Control Template="{DynamicResource Gradient}"/>
 
-        <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+        <StackPanel Grid.Column="1" Height="11" VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Horizontal">
 
             <Button ToolTip="About" Margin="0,0,30,0" Style="{StaticResource SmallGreyButtonNoBorder}"
-                    VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" Content="ABOUT"
+                    VerticalAlignment="Top" VerticalContentAlignment="Bottom" Content="ABOUT"
                     Command="{Binding ShowAboutSettingsCommand}"/>
 
             <Button Click="Minimize_Click" ToolTip="Minimize" Margin="0,0,9,0" Style="{StaticResource MinimizeButton}" 
@@ -122,23 +121,24 @@
 
             <Button Command="{Binding CloseAppCommand}"
                     ToolTip="Close" Width="10" Height="10" 
-                    VerticalAlignment="Bottom" Grid.Column="1" 
+                    VerticalAlignment="Top" Grid.Column="1" 
                     Style="{StaticResource CloseButton}"/>
 
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <TextBlock Grid.Column="0" FontSize="26.667" Text="ZUNE SOCIAL TAGGER"/>
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <Image Source="../../Resources/Assets/zstlogo.png" Width="50" Height="50"></Image>
+            <TextBlock Margin="10,0,0,0" Grid.Column="0" VerticalAlignment="Center" FontSize="26.667" Text="ZUNE SOCIAL TAGGER"/>
 
             <Button Name="btnVisibility" Visibility="{Binding UpdateAvailable, Converter={StaticResource BoolToVisConverter}}"
-                    Margin="10,5,0,0" Style="{StaticResource SmallGreyButtonWithBorder}" 
+                    Margin="10,0,0,0" Style="{StaticResource SmallGreyButtonWithBorder}" 
                     VerticalAlignment="Top" Content="NEW UPDATE AVAILABLE"
                     Command="{Binding UpdateCommand}"/>
 
         </StackPanel>
 
 
-        <ContentControl Margin="0,20,0,0" 
+        <ContentControl Margin="0,30,0,0" 
                         Content="{Binding CurrentPage}" 
                         Grid.Row="2" Grid.ColumnSpan="2"/>
 
