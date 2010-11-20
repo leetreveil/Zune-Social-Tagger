@@ -31,7 +31,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private string _filterText;
 
         public WebAlbumListViewModel(IZuneDatabaseReader dbReader,
-                                     ObservableCollection<AlbumDetailsViewModel> albums,
+                                     SafeObservableCollection<AlbumDetailsViewModel> albums,
                                      IViewLocator locator)
         {
             this.Albums  = albums;
@@ -102,7 +102,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             }
         }
 
-        public ObservableCollection<AlbumDetailsViewModel> Albums { get; set; }
+        public SafeObservableCollection<AlbumDetailsViewModel> Albums { get; set; }
 
         public SortOrder SortOrder
         {
@@ -182,10 +182,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public void DataHasLoaded()
         {
-            this.CanShowScanAllButton = true;
-            ResetLoadingProgress();
-            this.CanShowSort = true;
-            Sort();
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>{
+                this.CanShowScanAllButton = true;
+                ResetLoadingProgress();
+                this.CanShowSort = true;
+                Sort();
+            });
         }
 
         private void SetupCommandBindings()
@@ -208,6 +210,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             var warningMsg = new ErrorMessage(ErrorMode.Warning,"This process could take a very long time, are you sure?");
             ZuneMessageBox.Show(warningMsg, () => {
                 this.CanShowScanAllButton = false;
+
+                //make sure the source collection matches the one bound to the view so albums are scanned in the correct order
+                SortSourceCollection();
 
                 //skip the unlinked albums that cant be downloaded
                 var albumsToDownload = this.Albums.Where(x => x.LinkStatus != LinkStatus.Unlinked).ToList();
@@ -275,29 +280,67 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public void Sort()
         {
-            using (this.AlbumsViewSource.DeferRefresh())
-            {
-                this.AlbumsViewSource.SortDescriptions.Clear();
-
-                switch (this.SortOrder)
+            DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                using (this.AlbumsViewSource.DeferRefresh())
                 {
-                    case SortOrder.DateAdded:
-                        this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("DateAdded", ListSortDirection.Descending));
-                        break;
-                    case SortOrder.Album:
-                        this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("AlbumTitle", ListSortDirection.Ascending));
-                        break;
-                    case SortOrder.Artist:
-                        this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("AlbumArtist", ListSortDirection.Ascending));
-                        break;
-                    case SortOrder.LinkStatus:
-                        this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("LinkStatus", ListSortDirection.Ascending));
-                        break;
-                    case SortOrder.NotSorted:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    this.AlbumsViewSource.SortDescriptions.Clear();
+
+                    switch (this.SortOrder)
+                    {
+                        case SortOrder.DateAdded:
+                            this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("DateAdded", ListSortDirection.Descending));
+                            break;
+                        case SortOrder.Album:
+                            this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("AlbumTitle", ListSortDirection.Ascending));
+                            break;
+                        case SortOrder.Artist:
+                            this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("AlbumArtist", ListSortDirection.Ascending));
+                            break;
+                        case SortOrder.LinkStatus:
+                            this.AlbumsViewSource.SortDescriptions.Add(new SortDescription("LinkStatus", ListSortDirection.Ascending));
+                            break;
+                        case SortOrder.NotSorted:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
                 }
+            });
+        }
+
+        private void SortSourceCollection() {
+            IEnumerable<AlbumDetailsViewModel> sortedCollection = null;
+            switch (this.SortOrder)
+            {
+                case SortOrder.DateAdded:
+                    sortedCollection =  this.Albums.OrderByDescending(x => x.DateAdded).ToList();
+                    break;
+                case SortOrder.Album:
+                    sortedCollection = this.Albums.OrderBy(x => x.AlbumTitle).ToList();
+                    break;
+                case SortOrder.Artist:
+                    sortedCollection = this.Albums.OrderBy(x => x.AlbumArtist).ToList();
+                    break;
+                case SortOrder.LinkStatus:
+                    sortedCollection = this.Albums.OrderBy(x => x.LinkStatus).ToList();
+                    break;
+                case SortOrder.NotSorted:
+                    break;
+                default:
+                    break;
+            }
+
+            if (sortedCollection != null)
+            {
+                ClearAndAddToSource(sortedCollection);
+            }
+        }
+
+        private void ClearAndAddToSource(IEnumerable<AlbumDetailsViewModel> items) {
+            this.Albums.Clear();
+            foreach (var item in items)
+            {
+                this.Albums.Add(item);
             }
         }
 

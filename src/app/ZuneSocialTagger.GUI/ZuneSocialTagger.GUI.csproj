@@ -117,6 +117,8 @@
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Models\SerializedAlbum.cs" />
     <Compile Include="ViewsViewModels\Details\DiscHeader.cs" />
+    <Compile Include="ViewsViewModels\Shared\ExtensionMethods.cs" />
+    <Compile Include="ViewsViewModels\Shared\SafeObservableCollection.cs" />
     <Compile Include="ViewsViewModels\Shared\SharedModel.cs" />
     <Compile Include="ViewsViewModels\Shared\IViewLocator.cs" />
     <Compile Include="ViewsViewModels\Shared\ViewModelBase.cs" />

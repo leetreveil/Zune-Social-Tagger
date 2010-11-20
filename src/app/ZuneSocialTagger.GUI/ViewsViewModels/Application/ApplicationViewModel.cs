@@ -27,7 +27,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
     public class ApplicationViewModel : ViewModelBase
     {
         private readonly IZuneDatabaseReader _dbReader;
-        private readonly IList<AlbumDetailsViewModel> _albums;
+        private readonly SafeObservableCollection<AlbumDetailsViewModel> _albums;
         private readonly IViewLocator _locator;
         private bool _updateAvailable;
         private bool _shouldShowErrorMessage;
@@ -37,7 +37,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
 
         public ApplicationViewModel(IZuneDatabaseReader dbReader,
-                                    ObservableCollection<AlbumDetailsViewModel> albums,
+                                    SafeObservableCollection<AlbumDetailsViewModel> albums,
                                     IViewLocator locator)
         {
             _dbReader = dbReader;
@@ -254,26 +254,23 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
                 if (newAlbums.Count > 0 || removedAlbums.Count > 0)
                 {
-                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    foreach (var album in newAlbums)
                     {
-                        foreach (var album in newAlbums)
-                        {
-                            var albumDetailsViewModel = _locator.Resolve<AlbumDetailsViewModel>();
-                            albumDetailsViewModel.LinkStatus = album.AlbumMediaId.GetLinkStatusFromGuid();
-                            albumDetailsViewModel.ZuneAlbumMetaData = album;
-                            _albums.Add(albumDetailsViewModel);
-                        }
+                        var albumDetailsViewModel = _locator.Resolve<AlbumDetailsViewModel>();
+                        albumDetailsViewModel.LinkStatus = album.AlbumMediaId.GetLinkStatusFromGuid();
+                        albumDetailsViewModel.ZuneAlbumMetaData = album;
+                        _albums.Add(albumDetailsViewModel);
+                    }
 
-                        foreach (var albumToBeRemoved in
-                            removedAlbums.Select(id => _albums.Where(x => x.ZuneAlbumMetaData.MediaId == id).First()))
-                        {
-                            AlbumDetailsViewModel toBeRemoved = albumToBeRemoved;
-                            _albums.Remove(toBeRemoved);
-                        }
+                    foreach (var albumToBeRemoved in
+                        removedAlbums.Select(id => _albums.Where(x => x.ZuneAlbumMetaData.MediaId == id).First()))
+                    {
+                        AlbumDetailsViewModel toBeRemoved = albumToBeRemoved;
+                        _albums.Remove(toBeRemoved);
+                    }
 
-                        _webAlbumListViewModel.Sort();
-                        TellViewThatUpdatesHaveBeenAdded(newAlbums.Count(), removedAlbums.Count());
-                    }); 
+                    _webAlbumListViewModel.Sort();
+                    TellViewThatUpdatesHaveBeenAdded(newAlbums.Count(), removedAlbums.Count());
                 }
             });
         }
@@ -303,7 +300,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void ReadActualDatabase()
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(() => _albums.Clear());
+            _albums.Clear();
 
             ThreadPool.QueueUserWorkItem(_ => {
                 foreach (DbAlbum newAlbum in _dbReader.ReadAlbums())
@@ -312,9 +309,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     albumDetailsViewModel.LinkStatus = newAlbum.AlbumMediaId.GetLinkStatusFromGuid();
                     albumDetailsViewModel.ZuneAlbumMetaData = newAlbum;
 
-                    DispatcherHelper.CheckBeginInvokeOnUI(() => _albums.Add(albumDetailsViewModel));
+                    _albums.Add(albumDetailsViewModel);
                 }
-                DispatcherHelper.CheckBeginInvokeOnUI(_webAlbumListViewModel.DataHasLoaded);
+                _webAlbumListViewModel.DataHasLoaded();
             });
         }
 

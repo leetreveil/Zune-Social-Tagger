@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
+using System.Windows.Threading;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
 {
