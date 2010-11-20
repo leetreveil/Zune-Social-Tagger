@@ -210,7 +210,10 @@
                     
                     <Separator />
 
-                    <MenuItem Header="Refresh" 
+                    <MenuItem Header="Refresh"
+                      ToolTipService.ShowOnDisabled="True"
+                      ToolTip="The album can only be refreshed when the zune software is running."
+                      IsEnabled="{Binding ElementName=lvAlbums, Path=SelectedItem.CanRefresh}"
                       Command="{Binding ElementName=lvAlbums, Path=SelectedItem.RefreshCommand}">
                         <MenuItem.Icon>
                             <Image Width="16"

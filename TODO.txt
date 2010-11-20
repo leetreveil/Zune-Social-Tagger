@@ -1,5 +1,4 @@
 put de-link back?
-When starting a scan using scan all, the scan should start from whatever order the view is sorted in
 need re-load db button back
 fix bug where sometimes the next button won't show on the search panel
 improve start-up time by showing the main app window before anything else

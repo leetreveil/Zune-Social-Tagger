@@ -123,6 +123,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             get { return _linkStatus != LinkStatus.Unlinked && _linkStatus != LinkStatus.Unknown; }
         }
 
+        public bool CanRefresh   
+        {
+            get { return SharedMethods.CheckIfZuneSoftwareIsRunning(); }
+        }
+
         #endregion
 
         private void ShowMoreInfo()
