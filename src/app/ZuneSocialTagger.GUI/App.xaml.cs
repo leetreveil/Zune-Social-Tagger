@@ -46,15 +46,12 @@ namespace ZuneSocialTagger.GUI
 
             SetupBindings();
 
-            var appViewModel = Container.Get<ApplicationViewModel>();
-            var appView = new ApplicationView { DataContext = appViewModel };
-
-            //tell the view model when the view has loaded, and then start the view model load routine
-            //if we didnt do this the viewmodel would load before the view and would delay the startup
-            //of the application unnecessarily
-            appView.Loaded += delegate { appViewModel.ViewHasLoaded(); };
-
+            var appView = new ApplicationView();
             appView.Show();
+
+            var appViewModel = Container.Get<ApplicationViewModel>();
+            appView.DataContext = appViewModel;
+            appViewModel.ViewHasLoaded();
         }
 
         private static void SetupBindings()

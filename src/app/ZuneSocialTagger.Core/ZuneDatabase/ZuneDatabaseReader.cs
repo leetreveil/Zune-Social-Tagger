@@ -86,36 +86,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             for (int i = 0; i < uniqueIds.Count; i++)
             {
                 object uniqueId = uniqueIds[i];
-
-
-                var result = albums.GetFieldValue(Convert.ToUInt32(uniqueId), typeof(string), (uint)ZuneQueryList.AtomNameToAtom("ZuneAlbumCollectionID"));
-
-                var myGuid =  Guid.NewGuid();
-                albums.SetFieldValue(Convert.ToUInt32(uniqueId), (uint)ZuneQueryList.AtomNameToAtom("ZuneAlbumCollectionID"),myGuid);
-
-                result = albums.GetFieldValue(Convert.ToUInt32(uniqueId), typeof(string), (uint)ZuneQueryList.AtomNameToAtom("ZuneAlbumCollectionID"));
-                
-                Console.WriteLine(result);
-                //for (int y = 0; y < 2000; y++)
-                //{
-                //    try
-                //    {
-                //        uint idx = Convert.ToUInt32(uniqueId);
-                //        var test = albums.GetFieldValue(idx, typeof(string), (uint)y);
-
-                //        if (test != null)
-                //        {
-                //            Trace.WriteLine(ZuneQueryList.AtomToAtomName(y));
-                //            Trace.WriteLine(test);
-                //        }
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        Trace.WriteLine("FAILED ON");
-                //    }
-                //}
-
-
                 yield return GetAlbum((int) uniqueId);
                 ProgressChanged.Invoke(i, uniqueIds.Count -1);
             }

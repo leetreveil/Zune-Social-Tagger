@@ -60,8 +60,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         public void ViewHasLoaded()
         {
-            InitDb();
             CheckForUpdates();
+            InitDb();
         }
 
         #region View Bindings
