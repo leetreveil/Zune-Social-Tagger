@@ -41,6 +41,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             _sharedModel = sharedModel;
 
             this.LinkCommand = new RelayCommand(LinkAlbum);
+            this.DelinkCommand = new RelayCommand(DelinkAlbum);
             this.RefreshCommand = new RelayCommand(RefreshAlbum);
             this.MoreInfoCommand = new RelayCommand(ShowMoreInfo);
         }
@@ -70,6 +71,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         public RelayCommand MoreInfoCommand { get; private set; }
         public RelayCommand RefreshCommand { get; private set; }
         public RelayCommand LinkCommand { get; private set; }
+        public RelayCommand DelinkCommand { get; private set; }
 
         public DbAlbum ZuneAlbumMetaData
         {
@@ -99,6 +101,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 _linkStatus = value;
                 RaisePropertyChanged(() => this.LinkStatus);
                 RaisePropertyChanged(() => this.CanLink);
+                RaisePropertyChanged(() => this.CanDelink);
                 RaisePropertyChanged(() => this.CanShowMoreInfo);
             }
         }
@@ -116,6 +119,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         public bool CanLink
         {
             get { return true; }
+        }
+
+        public bool CanDelink
+        {
+            get { return _linkStatus != LinkStatus.Unlinked && _linkStatus != LinkStatus.Unknown; }
         }
 
         public bool CanShowMoreInfo
@@ -157,6 +165,45 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 Messenger.Default.Send<ErrorMessage, ApplicationViewModel>(new ErrorMessage(ErrorMode.Error, ex.Message));
                 return;  //if we hit an error on any track in the albums then just fail and dont read anymore
             }
+        }
+
+        public void DelinkAlbum()
+        {
+            DoesAlbumExistInDbAndDisplayError(this.ZuneAlbumMetaData);
+
+            Mouse.OverrideCursor = Cursors.Wait;
+
+            //TODO: fix bug where application crashes when removing an album that is currently playing
+
+            var filePaths = _dbReader.GetTracksForAlbum(this.ZuneAlbumMetaData.MediaId).Select(x => x.FilePath);
+
+            var containers = _fileRetriever.GetContainers(filePaths);
+
+            foreach (var container in containers)
+            {
+                container.RemoveZuneAttribute("WM/WMContentID");
+                container.RemoveZuneAttribute("WM/WMCollectionID");
+                container.RemoveZuneAttribute("WM/WMCollectionGroupID");
+                container.RemoveZuneAttribute("ZuneCollectionID");
+                container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
+                container.RemoveZuneAttribute("ZuneCollectionID");
+                container.RemoveZuneAttribute("ZuneUserEditedFields");
+                container.RemoveZuneAttribute(ZuneIds.Album);
+                container.RemoveZuneAttribute(ZuneIds.Artist);
+                container.RemoveZuneAttribute(ZuneIds.Track);
+                container.WriteToFile();
+            }
+
+            Mouse.OverrideCursor = null;
+
+            Messenger.Default.Send<ErrorMessage, ApplicationViewModel>(new ErrorMessage(ErrorMode.Warning,
+                                                    "Album should now be de-linked. You may need to " +
+                                                    "remove then re-add the album for the changes to take effect."));
+
+            //force a refresh on the album to see if the de-link worked
+            //this probably wont work because the zunedatabase does not correctly change the albums
+            //details when delinking, but does when linking
+            RefreshAlbum();
         }
 
         public void RefreshAlbum()

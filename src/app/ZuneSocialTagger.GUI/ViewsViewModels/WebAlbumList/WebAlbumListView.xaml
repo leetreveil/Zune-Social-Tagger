@@ -207,7 +207,17 @@
                                    Source="../../Resources/Assets/add.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    
+
+                    <MenuItem Header="De-Link"
+                      IsEnabled="{Binding ElementName=lvAlbums, Path=SelectedItem.CanDelink}"
+                      Command="{Binding ElementName=lvAlbums, Path=SelectedItem.DelinkCommand}">
+                        <MenuItem.Icon>
+                            <Image Width="16"
+                                   Height="16"
+                                   Source="../../Resources/Assets/minus.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
                     <Separator />
 
                     <MenuItem Header="Refresh"
