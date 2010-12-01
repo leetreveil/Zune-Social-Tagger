@@ -46,15 +46,17 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\..\..\Program Files\Zune\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\..\Program Files\Zune\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>false</DebugSymbols>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\Assets\zuneicondark.ico</ApplicationIcon>
@@ -63,9 +65,6 @@
     <StartupObject>ZuneSocialTagger.GUI.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExceptionLogger">
-      <HintPath>..\..\..\libs\exceptionLogger\ExceptionLogger.dll</HintPath>
-    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3e875cdb3903c512, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\mvvmlight3\GalaSoft.MvvmLight.dll</HintPath>

@@ -4,7 +4,6 @@ using System.IO;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Threading;
 using Ninject;
-using Utilities;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Controls;
 using ZuneSocialTagger.GUI.Properties;
@@ -26,8 +25,8 @@ namespace ZuneSocialTagger.GUI
     public partial class App
     {
         private static readonly StandardKernel Container = new StandardKernel();
-        private static readonly ExceptionLogger LoggerForStrings = new ExceptionLogger();
-        private static readonly StringLogger StringLogger = new StringLogger();
+        //private static readonly ExceptionLogger LoggerForStrings = new ExceptionLogger();
+        //private static readonly StringLogger StringLogger = new StringLogger();
 
         public App()
         {
@@ -83,7 +82,7 @@ namespace ZuneSocialTagger.GUI
 
         private static void SetupUnhandledExceptionLogging()
         {
-            LoggerForStrings.AddLogger(StringLogger);
+            //LoggerForStrings.AddLogger(StringLogger);
         }
 
         private static string GetUserDataPath()
@@ -99,20 +98,20 @@ namespace ZuneSocialTagger.GUI
 
         private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            LoggerForStrings.LogException(e.Exception);
-            ErrorReportDialog.Show(StringLogger.ErrorLog,null);
+            //LoggerForStrings.LogException(e.Exception);
+            //ErrorReportDialog.Show(StringLogger.ErrorLog,null);
             e.Handled = true;
         }
     }
 
-    public class StringLogger : LoggerImplementation
-    {
-        public string ErrorLog { get; private set; }
+    //public class StringLogger : LoggerImplementation
+    //{
+    //    public string ErrorLog { get; private set; }
 
-        public override void LogError(string error)
-        {
-            ErrorLog = error;
-        }
-    }
+    //    public override void LogError(string error)
+    //    {
+    //        ErrorLog = error;
+    //    }
+    //}
 
 }

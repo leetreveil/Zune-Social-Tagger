@@ -356,14 +356,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void CheckForUpdates()
         {
-            string updaterPath = Path.Combine(Settings.Default.AppDataFolder, Settings.Default.UpdateExeName);
-
             if (Settings.Default.CheckForUpdates)
             {
                 //do update checking stuff here
                 UpdateManager updateManager = UpdateManager.Instance;
 
-                updateManager.UpdateExePath = updaterPath;
+                updateManager.UpdateExePath = Path.Combine(Settings.Default.AppDataFolder, Settings.Default.UpdateExeName);
                 updateManager.AppFeedUrl = Settings.Default.UpdateFeedUrl;
                 updateManager.UpdateExe = Resources.socialtaggerupdater;
 
