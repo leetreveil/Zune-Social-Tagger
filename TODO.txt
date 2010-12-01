@@ -1,6 +1,7 @@
-put de-link back?
-fix bug where sometimes the next button won't show on the search panel
-new update available should not show when app is starting
+add notice on first start about disabling automatically update album info etc
 
 MAJOR:
 Needs the ability to update .m4a files
+
+MINOR:
+Fix exception logging
