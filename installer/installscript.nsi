@@ -12,7 +12,7 @@
 
   ;Name and file
   Name "Zune Social Tagger"
-  OutFile "zunesociinstaller.exe"
+  OutFile "zstinstaller.exe"
 
   ;Default installation folder
   InstallDir "C:\Program Files\Zune"
@@ -79,7 +79,6 @@ Section "Dummy Section" SecDummy
   File "installfiles\Zune Social Tagger.exe"
   File "installfiles\Zune Social Tagger.exe.config"
   File "installfiles\ASFTag.Net.dll"
-  File "installfiles\ExceptionLogger.dll"
   File "installfiles\GalaSoft.MvvmLight.dll"
   File "installfiles\GalaSoft.MvvmLight.Extras.dll"
   File "installfiles\Id3Tag.Net.dll"
@@ -132,7 +131,6 @@ Section "Uninstall"
   Delete "$INSTDIR\Zune Social Tagger.exe"
   Delete "$INSTDIR\Zune Social Tagger.exe.config"
   Delete "$INSTDIR\ASFTag.Net.dll"
-  Delete "$INSTDIR\ExceptionLogger.dll"
   Delete "$INSTDIR\GalaSoft.MvvmLight.dll"
   Delete "$INSTDIR\GalaSoft.MvvmLight.Extras.dll"
   Delete "$INSTDIR\Id3Tag.Net.dll"
