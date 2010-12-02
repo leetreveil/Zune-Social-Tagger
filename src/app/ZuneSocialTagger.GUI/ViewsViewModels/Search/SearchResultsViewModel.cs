@@ -113,6 +113,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
         public void LoadAlbum(WebAlbum album)
         {
+            _parent.CanMoveNext = false;
             this.IsLoading = true;
 
             if (album == null) return;
@@ -132,6 +133,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
                         "Could not get album details";
                 }
 
+                _parent.CanMoveNext = true;
                 this.IsLoading = false;
             });
         }
@@ -160,6 +162,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
         private void DisplayArtists()
         {
+            _parent.CanMoveNext = false;
             this.SearchResults.Clear();
 
             foreach (var artist in _artists)

@@ -112,7 +112,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             AlbumSearch.SearchForAlbumAsync(album, albums =>
             {
                 this.SearchResultsViewModel.LoadAlbums(albums);
-                this.CanMoveNext = albums.Count() > 0;
+                //this.CanMoveNext = albums.Count() > 0;
                 this.CanShowResults = true;
                 this.IsSearching = false;
             });

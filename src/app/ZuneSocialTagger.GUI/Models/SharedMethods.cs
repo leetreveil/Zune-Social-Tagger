@@ -70,6 +70,9 @@ namespace ZuneSocialTagger.GUI.Models
 
         public static ExpandedAlbumDetailsViewModel GetAlbumDetailsFrom(this WebAlbum albumMetaData)
         {
+            if (albumMetaData == null)
+                return null;
+
             return new ExpandedAlbumDetailsViewModel
             {
                 Title = albumMetaData.Title,
@@ -82,6 +85,9 @@ namespace ZuneSocialTagger.GUI.Models
 
         public static ExpandedAlbumDetailsViewModel GetAlbumDetailsFrom(MetaData metaData, int trackCount)
         {
+            if (metaData == null)
+                return null;
+
             return new ExpandedAlbumDetailsViewModel
             {
                 Artist = metaData.AlbumArtist,
