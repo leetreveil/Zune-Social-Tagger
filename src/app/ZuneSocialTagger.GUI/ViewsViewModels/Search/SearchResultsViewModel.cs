@@ -35,6 +35,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
             this.ArtistCount = "";
             this.AlbumCount = "";
+
+            this.ResultsWidth = 300;
         }
 
         #region Bindings
@@ -66,6 +68,17 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             {
                 _albumCount = value;
                 RaisePropertyChanged(() => this.AlbumCount);
+            }
+        }
+
+        private int _resultsWidth;
+        public int ResultsWidth
+        {
+            get { return _resultsWidth; }
+            set
+            {
+                _resultsWidth = value;
+                RaisePropertyChanged(() => this.ResultsWidth);
             }
         }
 
@@ -162,6 +175,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
         private void DisplayArtists()
         {
+            this.ResultsWidth = 640;
             _parent.CanMoveNext = false;
             this.SearchResults.Clear();
 
@@ -173,6 +187,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
         private void DisplayAlbums()
         {
+            this.ResultsWidth = 300;
             this.SearchResults.Clear();
 
             foreach (var album in _albums)

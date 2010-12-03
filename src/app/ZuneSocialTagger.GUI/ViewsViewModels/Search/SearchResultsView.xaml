@@ -174,28 +174,29 @@
                 </TextBlock.Style>
 
             </TextBlock>
-
-        <ContentControl Grid.Row="2">
-            <ContentControl.Style>
-                <Style TargetType="ContentControl">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding HasResults}" Value="False">
-                            <Setter Property="ContentControl.Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <Grid>
-                                            <TextBlock FontWeight="Bold" FontSize="20" Text="NO RESULTS"/>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding HasResults}" Value="True">
-                            <Setter Property="ContentControl.Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <Grid>
-                                            <ListView  x:Name="lvAlbums"
+        
+        <DockPanel Grid.Row="2" Grid.ColumnSpan="2" >
+            <ContentControl Width="{Binding ResultsWidth, FallbackValue=300}" HorizontalAlignment="Left">
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasResults}" Value="False">
+                                <Setter Property="ContentControl.Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Grid>
+                                                <TextBlock FontWeight="Bold" FontSize="20" Text="NO RESULTS"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding HasResults}" Value="True">
+                                <Setter Property="ContentControl.Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Grid>
+                                                <ListView  x:Name="lvAlbums"
                                                         SelectedIndex="0" 
                                                         Background="Transparent" 
                                                         BorderBrush="Transparent" 
@@ -205,29 +206,35 @@
                                                         Margin="0,0,20,0" 
                                                         ItemContainerStyle="{StaticResource SelectedItemHighlight}">
 
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="MouseUp">
-                                                        <cmd:EventToCommand Command="{Binding ResultClickedCommand}"
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="MouseUp">
+                                                            <cmd:EventToCommand Command="{Binding ResultClickedCommand}"
                                         CommandParameter="{Binding ElementName=lvAlbums,Path=SelectedItem}"/>
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
 
-                                            </ListView>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ContentControl.Style>
+                                                </ListView>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
 
-        </ContentControl>
+            </ContentControl>
 
-
-        <Search:SearchResultsDetailView 
+            <Search:SearchResultsDetailView
             d:DataContext="{d:DesignInstance dt:SearchResultsDetailDesignViewModel,IsDesignTimeCreatable=True}"
             Grid.Row="2" Grid.Column="2" DataContext="{Binding SearchResultsDetailViewModel}"/>
+
+        </DockPanel>
+
+
+
+
+
 
         </Grid>
 </UserControl>
