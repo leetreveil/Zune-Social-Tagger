@@ -190,6 +190,18 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             });
         }
 
+        public void SuspendSorting() {
+            DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                this.AlbumsViewSource.SortDescriptions.Clear();
+            });
+        }
+
+        public void ResetSortOrder() {
+            DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                this.CanShowSort = false;
+            });
+        }
+
         private void SetupCommandBindings()
         {
             this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
@@ -280,7 +292,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public void Sort()
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(() => {
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
                 using (this.AlbumsViewSource.DeferRefresh())
                 {
                     this.AlbumsViewSource.SortDescriptions.Clear();
@@ -313,7 +326,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             switch (this.SortOrder)
             {
                 case SortOrder.DateAdded:
-                    sortedCollection =  this.Albums.OrderByDescending(x => x.DateAdded).ToList();
+                    sortedCollection = this.Albums.OrderByDescending(x => x.DateAdded).ToList();
                     break;
                 case SortOrder.Album:
                     sortedCollection = this.Albums.OrderBy(x => x.AlbumTitle).ToList();

@@ -5,3 +5,6 @@ Needs the ability to update .m4a files
 
 MINOR:
 Fix exception logging
+should filter out already selected tracks in the combo box in details view
+track number & text is not perfectly centered
+expand search box when showing artist list

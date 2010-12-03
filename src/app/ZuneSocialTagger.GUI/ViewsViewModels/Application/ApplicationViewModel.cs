@@ -298,8 +298,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         public void ReadActualDatabase()
         {
             _albums.Clear();
+            _webAlbumListViewModel.SuspendSorting();
+            _webAlbumListViewModel.ResetSortOrder();
 
-            ThreadPool.QueueUserWorkItem(_ => {
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
                 foreach (DbAlbum newAlbum in _dbReader.ReadAlbums())
                 {
                     var albumDetailsViewModel = _locator.Resolve<AlbumDetailsViewModel>();
