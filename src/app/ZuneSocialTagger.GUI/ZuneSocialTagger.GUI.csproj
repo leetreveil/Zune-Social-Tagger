@@ -87,6 +87,9 @@
       <HintPath>..\..\..\libs\ninject\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="protobuf-net">
+      <HintPath>..\..\..\libs\protobuf\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
@@ -114,7 +117,6 @@
       <DependentUpon>SearchControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
-    <Compile Include="Models\SerializedAlbum.cs" />
     <Compile Include="ViewsViewModels\Details\DiscHeader.cs" />
     <Compile Include="ViewsViewModels\Shared\ExtensionMethods.cs" />
     <Compile Include="ViewsViewModels\Shared\SafeObservableCollection.cs" />

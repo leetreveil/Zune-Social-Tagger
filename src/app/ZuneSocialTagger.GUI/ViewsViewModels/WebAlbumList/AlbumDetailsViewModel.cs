@@ -13,9 +13,11 @@ using ZuneSocialTagger.GUI.ViewsViewModels.Details;
 using ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using ProtoBuf;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {
+    [ProtoContract]
     public class AlbumDetailsViewModel : ViewModelBase
     {
         private readonly IZuneDatabaseReader _dbReader;
@@ -73,6 +75,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         public RelayCommand LinkCommand { get; private set; }
         public RelayCommand DelinkCommand { get; private set; }
 
+        [ProtoMember(1)]
         public DbAlbum ZuneAlbumMetaData
         {
             get { return _zuneAlbumMetaData; }
@@ -83,6 +86,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             }
         }
 
+        [ProtoMember(2)]
         public WebAlbum WebAlbumMetaData
         {
             get { return _webAlbumMetaData; }
@@ -93,6 +97,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             }
         }
 
+        [ProtoMember(3)]
         public LinkStatus LinkStatus
         {
             get { return _linkStatus; }

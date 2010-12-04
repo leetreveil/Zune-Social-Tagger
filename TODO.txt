@@ -1,4 +1,5 @@
 add notice on first start about disabling automatically update album info etc
+should we reload the database when scan all is clicked and do them in parallel? would remove the need for a reload db button
 
 MAJOR:
 Needs the ability to update .m4a files

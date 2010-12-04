@@ -55,7 +55,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                     Artist = feed.GetArtist(),
                     ArtworkUrl = feed.GetArtworkUrl(),
                     ReleaseYear = feed.GetReleaseYear(),
-                    Tracks = GetTracks(feed),
+                    Tracks = GetTracks(feed).ToList(),
                     Genre = feed.GetGenre(),
                     AlbumMediaId = feed.Id.ExtractGuidFromUrnUuid()
                 };

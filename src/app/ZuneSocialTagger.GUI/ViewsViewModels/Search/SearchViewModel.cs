@@ -111,10 +111,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         {
             AlbumSearch.SearchForAlbumAsync(album, albums =>
             {
-                this.SearchResultsViewModel.LoadAlbums(albums);
-                //this.CanMoveNext = albums.Count() > 0;
-                this.CanShowResults = true;
-                this.IsSearching = false;
+                DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                    this.SearchResultsViewModel.LoadAlbums(albums);
+                    //this.CanMoveNext = albums.Count() > 0;
+                    this.CanShowResults = true;
+                    this.IsSearching = false;
+                });
             });
         }
 
@@ -122,7 +124,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         {
             ArtistSearch.SearchForAsync(artist, artists =>
             {
-                this.SearchResultsViewModel.LoadArtists(artists);
+                DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                    this.SearchResultsViewModel.LoadArtists(artists);
+                });
             });
         }
 

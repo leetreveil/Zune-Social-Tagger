@@ -20,6 +20,7 @@ using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.GUI.ViewsViewModels.Update;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
+using ProtoBuf;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 {
@@ -195,49 +196,35 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void ReadCachedDatabase()
         {
-            string filePath = Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.dat");
-
-            FileStream fs;
             try
             {
-                fs = new FileStream(filePath, FileMode.Open);
+                List<AlbumDetailsViewModel> deserialized = null;
+                using (var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache2.dat"), FileMode.Open))
+                {
+                    deserialized = Serializer.Deserialize<List<AlbumDetailsViewModel>>(fs);
+                }
+
+                if (deserialized == null) throw new NullReferenceException();
+                if (deserialized.Count() == 0) ReadActualDatabase();
+
+                foreach (var album in deserialized)
+                {
+                    var albumDetailsViewModel = _locator.Resolve<AlbumDetailsViewModel>();
+                    albumDetailsViewModel.WebAlbumMetaData = album.WebAlbumMetaData;
+                    albumDetailsViewModel.ZuneAlbumMetaData = album.ZuneAlbumMetaData;
+                    albumDetailsViewModel.LinkStatus = album.LinkStatus;
+
+                    _albums.Add(albumDetailsViewModel);
+                }
+
+                GetNewOrRemovedAlbumsFromZuneDb();
+
+                _webAlbumListViewModel.DataHasLoaded();
+
             }
             catch (Exception)
             {
                 ReadActualDatabase();
-                return;
-            }
-
-            try
-            {
-                var binaryFormatter = new BinaryFormatter();
-                var deserialized = (IEnumerable<SerializedAlbum>) binaryFormatter.Deserialize(fs);
-
-                if (deserialized.Count() == 0) ReadActualDatabase();
-
-                    foreach (var album in deserialized)
-                    {
-                        var albumDetailsViewModel = _locator.Resolve<AlbumDetailsViewModel>();
-                        albumDetailsViewModel.WebAlbumMetaData = album.WebAlbum;
-                        albumDetailsViewModel.ZuneAlbumMetaData = album.DbAlbum;
-                        albumDetailsViewModel.LinkStatus = album.LinkStatus;
-
-                        _albums.Add(albumDetailsViewModel);
-                    }
-
-                    GetNewOrRemovedAlbumsFromZuneDb();
-
-                    _webAlbumListViewModel.DataHasLoaded();
-
-            }
-            catch (SerializationException)
-            {
-                //TODO: log error
-                ReadActualDatabase();
-            }
-            finally
-            {
-                fs.Close();
             }
         }
 
@@ -328,22 +315,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void WriteCacheToFile()
         {
-            using (var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache.dat"), FileMode.Create))
+            using (var file = File.Create(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache2.dat"))) 
             {
-                var binaryFormatter = new BinaryFormatter();
-                IEnumerable<SerializedAlbum> serializedAlbumsFromSource = CreateSerializedAlbumsFromSource(_albums);
-                binaryFormatter.Serialize(fs, serializedAlbumsFromSource);
-                fs.Close();
+                Serializer.Serialize(file, _albums.ToList());
             }
         }
 
-        private static IEnumerable<SerializedAlbum> CreateSerializedAlbumsFromSource(IEnumerable<AlbumDetailsViewModel> source)
-        {
-            return source.Select(albumDetailsViewModel => new SerializedAlbum(
-                                                              albumDetailsViewModel.ZuneAlbumMetaData,
-                                                              albumDetailsViewModel.WebAlbumMetaData,
-                                                              albumDetailsViewModel.LinkStatus)).ToList();
-        }
 
         private static void ShowUpdate()
         {
