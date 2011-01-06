@@ -4,6 +4,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using ZuneSocialTagger.GUI.Models;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using GalaSoft.MvvmLight.Threading;
 
 namespace ZuneSocialTagger.GUI.Controls
 {
@@ -13,84 +19,65 @@ namespace ZuneSocialTagger.GUI.Controls
     public partial class InlineZuneMessage : UserControl
     {
         private readonly Timer _timer;
+        private Queue<ErrorMessage> _messages;
 
         public InlineZuneMessage()
         {
             InitializeComponent();
+            this.Visibility = Visibility.Collapsed;
 
             _timer = new Timer();
             _timer.Elapsed += delegate 
             {
-                this.Dispatcher.Invoke(new Action(() => this.SetValue(ShowMessageProperty, false)));
+                DispatcherHelper.CheckBeginInvokeOnUI(CheckMessages);
             };
 
-            //set default image
-            var imageSource = GetErrorImageFor(ErrorMode.Error);
-            this.imgError.Source = new BitmapImage(new Uri(imageSource, UriKind.RelativeOrAbsolute));
+            _messages = new Queue<ErrorMessage>();
         }
 
-        #region dp's
-
-        public static readonly DependencyProperty MessageTextProperty =
-            DependencyProperty.Register("MessageText", typeof(string), typeof(InlineZuneMessage),
-                                        new PropertyMetadata(MessageTextChanged));
-
-
-        public static readonly DependencyProperty ErrorModeProperty =
-            DependencyProperty.Register("ErrorMode", typeof (ErrorMode), typeof (InlineZuneMessage),
-                                        new PropertyMetadata(ErrorModeChanged));
-
-        public static readonly DependencyProperty ShowMessageProperty =
-            DependencyProperty.Register("ShowMessage", typeof(bool), typeof(InlineZuneMessage),
-                                        new PropertyMetadata(ShowMessageChanged));
-
-        #endregion
-
-        public ErrorMode ErrorMode
+        public static readonly DependencyProperty MessagesProperty =
+            DependencyProperty.Register("Messages", typeof(ObservableCollection<ErrorMessage>), typeof(InlineZuneMessage),
+                                        new PropertyMetadata(MessagesChanged));                
+                                        
+        public ObservableCollection<ErrorMessage> Messages
         {
-            get { return (ErrorMode) GetValue(ErrorModeProperty); }
-            set { SetValue(ErrorModeProperty, value); }
+            get { return (ObservableCollection<ErrorMessage>)GetValue(MessagesProperty); }
+            set { SetValue(MessagesProperty, value); }
         }
 
-        public string MessageText
+        private static void MessagesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            get { return (string)GetValue(MessageTextProperty); }
-            set { SetValue(MessageTextProperty, value); }
+            var list = (ObservableCollection<ErrorMessage>)e.NewValue;
+
+            list.CollectionChanged += (sender, value) => {
+                var view = (InlineZuneMessage)d;
+
+                var message = (ErrorMessage) value.NewItems[0];
+                view._messages.Enqueue(message);
+
+                if (view.Visibility == Visibility.Collapsed) {
+                    view.DisplayMessage(view._messages.Dequeue());
+                }
+            };
         }
 
-        public bool ShowMessage
-        {
-            get { return (bool)GetValue(ShowMessageProperty); }
-            set { SetValue(ShowMessageProperty, value); }
+        private void DisplayMessage(ErrorMessage message) {
+            this.Visibility = Visibility.Visible;
+            this.tbMessage.Text = message.Message;
+
+            var imageResourcePath = GetErrorImageFor(message.ErrorMode);
+            this.imgError.Source = new BitmapImage(new Uri(imageResourcePath, UriKind.RelativeOrAbsolute));
+
+            this._timer.Interval = 20000;
+            this._timer.Start();
         }
 
-        private static void MessageTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private void CheckMessages() 
         {
-            var view = (InlineZuneMessage) d;
-            view.tbMessage.Text = (string) e.NewValue;
-        }
-
-        private static void ErrorModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var view = (InlineZuneMessage)d;
-
-            var imageSource = GetErrorImageFor((ErrorMode) e.NewValue);
-
-            view.imgError.Source = new BitmapImage(new Uri(imageSource, UriKind.RelativeOrAbsolute));
-        }
-
-        private static void ShowMessageChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var view = (InlineZuneMessage)d;
-
-            bool result = (bool) e.NewValue;
-            view.Visibility = result ? Visibility.Visible : Visibility.Collapsed;
-
-            if (result)
-            {
-                view._timer.Interval = 20000;
-                view._timer.Start();
-            }
+            if (_messages.Count == 0)
+                this.Visibility = Visibility.Collapsed;
+            else
+                DisplayMessage(_messages.Dequeue());
         }
 
         private static string GetErrorImageFor(ErrorMode errorMode)
@@ -110,7 +97,7 @@ namespace ZuneSocialTagger.GUI.Controls
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            this.SetValue(ShowMessageProperty,false);
+            CheckMessages();
         }
     }
 }

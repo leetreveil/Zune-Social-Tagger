@@ -21,6 +21,7 @@ using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.GUI.ViewsViewModels.Update;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ProtoBuf;
+using System.ComponentModel;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 {
@@ -50,7 +51,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             System.Windows.Application.Current.Exit += delegate { ApplicationIsShuttingDown(); };
 
             //register for error messages to be displayed
-            Messenger.Default.Register<ErrorMessage>(this, DisplayMessage);
+            Messenger.Default.Register<ErrorMessage>(this, this.Messages.Add);
 
             _albums = albums;
             _locator = locator;
@@ -71,33 +72,16 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         public RelayCommand ShowAboutSettingsCommand { get; private set; }
         public RelayCommand CloseAppCommand { get; private set; }
 
-        public string ErrorMessageText
+        private ObservableCollection<ErrorMessage> _messages;
+        public ObservableCollection<ErrorMessage> Messages 
         {
-            get { return _errorMessageText; }
-            set
+            get 
             {
-                _errorMessageText = value;
-                RaisePropertyChanged(() => this.ErrorMessageText);
-            }
-        }
-
-        public ErrorMode ErrorMessageMode
-        {
-            get { return _errorMessageMode; }
-            set
-            {
-                _errorMessageMode = value;
-                RaisePropertyChanged(() => this.ErrorMessageMode);
-            }
-        }
-
-        public bool ShouldShowErrorMessage
-        {
-            get { return _shouldShowErrorMessage; }
-            set
-            {
-                _shouldShowErrorMessage = value;
-                RaisePropertyChanged(() => this.ShouldShowErrorMessage);
+                if (_messages == null) {
+                    _messages = new ObservableCollection<ErrorMessage>();
+                    RaisePropertyChanged(() => this.Messages);
+                }
+                return _messages; 
             }
         }
 
@@ -141,21 +125,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             }
         }
 
-        public void DisplayMessage(ErrorMessage message)
-        {
-            this.ErrorMessageText = message.Message;
-            this.ErrorMessageMode = message.ErrorMode;
-            this.ShouldShowErrorMessage = true;
-        }
-
-
         public void AlbumBeenLinked()
         {
             if (this.CurrentPage.GetType() == typeof(WebAlbumListViewModel))
             {
                 if (!SharedMethods.CheckIfZuneSoftwareIsRunning())
                 {
-                    DisplayMessage(new ErrorMessage(ErrorMode.Warning,
+                    this.Messages.Add(new ErrorMessage(ErrorMode.Warning,
                                                     "Any albums you link / delink will not show their changes until the zune software is running."));
                 }
                 else
@@ -177,19 +153,19 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
                     if (!initalized)
                     {
-                        DisplayMessage(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
+                        this.Messages.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
                         return false;
                     }
 
                     return true;
                 }
 
-                DisplayMessage(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
+                this.Messages.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
                 return false;
             }
             catch (Exception e)
             {
-                DisplayMessage(new ErrorMessage(ErrorMode.Error, e.Message));
+                this.Messages.Add(new ErrorMessage(ErrorMode.Error, e.Message));
                 return false;
             }
         }
@@ -261,25 +237,31 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void TellViewThatUpdatesHaveBeenAdded(int addedCount, int removedCount)
         {
-            if (addedCount > 0 && removedCount > 0)
-            {
-                DisplayMessage(new ErrorMessage(ErrorMode.Info,
-                                                String.Format(
-                                                    "{0} albums were added and {1} albums were removed",
-                                                    addedCount, removedCount)));
-            }
-            else if (addedCount > 0)
-            {
-                DisplayMessage(new ErrorMessage(ErrorMode.Info,
-                                                String.Format("{0} albums were added",
-                                                              addedCount)));
-            }
-            else if (removedCount > 0)
-            {
-                DisplayMessage(new ErrorMessage(ErrorMode.Info,
-                                                String.Format("{0} albums were removed",
-                                                              removedCount)));
-            }
+            DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                this.Messages.Add(new ErrorMessage(ErrorMode.Warning, "fffffffffffffffffffffffuuuuuuuuuuuuck"));
+
+
+                if (addedCount > 0 && removedCount > 0)
+                {
+                    this.Messages.Add(new ErrorMessage(ErrorMode.Info,
+                                                    String.Format(
+                                                        "{0} albums were added and {1} albums were removed",
+                                                        addedCount, removedCount)));
+                }
+                else if (addedCount > 0)
+                {
+                    this.Messages.Add(new ErrorMessage(ErrorMode.Info,
+                                                    String.Format("{0} albums were added",
+                                                                  addedCount)));
+                }
+                else if (removedCount > 0)
+                {
+                    this.Messages.Add(new ErrorMessage(ErrorMode.Info,
+                                                    String.Format("{0} albums were removed",
+                                                                  removedCount)));
+                }
+            });
+
         }
 
         public void ReadActualDatabase()

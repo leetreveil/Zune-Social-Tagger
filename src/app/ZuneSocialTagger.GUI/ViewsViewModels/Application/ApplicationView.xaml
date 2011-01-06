@@ -144,9 +144,7 @@
                         Content="{Binding CurrentPage}" 
                         Grid.Row="2" Grid.ColumnSpan="2"/>
 
-        <Controls:InlineZuneMessage ShowMessage="{Binding ShouldShowErrorMessage, Mode=TwoWay}"
-                                    MessageText="{Binding ErrorMessageText}"
-                                    ErrorMode="{Binding ErrorMessageMode}"
+        <Controls:InlineZuneMessage Messages="{Binding Messages}"
                                     Margin="0,20,0,0" MaxWidth="600" HorizontalAlignment="Left" 
                                     Grid.ColumnSpan="2" 
                                     Grid.Row="3" />

@@ -213,35 +213,21 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             this.IsAlbumsEnabled = true;
         }
 
-        //private void MoveBack()
-        //{
-        //    _locator.SwitchToViewModel<SearchViewModel>();
-        //}
-
-        //private void MoveNext()
-        //{
-        //    var detailsViewModel = _locator.SwitchToViewModel<DetailsViewModel>();
-        //    detailsViewModel.AlbumDetailsFromWebsite = _downloadedAlbum.GetAlbumDetailsFrom();
-        //    detailsViewModel._tracksFromWeb = _downloadedAlbum.Tracks;
-        //    detailsViewModel.PopulateRows();
-        //}
 
         private void UpdateDetail(WebAlbum albumMetaData)
         {
-             this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel
-                                                    {
-                                                        SelectedAlbumTitle = albumMetaData.Title
-                                                    };
+            this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
+            this.SearchResultsDetailViewModel.SelectedAlbumTitle = albumMetaData.Title;
 
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
                 foreach (var track in albumMetaData.Tracks)
                 {
-                    this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(new TrackWithTrackNum
-                                                                                 {
-                                                                                     TrackNumber = track.TrackNumber,
-                                                                                     TrackTitle = track.Title
-                                                                                 });
+                    var tnum = new TrackWithTrackNum();
+                    tnum.TrackNumber = track.TrackNumber;
+                    tnum.TrackTitle = track.Title;
+
+                    this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(tnum);
                 }
 
             });
