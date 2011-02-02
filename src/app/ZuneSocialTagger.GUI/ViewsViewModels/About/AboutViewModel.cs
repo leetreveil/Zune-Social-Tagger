@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using GalaSoft.MvvmLight.Command;
 using ZuneSocialTagger.GUI.Properties;
-using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.GUI.ViewsViewModels.Application;
 using System.Windows.Input;
 

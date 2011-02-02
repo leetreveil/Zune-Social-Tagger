@@ -6,7 +6,7 @@
     xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls" 
     x:Class="ZuneSocialTagger.GUI.ViewsViewModels.About.AboutView"
     Title="AboutView" 
-    WindowStartupLocation="CenterScreen" 
+    WindowStartupLocation="CenterOwner" 
     Width="300"
     Style="{DynamicResource DefaultWindowStyle}" 
     mc:Ignorable="d" 

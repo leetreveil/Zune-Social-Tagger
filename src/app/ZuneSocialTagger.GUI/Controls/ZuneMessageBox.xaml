@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls" 
     Style="{DynamicResource DefaultWindowStyle}"  
-    WindowStartupLocation="CenterScreen"
+    WindowStartupLocation="CenterOwner"
     Topmost="True" 
     Height="205" Width="400"
     ShowInTaskbar="False">

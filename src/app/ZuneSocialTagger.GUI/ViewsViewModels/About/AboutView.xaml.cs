@@ -1,6 +1,5 @@
 using System.Windows;
 using ZuneSocialTagger.GUI.Controls;
-using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.About
 {
@@ -12,6 +11,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.About
         public AboutView()
         {
             InitializeComponent();
+            this.Owner =  System.Windows.Application.Current.MainWindow;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

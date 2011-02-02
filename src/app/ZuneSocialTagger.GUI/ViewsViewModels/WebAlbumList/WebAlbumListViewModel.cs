@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Controls;
@@ -15,7 +13,6 @@ using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using GalaSoft.MvvmLight.Threading;
-using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {

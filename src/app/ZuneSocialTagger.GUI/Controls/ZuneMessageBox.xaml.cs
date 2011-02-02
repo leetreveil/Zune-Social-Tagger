@@ -14,12 +14,17 @@ namespace ZuneSocialTagger.GUI.Controls
     {
         private readonly Action _okClickedCallback;
 
+        public ZuneMessageBox()
+        {
+            this.Owner = System.Windows.Application.Current.MainWindow;
+        }
+
         public static void Show(ErrorMessage message, Action okClickedCallback)
         {
             new ZuneMessageBox(message.Message, message.ErrorMode,okClickedCallback).Show();
         }
 
-        public ZuneMessageBox(string errorMessage, ErrorMode mode)
+        public ZuneMessageBox(string errorMessage, ErrorMode mode) : this()
         {
             InitializeComponent();
 

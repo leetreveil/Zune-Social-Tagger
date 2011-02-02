@@ -19,7 +19,7 @@ namespace ZuneSocialTagger.GUI.Controls
         {
             _sendErrorCallback = sendErrorCallback;
             InitializeComponent();
-
+            this.Owner = System.Windows.Application.Current.MainWindow;
             this.tbErrorReport.Text = errorReport;
         }
 
