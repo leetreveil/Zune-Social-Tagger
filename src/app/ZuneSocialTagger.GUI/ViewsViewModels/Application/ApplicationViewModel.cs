@@ -1,27 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using GalaSoft.MvvmLight.Threading;
 using leetreveil.AutoUpdate.Framework;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using System.Diagnostics;
-using System.Runtime.Serialization.Formatters.Binary;
 using ZuneSocialTagger.GUI.ViewsViewModels.About;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.GUI.ViewsViewModels.Update;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ProtoBuf;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
@@ -142,14 +137,18 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                 _webAlbumListViewModel = _viewLocator.SwitchToView<WebAlbumListView,WebAlbumListViewModel>();
 
                 //attempt to read the cache first, if that fails read the real db
-                try
+                ThreadPool.QueueUserWorkItem(_ =>
                 {
-                    ReadCachedDatabase();
-                }
-                catch (Exception)
-                {
-                    ReadActualDatabase();
-                }
+                    try
+                    {
+                        ReadCachedDatabase();
+                    }
+                    catch
+                    {
+                        ReadActualDatabase();
+                    }
+                });
+
             }
             //if we cannot interop with the zune database switch to the old view
             else
@@ -224,10 +223,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
                 _albums.Add(albumDetailsViewModel);
             }
+        }
 
-            GetNewOrRemovedAlbumsFromZuneDb();
-
-            _webAlbumListViewModel.DataHasLoaded();
+        private void WriteCacheToFile()
+        {
+            using (var file = File.Create(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache2.dat")))
+            {
+                Serializer.Serialize(file, _albums.ToList());
+            }
         }
 
         private void GetNewOrRemovedAlbumsFromZuneDb()
@@ -316,15 +319,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             WriteCacheToFile();
             Settings.Default.Save();
         }
-
-        private void WriteCacheToFile()
-        {
-            using (var file = File.Create(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache2.dat"))) 
-            {
-                Serializer.Serialize(file, _albums.ToList());
-            }
-        }
-
 
         private static void ShowUpdate()
         {
