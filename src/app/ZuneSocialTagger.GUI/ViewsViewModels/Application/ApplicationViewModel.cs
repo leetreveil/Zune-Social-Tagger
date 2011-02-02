@@ -1,27 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using GalaSoft.MvvmLight.Threading;
 using leetreveil.AutoUpdate.Framework;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using System.Diagnostics;
-using System.Runtime.Serialization.Formatters.Binary;
 using ZuneSocialTagger.GUI.ViewsViewModels.About;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.GUI.ViewsViewModels.Update;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ProtoBuf;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Application

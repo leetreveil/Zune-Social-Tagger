@@ -39,7 +39,10 @@ namespace ZuneSocialTagger.GUI.Controls
         {
             this.Cursor = System.Windows.Input.Cursors.Wait;
 
-            _sendErrorCallback();
+            if (_sendErrorCallback != null)
+            {
+                _sendErrorCallback();
+            }
 
             this.Cursor = null;
         }
