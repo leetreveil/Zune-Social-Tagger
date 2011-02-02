@@ -142,14 +142,17 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                 _webAlbumListViewModel = _viewLocator.SwitchToView<WebAlbumListView,WebAlbumListViewModel>();
 
                 //attempt to read the cache first, if that fails read the real db
-                try
+                ThreadPool.QueueUserWorkItem(_ =>
                 {
-                    ReadCachedDatabase();
-                }
-                catch (Exception)
-                {
-                    ReadActualDatabase();
-                }
+                    try
+                    {
+                        ReadCachedDatabase();
+                    }
+                    catch
+                    {
+                        ReadActualDatabase();
+                    }
+                });
             }
             //if we cannot interop with the zune database switch to the old view
             else
@@ -175,7 +178,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                 }
             }
         }
-
 
         private bool InitializeDatabase()
         {
@@ -226,8 +228,15 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             }
 
             GetNewOrRemovedAlbumsFromZuneDb();
-
             _webAlbumListViewModel.DataHasLoaded();
+        }
+
+        private void WriteCacheToFile()
+        {
+            using (var file = File.Create(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache2.dat")))
+            {
+                Serializer.Serialize(file, _albums.ToList());
+            }
         }
 
         private void GetNewOrRemovedAlbumsFromZuneDb()
@@ -316,15 +325,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             WriteCacheToFile();
             Settings.Default.Save();
         }
-
-        private void WriteCacheToFile()
-        {
-            using (var file = File.Create(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache2.dat"))) 
-            {
-                Serializer.Serialize(file, _albums.ToList());
-            }
-        }
-
 
         private static void ShowUpdate()
         {
