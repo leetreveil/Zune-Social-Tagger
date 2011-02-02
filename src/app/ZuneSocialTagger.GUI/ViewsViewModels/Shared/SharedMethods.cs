@@ -8,8 +8,9 @@ using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using ZuneSocialTagger.GUI.Models;
 
-namespace ZuneSocialTagger.GUI.Models
+namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
 {
     public static class SharedMethods
     {

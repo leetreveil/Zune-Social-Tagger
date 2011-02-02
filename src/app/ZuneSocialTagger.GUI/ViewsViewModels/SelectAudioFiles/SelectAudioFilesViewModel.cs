@@ -20,8 +20,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
         private readonly IZuneAudioFileRetriever _fileRetriever;
         private readonly SharedModel _sharedModel;
 
-        public SelectAudioFilesViewModel(IViewLocator locator,
-                                         IZuneAudioFileRetriever fileRetriever,
+        public SelectAudioFilesViewModel(IViewLocator locator, IZuneAudioFileRetriever fileRetriever,
                                          SharedModel sharedModel)
         {
             _sharedModel = sharedModel;
@@ -38,7 +37,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 
         public void SwitchToNewMode()
         {
-            _locator.SwitchToView<WebAlbumListView,WebAlbumListViewModel>();
+            _locator.SwitchToView<WebAlbumListView, WebAlbumListViewModel>();
         }
 
         public void SelectFiles()
@@ -58,9 +57,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
             }
             else
             {
-                var ofd = new OpenFileDialog { Multiselect = true, Filter = "Audio files .mp3,.wma |*.mp3;*.wma" };
-                ofd.AutoUpgradeEnabled = true;
-                ofd.Title = "Select the audio files that you want to link to the zune social";
+                var ofd = new OpenFileDialog { 
+                    Multiselect = true, 
+                    Filter = "Audio files .mp3,.wma |*.mp3;*.wma", 
+                    AutoUpgradeEnabled = true,
+                    Title = "Select the audio files that you want to link to the zune social"
+                };
+
                 if (ofd.ShowDialog() == DialogResult.OK)
                     ReadFiles(ofd.FileNames);
             }

@@ -30,18 +30,18 @@ public class SafeObservableCollection<T> : ObservableCollection<T>
       /// </summary>
       protected override void ClearItems()
       {
-          _dispatcher.InvokeIfRequired(() =>
-              {
-                  _lock.EnterWriteLock();
-                  try
-                  {
-                      base.ClearItems();
-                  }
-                  finally
-                  {
-                      _lock.ExitWriteLock();
-                  }
-              }, DispatcherPriority.DataBind);
+          InvokeIfRequired(_dispatcher, () =>
+            {
+                _lock.EnterWriteLock();
+                try
+                {
+                    base.ClearItems();
+                }
+                finally
+                {
+                    _lock.ExitWriteLock();
+                }
+            }, DispatcherPriority.DataBind);
       }
   
       /// <summary>
@@ -49,7 +49,7 @@ public class SafeObservableCollection<T> : ObservableCollection<T>
       /// </summary>
       protected override void InsertItem(int index, T item)
       {
-          _dispatcher.InvokeIfRequired(() =>
+          InvokeIfRequired(_dispatcher, () =>
           {
               if (index > this.Count)
                   return;
@@ -72,7 +72,7 @@ public class SafeObservableCollection<T> : ObservableCollection<T>
       /// </summary>
       protected override void MoveItem(int oldIndex, int newIndex)
       {
-          _dispatcher.InvokeIfRequired(() =>
+          InvokeIfRequired(_dispatcher, () =>
           {
               _lock.EnterReadLock();
               Int32 itemCount = this.Count;
@@ -103,8 +103,8 @@ public class SafeObservableCollection<T> : ObservableCollection<T>
       /// </summary>
       protected override void RemoveItem(int index)
       {
-  
-          _dispatcher.InvokeIfRequired(() =>
+
+          InvokeIfRequired(_dispatcher, () =>
           {
               if (index >= this.Count)
                   return;
@@ -126,7 +126,7 @@ public class SafeObservableCollection<T> : ObservableCollection<T>
       /// </summary>
       protected override void SetItem(int index, T item)
       {
-          _dispatcher.InvokeIfRequired(() =>
+          InvokeIfRequired(_dispatcher, () =>
           {
               _lock.EnterWriteLock();
               try
@@ -160,4 +160,14 @@ public class SafeObservableCollection<T> : ObservableCollection<T>
           }
       }
       #endregion
+
+      private static void InvokeIfRequired(Dispatcher disp, Action dotIt, DispatcherPriority priority)
+      {
+          if (disp.Thread != Thread.CurrentThread)
+          {
+              disp.Invoke(priority, dotIt);
+          }
+          else
+              dotIt();
+      }
   }

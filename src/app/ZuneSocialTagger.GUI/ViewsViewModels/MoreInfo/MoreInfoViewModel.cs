@@ -17,9 +17,33 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo
         public MoreInfoViewModel(IViewLocator locator)
         {
             _locator = locator;
+        }
 
-            this.MoveBackCommand = new RelayCommand(MoveBack);
-            this.Tracks = new List<MoreInfoRow>();
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
+
+        private RelayCommand _moveBackCommand;
+        public RelayCommand MoveBackCommand 
+        { 
+            get 
+            {
+                if (_moveBackCommand == null)
+                    _moveBackCommand = new RelayCommand(MoveBack);
+
+                return _moveBackCommand;
+            } 
+        }
+
+        private List<MoreInfoRow> _tracks;
+        public List<MoreInfoRow> Tracks 
+        {
+            get
+            {
+                if (_tracks == null)
+                    _tracks = new List<MoreInfoRow>();
+
+                return _tracks;
+            }
         }
 
         public void SetAlbumDetails(AlbumDetailsViewModel albumDetails)
@@ -32,11 +56,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo
                 var albumMoreInfoRow = new MoreInfoRow();
 
                 albumMoreInfoRow.TrackFromFile = new TrackWithTrackNum
-                                                     {
-                                                         TrackTitle = dbTrack.Title,
-                                                         TrackNumber = dbTrack.TrackNumber
-                                                     };
-
+                {
+                    TrackTitle = dbTrack.Title,
+                    TrackNumber = dbTrack.TrackNumber
+                };
 
                 WebTrack webTrack =
                     albumDetails.WebAlbumMetaData.Tracks.Where(x => x.MediaId == dbTrack.MediaId).FirstOrDefault();
@@ -57,16 +80,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo
                     albumMoreInfoRow.LinkStatusText = "UNLINKED";
                 }
 
-
-
                 this.Tracks.Add(albumMoreInfoRow);
             }
         }
-
-        public RelayCommand MoveBackCommand { get; private set; }
-        public List<MoreInfoRow> Tracks { get; set; }
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get; set; }
 
         private void MoveBack()
         {

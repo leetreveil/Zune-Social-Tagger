@@ -92,6 +92,7 @@
             				</Setter.Value>
             			</Setter>
             		</Style>
+                    
             	</ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -144,7 +145,7 @@
                         Content="{Binding CurrentPage}" 
                         Grid.Row="2" Grid.ColumnSpan="2"/>
 
-        <Controls:InlineZuneMessage Messages="{Binding Messages}"
+        <Controls:InlineZuneMessage Messages="{Binding Notifications}"
                                     Margin="0,20,0,0" MaxWidth="600" HorizontalAlignment="Left" 
                                     Grid.ColumnSpan="2" 
                                     Grid.Row="3" />

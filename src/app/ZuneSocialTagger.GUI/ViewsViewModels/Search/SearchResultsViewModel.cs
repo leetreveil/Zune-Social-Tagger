@@ -14,41 +14,77 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         private readonly SearchViewModel _parent;
         private IEnumerable<WebAlbum> _albums;
         private IEnumerable<WebArtist> _artists;
-        private bool _isLoading;
-        private SearchResultsDetailViewModel _searchResultsDetailViewModel;
-        private string _albumCount;
-        private bool _isAlbumsEnabled;
-        private string _artistCount;
-
-        internal WebAlbum _downloadedAlbum;
 
         public SearchResultsViewModel(SearchViewModel parent)
         {
             _parent = parent;
-            this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
-            this.SearchResults = new ObservableCollection<object>();
-            this.SearchResults.CollectionChanged += SearchResults_CollectionChanged;
-  
-            this.ArtistCommand = new RelayCommand(DisplayArtists);
-            this.AlbumCommand = new RelayCommand(DisplayAlbums);
-            this.ResultClickedCommand = new RelayCommand<object>(ResultClicked);
-
-            this.ArtistCount = "";
-            this.AlbumCount = "";
-
-            this.ResultsWidth = 300;
         }
+
+        public WebAlbum DownloadedAlbum { get; private set; }
 
         #region Bindings
 
-        public ObservableCollection<object> SearchResults { get; set; }
-        public RelayCommand ArtistCommand { get; private set; }
-        public RelayCommand AlbumCommand { get; private set; }
-        public RelayCommand<object>ResultClickedCommand { get; private set; }
+        private ObservableCollection<object> _searchResults;
+        public ObservableCollection<object> SearchResults 
+        {
+            get
+            {
+                if (_searchResults == null)
+                {
+                    _searchResults = new ObservableCollection<object>();
+                    _searchResults.CollectionChanged += SearchResults_CollectionChanged;
+                }
 
+                return _searchResults;
+            }
+        }
+
+        private RelayCommand _artistCommand;
+        public RelayCommand ArtistCommand
+        {
+            get
+            {
+                if (_artistCommand == null)
+                    _artistCommand = new RelayCommand(DisplayArtists);
+
+                return _artistCommand;
+            }
+        }
+
+        private RelayCommand _albumCommand;
+        public RelayCommand AlbumCommand
+        {
+            get
+            {
+                if (_albumCommand == null)
+                    _albumCommand = new RelayCommand(DisplayAlbums);
+
+                return _albumCommand;
+            }
+        }
+
+        private RelayCommand<object> _resultClickedCommand;
+        public RelayCommand<object> ResultClickedCommand 
+        {
+            get 
+            {
+                if (_resultClickedCommand == null)
+                    _resultClickedCommand = new RelayCommand<object>(ResultClicked);
+
+                return _resultClickedCommand;
+            }
+        }
+
+        private SearchResultsDetailViewModel _searchResultsDetailViewModel;
         public SearchResultsDetailViewModel SearchResultsDetailViewModel
         {
-            get { return _searchResultsDetailViewModel; }
+            get 
+            {
+                if (_searchResultsDetailViewModel == null)
+                    _searchResultsDetailViewModel = new SearchResultsDetailViewModel();
+
+                return _searchResultsDetailViewModel;
+            }
             set
             {
                 _searchResultsDetailViewModel = value;
@@ -61,6 +97,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             get { return this.SearchResults.Count > 0; }
         }
 
+        private string _albumCount;
         public string AlbumCount
         {
             get { return _albumCount; }
@@ -82,6 +119,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             }
         }
 
+        private string _artistCount;
         public string ArtistCount
         {
             get { return _artistCount; }
@@ -92,6 +130,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             }
         }
 
+        private bool _isAlbumsEnabled;
         public bool IsAlbumsEnabled
         {
             get { return _isAlbumsEnabled; }
@@ -112,6 +151,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             }
         }
 
+        private bool _isLoading;
         public bool IsLoading
         {
             get { return _isLoading; }
@@ -137,8 +177,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             {
                 if (webAlbum != null)
                 {
-                    _downloadedAlbum = webAlbum;
-                    UpdateDetail(_downloadedAlbum);
+                    DownloadedAlbum = webAlbum;
+                    UpdateDetail(DownloadedAlbum);
                 }
                 else
                 {
@@ -173,6 +213,23 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             });
         }
 
+        public void LoadArtists(IEnumerable<WebArtist> artists)
+        {
+            _artists = artists;
+            this.ArtistCount = String.Format("ARTISTS ({0})", artists.Count());
+        }
+
+        public void LoadAlbums(IEnumerable<WebAlbum> albums)
+        {
+            _albums = albums;
+            this.AlbumCount = String.Format("ALBUMS ({0})", albums.Count());
+
+            foreach (WebAlbum album in albums)
+                this.SearchResults.Add(album);
+
+            this.IsAlbumsEnabled = true;
+        }
+
         private void DisplayArtists()
         {
             this.ResultsWidth = 640;
@@ -195,24 +252,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
             RaisePropertyChanged(() => this.HasResults);
         }
-
-        public void LoadArtists(IEnumerable<WebArtist> artists)
-        {
-            _artists = artists;
-            this.ArtistCount = String.Format("ARTISTS ({0})", artists.Count());
-        }
-
-        public void LoadAlbums(IEnumerable<WebAlbum> albums)
-        {
-            _albums = albums;
-            this.AlbumCount = String.Format("ALBUMS ({0})", albums.Count());
-
-            foreach (WebAlbum album in albums)
-                this.SearchResults.Add(album);
-
-            this.IsAlbumsEnabled = true;
-        }
-
 
         private void UpdateDetail(WebAlbum albumMetaData)
         {

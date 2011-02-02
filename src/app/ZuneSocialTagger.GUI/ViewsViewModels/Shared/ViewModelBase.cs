@@ -2,13 +2,12 @@ using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Windows.Threading;
+using GalaSoft.MvvmLight.Threading;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
 {
-    [Serializable]
     public class ViewModelBase : INotifyPropertyChanged
     {
-        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void RaisePropertyChanged(string propertyName)
@@ -35,6 +34,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
             else memberExpression = (MemberExpression)lambda.Body;
 
             return memberExpression.Member.Name;
+        }
+
+        /// <summary>
+        /// Calls the method on the UI thread
+        /// </summary>
+        /// <param name="action"></param>
+        public void Dispatch(Action action) {
+            DispatcherHelper.CheckBeginInvokeOnUI(action);
         }
     }
 }

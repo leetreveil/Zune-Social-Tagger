@@ -12,8 +12,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
     public class ViewLocator : IViewLocator
     {
         private readonly IKernel _container;
-
         private UserControl _firstView { get; set; }
+
         public event Action<UserControl> SwitchToViewRequested = delegate { };
 
         public ViewLocator(IKernel container)
@@ -26,17 +26,18 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
             SwitchToViewRequested.Invoke(_firstView);
         }
 
-        public T2 SwitchToView<T,T2>() where T : UserControl
+        public TViewModel SwitchToView<TView, TViewModel>() where TView : UserControl
         {
-            T viewToSwitchTo = Resolve<T>();
-            T2 viewModel = Resolve<T2>();
+            TView viewToSwitchTo = Resolve<TView>();
+            TViewModel viewModel = Resolve<TViewModel>();
 
-            if (typeof (T) == typeof (WebAlbumListView) || typeof (T) == typeof (SelectAudioFilesView))
+            if (viewToSwitchTo is WebAlbumListView || viewToSwitchTo is SelectAudioFilesView)
                 _firstView = viewToSwitchTo;
 
             viewToSwitchTo.DataContext = viewModel;
 
             SwitchToViewRequested.Invoke(viewToSwitchTo);
+
             return viewModel;
         }
 

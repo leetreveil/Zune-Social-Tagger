@@ -41,8 +41,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         public static readonly DependencyProperty IsCheckedRealProperty =
         DependencyProperty.Register("IsCheckedReal", typeof(bool?), typeof(RadioButtonExtended),
         new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Journal |
-        FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-        IsCheckedRealChanged));
+        FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,IsCheckedRealChanged));
 
         public static void IsCheckedRealChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

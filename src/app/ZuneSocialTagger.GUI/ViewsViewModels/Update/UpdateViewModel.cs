@@ -12,11 +12,19 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Update
         public UpdateViewModel(Version versionAvailable)
         {
             _versionAvailable = versionAvailable;
-
-            this.UpdateCommand = new RelayCommand(ApplyUpdate);
         }
 
-        public RelayCommand UpdateCommand { get; private set; }
+        private ICommand _updateCommand;
+        public ICommand UpdateCommand
+        {
+            get
+            {
+                if (_updateCommand == null)
+                    _updateCommand = new RelayCommand(ApplyUpdate);
+
+                return _updateCommand;
+            }
+        }
 
         public string Version
         {

@@ -37,7 +37,7 @@ namespace ZuneSocialTagger.GUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool CheckForUpdates {
             get {
                 return ((bool)(this["CheckForUpdates"]));
@@ -49,8 +49,8 @@ namespace ZuneSocialTagger.GUI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://github.com/leetreveil/Zune-Social-Tagger/raw/master/updates/zunesocupdatef" +
-            "eed.xml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/leetreveil/Zune-Social-Tagger/raw/master/updates/zunesocupdate" +
+            "feed.xml")]
         public string UpdateFeedUrl {
             get {
                 return ((string)(this["UpdateFeedUrl"]));

@@ -12,27 +12,57 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
     {
         private readonly IViewLocator _locator;
         private readonly SharedModel _sharedModel;
-        private string _searchText;
-        private bool _isSearching;
-        private bool _canMoveNext;
-        private SearchResultsViewModel _searchResultsViewModel;
-        private bool _canShowResults;
-
 
         public SearchViewModel(IViewLocator locator, SharedModel sharedModel)
         {
             _locator = locator;
             _sharedModel = sharedModel;
-            this.MoveBackCommand = new RelayCommand(MoveBack);
-            this.MoveNextCommand = new RelayCommand(MoveNext);
-            this.SearchCommand = new RelayCommand(SearchButtonClicked);
         }
 
-        public RelayCommand MoveBackCommand { get; private set; }
-        public RelayCommand MoveNextCommand { get; private set; }
-        public RelayCommand SearchCommand { get; private set; }
-        public ExpandedAlbumDetailsViewModel AlbumDetails { get { return _sharedModel.AlbumDetailsFromFile; } }
+        #region View Bindings
 
+        public ExpandedAlbumDetailsViewModel AlbumDetails 
+        { 
+            get { return _sharedModel.AlbumDetailsFromFile; } 
+        }
+
+        private RelayCommand _moveBackCommand;
+        public RelayCommand MoveBackCommand
+        {
+            get
+            {
+                if (_moveBackCommand == null)
+                    _moveBackCommand = new RelayCommand(_locator.SwitchToFirstView);
+
+                return _moveBackCommand;
+            }
+        }
+
+        private RelayCommand _moveNextCommand;
+        public RelayCommand MoveNextCommand
+        {
+            get
+            {
+                if (_moveNextCommand == null)
+                    _moveNextCommand = new RelayCommand(MoveNext);
+
+                return _moveNextCommand;
+            }
+        }
+
+        private RelayCommand _searchCommand;
+        public RelayCommand SearchCommand
+        {
+            get
+            {
+                if (_searchCommand == null)
+                    _searchCommand = new RelayCommand(() => { SearchImpl(this.SearchText, this.SearchText); });
+
+                return _searchCommand;
+            }
+        }
+
+        private SearchResultsViewModel _searchResultsViewModel;
         public SearchResultsViewModel SearchResultsViewModel
         {
             get { return _searchResultsViewModel; }
@@ -43,6 +73,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             }
         }
 
+        private string _searchText;
         public string SearchText
         {
             get { return _searchText; }
@@ -53,6 +84,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             }
         }
 
+        private bool _isSearching;
         public bool IsSearching
         {
             get { return _isSearching; }
@@ -63,6 +95,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             }
         }
 
+        private bool _canMoveNext;
         public bool CanMoveNext
         {
             get { return _canMoveNext; }
@@ -73,6 +106,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             }
         }
 
+        private bool _canShowResults;
         public bool CanShowResults
         {
             get { return _canShowResults; }
@@ -83,10 +117,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             }
         }
 
-        public void SearchButtonClicked()
-        {
-            SearchImpl(this.SearchText, this.SearchText);
-        }
+        #endregion View Bindings
 
         public void Search(string artist, string album)
         {
@@ -130,15 +161,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             });
         }
 
-        public void MoveBack()
-        {
-            _locator.SwitchToFirstView();
-        }
-
         public void MoveNext()
         {
-            _sharedModel.WebAlbum = _searchResultsViewModel._downloadedAlbum;
-            _sharedModel.AlbumDetailsFromWeb = SharedMethods.GetAlbumDetailsFrom(_searchResultsViewModel._downloadedAlbum);
+            _sharedModel.WebAlbum = _searchResultsViewModel.DownloadedAlbum;
+            _sharedModel.AlbumDetailsFromWeb = SharedMethods.GetAlbumDetailsFrom(_searchResultsViewModel.DownloadedAlbum);
 
             var detailsViewModel = _locator.SwitchToView<DetailsView,DetailsViewModel>();
             detailsViewModel.PopulateRows();

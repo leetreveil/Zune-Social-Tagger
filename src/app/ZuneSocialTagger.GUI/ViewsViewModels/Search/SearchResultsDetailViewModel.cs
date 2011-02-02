@@ -5,12 +5,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 {
     public class SearchResultsDetailViewModel : ViewModelBase
     {
-        public ObservableCollection<TrackWithTrackNum> SelectedAlbumSongs { get; set; }
-
         public SearchResultsDetailViewModel()
         {
             this.SelectedAlbumSongs = new ObservableCollection<TrackWithTrackNum>();
         }
+
+        public ObservableCollection<TrackWithTrackNum> SelectedAlbumSongs { get; set; }
 
         private string _selectedAlbumTitle;
         public string SelectedAlbumTitle

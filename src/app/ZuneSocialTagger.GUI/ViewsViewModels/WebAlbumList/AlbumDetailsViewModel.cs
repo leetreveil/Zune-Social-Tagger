@@ -32,7 +32,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public AlbumDetailsViewModel(IZuneDatabaseReader dbReader,
                                      IViewLocator locator,
-                                     [File]ExpandedAlbumDetailsViewModel albumDetailsFromFile,
+                                     ExpandedAlbumDetailsViewModel albumDetailsFromFile,
                                      IZuneAudioFileRetriever fileRetriever,
                                      SharedModel sharedModel)
         {
@@ -145,7 +145,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         private void ShowMoreInfo()
         {
-            var moreInfoViewModel = _locator.SwitchToView<MoreInfoView,MoreInfoViewModel>();
+            var moreInfoViewModel = _locator.SwitchToView<MoreInfoView, MoreInfoViewModel>();
             moreInfoViewModel.SetAlbumDetails(this);
         }
 

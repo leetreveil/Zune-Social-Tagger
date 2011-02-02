@@ -15,9 +15,6 @@ using ZuneSocialTagger.GUI.ViewsViewModels.Success;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 {
-    public class FileAttribute : Attribute{}
-    public class WebAttribute : Attribute {}
-
     public class DetailsViewModel : ViewModelBase
     {
         private readonly IViewLocator _locator;
@@ -27,19 +24,48 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
         {
             _locator = locator;
             _sharedModel = sharedModel;
-
-            this.MoveBackCommand = new RelayCommand(MoveBack);
-            this.SaveCommand = new RelayCommand(Save);
-            this.Rows = new List<object>();
         }
 
         public WebAlbum WebAlbum { get { return _sharedModel.WebAlbum; } }
         public IEnumerable<IZuneTagContainer> FileTracks { get { return _sharedModel.SongsFromFile; } }
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromWebsite { get { return _sharedModel.AlbumDetailsFromWeb; } }
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get { return _sharedModel.AlbumDetailsFromFile; } }
-        public RelayCommand MoveBackCommand { get; private set; }
-        public RelayCommand SaveCommand { get; private set; }
-        public List<object> Rows { get; private set; }
+
+        private RelayCommand _saveCommand;
+        public RelayCommand SaveCommand
+        {
+            get
+            {
+                if (_saveCommand == null)
+                    _saveCommand = new RelayCommand(Save);
+
+                return _saveCommand;
+            }
+        }
+
+        private RelayCommand _moveBackCommand;
+        public RelayCommand MoveBackCommand
+        {
+            get
+            {
+                if (_moveBackCommand == null)
+                    _moveBackCommand = new RelayCommand(MoveBack);
+
+                return _moveBackCommand;
+            }
+        }
+
+        private List<object> _rows;
+        public List<object> Rows 
+        {
+            get 
+            {
+                if (_rows == null)
+                    _rows = new List<object>();
+
+                return _rows;
+            }
+        }
 
         public bool UpdateAlbumInfo
         {

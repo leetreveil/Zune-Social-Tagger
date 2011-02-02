@@ -22,6 +22,7 @@ using ZuneSocialTagger.GUI.ViewsViewModels.Update;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ProtoBuf;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 {
@@ -30,31 +31,22 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
     {
         private readonly IZuneDatabaseReader _dbReader;
         private readonly SafeObservableCollection<AlbumDetailsViewModel> _albums;
-        private readonly IViewLocator _locator;
-        private bool _updateAvailable;
-        private bool _shouldShowErrorMessage;
-        private ErrorMode _errorMessageMode;
-        private string _errorMessageText;
+        private readonly IViewLocator _viewLocator;
         private WebAlbumListViewModel _webAlbumListViewModel;
-
 
         public ApplicationViewModel(IZuneDatabaseReader dbReader,
                                     SafeObservableCollection<AlbumDetailsViewModel> albums,
                                     IViewLocator locator)
         {
             _dbReader = dbReader;
-
-            this.ShowAboutSettingsCommand = new RelayCommand(ShowAboutSettings);
-            this.UpdateCommand = new RelayCommand(ShowUpdate);
-            this.CloseAppCommand = new RelayCommand(CloseApp);
+            _albums = albums;
+            _viewLocator = locator;
 
             System.Windows.Application.Current.Exit += delegate { ApplicationIsShuttingDown(); };
 
-            //register for error messages to be displayed
-            Messenger.Default.Register<ErrorMessage>(this, this.Messages.Add);
+            //register for notification messages
+            Messenger.Default.Register<ErrorMessage>(this, this.Notifications.Add);
 
-            _albums = albums;
-            _locator = locator;
             locator.SwitchToViewRequested += view => {
                 this.CurrentPage = view;
             };
@@ -63,28 +55,61 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         public void ViewHasLoaded()
         {
             CheckForUpdates();
-            InitDb();
+            Initialize();
         }
 
         #region View Bindings
 
-        public RelayCommand UpdateCommand { get; private set; }
-        public RelayCommand ShowAboutSettingsCommand { get; private set; }
-        public RelayCommand CloseAppCommand { get; private set; }
-
-        private ObservableCollection<ErrorMessage> _messages;
-        public ObservableCollection<ErrorMessage> Messages 
+        private ICommand _updateCommand;
+        public ICommand UpdateCommand 
         {
-            get 
+            get
             {
-                if (_messages == null) {
-                    _messages = new ObservableCollection<ErrorMessage>();
-                    RaisePropertyChanged(() => this.Messages);
-                }
-                return _messages; 
+                if (_updateCommand == null)
+                    _updateCommand = new RelayCommand(ShowUpdate);
+
+                return _updateCommand;
             }
         }
 
+        private ICommand _showAboutSettingsCommand;
+        public ICommand ShowAboutSettingsCommand
+        {
+            get
+            {
+                if (_showAboutSettingsCommand == null)
+                    _showAboutSettingsCommand = new RelayCommand(ShowAboutSettings);
+
+                return _showAboutSettingsCommand;
+            }
+        }
+
+        private ICommand _closeAppCommand;
+        public ICommand CloseAppCommand
+        {
+            get
+            {
+                if (_closeAppCommand == null)
+                    _closeAppCommand = new RelayCommand(CloseApp);
+
+                return _closeAppCommand;
+            }
+        }
+
+        private SafeObservableCollection<ErrorMessage> _notifications;
+        public SafeObservableCollection<ErrorMessage> Notifications 
+        {
+            get 
+            {
+                if (_notifications == null) {
+                    _notifications = new SafeObservableCollection<ErrorMessage>();
+                    RaisePropertyChanged(() => this.Notifications);
+                }
+                return _notifications; 
+            }
+        }
+
+        private bool _updateAvailable;
         public bool UpdateAvailable
         {
             get { return _updateAvailable; }
@@ -108,19 +133,28 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         #endregion
 
-        private void InitDb()
+        private void Initialize()
         {
             bool dbLoaded = InitializeDatabase();
 
-            //if we cannot load the database then switch to the other view
             if (dbLoaded)
             {
-                _webAlbumListViewModel = _locator.SwitchToView<WebAlbumListView,WebAlbumListViewModel>();
-                ReadCachedDatabase();
+                _webAlbumListViewModel = _viewLocator.SwitchToView<WebAlbumListView,WebAlbumListViewModel>();
+
+                //attempt to read the cache first, if that fails read the real db
+                try
+                {
+                    ReadCachedDatabase();
+                }
+                catch (Exception)
+                {
+                    ReadActualDatabase();
+                }
             }
+            //if we cannot interop with the zune database switch to the old view
             else
             {
-                var selectAudioFilesViewModel = _locator.SwitchToView<SelectAudioFilesView,SelectAudioFilesViewModel>();
+                var selectAudioFilesViewModel = _viewLocator.SwitchToView<SelectAudioFilesView,SelectAudioFilesViewModel>();
                 selectAudioFilesViewModel.CanSwitchToNewMode = false;
             }
         }
@@ -131,7 +165,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             {
                 if (!SharedMethods.CheckIfZuneSoftwareIsRunning())
                 {
-                    this.Messages.Add(new ErrorMessage(ErrorMode.Warning,
+                    this.Notifications.Add(new ErrorMessage(ErrorMode.Warning,
                                                     "Any albums you link / delink will not show their changes until the zune software is running."));
                 }
                 else
@@ -153,55 +187,47 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
                     if (!initalized)
                     {
-                        this.Messages.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
+                        this.Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
                         return false;
                     }
 
                     return true;
                 }
 
-                this.Messages.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
+                this.Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
                 return false;
             }
             catch (Exception e)
             {
-                this.Messages.Add(new ErrorMessage(ErrorMode.Error, e.Message));
+                this.Notifications.Add(new ErrorMessage(ErrorMode.Error, e.Message));
                 return false;
             }
         }
 
         private void ReadCachedDatabase()
         {
-            try
+            List<AlbumDetailsViewModel> deserialized = null;
+            using (var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache2.dat"), FileMode.Open))
             {
-                List<AlbumDetailsViewModel> deserialized = null;
-                using (var fs = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache2.dat"), FileMode.Open))
-                {
-                    deserialized = Serializer.Deserialize<List<AlbumDetailsViewModel>>(fs);
-                }
-
-                if (deserialized == null) throw new NullReferenceException();
-                if (deserialized.Count() == 0) ReadActualDatabase();
-
-                foreach (var album in deserialized)
-                {
-                    var albumDetailsViewModel = _locator.Resolve<AlbumDetailsViewModel>();
-                    albumDetailsViewModel.WebAlbumMetaData = album.WebAlbumMetaData;
-                    albumDetailsViewModel.ZuneAlbumMetaData = album.ZuneAlbumMetaData;
-                    albumDetailsViewModel.LinkStatus = album.LinkStatus;
-
-                    _albums.Add(albumDetailsViewModel);
-                }
-
-                GetNewOrRemovedAlbumsFromZuneDb();
-
-                _webAlbumListViewModel.DataHasLoaded();
-
+                deserialized = Serializer.Deserialize<List<AlbumDetailsViewModel>>(fs);
             }
-            catch (Exception)
+
+            if (deserialized == null) throw new NullReferenceException();
+            if (deserialized.Count() == 0) ReadActualDatabase();
+
+            foreach (var album in deserialized)
             {
-                ReadActualDatabase();
+                var albumDetailsViewModel = _viewLocator.Resolve<AlbumDetailsViewModel>();
+                albumDetailsViewModel.WebAlbumMetaData = album.WebAlbumMetaData;
+                albumDetailsViewModel.ZuneAlbumMetaData = album.ZuneAlbumMetaData;
+                albumDetailsViewModel.LinkStatus = album.LinkStatus;
+
+                _albums.Add(albumDetailsViewModel);
             }
+
+            GetNewOrRemovedAlbumsFromZuneDb();
+
+            _webAlbumListViewModel.DataHasLoaded();
         }
 
         private void GetNewOrRemovedAlbumsFromZuneDb()
@@ -216,7 +242,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                 {
                     foreach (var album in newAlbums)
                     {
-                        var albumDetailsViewModel = _locator.Resolve<AlbumDetailsViewModel>();
+                        var albumDetailsViewModel = _viewLocator.Resolve<AlbumDetailsViewModel>();
                         albumDetailsViewModel.LinkStatus = album.AlbumMediaId.GetLinkStatusFromGuid();
                         albumDetailsViewModel.ZuneAlbumMetaData = album;
                         _albums.Add(albumDetailsViewModel);
@@ -237,31 +263,25 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void TellViewThatUpdatesHaveBeenAdded(int addedCount, int removedCount)
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(() => {
-                this.Messages.Add(new ErrorMessage(ErrorMode.Warning, "fffffffffffffffffffffffuuuuuuuuuuuuck"));
-
-
-                if (addedCount > 0 && removedCount > 0)
-                {
-                    this.Messages.Add(new ErrorMessage(ErrorMode.Info,
-                                                    String.Format(
-                                                        "{0} albums were added and {1} albums were removed",
-                                                        addedCount, removedCount)));
-                }
-                else if (addedCount > 0)
-                {
-                    this.Messages.Add(new ErrorMessage(ErrorMode.Info,
-                                                    String.Format("{0} albums were added",
-                                                                  addedCount)));
-                }
-                else if (removedCount > 0)
-                {
-                    this.Messages.Add(new ErrorMessage(ErrorMode.Info,
-                                                    String.Format("{0} albums were removed",
-                                                                  removedCount)));
-                }
-            });
-
+            if (addedCount > 0 && removedCount > 0)
+            {
+                this.Notifications.Add(new ErrorMessage(ErrorMode.Info,
+                                                String.Format(
+                                                    "{0} albums were added and {1} albums were removed",
+                                                    addedCount, removedCount)));
+            }
+            else if (addedCount > 0)
+            {
+                this.Notifications.Add(new ErrorMessage(ErrorMode.Info,
+                                                String.Format("{0} albums were added",
+                                                                addedCount)));
+            }
+            else if (removedCount > 0)
+            {
+                this.Notifications.Add(new ErrorMessage(ErrorMode.Info,
+                                                String.Format("{0} albums were removed",
+                                                                removedCount)));
+            }
         }
 
         public void ReadActualDatabase()
@@ -274,13 +294,15 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             {
                 foreach (DbAlbum newAlbum in _dbReader.ReadAlbums())
                 {
-                    var albumDetailsViewModel = _locator.Resolve<AlbumDetailsViewModel>();
+                    var albumDetailsViewModel = _viewLocator.Resolve<AlbumDetailsViewModel>();
                     albumDetailsViewModel.LinkStatus = newAlbum.AlbumMediaId.GetLinkStatusFromGuid();
                     albumDetailsViewModel.ZuneAlbumMetaData = newAlbum;
 
                     _albums.Add(albumDetailsViewModel);
                 }
                 _webAlbumListViewModel.DataHasLoaded();
+
+                _webAlbumListViewModel.Dispatch(_webAlbumListViewModel.DataHasLoaded);
             });
         }
 
@@ -313,7 +335,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void ShowAboutSettings()
         {
-            new AboutView {DataContext = _locator.Resolve<AboutViewModel>()}.Show();
+            new AboutView {DataContext = _viewLocator.Resolve<AboutViewModel>()}.Show();
         }
 
         private void CheckForUpdates()

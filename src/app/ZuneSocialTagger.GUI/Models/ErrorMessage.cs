@@ -7,6 +7,7 @@
             this.ErrorMode = errorMode;
             this.Message = message;
         }
+
         public ErrorMode ErrorMode { get; set; }
         public string Message { get; set; }
     }
