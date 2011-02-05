@@ -193,9 +193,15 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private  void ReadCache()
         {
-            using (var file = new FileStream(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache3.dat"),FileMode.Open))
+            try
             {
-                _cache = Serializer.Deserialize<List<WebAlbum>>(file);
+                using (var file = File.Open(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache3.dat"), FileMode.Open))
+                {
+                    _cache = Serializer.Deserialize<List<WebAlbum>>(file);
+                }
+            }
+            catch
+            {
             }
         }
 
@@ -223,20 +229,23 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
                     if (albumDetailsViewModel.LinkStatus == LinkStatus.Unknown)
                     {
-                        albumDetailsViewModel.WebAlbumMetaData =
-                            _cache.Find((x) => x.AlbumMediaId == albumDetailsViewModel.ZuneAlbumMetaData.AlbumMediaId);
+                        if (_cache != null)
+                        {
+                            albumDetailsViewModel.WebAlbumMetaData =
+                                _cache.Find((x) => x.AlbumMediaId == albumDetailsViewModel.ZuneAlbumMetaData.AlbumMediaId);
 
-                        if (albumDetailsViewModel.WebAlbumMetaData != null)
-                        {
-                            albumDetailsViewModel.LinkStatus = SharedMethods.GetAlbumLinkStatus(
-                                albumDetailsViewModel.WebAlbumMetaData.Title, 
-                                albumDetailsViewModel.WebAlbumMetaData.Artist,
-                                albumDetailsViewModel.ZuneAlbumMetaData.Title,
-                                albumDetailsViewModel.ZuneAlbumMetaData.Artist);
-                        }
-                        else
-                        {
-                            albumDetailsViewModel.LinkStatus = LinkStatus.Unlinked;
+                            if (albumDetailsViewModel.WebAlbumMetaData != null)
+                            {
+                                albumDetailsViewModel.LinkStatus = SharedMethods.GetAlbumLinkStatus(
+                                    albumDetailsViewModel.WebAlbumMetaData.Title,
+                                    albumDetailsViewModel.WebAlbumMetaData.Artist,
+                                    albumDetailsViewModel.ZuneAlbumMetaData.Title,
+                                    albumDetailsViewModel.ZuneAlbumMetaData.Artist);
+                            }
+                            else
+                            {
+                                albumDetailsViewModel.LinkStatus = LinkStatus.Unlinked;
+                            }
                         }
                     }
 
