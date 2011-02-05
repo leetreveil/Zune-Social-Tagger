@@ -4,7 +4,6 @@ namespace ZuneSocialTagger.GUI.Models
     {
         Unlinked,
         AlbumOrArtistMismatch,
-        Unavailable,
         Linked,
         Unknown,
     }

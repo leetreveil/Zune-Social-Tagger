@@ -1,10 +1,8 @@
 add notice on first start about disabling automatically update album info etc
-should we reload the database when scan all is clicked and do them in parallel? would remove the need for a reload db button
-combine unavailable and unlinked to one status
 should tell the user if the marketplace is available in their country
+
+popup a warning when a user is going to overwrite the metadata after clicking on 'update album info'
 
 MAJOR:
 Needs the ability to update .m4a files
 
-MINOR:
-Fix exception logging

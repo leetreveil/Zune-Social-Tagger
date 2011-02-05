@@ -252,7 +252,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                     }
                     else
                     {
-                        this.LinkStatus = LinkStatus.Unavailable;
+                        this.LinkStatus = LinkStatus.Unlinked;
                     }
 
                     this.IsDownloadingDetails = false;

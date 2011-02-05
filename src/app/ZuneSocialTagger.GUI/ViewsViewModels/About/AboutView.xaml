@@ -43,10 +43,6 @@
             </TextBlock>
             <TextBlock VerticalAlignment="Bottom" Text="© 2009 Lee Treveil"/>
         </StackPanel>
-
-        <Button Content="RELOAD DATABASE"  Grid.Row="2"
-                HorizontalAlignment="Left" VerticalAlignment="Bottom" Command="{Binding ReloadDbCommand}" Click="Button_Click" />
-
         <Button Content="CLOSE"  Grid.Row="2"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click" />
 

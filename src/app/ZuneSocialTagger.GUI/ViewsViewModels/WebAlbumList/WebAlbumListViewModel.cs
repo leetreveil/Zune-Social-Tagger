@@ -141,8 +141,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         {
             get
             {
-                return this.Albums.Where(x => x.LinkStatus == LinkStatus.Unlinked
-                                              || x.LinkStatus == LinkStatus.Unavailable).Count();
+                return this.Albums.Where(x => x.LinkStatus == LinkStatus.Unlinked).Count();
             }
         }
 

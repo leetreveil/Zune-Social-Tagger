@@ -118,8 +118,6 @@
 							</Setter>
 						
 						</MultiDataTrigger>
-						
-					
 
                         <DataTrigger Binding="{Binding LinkStatus}" Value="AlbumOrArtistMismatch">
                             <Setter Property="Template">
@@ -140,7 +138,6 @@
                             </Setter>
                         </DataTrigger>
 
-
                         <DataTrigger Binding="{Binding LinkStatus}" Value="Unlinked">
                             <Setter Property="Template">
                                 <Setter.Value>
@@ -149,21 +146,6 @@
 
                                             <Image Width="16" Height="16" Source="../../Resources/Assets/no.png" Margin="0,0,10,0" />
                                             <TextBlock VerticalAlignment="Center" FontSize="20" Text="UNLINKED" />
-
-                                        </StackPanel>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-
-                        <DataTrigger Binding="{Binding LinkStatus}" Value="Unavailable">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <StackPanel Orientation="Horizontal">
-
-                                            <Image Width="16" Height="16" Source="../../Resources/Assets/no.png" Margin="0,0,10,0" />
-                                            <TextBlock FontSize="20" VerticalAlignment="Center" Text="UNAVAILABLE" />
 
                                         </StackPanel>
                                     </ControlTemplate>
