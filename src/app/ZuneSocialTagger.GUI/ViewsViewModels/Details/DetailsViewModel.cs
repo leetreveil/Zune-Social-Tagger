@@ -12,6 +12,7 @@ using ZuneSocialTagger.Core.IO;
 using System;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.GUI.ViewsViewModels.Success;
+using ZuneSocialTagger.GUI.Controls;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 {
@@ -138,59 +139,63 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 
         private void Save()
         {
-            Mouse.OverrideCursor = Cursors.Wait;
-
-            var uaeExceptions = new List<UnauthorizedAccessException>();
-
-            foreach (var row in Rows.OfType<DetailRow>())
+            if (UpdateAlbumInfo)
             {
-                try
+                const string message = "You have 'Update album information' checked, this will modify the track's metadata " + 
+                    "with information from the zune marketplace. Are you sure?";
+                ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning, message), () =>
                 {
-                    if (row.SelectedSong != null)
+                    Mouse.OverrideCursor = Cursors.Wait;
+
+                    var uaeExceptions = new List<UnauthorizedAccessException>();
+
+                    foreach (var row in Rows.OfType<DetailRow>())
                     {
-                        var container = (IZuneTagContainer)row.SongDetails.BackingData;
-
-                        container.RemoveZuneAttribute("WM/WMContentID");
-                        container.RemoveZuneAttribute("WM/WMCollectionID");
-                        container.RemoveZuneAttribute("WM/WMCollectionGroupID");
-                        container.RemoveZuneAttribute("ZuneCollectionID");
-                        container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
-
-
-                        WebTrack webTrack = (WebTrack)row.SelectedSong.BackingData;
-                     
-                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, webTrack.AlbumMediaId));
-                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, webTrack.ArtistMediaId));
-                        container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, webTrack.MediaId));
-
-                        if (Settings.Default.UpdateAlbumInfo)
+                        try
                         {
-                            container.AddMetaData(CreateMetaDataFromWebDetails((WebTrack) row.SelectedSong.BackingData));  
+                            if (row.SelectedSong != null)
+                            {
+                                var container = (IZuneTagContainer)row.SongDetails.BackingData;
+                                container.RemoveZuneAttribute("WM/WMContentID");
+                                container.RemoveZuneAttribute("WM/WMCollectionID");
+                                container.RemoveZuneAttribute("WM/WMCollectionGroupID");
+                                container.RemoveZuneAttribute("ZuneCollectionID");
+                                container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
+
+                                var webTrack = (WebTrack)row.SelectedSong.BackingData;
+                                container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, webTrack.AlbumMediaId));
+                                container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, webTrack.ArtistMediaId));
+                                container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, webTrack.MediaId));
+
+                                if (UpdateAlbumInfo)
+                                {
+                                    container.AddMetaData(CreateMetaDataFromWebDetails((WebTrack)row.SelectedSong.BackingData));
+                                }
+
+                                container.WriteToFile();
+                                //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
+                            }
                         }
-
-                        container.WriteToFile();
-
-                        //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
+                        catch (UnauthorizedAccessException uae)
+                        {
+                            uaeExceptions.Add(uae);
+                            //TODO: better error handling
+                        }
                     }
-                }
-                catch (UnauthorizedAccessException uae)
-                {
-                    uaeExceptions.Add(uae);
-                    //TODO: better error handling
-                }
-            }
 
-            if (uaeExceptions.Count > 0)
-            {   //usually occurs when a file is readonly
-                Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,
-                                     "One or more files could not be written to. Have you checked the files are not marked read-only?"));
-            }
-            else
-            {
-                _locator.SwitchToView<SuccessView, SuccessViewModel>();
-            }
+                    if (uaeExceptions.Count > 0)
+                    {   //usually occurs when a file is readonly
+                        Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,
+                                            "One or more files could not be written to. Have you checked the files are not marked read-only?"));
+                    }
+                    else
+                    {
+                        _locator.SwitchToView<SuccessView, SuccessViewModel>();
+                    }
 
-            Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = null;
+                });
+            }
         }
 
         private MetaData CreateMetaDataFromWebDetails(WebTrack webTrack)

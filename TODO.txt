@@ -1,7 +1,6 @@
 add notice on first start about disabling automatically update album info etc
 should tell the user if the marketplace is available in their country
 
-popup a warning when a user is going to overwrite the metadata after clicking on 'update album info'
 
 MAJOR:
 Needs the ability to update .m4a files
