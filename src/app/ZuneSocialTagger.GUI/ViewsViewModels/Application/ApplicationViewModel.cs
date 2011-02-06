@@ -6,9 +6,11 @@ using System.Threading;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Threading;
 using leetreveil.AutoUpdate.Framework;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.Core.ZuneWebsite;
+using ZuneSocialTagger.GUI.Controls;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using System.Diagnostics;
@@ -51,9 +53,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         public void ViewHasLoaded()
         {
-            CheckForUpdates();
             ReadCache();
             Initialize();
+            CheckForUpdates();
+            CheckLocale();
         }
 
         #region View Bindings
@@ -252,7 +255,23 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     _albums.Add(albumDetailsViewModel);
                 }
                 _webAlbumListViewModel.DataHasLoaded();
-                _webAlbumListViewModel.Dispatch(_webAlbumListViewModel.DataHasLoaded);
+            });
+        }
+
+        private void CheckLocale()
+        {
+            var locale = Thread.CurrentThread.CurrentCulture.Name;
+            LocaleDownloader.IsMarketPlaceEnabledForLocaleAsync(locale, isEnabled =>
+            {
+                if (!isEnabled)
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        var msg = String.Format("The Zune Marketplace is not yet available in your region ({0}). You" +
+                            " may not get any search results when trying to link an album to the marketplace.", locale);
+                        ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning, msg), null);
+                    });
+                }
             });
         }
 

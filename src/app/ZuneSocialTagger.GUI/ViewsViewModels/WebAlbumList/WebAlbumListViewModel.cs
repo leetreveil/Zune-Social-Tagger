@@ -58,11 +58,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             _locator = locator;
             _dbReader.ProgressChanged += ReportProgress;
             _dbReader.StartedReadingAlbums += () => this.CanShowScanAllButton = false;
-            _dbReader.FinishedReadingAlbums += delegate
-            {
-                
-                DispatcherHelper.CheckBeginInvokeOnUI(Sort);
-            };
 
             _isTaskbarSupported = TaskbarManager.IsPlatformSupported;
 
