@@ -9,7 +9,6 @@ using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.ViewsViewModels.Application;
-using ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ProtoBuf;
@@ -43,7 +42,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             LinkCommand = new RelayCommand(LinkAlbum);
             DelinkCommand = new RelayCommand(DelinkAlbum);
             RefreshCommand = new RelayCommand(RefreshAlbum);
-            MoreInfoCommand = new RelayCommand(ShowMoreInfo);
         }
 
         public AlbumDetailsViewModel()
@@ -105,7 +103,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 RaisePropertyChanged(() => LinkStatus);
                 RaisePropertyChanged(() => CanLink);
                 RaisePropertyChanged(() => CanDelink);
-                RaisePropertyChanged(() => CanShowMoreInfo);
             }
         }
 
@@ -129,23 +126,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             get { return _linkStatus != LinkStatus.Unlinked && _linkStatus != LinkStatus.Unknown; }
         }
 
-        public bool CanShowMoreInfo
-        {
-            get { return _linkStatus != LinkStatus.Unlinked && _linkStatus != LinkStatus.Unknown; }
-        }
-
         public bool CanRefresh   
         {
             get { return SharedMethods.CheckIfZuneSoftwareIsRunning(); }
         }
 
         #endregion
-
-        private void ShowMoreInfo()
-        {
-            var moreInfoViewModel = _locator.SwitchToView<MoreInfoView, MoreInfoViewModel>();
-            moreInfoViewModel.SetAlbumDetails(this);
-        }
 
         public void LinkAlbum()
         {

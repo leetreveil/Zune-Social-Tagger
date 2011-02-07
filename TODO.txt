@@ -2,10 +2,11 @@ improve marketplace notification and link to github faq answer for more detail
 
 when running 'scan all' it should search the zune marketplace for any matches and notify the user if any are found
 
-remove more info
-
 
 
 MAJOR:
 Needs the ability to update .m4a files
+
+MINOR:
+When trying to refresh an album it sometimes wont even if the zune software is open
 

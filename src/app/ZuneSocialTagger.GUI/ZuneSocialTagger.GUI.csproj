@@ -126,10 +126,7 @@
     <Compile Include="ViewsViewModels\About\AboutViewModel.cs" />
     <Compile Include="ViewsViewModels\Shared\ViewLocator.cs" />
     <Compile Include="ViewsViewModels\WebAlbumList\AlbumDetailsViewModel.cs" />
-    <Compile Include="ViewsViewModels\MoreInfo\MoreInfoViewModel.cs" />
     <Compile Include="ViewsViewModels\Application\ApplicationViewModel.cs" />
-    <Compile Include="ViewsViewModels\MoreInfo\DesignTime\AlbumMoreInfoDesignViewModel.cs" />
-    <Compile Include="ViewsViewModels\MoreInfo\MoreInfoRow.cs" />
     <Compile Include="ViewsViewModels\Details\DesignTime\DetailsDesignViewModel.cs" />
     <Compile Include="ViewsViewModels\Search\DesignTime\SearchDesignViewModel.cs" />
     <Compile Include="ViewsViewModels\Search\DesignTime\SearchResultsDesignViewModel.cs" />
@@ -154,9 +151,6 @@
     </Compile>
     <Compile Include="ViewsViewModels\WebAlbumList\AlbumDetailsView.xaml.cs">
       <DependentUpon>AlbumDetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewsViewModels\MoreInfo\MoreInfoView.xaml.cs">
-      <DependentUpon>MoreInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsViewModels\Application\ApplicationView.xaml.cs">
       <DependentUpon>ApplicationView.xaml</DependentUpon>
@@ -291,10 +285,6 @@
     <Page Include="ViewsViewModels\WebAlbumList\AlbumDetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ViewsViewModels\MoreInfo\MoreInfoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewsViewModels\Application\ApplicationView.xaml">
       <Generator>MSBuild:Compile</Generator>

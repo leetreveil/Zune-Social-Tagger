@@ -5,7 +5,6 @@
                     xmlns:WebAlbumList="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList" 
                     xmlns:Search="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Search" 
                     xmlns:Details="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Details" 
-                    xmlns:MoreInfo="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.MoreInfo" 
                     xmlns:Success="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Success" 
                     xmlns:SelectAudioFiles="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles">
 
@@ -27,10 +26,6 @@
 
     <DataTemplate DataType="{x:Type Success:SuccessViewModel}">
         <Success:SuccessView/>
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type MoreInfo:MoreInfoViewModel}">
-        <MoreInfo:MoreInfoView/>
     </DataTemplate>
 
 	<converters:TextToVisibilityConverter x:Key="TextToVisibilityConverter"/>

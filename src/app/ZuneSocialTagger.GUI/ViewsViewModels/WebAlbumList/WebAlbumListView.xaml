@@ -232,17 +232,6 @@
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="More Info"
-                              IsEnabled="{Binding ElementName=lvAlbums, Path=SelectedItem.CanShowMoreInfo}"
-                              Command="{Binding ElementName=lvAlbums, Path=SelectedItem.MoreInfoCommand}">
-                        <MenuItem.Icon>
-                            <Image Width="16"
-                                   Height="16"
-                                   Source="../../Resources/Assets/information.png" />
-                        </MenuItem.Icon>
-
-                    </MenuItem>
-
                 </ContextMenu>
             </ListView.ContextMenu>
             
