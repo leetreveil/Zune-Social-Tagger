@@ -63,11 +63,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
             SetupCommandBindings();
 
-            this.CanShowSort = false;
+            this.CanShowSort = true;
             this.CanShowScanAllButton = true;
             this.SortOrder = Settings.Default.SortOrder;
         }
-
 
         #region View Binding Properties
 
@@ -184,12 +183,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         public void SuspendSorting() {
             DispatcherHelper.CheckBeginInvokeOnUI(() => {
                 this.AlbumsViewSource.SortDescriptions.Clear();
-            });
-        }
-
-        public void ResetSortOrder() {
-            DispatcherHelper.CheckBeginInvokeOnUI(() => {
-                this.CanShowSort = false;
             });
         }
 

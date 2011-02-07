@@ -1,5 +1,9 @@
-add notice on first start about disabling automatically update album info etc
-should tell the user if the marketplace is available in their country
+improve marketplace notification and link to github faq answer for more detail
+
+when running 'scan all' it should search the zune marketplace for any matches and notify the user if any are found
+
+remove more info
+
 
 
 MAJOR:

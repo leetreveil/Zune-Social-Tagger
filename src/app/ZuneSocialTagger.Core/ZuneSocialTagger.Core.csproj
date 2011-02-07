@@ -108,6 +108,7 @@
     <Compile Include="ZuneDatabase\DbAlbum.cs" />
     <Compile Include="ZuneDatabase\DbTrack.cs" />
     <Compile Include="ZuneDatabase\IZuneDatabaseReader.cs" />
+    <Compile Include="ZuneDatabase\SortOrder.cs" />
     <Compile Include="ZuneDatabase\TestZuneDatabaseReader.cs" />
     <Compile Include="ZuneDatabase\ZuneDatabaseReader.cs" />
     <Compile Include="IO\ZuneIds.cs" />

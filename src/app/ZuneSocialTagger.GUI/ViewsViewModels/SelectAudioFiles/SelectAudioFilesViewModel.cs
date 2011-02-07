@@ -26,9 +26,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
             _sharedModel = sharedModel;
             _locator = locator;
             _fileRetriever = fileRetriever;
-            this.CanSwitchToNewMode = true;
-            this.SelectFilesCommand = new RelayCommand(SelectFiles);
-            this.SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);    
+            CanSwitchToNewMode = true;
+            SelectFilesCommand = new RelayCommand(SelectFiles);
+            SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);    
         }
 
         public bool CanSwitchToNewMode { get; set; }
@@ -44,10 +44,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
         {
             if (CommonFileDialog.IsPlatformSupported)
             {
-                var commonOpenFileDialog = new CommonOpenFileDialog("Select the audio files that you want to link to the zune social");
+                var commonOpenFileDialog = new CommonOpenFileDialog("Select the audio files that you want to link to the zune social")
+                                               {
+                                                   Multiselect = true,
+                                                   EnsureFileExists = true
+                                               };
 
-                commonOpenFileDialog.Multiselect = true;
-                commonOpenFileDialog.EnsureFileExists = true;
                 commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("Audio Files", "*.mp3;*.wma"));
                 commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("MP3 Files", "*.mp3"));
                 commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("WMA Files", "*.wma"));
@@ -81,7 +83,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
                 MetaData firstTrackMetaData = containers.First().MetaData;
 
                 //set the album details that is used throughout the app
-                _sharedModel.AlbumDetailsFromFile = SharedMethods.SetAlbumDetails(firstTrackMetaData,containers.Count);
+                _sharedModel.AlbumDetailsFromFile = SharedMethods.SetAlbumDetails(firstTrackMetaData, containers.Count);
                 _sharedModel.SongsFromFile = containers;
 
                 //as soon as the view has switched start searching

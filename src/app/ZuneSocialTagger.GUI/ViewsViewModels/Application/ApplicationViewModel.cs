@@ -21,6 +21,7 @@ using ZuneSocialTagger.GUI.ViewsViewModels.Update;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ProtoBuf;
 using System.Windows.Input;
+using SortOrder = ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.SortOrder;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 {
@@ -203,11 +204,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     _cache = Serializer.Deserialize<List<WebAlbum>>(file);
                 }
             }
-            catch
-            {
-            }
+            catch{}
         }
-
 
         private void WriteCache()
         {
@@ -220,11 +218,25 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         public void ReadActualDatabase()
         {
             _webAlbumListViewModel.SuspendSorting();
-            _webAlbumListViewModel.ResetSortOrder();
 
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                foreach (DbAlbum newAlbum in _dbReader.ReadAlbums())
+                Core.ZuneDatabase.SortOrder so;
+                switch (Settings.Default.SortOrder)
+                {
+                    case SortOrder.DateAdded:
+                        so = Core.ZuneDatabase.SortOrder.DateAdded;
+                        break;
+                    case SortOrder.Album:
+                        so = Core.ZuneDatabase.SortOrder.Album;
+                        break;
+                    case SortOrder.Artist:
+                        so = Core.ZuneDatabase.SortOrder.Artist;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                foreach (DbAlbum newAlbum in _dbReader.ReadAlbums(so))
                 {
                     var albumDetailsViewModel = _viewLocator.Resolve<AlbumDetailsViewModel>();
                     albumDetailsViewModel.LinkStatus = newAlbum.AlbumMediaId.GetLinkStatusFromGuid();
