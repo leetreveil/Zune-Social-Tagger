@@ -13,14 +13,26 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
             get
             {
                 if (_albumDetailsFromFile == null)
-                    return DbAlbum.GetAlbumDetailsFrom();
+                    _albumDetailsFromFile = DbAlbum.GetAlbumDetailsFrom();
                 
                 return _albumDetailsFromFile;
             }
             set { _albumDetailsFromFile = value; }
         }
 
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWeb { get; set; }
+        private ExpandedAlbumDetailsViewModel _albumDetailsFromWeb;
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWeb
+        {
+            get
+            {
+                if (_albumDetailsFromWeb == null)
+                    _albumDetailsFromWeb = WebAlbum.GetAlbumDetailsFrom();
+
+                return _albumDetailsFromWeb;
+            }
+            set { _albumDetailsFromWeb = value; }
+        }
+
         public IList<IZuneTagContainer> SongsFromFile { get; set; }
         public WebAlbum WebAlbum { get; set; }
         public DbAlbum DbAlbum { get; set; }

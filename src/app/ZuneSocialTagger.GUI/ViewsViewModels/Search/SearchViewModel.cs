@@ -162,8 +162,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         public void MoveNext()
         {
             _sharedModel.WebAlbum = _searchResultsViewModel.DownloadedAlbum;
-            _sharedModel.AlbumDetailsFromWeb = SharedMethods.GetAlbumDetailsFrom(_searchResultsViewModel.DownloadedAlbum);
-
             var detailsViewModel = _locator.SwitchToView<DetailsView,DetailsViewModel>();
             detailsViewModel.PopulateRows();
         }
