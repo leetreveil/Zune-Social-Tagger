@@ -11,7 +11,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
     {
         public WebTrack()
         {
-            Trace.WriteLine("hit");
+            //Trace.WriteLine("hit");
         }
         [ProtoMember(1)]
         public Guid AlbumMediaId { get; set; }

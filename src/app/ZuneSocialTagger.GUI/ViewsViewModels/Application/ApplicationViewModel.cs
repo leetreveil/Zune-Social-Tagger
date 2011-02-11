@@ -205,11 +205,25 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             catch{}
         }
 
+        private static Func<AlbumDetailsViewModel, WebAlbum> _selector = delegate(AlbumDetailsViewModel x)
+        {
+            if (x.WebAlbumMetaData == null)
+                return null;
+
+            return new WebAlbum
+            {
+                AlbumMediaId =x.WebAlbumMetaData.AlbumMediaId,
+                Artist =x.WebAlbumMetaData.Artist,
+                ArtworkUrl = x.WebAlbumMetaData.ArtworkUrl,
+                Title =x.WebAlbumMetaData.Title
+            };
+        };
+
         private void WriteCache()
         {
             using (var file = File.Create(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache3.dat")))
             {
-                Serializer.Serialize(file, _albums.Select(x => x.WebAlbumMetaData).ToList());
+                Serializer.Serialize(file, _albums.Select(_selector).ToList());
             }
         }
 
