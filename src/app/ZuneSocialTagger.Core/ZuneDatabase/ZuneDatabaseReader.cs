@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using MicrosoftZuneInterop;
@@ -77,8 +78,42 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
                                ? EQuerySortType.eQuerySortOrderDescending
                                : EQuerySortType.eQuerySortOrderAscending;
 
+            //var artists = _zuneLibrary.QueryDatabase(EQueryType.eQueryTypeAllAlbumArtists, 0, EQuerySortType.eQuerySortOrderAscending,
+            //               (uint)SchemaMap.kiIndex_AlbumArtistID, new QueryPropertyBag());
+
+            //Console.WriteLine(artists.Count);
+
+            //var ast = artists.GetUniqueIds();
+
+            //Console.WriteLine(ast.Count);
+
+            ////var val = artists.GetFieldValue(9, typeof (string), "ZuneAlbumArtistMediaID");
+
+
+            //for (int j = 0; j < 2000; j++)
+            //{
+            //    try
+            //    {
+            //        var test = artists.GetFieldValue(9, typeof(string), (uint)j);
+
+            //        if (test != null)
+            //        {
+            //            Trace.WriteLine(ZuneQueryList.AtomToAtomName(j));
+            //            Trace.WriteLine(test);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Trace.WriteLine("FAILED ON");
+            //    }
+            //}
+
+
+
             return _zuneLibrary.QueryDatabase(EQueryType.eQueryTypeAllAlbums, 0, 
                 sortType, sortAtom, new QueryPropertyBag());
+
+
         }
 
         public IEnumerable<DbAlbum> ReadAlbums(SortOrder sortOrder)
@@ -238,7 +273,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             }
 
             _zuneLibrary.CleanupTransientMedia();
-
             zuneQueryList.Dispose();
         }
 
@@ -253,7 +287,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             {
                 //The version that this program was written to support, in future versions methods could change
                 //so updates will probably be needed
-
                 if (!File.Exists("ZuneDBApi.dll"))
                     throw new FileNotFoundException(
                         "Could not find ZuneDBApi.dll. Are you sure Zune Social Tagger is installed in the Zune application folder?");

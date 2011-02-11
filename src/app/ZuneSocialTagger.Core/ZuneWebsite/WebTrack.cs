@@ -2,12 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using ProtoBuf;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.Core.ZuneWebsite
 {
     [ProtoContract]
     public class WebTrack
     {
+        public WebTrack()
+        {
+            Trace.WriteLine("hit");
+        }
         [ProtoMember(1)]
         public Guid AlbumMediaId { get; set; }
         [ProtoMember(2)]

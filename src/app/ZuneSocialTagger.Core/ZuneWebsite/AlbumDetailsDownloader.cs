@@ -15,32 +15,31 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
     {
         public static void DownloadAsync(string url, Action<WebAlbum> callback)
         {
-            var client = new WebClient();
-            client.DownloadDataAsync(new Uri(url));
-
-            client.DownloadDataCompleted += (sender, args) =>
+            using (var client = new WebClient())
             {
-                if (args.Cancelled || args.Error != null)
-                {
-                    callback.Invoke(null);
-                }
-                else
-                {
-                    try
-                    {
-                        var reader = XmlReader.Create(new MemoryStream(args.Result));
-                        var album = GetAlbumDetails(reader);
-                        if (album == null)
-                            throw new NullReferenceException();
+                client.DownloadDataAsync(new Uri(url));
 
-                        callback.Invoke(album);
-                    }
-                    catch
+                client.DownloadDataCompleted += (sender, args) =>
+                {
+                    if (args.Cancelled || args.Error != null)
                     {
                         callback.Invoke(null);
                     }
-                }
-            };
+                    else
+                    {
+                        try
+                        {
+                            var reader = XmlReader.Create(new MemoryStream(args.Result));
+                            var album = GetAlbumDetails(reader);
+                            callback.Invoke(album);
+                        }
+                        catch
+                        {
+                            callback.Invoke(null);
+                        }
+                    }
+                };
+            }
         }
 
         private static WebAlbum GetAlbumDetails(XmlReader reader)

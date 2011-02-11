@@ -55,7 +55,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Success
         private void RefreshAlbum() 
         {
             var webAlbumListViewModel = _locator.SwitchToView<WebAlbumListView, WebAlbumListViewModel>();
-            webAlbumListViewModel.SelectedAlbum.RefreshAlbum();
+
+            if (webAlbumListViewModel.SelectedAlbum != null)
+                webAlbumListViewModel.SelectedAlbum.RefreshAlbum();
         }
     }
 }

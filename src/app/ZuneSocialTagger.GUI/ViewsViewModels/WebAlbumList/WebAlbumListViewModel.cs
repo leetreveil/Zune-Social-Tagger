@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Data;
 using GalaSoft.MvvmLight.Command;
@@ -13,6 +14,7 @@ using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using GalaSoft.MvvmLight.Threading;
+using System.Threading;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {
@@ -200,7 +202,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             this.AlbumsViewSource.View.Refresh();
         }
 
-
         public void LoadFromZuneWebsite()
         {
             var warningMsg = new ErrorMessage(ErrorMode.Warning,"This process could take a very long time, are you sure?");
@@ -211,22 +212,24 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 SortSourceCollection();
 
                 //skip the unlinked albums that cant be downloaded
-                var albumsToDownload = this.Albums.Where(x => x.LinkStatus != LinkStatus.Unlinked).ToList();
+                //var albumsToDownload = .ToList();
 
-                foreach (var album in albumsToDownload)
+                //Trace.WriteLine("total length: " + albumsToDownload.Count);
+
+                int counter = 0;
+                foreach (var album in this.Albums)
                 {
                     album.LinkStatus = LinkStatus.Unknown; // reset the linkstatus so we can scan all multiple times
                     album.WebAlbumMetaData = null;
 
-                    album.GetAlbumDetailsFromWebsite(()=>
+                    album.DownloadCompleted += () => 
                     {
-                        var albumsToBeDownloaded = this.Albums.Where(x => x.LinkStatus == LinkStatus.Unknown);
+                        counter++;
+                        ReportProgress(counter, this.Albums.Count);
+                        if (counter == this.Albums.Count) ResetLoadingProgress();
+                    };
 
-                        int totalDownloaded = albumsToDownload.Count - albumsToBeDownloaded.Count();
-
-                        ReportProgress(totalDownloaded, albumsToDownload.Count);
-                        if (albumsToBeDownloaded.Count() == 0) ResetLoadingProgress();
-                    });
+                    album.GetAlbumDetailsFromWebsite();
                 } 
             });
         }

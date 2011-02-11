@@ -12,9 +12,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
         {
             get
             {
-                if (_albumDetailsFromFile == null)
+                if (DbAlbum != null)
                     _albumDetailsFromFile = DbAlbum.GetAlbumDetailsFrom();
-                
+
                 return _albumDetailsFromFile;
             }
             set { _albumDetailsFromFile = value; }
@@ -25,7 +25,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
         {
             get
             {
-                if (_albumDetailsFromWeb == null)
+                if (WebAlbum != null)
                     _albumDetailsFromWeb = WebAlbum.GetAlbumDetailsFrom();
 
                 return _albumDetailsFromWeb;

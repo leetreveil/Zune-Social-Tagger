@@ -207,7 +207,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 if (albumMetaData != null)
                 {
                     ZuneAlbumMetaData = albumMetaData;
-                    GetAlbumDetailsFromWebsite(null);
+                    GetAlbumDetailsFromWebsite();
                 }
                 else
                 {
@@ -222,7 +222,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             }
         }
 
-        public void GetAlbumDetailsFromWebsite(Action callback)
+        public event Action DownloadCompleted = delegate { };
+
+        public void GetAlbumDetailsFromWebsite()
         {
             Guid albumMediaId = ZuneAlbumMetaData.AlbumMediaId;
 
@@ -243,15 +245,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                     }
 
                     IsDownloadingDetails = false;
-
-                    if (callback != null)
-                        callback.Invoke();
+                    DownloadCompleted.Invoke();
                 });
             }
             else
             {
                 LinkStatus = LinkStatus.Unlinked;
                 IsDownloadingDetails = false;
+                DownloadCompleted.Invoke();
             }
 
         }

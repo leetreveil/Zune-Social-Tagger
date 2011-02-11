@@ -137,9 +137,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void Initialize()
         {
-            bool dbLoaded = InitializeDatabase();
-
-            if (dbLoaded)
+            if (InitializeDatabase())
             {
                 _webAlbumListViewModel = _viewLocator.SwitchToView<WebAlbumListView, WebAlbumListViewModel>();
                 ReadActualDatabase();
@@ -234,7 +232,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                         so = Core.ZuneDatabase.SortOrder.Artist;
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        so = Core.ZuneDatabase.SortOrder.DateAdded;
+                        break;
                 }
                 foreach (DbAlbum newAlbum in _dbReader.ReadAlbums(so))
                 {

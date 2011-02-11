@@ -13,6 +13,7 @@ using System;
 using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.GUI.ViewsViewModels.Success;
 using ZuneSocialTagger.GUI.Controls;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 {
@@ -155,6 +156,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
                         container.RemoveZuneAttribute("WM/WMCollectionGroupID");
                         container.RemoveZuneAttribute("ZuneCollectionID");
                         container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
+
+                        foreach (var attribute in container.ZuneAttributes)
+                        {
+                           Trace.WriteLine(attribute.Name + " " + attribute.Guid);
+                        }
 
                         var webTrack = (WebTrack)row.SelectedSong.BackingData;
                         container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, webTrack.AlbumMediaId));
