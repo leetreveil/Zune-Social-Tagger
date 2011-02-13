@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:WebAlbumList="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList" 
              xmlns:dt="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.DesignTime"
              mc:Ignorable="d"
              Name="root">
@@ -40,7 +39,7 @@
             <ColumnDefinition  />
         </Grid.ColumnDefinitions>
 
-		<ContentControl Template="{StaticResource AlbumDetails}" DataContext="{Binding ZuneAlbumMetaData}"/>
+		<ContentControl Template="{StaticResource AlbumDetails}" DataContext="{Binding Left}"/>
 
         <ContentControl Grid.Column="2" HorizontalAlignment="Left">
             <ContentControl.Style>
@@ -51,10 +50,11 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                        <StackPanel DataContext="{Binding WebAlbumMetaData}" Orientation="Horizontal">
+                                        <StackPanel  Orientation="Horizontal">
                                             <Image Width="16" Height="16" Source="../../Resources/Assets/yes.png"
                                                                             Margin="0,0,10,0" />
-                                            <ContentControl Template="{StaticResource AlbumDetails}"/>
+                                            <ContentControl Template="{StaticResource AlbumDetails}"
+                                                            DataContext="{Binding Right}" />
                                         </StackPanel>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -70,69 +70,6 @@
                                                    Source="../../Resources/Assets/help.png"
                                                    Margin="0,0,10,0" 
                                                    HorizontalAlignment="Left"/>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-
-                        <MultiDataTrigger>
-							<MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding IsDownloadingDetails}" Value="True"/>
-								<Condition Binding="{Binding LinkStatus}" Value="Unknown"/>
-							</MultiDataTrigger.Conditions>
-							
-							<Setter Property="Template">
-								<Setter.Value>
-									<ControlTemplate>
-                                            <Image Width="16" Height="16"
-                                                   Source="../../Resources/Assets/refresh.png"
-                                                   Margin="0,0,10,0" 
-                                                   HorizontalAlignment="Left">
-                                                
-                                                <Image.RenderTransform>
-                                                    <RotateTransform x:Name="TransRotate" CenterX="8" CenterY="8" Angle="0" />
-                                                </Image.RenderTransform>
-												
-												<Image.Triggers>
-													<EventTrigger RoutedEvent="Image.Loaded">
-														<EventTrigger.Actions>
-															<BeginStoryboard>
-																<Storyboard>
-	                                                				<DoubleAnimation 
-	                                                					Storyboard.TargetName="TransRotate" 
-	                                                					Storyboard.TargetProperty="Angle"
-	                                                					By="360" 
-	                                                					Duration="0:0:0.5"  
-	                                                					AutoReverse="False" 
-	                                                					RepeatBehavior="Forever" />
-	                                                			</Storyboard>
-															</BeginStoryboard>
-														</EventTrigger.Actions>
-
-													</EventTrigger>
-												</Image.Triggers>             
-                                            </Image>
-
-                                    </ControlTemplate>
-								</Setter.Value>
-							</Setter>
-						
-						</MultiDataTrigger>
-
-                        <DataTrigger Binding="{Binding LinkStatus}" Value="AlbumOrArtistMismatch">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <StackPanel DataContext="{Binding WebAlbumMetaData}" Orientation="Horizontal">
-
-                                            <Image Width="16"
-                                                       Height="16"
-                                                       Source="../../Resources/Assets/warning.png"
-                                                       Margin="0,0,10,0" />
-
-                                            <ContentControl Template="{StaticResource AlbumDetails}"/>
-
-                                        </StackPanel>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>

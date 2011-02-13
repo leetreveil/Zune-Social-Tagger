@@ -2,6 +2,12 @@ improve marketplace notification and link to github faq answer for more detail
 
 when running 'scan all' it should search the zune marketplace for any matches and notify the user if any are found
 
+remove albumorartistmismatch code / icon on toolbar
+
+drop the prog bar for loading from the zune db and perhaps only show the icons once fully loaded?
+
+allow scan all to run while db is loading AND allow sort to happen while db is loadin
+
 
 
 MAJOR:

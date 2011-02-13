@@ -35,7 +35,7 @@ namespace ZuneSocialTagger.GUI
         void App_Startup(object sender, System.Windows.StartupEventArgs e)
         {
             LoggerForStrings.AddLogger(StringLogger);
-            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+            //this.DispatcherUnhandledException += App_DispatcherUnhandledException;
 
             DispatcherHelper.Initialize();
 

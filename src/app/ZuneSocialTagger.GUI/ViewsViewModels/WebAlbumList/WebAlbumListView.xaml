@@ -186,7 +186,7 @@
                   SelectionMode="Single"
                   Grid.Row="2"
                   x:Name="lvAlbums"
-                  ItemsSource="{Binding AlbumsViewSource.View}"
+                  ItemsSource="{Binding AlbumsView, Mode=OneWay}"
                   IsTextSearchEnabled="True"
                   MaxHeight="400"
                   ItemContainerStyle="{StaticResource ListViewItemStyle}"
@@ -199,7 +199,6 @@
                 <ContextMenu x:Name="contextMenu">
 
                     <MenuItem Header="Link" 
-                      IsEnabled="{Binding ElementName=lvAlbums, Path=SelectedItem.CanLink}"
                       Command="{Binding ElementName=lvAlbums, Path=SelectedItem.LinkCommand}">
                         <MenuItem.Icon>
                             <Image Width="16"
@@ -221,9 +220,6 @@
                     <Separator />
 
                     <MenuItem Header="Refresh"
-                      ToolTipService.ShowOnDisabled="True"
-                      ToolTip="The album can only be refreshed when the zune software is running."
-                      IsEnabled="{Binding ElementName=lvAlbums, Path=SelectedItem.CanRefresh}"
                       Command="{Binding ElementName=lvAlbums, Path=SelectedItem.RefreshCommand}">
                         <MenuItem.Icon>
                             <Image Width="16"

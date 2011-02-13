@@ -32,7 +32,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         private readonly SafeObservableCollection<AlbumDetailsViewModel> _albums;
         private readonly IViewLocator _viewLocator;
         private WebAlbumListViewModel _webAlbumListViewModel;
-        private List<WebAlbum> _cache;
+        private List<MinCache> _cache;
 
         public ApplicationViewModel(IZuneDatabaseReader dbReader,
                                     SafeObservableCollection<AlbumDetailsViewModel> albums,
@@ -199,31 +199,17 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             {
                 using (var file = File.Open(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache3.dat"), FileMode.Open))
                 {
-                    _cache = Serializer.Deserialize<List<WebAlbum>>(file);
+                    _cache = Serializer.Deserialize<List<MinCache>>(file);
                 }
             }
             catch{}
         }
 
-        private static Func<AlbumDetailsViewModel, WebAlbum> _selector = delegate(AlbumDetailsViewModel x)
-        {
-            if (x.WebAlbumMetaData == null)
-                return null;
-
-            return new WebAlbum
-            {
-                AlbumMediaId =x.WebAlbumMetaData.AlbumMediaId,
-                Artist =x.WebAlbumMetaData.Artist,
-                ArtworkUrl = x.WebAlbumMetaData.ArtworkUrl,
-                Title =x.WebAlbumMetaData.Title
-            };
-        };
-
         private void WriteCache()
         {
             using (var file = File.Create(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache3.dat")))
             {
-                Serializer.Serialize(file, _albums.Select(_selector).ToList());
+                Serializer.Serialize(file, _albums.Select(x=> new MinCache{MediaId = x.MediaId, Right = x.Right}).ToList());
             }
         }
 
@@ -251,33 +237,43 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                 }
                 foreach (DbAlbum newAlbum in _dbReader.ReadAlbums(so))
                 {
-                    var albumDetailsViewModel = _viewLocator.Resolve<AlbumDetailsViewModel>();
-                    albumDetailsViewModel.LinkStatus = newAlbum.AlbumMediaId.GetLinkStatusFromGuid();
-                    albumDetailsViewModel.ZuneAlbumMetaData = newAlbum;
+                    var newalbumDetails = _viewLocator.Resolve<AlbumDetailsViewModel>();
+                    newalbumDetails.LinkStatus = newAlbum.AlbumMediaId.GetLinkStatusFromGuid();
+                    newalbumDetails.DateAdded = newAlbum.DateAdded;
+                    newalbumDetails.MediaId = newAlbum.MediaId;
+                    newalbumDetails.Left = new AlbumThumbDetails
+                    {
+                        Artist = newAlbum.Artist,
+                        ArtworkUrl = newAlbum.ArtworkUrl,
+                        Title = newAlbum.Title,
+                    };
 
-                    if (albumDetailsViewModel.LinkStatus == LinkStatus.Unknown)
+                    if (newalbumDetails.LinkStatus == LinkStatus.Unknown)
                     {
                         if (_cache != null)
                         {
-                            albumDetailsViewModel.WebAlbumMetaData =
-                                _cache.Find((x) => x.AlbumMediaId == albumDetailsViewModel.ZuneAlbumMetaData.AlbumMediaId);
+                            var cachedObject = _cache.Find((x) => x.MediaId == newAlbum.MediaId);
 
-                            if (albumDetailsViewModel.WebAlbumMetaData != null)
+                            if (cachedObject.Right != null)
                             {
-                                albumDetailsViewModel.LinkStatus = SharedMethods.GetAlbumLinkStatus(
-                                    albumDetailsViewModel.WebAlbumMetaData.Title,
-                                    albumDetailsViewModel.WebAlbumMetaData.Artist,
-                                    albumDetailsViewModel.ZuneAlbumMetaData.Title,
-                                    albumDetailsViewModel.ZuneAlbumMetaData.Artist);
-                            }
-                            else
-                            {
-                                albumDetailsViewModel.LinkStatus = LinkStatus.Unlinked;
+                                newalbumDetails.Right = new AlbumThumbDetails()
+                                {
+                                    Artist = cachedObject.Right.Artist,
+                                    ArtworkUrl = cachedObject.Right.ArtworkUrl,
+                                    Title = cachedObject.Right.Title
+                                };
+
+
+                                newalbumDetails.LinkStatus = SharedMethods.GetAlbumLinkStatus(
+                                    newalbumDetails.Left.Title,
+                                    newalbumDetails.Left.Artist,
+                                    newalbumDetails.Right.Title,
+                                    newalbumDetails.Right.Artist);
                             }
                         }
                     }
 
-                    _albums.Add(albumDetailsViewModel);
+                    _albums.Add(newalbumDetails);
                 }
                 _webAlbumListViewModel.DataHasLoaded();
             });
@@ -294,7 +290,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     {
                         var msg = String.Format("The Zune Marketplace is not yet available in your region ({0}). You" +
                             " may not get any search results when trying to link an album to the marketplace.", locale);
-                        ZuneMessageBox.Show(new ErrorMessage(ErrorMode.Warning, msg), null);
+                        Notifications.Add(new ErrorMessage(ErrorMode.Info, msg));
                     });
                 }
             });

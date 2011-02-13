@@ -92,7 +92,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send<ErrorMessage, ApplicationViewModel>(new ErrorMessage(ErrorMode.Error, ex.Message));
+                Messenger.Default.Send(new ErrorMessage(ErrorMode.Error, ex.Message));
                 return;  //if we hit an error on any track in the albums then just fail and dont read anymore
             }
         }
