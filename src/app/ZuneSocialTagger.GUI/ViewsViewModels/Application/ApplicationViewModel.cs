@@ -10,7 +10,6 @@ using GalaSoft.MvvmLight.Threading;
 using leetreveil.AutoUpdate.Framework;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.Core.ZuneWebsite;
-using ZuneSocialTagger.GUI.Controls;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using System.Diagnostics;
@@ -42,22 +41,23 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             _albums = albums;
             _viewLocator = locator;
 
-            System.Windows.Application.Current.Exit += delegate { ApplicationIsShuttingDown(); };
-
             //register for notification messages
-            Messenger.Default.Register<ErrorMessage>(this, this.Notifications.Add);
+            Messenger.Default.Register<ErrorMessage>(this, Notifications.Add);
 
             locator.SwitchToViewRequested += view => {
-                this.CurrentPage = view;
+                CurrentPage = view;
             };
         }
 
         public void ViewHasLoaded()
         {
-            ReadCache();
-            Initialize();
-            CheckForUpdates();
-            CheckLocale();
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                Initialize();
+                ReadCache();
+                CheckForUpdates();
+                CheckLocale();
+            });
         }
 
         #region View Bindings
@@ -105,7 +105,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             {
                 if (_notifications == null) {
                     _notifications = new SafeObservableCollection<ErrorMessage>();
-                    RaisePropertyChanged(() => this.Notifications);
+                    RaisePropertyChanged(() => Notifications);
                 }
                 return _notifications; 
             }
@@ -118,7 +118,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             set
             {
                 _updateAvailable = value;
-                RaisePropertyChanged(() => this.UpdateAvailable);
+                RaisePropertyChanged(() => UpdateAvailable);
             }
         }
 
@@ -129,7 +129,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             private set
             {
                 _currentPage = value;
-                RaisePropertyChanged(() => this.CurrentPage);
+                RaisePropertyChanged(() => CurrentPage);
             }
         }
 
@@ -139,24 +139,31 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         {
             if (InitializeDatabase())
             {
-                _webAlbumListViewModel = _viewLocator.SwitchToView<WebAlbumListView, WebAlbumListViewModel>();
+                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
+                    _webAlbumListViewModel = _viewLocator.SwitchToView<WebAlbumListView, WebAlbumListViewModel>();
+                });
+                
                 ReadActualDatabase();
             }
             //if we cannot interop with the zune database switch to the old view
             else
             {
-                var selectAudioFilesViewModel = _viewLocator.SwitchToView<SelectAudioFilesView, SelectAudioFilesViewModel>();
-                selectAudioFilesViewModel.CanSwitchToNewMode = false;
+                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
+                    var selectAudioFilesViewModel = _viewLocator.SwitchToView<SelectAudioFilesView, SelectAudioFilesViewModel>();
+                    selectAudioFilesViewModel.CanSwitchToNewMode = false;
+                });
             }
         }
 
         public void AlbumBeenLinked()
         {
-            if (this.CurrentPage.GetType() == typeof(WebAlbumListViewModel))
+            if (CurrentPage.GetType() == typeof(WebAlbumListViewModel))
             {
                 if (!SharedMethods.CheckIfZuneSoftwareIsRunning())
                 {
-                    this.Notifications.Add(new ErrorMessage(ErrorMode.Warning,
+                    Notifications.Add(new ErrorMessage(ErrorMode.Warning,
                                                     "Any albums you link / delink will not show their changes until the zune software is running."));
                 }
                 else
@@ -176,19 +183,19 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
                     if (!initalized)
                     {
-                        this.Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
+                        Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
                         return false;
                     }
 
                     return true;
                 }
 
-                this.Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
+                Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
                 return false;
             }
             catch (Exception e)
             {
-                this.Notifications.Add(new ErrorMessage(ErrorMode.Error, e.Message));
+                Notifications.Add(new ErrorMessage(ErrorMode.Error, e.Message));
                 return false;
             }
         }
@@ -202,7 +209,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     _cache = Serializer.Deserialize<List<MinCache>>(file);
                 }
             }
-            catch{}
+            catch
+            {}
         }
 
         private void WriteCache()
@@ -215,8 +223,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         public void ReadActualDatabase()
         {
-            _webAlbumListViewModel.SuspendSorting();
-
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 Core.ZuneDatabase.SortOrder so;
@@ -252,12 +258,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     {
                         if (_cache != null)
                         {
-                            var cachedObject = _cache.Find((x) => x.MediaId == newAlbum.MediaId);
+                            DbAlbum album = newAlbum;
+                            var cachedObject = _cache.Find(x => x.MediaId == album.MediaId);
 
                             if (cachedObject.Right != null)
                             {
-                                newalbumDetails.Right = new AlbumThumbDetails()
-                                {
+                                newalbumDetails.Right = new AlbumThumbDetails
+                                                            {
                                     Artist = cachedObject.Right.Artist,
                                     ArtworkUrl = cachedObject.Right.ArtworkUrl,
                                     Title = cachedObject.Right.Title
@@ -275,7 +282,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
                     _albums.Add(newalbumDetails);
                 }
-                _webAlbumListViewModel.DataHasLoaded();
+
+                _webAlbumListViewModel.Sort();
             });
         }
 
@@ -301,7 +309,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             System.Windows.Application.Current.Shutdown();
         }
 
-        private void ApplicationIsShuttingDown()
+        public void ApplicationIsShuttingDown()
         {
             WriteCache();
             Settings.Default.Save();

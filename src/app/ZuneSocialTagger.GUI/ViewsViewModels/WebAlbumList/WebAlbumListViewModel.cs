@@ -24,7 +24,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private int _loadingProgress;
         private readonly bool _isTaskbarSupported;
         private SortOrder _sortOrder;
-        private bool _canShowSort;
         private string _filterText;
         private readonly SafeObservableCollection<AlbumDetailsViewModel> _albums;
         private readonly CollectionViewSource _cvs;
@@ -41,14 +40,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
             _dbReader = dbReader;
             _locator = locator;
-            _dbReader.ProgressChanged += ReportProgress;
-            _dbReader.StartedReadingAlbums += () => this.CanShowScanAllButton = false;
-
             _isTaskbarSupported = TaskbarManager.IsPlatformSupported;
 
-            SetupCommandBindings();
-
-            this.CanShowSort = true;
+            this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
+            this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
+            this.SortCommand = new RelayCommand(Sort);
+            this.SearchCommand = new RelayCommand<string>(Search);
             this.CanShowScanAllButton = true;
             this.SortOrder = Settings.Default.SortOrder;
         }
@@ -56,16 +53,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         #region View Binding Properties
 
         public ICollectionView AlbumsView { get { return _cvs.View; } }
-
-        public bool CanShowSort
-        {
-            get { return _canShowSort; }
-            set
-            {
-                _canShowSort = value;
-                RaisePropertyChanged(() => this.CanShowSort);
-            }
-        }
 
         private AlbumDetailsViewModel _selectedAlbum;
         public AlbumDetailsViewModel SelectedAlbum
@@ -136,30 +123,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         #endregion
 
-        public void DataHasLoaded()
-        {
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>{
-                this.CanShowScanAllButton = true;
-                ResetLoadingProgress();
-                this.CanShowSort = true;
-                Sort();
-            });
-        }
-
-        public void SuspendSorting() {
-            DispatcherHelper.CheckBeginInvokeOnUI(() => {
-                _cvs.SortDescriptions.Clear();
-            });
-        }
-
-        private void SetupCommandBindings()
-        {
-            this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
-            this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
-            this.SortCommand = new RelayCommand(Sort);
-            this.SearchCommand = new RelayCommand<string>(Search);
-        }
-
         private void Search(string obj)
         {
             this._filterText = obj;
@@ -168,10 +131,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public void LoadFromZuneWebsite()
         {
-            var warningMsg = new ErrorMessage(ErrorMode.Warning,"This process could take a very long time, are you sure?");
-            ZuneMessageBox.Show(warningMsg, () => {
+            var warningMsg = new ErrorMessage(ErrorMode.Warning, "This process could take a very long time, are you sure?");
+            ZuneMessageBox.Show(warningMsg, () =>
+            {
                 this.CanShowScanAllButton = false;
-
                 int counter = 0;
                 foreach (AlbumDetailsViewModel album in _cvs.View)
                 {
@@ -201,7 +164,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
                         counter++;
                         ReportProgress(counter, _albums.Count);
-                        if (counter == _albums.Count) ResetLoadingProgress();
                     });
                 } 
             });
@@ -212,23 +174,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             _locator.SwitchToView<SelectAudioFilesView,SelectAudioFilesViewModel>();
         }
 
-        private void ResetLoadingProgress()
-        {
-            this.CanShowScanAllButton = true;
-
-            try
-            {
-                if (_isTaskbarSupported)
-                    TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
-            }
-            catch (InvalidOperationException e)
-            {
-                Console.WriteLine(e);
-            }
-        }
-
         private void ReportProgress(int current, int total)
         {
+            if (current == total)
+                ResetLoadingProgress();
+
             double percent = current * 100 / total;
 
             //make sure we dont report progress on every single count
@@ -247,6 +197,19 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                     //needs ignoring because it is possible that we try to report progress before a window has been
                     //created, this will throw an InvalidOperationException
                 }
+            }
+        }
+
+        private void ResetLoadingProgress()
+        {
+            try
+            {
+                if (_isTaskbarSupported)
+                    TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine(e);
             }
         }
 

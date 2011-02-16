@@ -2,17 +2,20 @@ improve marketplace notification and link to github faq answer for more detail
 
 when running 'scan all' it should search the zune marketplace for any matches and notify the user if any are found
 
+make the ui more 'lightweight' and performant by only storing whats needed in memory, there are upto 15,000!! webtracks created after a full scan
+
 remove albumorartistmismatch code / icon on toolbar
 
 drop the prog bar for loading from the zune db and perhaps only show the icons once fully loaded?
 
 allow scan all to run while db is loading AND allow sort to happen while db is loadin
 
+after pressing scanall the app 'hangs' for 5 seconds before the UI becomes responsive
+
+investigate why the memory usage is still high after a full scan compared to a cache load
+
 
 
 MAJOR:
 Needs the ability to update .m4a files
-
-MINOR:
-When trying to refresh an album it sometimes wont even if the zune software is open
 

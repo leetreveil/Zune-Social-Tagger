@@ -118,7 +118,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 
             detailRow.SongDetails = new TrackWithTrackNum
             {
-                TrackNumber = SharedMethods.TrackNumberConverter(track.MetaData.TrackNumber),
+                TrackNumber = track.MetaData.TrackNumber.TrackNumberConverter(),
                 TrackTitle = track.MetaData.Title,
                 BackingData = track
             };

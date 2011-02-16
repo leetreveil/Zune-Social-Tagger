@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Threading;
@@ -48,6 +49,8 @@ namespace ZuneSocialTagger.GUI
 
             var appViewModel = Container.Get<ApplicationViewModel>();
             appView.DataContext = appViewModel;
+            Current.Exit += delegate { appViewModel.ApplicationIsShuttingDown(); };
+
             appViewModel.ViewHasLoaded();
         }
 
