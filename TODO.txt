@@ -8,9 +8,9 @@ drop the prog bar for loading from the zune db and perhaps only show the icons o
 
 allow scan all to run while db is loading AND allow sort to happen while db is loadin
 
-after pressing scanall the app 'hangs' for 5 seconds before the UI becomes responsive
-
 investigate why the memory usage is still high after a full scan compared to a cache load
+
+should automatically download details as app is being scrolled
 
 
 
