@@ -14,6 +14,7 @@ using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using GalaSoft.MvvmLight.Threading;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {
@@ -134,7 +135,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 int counter = 0;
 
                 //we have to get the list from the CollectionView because of how its sorted
-                var toScan = (from object album in _cvs.View select album as AlbumDetailsViewModel).ToList().Where(x=> x.LinkStatus != LinkStatus.Unlinked);
+                var toScan = (from object album in _cvs.View select album as AlbumDetailsViewModel)
+                    .ToList().Where(x=> x.LinkStatus != LinkStatus.Unlinked);
 
                 foreach (AlbumDetailsViewModel album in toScan)
                 {
@@ -162,6 +164,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                         }
 
                         counter++;
+                        Trace.WriteLine(counter);
                         ReportProgress(counter, toScan.Count());
                     });
                 } 
@@ -175,9 +178,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         private void ReportProgress(int current, int total)
         {
-            if (current == total)
-                ResetLoadingProgress();
-
             double percent = current * 100 / total;
 
             //make sure we dont report progress on every single count
@@ -197,6 +197,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                     //created, this will throw an InvalidOperationException
                 }
             }
+
+            if (current == total)
+                ResetLoadingProgress();
         }
 
         private void ResetLoadingProgress()
