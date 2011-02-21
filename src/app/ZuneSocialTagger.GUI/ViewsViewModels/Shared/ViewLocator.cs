@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Controls;
 using Ninject;
+using Ninject.Parameters;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using GalaSoft.MvvmLight.Threading;

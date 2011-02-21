@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -109,11 +110,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             }
         }
 
-        public int AlbumOrArtistMismatchTotal
-        {
-            get { return _albums.Where(x => x.LinkStatus == LinkStatus.AlbumOrArtistMismatch).Count(); }
-        }
-
         public RelayCommand LoadDatabaseCommand { get; private set; }
         public RelayCommand LoadFromZuneWebsiteCommand { get; private set; }
         public RelayCommand CancelDownloadingCommand { get; private set; }
@@ -136,15 +132,18 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             {
                 this.CanShowScanAllButton = false;
                 int counter = 0;
-                foreach (AlbumDetailsViewModel album in _cvs.View)
+
+                //we have to get the list from the CollectionView because of how its sorted
+                var toScan = (from object album in _cvs.View select album as AlbumDetailsViewModel).ToList().Where(x=> x.LinkStatus != LinkStatus.Unlinked);
+
+                foreach (AlbumDetailsViewModel album in toScan)
                 {
                     album.LinkStatus = LinkStatus.Unknown; // reset the linkstatus so we can scan all multiple times
                     album.Right = null;
                     
                     AlbumDetailsViewModel closedAlbum = album;
                     //TODO: don't like having to call back into the zune db just to get the albumMediaId
-                    var albumMediaId = _dbReader.GetAlbum(album.MediaId).AlbumMediaId;
-                    var url = String.Concat(Urls.Album, albumMediaId);
+                    var url = String.Concat(Urls.Album, album.AlbumMediaId);
                     AlbumDetailsDownloader.DownloadAsync(url, dledAlbum =>
                     {
                         if (dledAlbum != null)
@@ -163,7 +162,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                         }
 
                         counter++;
-                        ReportProgress(counter, _albums.Count);
+                        ReportProgress(counter, toScan.Count());
                     });
                 } 
             });
@@ -248,7 +247,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         {
             this.RaisePropertyChanged(() => this.LinkedTotal);
             this.RaisePropertyChanged(() => this.UnlinkedTotal);
-            this.RaisePropertyChanged(() => this.AlbumOrArtistMismatchTotal);
         }
 
         void CvsFilter(object sender, FilterEventArgs e)

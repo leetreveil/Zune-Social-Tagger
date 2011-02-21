@@ -10,10 +10,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.DesignTime
         public List<AlbumDetailsViewModel> AlbumsView { get; set; }
         public double LoadingProgress { get; set; }
 
+        public int UnlinkedTotal { get { return 200; } }
+
         public WebAlbumListDesignViewModel()
         {
             this.LoadingProgress = 50;
             this.AlbumsView = new List<AlbumDetailsViewModel>();
+
+           
 
             this.AlbumsView.Add(new AlbumDetailsViewModel
                                 {
@@ -50,7 +54,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.DesignTime
 
             this.AlbumsView.Add(new AlbumDetailsViewModel
                                 {
-                                    LinkStatus = LinkStatus.AlbumOrArtistMismatch,
+                                    LinkStatus = LinkStatus.Linked,
                                     Left =
                                         new AlbumThumbDetails
                                             {

@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using leetreveil.AutoUpdate.Framework;
+using Ninject.Parameters;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
@@ -51,13 +52,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         public void ViewHasLoaded()
         {
-            ThreadPool.QueueUserWorkItem(_ =>
+            new Thread(() =>
             {
-                Initialize();
                 ReadCache();
                 CheckForUpdates();
                 CheckLocale();
-            });
+                Initialize();
+            }).Start();
         }
 
         #region View Bindings
@@ -223,68 +224,65 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         public void ReadActualDatabase()
         {
-            ThreadPool.QueueUserWorkItem(_ =>
+            Core.ZuneDatabase.SortOrder so;
+            switch (Settings.Default.SortOrder)
             {
-                Core.ZuneDatabase.SortOrder so;
-                switch (Settings.Default.SortOrder)
-                {
-                    case SortOrder.DateAdded:
-                        so = Core.ZuneDatabase.SortOrder.DateAdded;
-                        break;
-                    case SortOrder.Album:
-                        so = Core.ZuneDatabase.SortOrder.Album;
-                        break;
-                    case SortOrder.Artist:
-                        so = Core.ZuneDatabase.SortOrder.Artist;
-                        break;
-                    default:
-                        so = Core.ZuneDatabase.SortOrder.DateAdded;
-                        break;
-                }
-                foreach (DbAlbum newAlbum in _dbReader.ReadAlbums(so))
-                {
-                    var newalbumDetails = _viewLocator.Resolve<AlbumDetailsViewModel>();
-                    newalbumDetails.LinkStatus = newAlbum.AlbumMediaId.GetLinkStatusFromGuid();
-                    newalbumDetails.DateAdded = newAlbum.DateAdded;
-                    newalbumDetails.MediaId = newAlbum.MediaId;
-                    newalbumDetails.Left = new AlbumThumbDetails
-                    {
-                        Artist = newAlbum.Artist,
-                        ArtworkUrl = newAlbum.ArtworkUrl,
-                        Title = newAlbum.Title,
-                    };
+                case SortOrder.DateAdded:
+                    so = Core.ZuneDatabase.SortOrder.DateAdded;
+                    break;
+                case SortOrder.Album:
+                    so = Core.ZuneDatabase.SortOrder.Album;
+                    break;
+                case SortOrder.Artist:
+                    so = Core.ZuneDatabase.SortOrder.Artist;
+                    break;
+                default:
+                    so = Core.ZuneDatabase.SortOrder.DateAdded;
+                    break;
+            }
+            foreach (DbAlbum newAlbum in _dbReader.ReadAlbums(so))
+            {
+                var newalbumDetails = _viewLocator.Resolve<AlbumDetailsViewModel>();
 
-                    if (newalbumDetails.LinkStatus == LinkStatus.Unknown)
+                newalbumDetails.LinkStatus = newAlbum.AlbumMediaId.GetLinkStatusFromGuid();
+                newalbumDetails.DateAdded = newAlbum.DateAdded;
+
+                newalbumDetails.Left = new AlbumThumbDetails
+                {
+                    Artist = newAlbum.Artist,
+                    ArtworkUrl = newAlbum.ArtworkUrl,
+                    Title = newAlbum.Title,
+                };
+
+                if (newalbumDetails.LinkStatus == LinkStatus.Unknown || newalbumDetails.LinkStatus == LinkStatus.Linked)
+                {
+                    if (_cache != null)
                     {
-                        if (_cache != null)
+                        DbAlbum album = newAlbum;
+                        var cachedObject = _cache.Find(x => x.MediaId == album.MediaId);
+
+                        if (cachedObject != null && cachedObject.Right != null)
                         {
-                            DbAlbum album = newAlbum;
-                            var cachedObject = _cache.Find(x => x.MediaId == album.MediaId);
+                            newalbumDetails.Right = new AlbumThumbDetails
+                                                        {
+                                Artist = cachedObject.Right.Artist,
+                                ArtworkUrl = cachedObject.Right.ArtworkUrl,
+                                Title = cachedObject.Right.Title
+                            };
 
-                            if (cachedObject.Right != null)
-                            {
-                                newalbumDetails.Right = new AlbumThumbDetails
-                                                            {
-                                    Artist = cachedObject.Right.Artist,
-                                    ArtworkUrl = cachedObject.Right.ArtworkUrl,
-                                    Title = cachedObject.Right.Title
-                                };
-
-
-                                newalbumDetails.LinkStatus = SharedMethods.GetAlbumLinkStatus(
-                                    newalbumDetails.Left.Title,
-                                    newalbumDetails.Left.Artist,
-                                    newalbumDetails.Right.Title,
-                                    newalbumDetails.Right.Artist);
-                            }
+                            newalbumDetails.LinkStatus = LinkStatus.Linked;
+                        }
+                        else
+                        {
+                            newalbumDetails.LinkStatus = LinkStatus.Unlinked;
                         }
                     }
-
-                    _albums.Add(newalbumDetails);
                 }
 
-                _webAlbumListViewModel.Sort();
-            });
+                _albums.Add(newalbumDetails);
+
+                newalbumDetails.Init(newAlbum.MediaId, newAlbum.AlbumMediaId);
+            }
         }
 
         private void CheckLocale()
@@ -292,7 +290,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             var locale = Thread.CurrentThread.CurrentCulture.Name;
             LocaleDownloader.IsMarketPlaceEnabledForLocaleAsync(locale, isEnabled =>
             {
-                if (!isEnabled)
+                if (isEnabled)
                 {
                     DispatcherHelper.CheckBeginInvokeOnUI(() =>
                     {
@@ -338,19 +336,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                 updateManager.AppFeedUrl = Settings.Default.UpdateFeedUrl;
                 updateManager.UpdateExe = Resources.socialtaggerupdater;
 
-                try
-                {
-                    //always clean up at startup because we cant do it at the end
-                    updateManager.CleanUp();
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e);
-                }
-
                 ThreadPool.QueueUserWorkItem(state => {
                     try
                     {
+                        //always clean up at startup because we cant do it at the end
+                        updateManager.CleanUp();
+
                         if (updateManager.CheckForUpdate())
                             UpdateAvailable = true;
                     }

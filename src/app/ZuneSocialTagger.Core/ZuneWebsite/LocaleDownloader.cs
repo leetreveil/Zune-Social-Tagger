@@ -18,10 +18,10 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
 
         private static void ReqCallback(IAsyncResult asyncResult)
         {
-            AsyncResult<bool> result = asyncResult.AsyncState as AsyncResult<bool>;
+            var result = asyncResult.AsyncState as AsyncResult<bool>;
             HttpWebRequest httpWebRequest = result.HttpWebRequest;
 
-            using (HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.EndGetResponse(asyncResult))
+            using (var httpWebResponse = (HttpWebResponse)httpWebRequest.EndGetResponse(asyncResult))
             {
                 XDocument document = XDocument.Load(XmlReader.Create(httpWebResponse.GetResponseStream()));
 
@@ -39,7 +39,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             }
         }
 
-        public class AsyncResult<T>
+        internal class AsyncResult<T>
         {
             public AsyncResult(HttpWebRequest httpWebRequest, Action<T> callback)
             {

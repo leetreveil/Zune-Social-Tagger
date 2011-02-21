@@ -30,12 +30,8 @@
 
     <converters:TextToVisibilityConverter x:Key="TextToVisibilityConverter" />
     <converters:TextToBoolConverter x:Key="TextToBoolConverter" />
-    <converters:AlbumCountToStringConverter x:Key="AlbumCountToStringConverter" />
-    <converters:NotConverter x:Key="NotConverter" />
-    <converters:LinkStatusToImageConverter x:Key="LinkStatusToImageConverter" />
     <converters:PathToImageThumbnailConverter x:Key="PathToImageThumbnailConverter" />
     <converters:SortOrderToTextConverter x:Key="SortOrderToTextConverter" />
-    <converters:SortOrderToVisibilityConverter x:Key="SortOrderToVisibilityConverter" />
     <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
 
 

@@ -203,12 +203,8 @@
     <Compile Include="Controls\ZuneMessageBox.xaml.cs">
       <DependentUpon>ZuneMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\AlbumCountToStringConverter.cs" />
-    <Compile Include="Converters\LinkStatusToImageConverter.cs" />
-    <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\PathToImageThumbnailConverter.cs" />
     <Compile Include="Converters\SortOrderToTextConverter.cs" />
-    <Compile Include="Converters\SortOrderToVisibilityConverter.cs" />
     <Compile Include="Converters\TextToBoolConverter.cs" />
     <Compile Include="Models\ErrorMessage.cs" />
     <Compile Include="Models\LinkStatus.cs" />

@@ -20,6 +20,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private readonly IViewLocator _locator;
         private readonly IZuneAudioFileRetriever _fileRetriever;
         private readonly SharedModel _sharedModel;
+        private int _mediaId;
+        private Guid _albumMediaId;
 
         public AlbumDetailsViewModel(){}//for design time
         public AlbumDetailsViewModel(IZuneDatabaseReader dbReader,
@@ -34,13 +36,22 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             LinkCommand = new RelayCommand(LinkAlbum);
             RefreshCommand = new RelayCommand(RefreshAlbum);
             DelinkCommand = new RelayCommand(DelinkAlbum);
+
+            
+        }
+
+        public void Init(int mediaId, Guid albumMediaId)
+        {
+            _mediaId = mediaId;
+            _albumMediaId = albumMediaId;
         }
 
         /// <summary>
         /// We have to store this per 'row' in the view so we can refer back to it later
         /// </summary>
+        public int MediaId { get { return _mediaId; } }
 
-        public int MediaId { get; set; }
+        public Guid AlbumMediaId { get { return _albumMediaId; } }
 
         #region ViewBindings
 
@@ -167,12 +178,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 {
                     if (album != null)
                     {
-                        LinkStatus = SharedMethods.GetAlbumLinkStatus(album.Title, album.Artist,
-                                                                      Left.Title, Left.Artist);
+                        LinkStatus = LinkStatus.Linked;
 
-                        Right.Artist = album.Artist;
-                        Right.ArtworkUrl = album.ArtworkUrl;
-                        Right.Title = album.Title;
+                        Right = new AlbumThumbDetails
+                        {
+                            Artist = album.Artist,
+                            ArtworkUrl = album.ArtworkUrl,
+                            Title = album.Title,
+                        };
                     }
                     else
                     {

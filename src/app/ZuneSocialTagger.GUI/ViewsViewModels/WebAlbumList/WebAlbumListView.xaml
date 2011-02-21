@@ -166,18 +166,8 @@
                        Margin="0,0,2,0" />
 
             <TextBlock Text="{Binding UnlinkedTotal}"
-                       Margin="0,0,10,0"
+                       Margin="0,0,0,0"
                        FontWeight="SemiBold" />
-
-            <Image ToolTip="Album is linked but it might be linked to the wrong album"
-                           Width="16"
-                           Height="16"
-                           Source="../../Resources/Assets/warning.png"
-                           Margin="0,0,2,0" />
-
-            <TextBlock Text="{Binding AlbumOrArtistMismatchTotal}"
-                       FontWeight="SemiBold" />
-
         </StackPanel>
 
 
