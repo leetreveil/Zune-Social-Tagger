@@ -9,10 +9,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
 
         private static string Culture
         {
-            get
-            {
-                return System.Threading.Thread.CurrentThread.CurrentCulture.Name;  
-            }
+            get { return Locale.GetLocale(); }
 
         }
     }

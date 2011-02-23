@@ -16,6 +16,8 @@ using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
+using System.Diagnostics;
+using System.Globalization;
 
 namespace ZuneSocialTagger.GUI
 {

@@ -12,6 +12,8 @@ investigate why the memory usage is still high after a full scan compared to a c
 
 should automatically download details as app is being scrolled
 
+only allow single instance
+
 
 
 MAJOR:

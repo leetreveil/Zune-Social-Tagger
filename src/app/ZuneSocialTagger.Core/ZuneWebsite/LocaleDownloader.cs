@@ -19,24 +19,32 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         private static void ReqCallback(IAsyncResult asyncResult)
         {
             var result = asyncResult.AsyncState as AsyncResult<bool>;
-            HttpWebRequest httpWebRequest = result.HttpWebRequest;
-
-            using (var httpWebResponse = (HttpWebResponse)httpWebRequest.EndGetResponse(asyncResult))
+            try
             {
-                XDocument document = XDocument.Load(XmlReader.Create(httpWebResponse.GetResponseStream()));
+                HttpWebRequest httpWebRequest = result.HttpWebRequest;
 
-                var isMarketPlaceEnabled = document
-                    .Descendants().Where(x => x.Name.LocalName == "featureEnablement")
-                    .Descendants().Where(x => x.Name.LocalName == "marketplace")
-                    .Descendants().Where(x => x.Name.LocalName == "status")
-                    .First().Value;
+                using (var httpWebResponse = (HttpWebResponse)httpWebRequest.EndGetResponse(asyncResult))
+                {
+                    XDocument document = XDocument.Load(XmlReader.Create(httpWebResponse.GetResponseStream()));
 
-                if (isMarketPlaceEnabled == "enabled")
-                    result.Callback(true);
+                    var isMarketPlaceEnabled = document
+                        .Descendants().Where(x => x.Name.LocalName == "featureEnablement")
+                        .Descendants().Where(x => x.Name.LocalName == "marketplace")
+                        .Descendants().Where(x => x.Name.LocalName == "status")
+                        .First().Value;
 
-                if (isMarketPlaceEnabled == "disabled")
-                    result.Callback(false);
+                    if (isMarketPlaceEnabled == "enabled")
+                        result.Callback(true);
+
+                    if (isMarketPlaceEnabled == "disabled")
+                        result.Callback(false);
+                }
             }
+            catch (Exception)
+            {
+                result.Callback(false);
+            }
+
         }
 
         internal class AsyncResult<T>

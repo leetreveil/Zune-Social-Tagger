@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -22,6 +23,7 @@ using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ProtoBuf;
 using System.Windows.Input;
 using SortOrder = ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.SortOrder;
+using Microsoft.Win32;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 {
@@ -287,10 +289,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void CheckLocale()
         {
-            var locale = Thread.CurrentThread.CurrentCulture.Name;
+            string locale = Locale.GetLocale();
             LocaleDownloader.IsMarketPlaceEnabledForLocaleAsync(locale, isEnabled =>
             {
-                if (isEnabled)
+                if (!isEnabled)
                 {
                     DispatcherHelper.CheckBeginInvokeOnUI(() =>
                     {
