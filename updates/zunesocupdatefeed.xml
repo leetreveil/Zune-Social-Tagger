@@ -4,13 +4,13 @@
     <title>Zune Social Tagger Software Update Feed</title>
     <link>http://github.com/leetreveil/Zune-Social-Tagger/downloads</link>
     <description>Link an album to the zune social with any album available on the zune marketplace!</description>
-    <!--<item>
+    <item>
       <title>Zune Social Tagger</title>
       <link>http://wiki.github.com/leetreveil/Zune-Social-Tagger/</link>
       <description>Autoupdate support and stuffs</description>
       <pubDate>Tuesday, 01 December 2010 13:22:00 GMT</pubDate>
       <appcast:version>2.2.0</appcast:version>
       <enclosure url="http://github.com/leetreveil/Zune-Social-Tagger/raw/installer/installfiles/zst2.2updatebinary.zip" length="752180" type="application/octet-stream" />
-    </item>-->
+    </item>
   </channel>
 </rss>

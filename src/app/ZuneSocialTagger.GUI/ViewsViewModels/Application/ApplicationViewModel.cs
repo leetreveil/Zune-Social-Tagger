@@ -358,17 +358,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             {
                 //do update checking stuff here
                 UpdateManager updateManager = UpdateManager.Instance;
-
-                updateManager.UpdateExePath = Path.Combine(Settings.Default.AppDataFolder, Settings.Default.UpdateExeName);
                 updateManager.AppFeedUrl = Settings.Default.UpdateFeedUrl;
-                updateManager.UpdateExe = Resources.socialtaggerupdater;
 
                 ThreadPool.QueueUserWorkItem(state => {
                     try
                     {
-                        //always clean up at startup because we cant do it at the end
-                        updateManager.CleanUp();
-
                         if (updateManager.CheckForUpdate())
                             UpdateAvailable = true;
                     }

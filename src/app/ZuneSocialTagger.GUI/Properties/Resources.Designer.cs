@@ -59,12 +59,5 @@ namespace ZuneSocialTagger.GUI.Properties {
                 resourceCulture = value;
             }
         }
-        
-        internal static byte[] socialtaggerupdater {
-            get {
-                object obj = ResourceManager.GetObject("socialtaggerupdater", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }
