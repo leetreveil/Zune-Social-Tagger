@@ -12,8 +12,6 @@ should automatically download details as app is being scrolled
 
 only allow single instance
 
-Get Locale does not work on windows xp (actually its because of x86)
-
 
 
 MAJOR:

@@ -33,36 +33,28 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         private static extern int GetUserGeoID(GEOCLASS GeoClass);
 
         [DllImport("kernel32.dll", ExactSpelling = true, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
-        private static extern int GetGeoInfoA(long geoId, long geoType, StringBuilder lpGeoData,long cchData, long langId);
+        private static extern int GetGeoInfoA(int geoId, int geoType, StringBuilder lpGeoData, int cchData, int langId);
 
         [DllImport("kernel32.dll")]
-        private static extern uint GetUserDefaultLCID();
+        private static extern int GetUserDefaultLCID();
 
-        private const long GEO_ISO2 = 0x4;
+        private const int GEO_ISO2 = 0x4;
 
         private static string GetCountryCode()
         {
             var countryCode = new StringBuilder();
 
-            int geoId = GetGeoId();
-            uint userDefaultLcid = GetUserDefaultLCID();
-            var length = GetGeoInfoA(geoId, GEO_ISO2, null, 0, userDefaultLcid);
+            int geoId = GetUserGeoID(GEOCLASS.NATION);
+            int userDefaultLcid = GetUserDefaultLCID();
 
-            if (length > 0)
-            {
-                countryCode = new StringBuilder(length);
-                var result = GetGeoInfoA(geoId, GEO_ISO2, countryCode, length, userDefaultLcid);
+            countryCode = new StringBuilder(3);
+            var result = GetGeoInfoA(geoId, GEO_ISO2, countryCode, 3, userDefaultLcid);
 
-                if (result == 0)
-                    return String.Empty;
-            }
+            if (result == 0)
+                return String.Empty;
 
             return countryCode.ToString();
         }
 
-        private static int GetGeoId()
-        {
-            return GetUserGeoID(GEOCLASS.NATION);
-        }
     }
 }
