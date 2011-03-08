@@ -1,6 +1,3 @@
-#if DEBUG
-
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,6 +37,11 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             }
         }
 
+        public IEnumerable<DbAlbum> ReadAlbums(SortOrder sortOrder)
+        {
+            return ReadAlbums();
+        }
+
         public IEnumerable<DbAlbum> ReadAlbums()
         {
             this.StartedReadingAlbums.Invoke();
@@ -55,34 +57,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
             FinishedReadingAlbums.Invoke();
         }
-
-        public IEnumerable<DbAlbum> GetNewAlbums(IEnumerable<int> albumIds)
-        {
-            yield return new DbAlbum
-            {
-                Artist = "Pendulum",
-                Title = "Immersion",
-                DateAdded = DateTime.Now,
-                ReleaseYear = "2010",
-                TrackCount = 12
-            };
-
-            yield return new DbAlbum
-            {
-                Artist = "Circa Survive",
-                Title = "Blue Sky Noise",
-                DateAdded = DateTime.Now,
-                ReleaseYear = "2010",
-                TrackCount = 12
-            };
-        }
-
-        public IEnumerable<int> GetRemovedAlbums(IEnumerable<int> albumIds)
-        {
-            //idicate that the first two albums should be removed
-            return albumIds.Take(2);
-        }
-
 
         public DbAlbum GetAlbum(int index)
         {
@@ -101,14 +75,8 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             return albumDetails.Tracks.Select(track => new DbTrack {FilePath = track.FilePath});
         }
 
-        public DbAlbum GetAlbumByAlbumTitle(string albumTitle)
+        public void Dispose()
         {
-            throw new NotImplementedException();
-        }
-
-        public bool DoesAlbumExist(int index)
-        {
-            return true;
         }
 
         public void RemoveAlbumFromDatabase(int albumId)
@@ -121,11 +89,5 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             throw new NotImplementedException();
         }
 
-
-        public void Dispose()
-        {
-        }
     }
 }
-
-#endif

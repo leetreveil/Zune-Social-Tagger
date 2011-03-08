@@ -55,7 +55,7 @@ namespace ZuneSocialTagger.GUI
         private static void SetupBindings(StandardKernel container)
         {
 #if DEBUG
-            Container.Bind<IZuneDatabaseReader>().To<TestZuneDatabaseReader>().InSingletonScope();
+            container.Bind<IZuneDatabaseReader>().To<TestZuneDatabaseReader>().InSingletonScope();
 #else
             container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
 #endif
