@@ -30,7 +30,7 @@
             <TextBlock FontSize="22" Text="{Binding Version}"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="4" Orientation="Horizontal" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Margin="0,10,0,0" Grid.Row="4" Orientation="Horizontal" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button Margin="0,0,10,0" Command="{Binding UpdateCommand}" Grid.Row="4" Content="UPDATE NOW"/>
             <Button Grid.Row="4" Click="Button_Click" Content="UPDATE LATER"/>
         </StackPanel>

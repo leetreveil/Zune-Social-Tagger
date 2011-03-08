@@ -1,7 +1,6 @@
 using System;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
-using leetreveil.AutoUpdate.Framework;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Update
 {
@@ -33,19 +32,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Update
 
         public void ApplyUpdate()
         {
-            Mouse.OverrideCursor = Cursors.Wait;
-
-            try
-            {
-                UpdateManager.Instance.ApplyUpdate();
-            }
-            catch
-            {
-                //TODO: log error that the update could not be applied
-                Mouse.OverrideCursor = null;
-            }
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("https://github.com/leetreveil/Zune-Social-Tagger/downloads"));
         }
     }
-
-
 }

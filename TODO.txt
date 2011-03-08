@@ -14,8 +14,6 @@ only allow single instance
 
 Get Locale does not work on windows xp
 
-remove autoupdate code / binary and just point to update url
-
 
 
 MAJOR:
