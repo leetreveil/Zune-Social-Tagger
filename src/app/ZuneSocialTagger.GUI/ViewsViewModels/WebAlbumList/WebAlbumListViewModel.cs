@@ -191,7 +191,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                     if (_isTaskbarSupported)
                         TaskbarManager.Instance.SetProgressValue(current, total);
                 }
-                catch (InvalidOperationException ex)
+                catch (InvalidOperationException)
                 {
                     //needs ignoring because it is possible that we try to report progress before a window has been
                     //created, this will throw an InvalidOperationException

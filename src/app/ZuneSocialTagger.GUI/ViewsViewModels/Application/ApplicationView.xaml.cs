@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using ZuneSocialTagger.GUI.Controls;
+using System;
+using System.Linq;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 {

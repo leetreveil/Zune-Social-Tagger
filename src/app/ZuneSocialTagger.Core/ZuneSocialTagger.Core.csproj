@@ -130,7 +130,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ZuneDatabase\testzunedatabase.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>

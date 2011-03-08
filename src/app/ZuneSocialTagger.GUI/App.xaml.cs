@@ -26,61 +26,67 @@ namespace ZuneSocialTagger.GUI
     /// </summary>
     public partial class App
     {
-        private static readonly StandardKernel Container = new StandardKernel();
-        private static readonly ExceptionLogger LoggerForStrings = new ExceptionLogger();
-        private static readonly StringLogger StringLogger = new StringLogger();
-
         public App()
         {
             this.Startup += App_Startup;
         }
 
+        private ExceptionLogger exceptionLogger;
+        private StringLogger stringLogger;
+
+        public Application CurrentApp;
+
         void App_Startup(object sender, System.Windows.StartupEventArgs e)
         {
-            LoggerForStrings.AddLogger(StringLogger);
-            //this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+            CurrentApp = Application.Current;
+
+            exceptionLogger = new ExceptionLogger();
+            stringLogger = new StringLogger();
+            exceptionLogger.AddLogger(stringLogger);
+            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
 
             DispatcherHelper.Initialize();
 
             Settings.Default.AppDataFolder = GetUserDataPath();
 
-            SetupBindings();
+            var container = new StandardKernel();
+            SetupBindings(container);
 
             var appView = new ApplicationView();
             appView.Show();
 
-            var appViewModel = Container.Get<ApplicationViewModel>();
+            var appViewModel = container.Get<ApplicationViewModel>();
             appView.DataContext = appViewModel;
             Current.Exit += delegate { appViewModel.ApplicationIsShuttingDown(); };
 
             appViewModel.ViewHasLoaded();
         }
 
-        private static void SetupBindings()
+        private static void SetupBindings(StandardKernel container)
         {
 #if DEBUG
             Container.Bind<IZuneDatabaseReader>().To<TestZuneDatabaseReader>().InSingletonScope();
 #else
-            Container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
+            container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
 #endif
             //Container.Bind<IApplicationViewModel>().To<ApplicationViewModel>();
-            Container.Bind<IViewLocator>().To<ViewLocator>().InSingletonScope();
+            container.Bind<IViewLocator>().To<ViewLocator>().InSingletonScope();
 
             //songs the user loads from file are stored here
-            Container.Bind<IZuneAudioFileRetriever>().To<ZuneAudioFileRetriever>().InSingletonScope();
+            container.Bind<IZuneAudioFileRetriever>().To<ZuneAudioFileRetriever>().InSingletonScope();
 
             //we need the web view model to be a singleton because we want to be able to continue
             //downloading data while linking etc
-            Container.Bind<SharedModel>().ToSelf().InSingletonScope();
-            Container.Bind<SelectAudioFilesViewModel>().ToSelf().InSingletonScope();
-            Container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
-            Container.Bind<SearchViewModel>().ToSelf().InSingletonScope();
-            Container.Bind<DetailsViewModel>().ToSelf().InSingletonScope();
-            Container.Bind<SafeObservableCollection<AlbumDetailsViewModel>>().ToSelf().InSingletonScope();
-            Container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
+            container.Bind<SharedModel>().ToSelf().InSingletonScope();
+            container.Bind<SelectAudioFilesViewModel>().ToSelf().InSingletonScope();
+            container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
+            container.Bind<SearchViewModel>().ToSelf().InSingletonScope();
+            container.Bind<DetailsViewModel>().ToSelf().InSingletonScope();
+            container.Bind<SafeObservableCollection<AlbumDetailsViewModel>>().ToSelf().InSingletonScope();
+            container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
 
             //set some views to remember their state
-            Container.Bind<WebAlbumListView>().ToSelf().InSingletonScope();
+            container.Bind<WebAlbumListView>().ToSelf().InSingletonScope();
         }
 
         private static string GetUserDataPath()
@@ -94,21 +100,21 @@ namespace ZuneSocialTagger.GUI
             return pathToZuneSocAppDataFolder;
         }
 
-        private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            LoggerForStrings.LogException(e.Exception);
-            ErrorReportDialog.Show(StringLogger.ErrorLog, () => Application.Current.Shutdown());
+            exceptionLogger.LogException(e.Exception);
+            ErrorReportDialog.Show(stringLogger.ErrorLog, () => Application.Current.Shutdown());
             e.Handled = true;
         }
-    }
 
-    public class StringLogger : LoggerImplementation
-    {
-        public string ErrorLog { get; private set; }
-
-        public override void LogError(string error)
+        public class StringLogger : LoggerImplementation
         {
-            ErrorLog = error;
+            public string ErrorLog { get; private set; }
+
+            public override void LogError(string error)
+            {
+                ErrorLog = error;
+            }
         }
     }
 }
