@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -9,7 +8,6 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using leetreveil.AutoUpdate.Framework;
-using Ninject.Parameters;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
@@ -23,7 +21,6 @@ using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ProtoBuf;
 using System.Windows.Input;
 using SortOrder = ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.SortOrder;
-using Microsoft.Win32;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 {

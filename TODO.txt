@@ -2,8 +2,6 @@ improve marketplace notification and link to github faq answer for more detail
 
 when running 'scan all' it should search the zune marketplace for any matches and notify the user if any are found
 
-make the ui more 'lightweight' and performant by only storing whats needed in memory, there are upto 15,000!! webtracks created after a full scan
-
 drop the prog bar for loading from the zune db and perhaps only show the icons once fully loaded?
 
 allow scan all to run while db is loading AND allow sort to happen while db is loadin
@@ -16,6 +14,7 @@ only allow single instance
 
 Get Locale does not work on windows xp
 
+remove autoupdate code / binary and just point to update url
 
 
 

@@ -65,10 +65,6 @@
     <StartupObject>ZuneSocialTagger.GUI.PreApp</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExceptionLogger">
-      <HintPath>..\..\..\libs\exceptionLogger\ExceptionLogger.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3e875cdb3903c512, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\mvvmlight3\GalaSoft.MvvmLight.dll</HintPath>
@@ -121,6 +117,7 @@
       <DependentUpon>SearchControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
+    <Compile Include="ExceptionLogger.cs" />
     <Compile Include="PreApp.cs" />
     <Compile Include="ViewsViewModels\Details\DiscHeader.cs" />
     <Compile Include="ViewsViewModels\Shared\MinCache.cs" />

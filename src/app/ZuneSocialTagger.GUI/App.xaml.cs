@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Threading;
 using Ninject;
-using Utilities;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Controls;
 using ZuneSocialTagger.GUI.Properties;
@@ -16,8 +14,6 @@ using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
-using System.Diagnostics;
-using System.Globalization;
 
 namespace ZuneSocialTagger.GUI
 {
@@ -31,18 +27,12 @@ namespace ZuneSocialTagger.GUI
             this.Startup += App_Startup;
         }
 
-        private ExceptionLogger exceptionLogger;
-        private StringLogger stringLogger;
-
         public Application CurrentApp;
 
-        void App_Startup(object sender, System.Windows.StartupEventArgs e)
+        void App_Startup(object sender, StartupEventArgs e)
         {
             CurrentApp = Application.Current;
 
-            exceptionLogger = new ExceptionLogger();
-            stringLogger = new StringLogger();
-            exceptionLogger.AddLogger(stringLogger);
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
 
             DispatcherHelper.Initialize();
@@ -102,19 +92,8 @@ namespace ZuneSocialTagger.GUI
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            exceptionLogger.LogException(e.Exception);
-            ErrorReportDialog.Show(stringLogger.ErrorLog, () => Application.Current.Shutdown());
+            ErrorReportDialog.Show(ExceptionLogger.LogException(e.Exception), () => Application.Current.Shutdown());
             e.Handled = true;
-        }
-
-        public class StringLogger : LoggerImplementation
-        {
-            public string ErrorLog { get; private set; }
-
-            public override void LogError(string error)
-            {
-                ErrorLog = error;
-            }
         }
     }
 }
