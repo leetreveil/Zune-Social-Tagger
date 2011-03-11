@@ -1,6 +1,8 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Threading;
 
@@ -8,11 +10,24 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        protected PropertyChangedEventHandler _propertyChanged;
+        public virtual event PropertyChangedEventHandler PropertyChanged
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            add
+            {
+                _propertyChanged = (PropertyChangedEventHandler)Delegate.Combine(_propertyChanged, value);
+            }
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            remove
+            {
+                _propertyChanged = (PropertyChangedEventHandler)Delegate.Remove(_propertyChanged, value);
+            }
+        }
 
         public void RaisePropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            PropertyChangedEventHandler handler = _propertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 

@@ -8,11 +8,9 @@ allow scan all to run while db is loading AND allow sort to happen while db is l
 
 investigate why the memory usage is still high after a full scan compared to a cache load
 
-should automatically download details as app is being scrolled
-
 only allow single instance
 
-integrate new update available msg with notification area
+should be able to cancel scan all
 
 
 MAJOR:

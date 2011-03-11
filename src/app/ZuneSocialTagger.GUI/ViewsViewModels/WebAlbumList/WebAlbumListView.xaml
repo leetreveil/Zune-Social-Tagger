@@ -182,7 +182,8 @@
                   Background="Transparent"
                   BorderThickness="0"
                   ScrollViewer.IsDeferredScrollingEnabled="True"
-                  VirtualizingStackPanel.IsVirtualizing="True">
+                  VirtualizingStackPanel.IsVirtualizing="True"
+                  VirtualizingStackPanel.VirtualizationMode="Recycling">
             
             <ListView.ContextMenu>
                 <ContextMenu x:Name="contextMenu">

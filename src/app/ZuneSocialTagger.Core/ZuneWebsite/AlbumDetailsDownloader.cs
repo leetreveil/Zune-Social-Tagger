@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -15,6 +16,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
     {
         public static void DownloadAsync(string url, Action<WebAlbum> callback)
         {
+            Trace.WriteLine("Creating web request for: " + url);
             var request = WebRequest.Create(new Uri(url));
             request.BeginGetResponse(ar => 
             {

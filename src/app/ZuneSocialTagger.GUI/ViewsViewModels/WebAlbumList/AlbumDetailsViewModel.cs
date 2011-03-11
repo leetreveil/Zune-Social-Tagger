@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
@@ -11,6 +14,7 @@ using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using GalaSoft.MvvmLight.Threading;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {
@@ -36,14 +40,37 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             LinkCommand = new RelayCommand(LinkAlbum);
             RefreshCommand = new RelayCommand(RefreshAlbum);
             DelinkCommand = new RelayCommand(DelinkAlbum);
-
-            
         }
 
         public void Init(int mediaId, Guid albumMediaId)
         {
             _mediaId = mediaId;
             _albumMediaId = albumMediaId;
+        }
+
+        public override event PropertyChangedEventHandler PropertyChanged
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            add
+            {
+                _propertyChanged = (PropertyChangedEventHandler)Delegate.Combine(_propertyChanged, value);
+
+                //Check to see if WPF is listening for PropertyChanged events on this object,
+                //this only gets called on 'visible' objects 
+                //this is a kind of cheap way to do data virtualization
+                if (value.Target is PropertyChangedEventManager)
+                {
+                    if (LinkStatus == LinkStatus.Unknown)
+                    {
+                        GetAlbumDetailsFromWebsite(AlbumMediaId);
+                    }
+                }
+            }
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            remove
+            {
+                _propertyChanged = (PropertyChangedEventHandler)Delegate.Remove(_propertyChanged, value);
+            }
         }
 
         /// <summary>
@@ -68,7 +95,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             set
             {
                 _linkStatus = value;
-                RaisePropertyChanged(() => LinkStatus);
+                RaisePropertyChanged(() => this.LinkStatus);
             }
         }
 
@@ -165,7 +192,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             catch (Exception ex)
             {
                 Messenger.Default.Send(new ErrorMessage(ErrorMode.Error, ex.Message));
-                //if we hit an error on any track in the albums then just fail and dont read anymore
             }
         }
 
