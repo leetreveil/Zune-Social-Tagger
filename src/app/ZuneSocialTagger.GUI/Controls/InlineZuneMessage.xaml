@@ -19,8 +19,21 @@
         <Image x:Name="imgError" Margin="0,0,10,0" Width="16" Height="16"
            VerticalAlignment="Center"/>
 
-        <Viewbox Grid.Column="1" StretchDirection="DownOnly" VerticalAlignment="Center" HorizontalAlignment="Left" >
-            <TextBlock x:Name="tbMessage" TextWrapping="Wrap" MaxWidth="550" TextTrimming="None"  />
+        <Viewbox Grid.Column="1" StretchDirection="DownOnly" 
+                 VerticalAlignment="Center" HorizontalAlignment="Left" >
+            
+            <TextBlock TextWrapping="Wrap" MaxWidth="550"
+                       TextTrimming="None">
+                
+                <Run x:Name="tbMessage" />
+                
+                <Hyperlink x:Name="hlAddress"
+                           Foreground="#FA6EC9"
+                           Click="hlAddress_Click">
+                    <TextBlock x:Name="hlText" Text="" />
+                </Hyperlink>
+                
+            </TextBlock>
         </Viewbox>
 
         <Button Height="16" Grid.Column="2" Click="Ok_Click" 

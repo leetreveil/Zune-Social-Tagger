@@ -7,7 +7,7 @@
     x:Class="ZuneSocialTagger.GUI.ViewsViewModels.About.AboutView"
     Title="AboutView" 
     WindowStartupLocation="CenterOwner" 
-    Width="300"
+    Width="305"
     Style="{DynamicResource DefaultWindowStyle}" 
     mc:Ignorable="d" 
     ShowInTaskbar="False">
@@ -37,8 +37,9 @@
             <TextBlock Text="Developed by: Lee Treveil"/>
             <TextBlock Text="leetreveil@gmail.com"/>
             <TextBlock Height="14.4">
-                <Hyperlink NavigateUri="{Binding ApplicationUrl}" Command="{Binding OpenWebsiteCommand}">
-                    <TextBlock Text="{Binding ApplicationUrl}"/>
+                <Hyperlink NavigateUri="https://github.com/leetreveil/Zune-Social-Tagger"
+                           Foreground="#FA6EC9" Command="{Binding OpenWebsiteCommand}">
+                    <TextBlock Text="https://github.com/leetreveil/Zune-Social-Tagger"/>
                 </Hyperlink>
             </TextBlock>
             <TextBlock VerticalAlignment="Bottom" Text="© 2009 Lee Treveil"/>

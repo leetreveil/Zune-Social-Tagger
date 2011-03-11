@@ -62,7 +62,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                 }
                 catch (Exception ex)
                 {
-                    
                     // Are we not on the main UI thread?
                     if (!App.Current.Dispatcher.CheckAccess())
                     {
@@ -134,17 +133,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     RaisePropertyChanged(() => Notifications);
                 }
                 return _notifications; 
-            }
-        }
-
-        private bool _updateAvailable;
-        public bool UpdateAvailable
-        {
-            get { return _updateAvailable; }
-            set
-            {
-                _updateAvailable = value;
-                RaisePropertyChanged(() => UpdateAvailable);
             }
         }
 
@@ -228,16 +216,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private  void ReadCache()
         {
-            try
+            var filePath = Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache3.dat");
+            if (File.Exists(filePath))
             {
-                using (var file = File.Open(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache3.dat"), FileMode.Open))
+                using (var file = File.Open(filePath, FileMode.Open))
                 {
                     _cache = Serializer.Deserialize<List<MinCache>>(file);
                 }
-            }
-            catch (Exception)
-            {
-
             }
         }
 
@@ -364,7 +349,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     try
                     {
                         if (updateManager.CheckForUpdate())
-                            UpdateAvailable = true;
+                        {
+                            var msg = String.Format("A new update ({0}) is availble for zune social tagger. |https://github.com/leetreveil/Zune-Social-Tagger/downloads |Click here to download now.", updateManager.NewUpdate.Version);
+                            Notifications.Add(new ErrorMessage(ErrorMode.Info, msg));
+                        }
+                            
                     }
                     catch (Exception e)
                     {

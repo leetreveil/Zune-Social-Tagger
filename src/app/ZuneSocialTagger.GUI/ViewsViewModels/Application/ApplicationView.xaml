@@ -130,14 +130,8 @@
         </StackPanel>
 
         <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <Image Source="../../Resources/Assets/zstlogo.png" Width="50" Height="50"></Image>
+            <Image Source="../../Resources/Assets/zstlogo.png" Width="50" Height="50" />
             <TextBlock Margin="10,0,0,0" Grid.Column="0" VerticalAlignment="Center" FontSize="26.667" Text="ZUNE SOCIAL TAGGER"/>
-
-            <Button Name="btnVisibility" Visibility="{Binding UpdateAvailable, Converter={StaticResource BoolToVisConverter},FallbackValue=Hidden}"
-                    Margin="10,0,0,0" Style="{StaticResource SmallGreyButtonWithBorder}" 
-                    VerticalAlignment="Top" Content="NEW UPDATE AVAILABLE"
-                    Command="{Binding UpdateCommand}"/>
-
         </StackPanel>
 
 

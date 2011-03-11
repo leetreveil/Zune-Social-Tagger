@@ -92,7 +92,7 @@ namespace ZuneSocialTagger.GUI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://github.com/leetreveil/Zune-Social-Tagger")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/leetreveil/Zune-Social-Tagger")]
         public string AppBaseUrl {
             get {
                 return ((string)(this["AppBaseUrl"]));

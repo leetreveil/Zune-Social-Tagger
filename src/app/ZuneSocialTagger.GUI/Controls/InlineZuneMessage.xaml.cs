@@ -5,10 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using ZuneSocialTagger.GUI.Models;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using GalaSoft.MvvmLight.Threading;
 
 namespace ZuneSocialTagger.GUI.Controls
@@ -47,29 +44,51 @@ namespace ZuneSocialTagger.GUI.Controls
 
         private static void MessagesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var list = (ObservableCollection<ErrorMessage>)e.NewValue;
+            var view = (InlineZuneMessage)d;
+            var list = (SafeObservableCollection<ErrorMessage>)e.NewValue;
 
-            list.CollectionChanged += (sender, value) => {
-                var view = (InlineZuneMessage)d;
+            //if there are any messages in the list before
+            //we have a chance to see them push them to the view
+            foreach (var errorMessage in list)
+                view.DisplayMessage(errorMessage);
 
-                var message = (ErrorMessage) value.NewItems[0];
-                view._messages.Enqueue(message);
+            list.CollectionChanged += (sender, value) => 
+                view.QueueMessage((ErrorMessage) value.NewItems[0]);
+        }
 
-                if (view.Visibility == Visibility.Collapsed) {
-                    view.DisplayMessage(view._messages.Dequeue());
-                }
-            };
+        private void QueueMessage(ErrorMessage message)
+        {
+            _messages.Enqueue(message);
+
+            if (Visibility == Visibility.Collapsed)
+                DisplayMessage(_messages.Dequeue());
         }
 
         private void DisplayMessage(ErrorMessage message) {
             this.Visibility = Visibility.Visible;
-            this.tbMessage.Text = message.Message;
+            SetMessageText(message.Message);
 
             var imageResourcePath = GetErrorImageFor(message.ErrorMode);
             this.imgError.Source = new BitmapImage(new Uri(imageResourcePath, UriKind.RelativeOrAbsolute));
 
             this._timer.Interval = 20000;
             this._timer.Start();
+        }
+
+        private void SetMessageText(string message)
+        {
+            //look in the string for a hyperlink first
+            var split = message.Split('|');
+            tbMessage.Text = split[0];
+
+            if (split.Length > 1)
+            {
+                var url = split[1];
+                var msg = split[2];
+
+                hlAddress.NavigateUri = new Uri(url);
+                hlText.Text = msg;
+            }
         }
 
         private void CheckMessages() 
@@ -98,6 +117,11 @@ namespace ZuneSocialTagger.GUI.Controls
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
             CheckMessages();
+        }
+
+        private void hlAddress_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(hlAddress.NavigateUri.ToString());
         }
     }
 }

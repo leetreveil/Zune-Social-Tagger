@@ -12,6 +12,7 @@ should automatically download details as app is being scrolled
 
 only allow single instance
 
+integrate new update available msg with notification area
 
 
 MAJOR:
