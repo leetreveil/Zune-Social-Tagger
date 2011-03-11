@@ -9,8 +9,8 @@
     <Grid x:Name="RootVisual">
         <StackPanel Orientation="Horizontal">
 
-            <TextBlock Text="SORTED BY " FontWeight="Bold" 
-                       FontSize="12" Foreground="#FFA2ABAA" />
+            <TextBlock Text=" SORTED BY " FontWeight="Bold" 
+                       FontSize="12" Foreground="Black" />
 
             <Button x:Name="btnSort" Click="btnSort_Click"
                     FontWeight="Bold" 
