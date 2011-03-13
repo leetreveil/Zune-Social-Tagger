@@ -23,9 +23,19 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
             _container = container;
         }
 
-        public void SwitchToFirstView()
+        public object SwitchToFirstView()
         {
+            object viewModel = null;
+            if (_firstView is WebAlbumListView)
+            {
+                viewModel = Resolve<WebAlbumListViewModel>();
+            }
+            if (_firstView is SelectAudioFilesView)
+            {
+                viewModel = Resolve<SelectAudioFilesViewModel>();
+            }
             SwitchToViewRequested.Invoke(_firstView);
+            return viewModel;
         }
 
         public TViewModel SwitchToView<TView, TViewModel>() where TView : UserControl

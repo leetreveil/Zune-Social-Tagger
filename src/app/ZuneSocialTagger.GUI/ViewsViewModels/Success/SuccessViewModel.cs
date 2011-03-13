@@ -52,12 +52,16 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Success
             }
         }
 
-        private void RefreshAlbum() 
+        private void RefreshAlbum()
         {
-            var webAlbumListViewModel = _locator.SwitchToView<WebAlbumListView, WebAlbumListViewModel>();
+            var viewModel = _locator.SwitchToFirstView();
 
-            if (webAlbumListViewModel.SelectedAlbum != null)
-                webAlbumListViewModel.SelectedAlbum.RefreshAlbum();
+            if (viewModel is WebAlbumListViewModel)
+            {
+                var webAlbumListViewModel = (WebAlbumListViewModel) viewModel;
+                if (webAlbumListViewModel.SelectedAlbum != null)
+                    webAlbumListViewModel.SelectedAlbum.RefreshAlbum();
+            }
         }
     }
 }

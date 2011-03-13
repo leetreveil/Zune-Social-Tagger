@@ -30,7 +30,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             get
             {
                 if (_moveBackCommand == null)
-                    _moveBackCommand = new RelayCommand(_locator.SwitchToFirstView);
+                    _moveBackCommand = new RelayCommand(() => _locator.SwitchToFirstView());
 
                 return _moveBackCommand;
             }
