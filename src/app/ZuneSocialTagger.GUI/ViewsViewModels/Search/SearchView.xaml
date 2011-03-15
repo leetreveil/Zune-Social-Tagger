@@ -27,9 +27,9 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Shared:ExpandedAlbumDetailsView 
-            VerticalAlignment="Top" 
-            DataContext="{Binding AlbumDetails}" />
+	    <ContentControl Content="{Binding AlbumDetails}" 
+						ContentTemplate="{StaticResource LargeAlbumDetails}" 
+						VerticalAlignment="Top" />
 
         <StackPanel VerticalAlignment="Top" 
                     HorizontalAlignment="Right"

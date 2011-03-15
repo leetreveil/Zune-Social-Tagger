@@ -17,7 +17,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <Utf8Output>true</Utf8Output>
-    <ExpressionBlendVersion>4.0.20421.0</ExpressionBlendVersion>
+    <ExpressionBlendVersion>4.0.20901.0</ExpressionBlendVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -116,7 +116,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="System.Windows.Interactivity" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -173,9 +173,6 @@
     <Compile Include="ViewsViewModels\About\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewsViewModels\WebAlbumList\AlbumDetailsView.xaml.cs">
-      <DependentUpon>AlbumDetailsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewsViewModels\Application\ApplicationView.xaml.cs">
       <DependentUpon>ApplicationView.xaml</DependentUpon>
     </Compile>
@@ -184,9 +181,6 @@
     </Compile>
     <Compile Include="Controls\ErrorReportDialog.xaml.cs">
       <DependentUpon>ErrorReportDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewsViewModels\Shared\ExpandedAlbumDetailsView.xaml.cs">
-      <DependentUpon>ExpandedAlbumDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsViewModels\Search\SearchResultsDetailView.xaml.cs">
       <DependentUpon>SearchResultsDetailView.xaml</DependentUpon>
@@ -225,7 +219,6 @@
     <Compile Include="Controls\ZuneMessageBox.xaml.cs">
       <DependentUpon>ZuneMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\PathToImageThumbnailConverter.cs" />
     <Compile Include="Converters\SortOrderToTextConverter.cs" />
     <Compile Include="Converters\TextToBoolConverter.cs" />
     <Compile Include="Models\ErrorMessage.cs" />
@@ -303,10 +296,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ViewsViewModels\WebAlbumList\AlbumDetailsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ViewsViewModels\Application\ApplicationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -318,10 +307,6 @@
     <Page Include="Controls\ErrorReportDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ViewsViewModels\Shared\ExpandedAlbumDetailsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="ViewsViewModels\Search\SearchResultsDetailView.xaml">
       <Generator>MSBuild:Compile</Generator>

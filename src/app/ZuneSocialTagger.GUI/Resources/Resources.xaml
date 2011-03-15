@@ -6,7 +6,8 @@
                     xmlns:Search="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Search"
                     xmlns:Details="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Details"
                     xmlns:Success="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Success"
-                    xmlns:SelectAudioFiles="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles">
+                    xmlns:SelectAudioFiles="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles"
+					xmlns:Shared="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Shared">
 
     <DataTemplate DataType="{x:Type SelectAudioFiles:SelectAudioFilesViewModel}">
         <SelectAudioFiles:SelectAudioFilesView />
@@ -30,7 +31,6 @@
 
     <converters:TextToVisibilityConverter x:Key="TextToVisibilityConverter" />
     <converters:TextToBoolConverter x:Key="TextToBoolConverter" />
-    <converters:PathToImageThumbnailConverter x:Key="PathToImageThumbnailConverter" />
     <converters:SortOrderToTextConverter x:Key="SortOrderToTextConverter" />
     <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
 
@@ -428,5 +428,114 @@
         <Setter Property="Foreground"
                 Value="#FFA2ABAA" />
     </Style>
+	
+	<!-- THIS IS THE LARGE ALBUM DETAILS THAT YOU SEE AT THE TOP / SUCCESS VIEW -->
+	<DataTemplate x:Key="LargeAlbumDetails">
+		<StackPanel Orientation="Horizontal">
+	        <Border BorderBrush="White" BorderThickness="1" >
+                <Image Source="{Binding Path=ArtworkUrl, 
+								   		FallbackValue='pack://application:,,,/Resources/Assets/blankartwork.png'}"
+                                       Stretch="Fill" Height="84" Width="84">
+                    <Image.ContextMenu>
+                        <ContextMenu x:Name="RightClickMenu" >
+                            <MenuItem Header="Copy Artwork" Command="{Binding CopyArtworkToClipboardCommand}" />
+                        </ContextMenu>   
+                    </Image.ContextMenu>
+                </Image>
+	         </Border>
+            <Border VerticalAlignment="Top">
+                <StackPanel x:Name="AlbumDetails" Margin="10,0,0,0">
+                    
+                    <TextBlock ToolTip="{Binding Title}" Text="{Binding Title}" 
+                               FontSize="13.333" />
+                    
+                    <TextBlock Text="{Binding Artist}" Foreground="#FF8A8D90"  />
+                    <TextBlock Text="{Binding SongCount}" Foreground="#FF8A8D90"  />
+                    <TextBlock Text="{Binding Year}" Foreground="#FF8A8D90" />
+                </StackPanel>
+        	</Border>
+        </StackPanel>
+	</DataTemplate>
+	
+	<!-- SMALLER ALBUM DETAILS USED IN MAIN VIEW -->
+    <DataTemplate x:Key="SmallAlbumDetails">
+    	<StackPanel Orientation="Horizontal">
+        	<Image Height="50" Width="50"
+            		Source="{Binding Path=ArtworkUrl, 
+							 FallbackValue='pack://application:,,,/Resources/Assets/blankartwork.png'}"
+                    Margin="0,0,10,0"/>
+
+            <StackPanel VerticalAlignment="Center">
+            	<TextBlock ToolTip="{Binding Title}" Text="{Binding Title}" />
+                <TextBlock ToolTip="{Binding Artist}" Text="{Binding Artist}"  
+                           Foreground="#FF8A8D90" />
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+	
+	<DataTemplate x:Key="ListAlbumDetails">
+			<StackPanel Orientation="Horizontal">
+						
+			<ContentControl Width="300"
+							Content="{Binding Left}" 
+							ContentTemplate="{StaticResource SmallAlbumDetails}"/>
+
+	        <ContentControl Grid.Column="2" HorizontalAlignment="Left" Margin="20,0,0,0">
+	            <ContentControl.Style>
+	                <Style TargetType="{x:Type ContentControl}">
+	                    <Style.Triggers>
+
+	                        <DataTrigger Binding="{Binding LinkStatus}" Value="Linked">
+	                            <Setter Property="Template">
+	                                <Setter.Value>
+	                                    <ControlTemplate>
+	                                        <StackPanel  Orientation="Horizontal">
+	                                            <Image Width="16" Height="16" Source="Assets/yes.png"
+	                                                                            Margin="0,0,10,0" />
+												<ContentControl Content="{Binding Right}" 
+																ContentTemplate="{StaticResource SmallAlbumDetails}"/>
+	                                        </StackPanel>
+	                                    </ControlTemplate>
+	                                </Setter.Value>
+	                            </Setter>
+	                        </DataTrigger>
+
+	                        <DataTrigger Binding="{Binding LinkStatus}" Value="Unknown">
+	                            <Setter Property="Template">
+	                                <Setter.Value>
+	                                    <ControlTemplate>
+	                                        <Image x:Name="UnknownImage" 
+	                                                   Width="16" Height="16"
+	                                                   Source="Assets/help.png"
+	                                                   Margin="0,0,10,0" 
+	                                                   HorizontalAlignment="Left"/>
+	                                    </ControlTemplate>
+	                                </Setter.Value>
+	                            </Setter>
+	                        </DataTrigger>
+
+	                        <DataTrigger Binding="{Binding LinkStatus}" Value="Unlinked">
+	                            <Setter Property="Template">
+	                                <Setter.Value>
+	                                    <ControlTemplate>
+	                                        <StackPanel Orientation="Horizontal">
+
+	                                            <Image Width="16" Height="16" Source="Assets/no.png" Margin="0,0,10,0" />
+	                                            <TextBlock VerticalAlignment="Center" FontSize="20" Text="UNLINKED" />
+
+	                                        </StackPanel>
+	                                    </ControlTemplate>
+	                                </Setter.Value>
+	                            </Setter>
+	                        </DataTrigger>
+
+	                    </Style.Triggers>
+	                </Style>
+	            </ContentControl.Style>
+
+	        </ContentControl>
+
+	    </StackPanel>
+	</DataTemplate>
 
 </ResourceDictionary>

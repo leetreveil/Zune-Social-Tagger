@@ -1,12 +1,8 @@
 improve marketplace not avail notification and link to github faq answer for more detail
 
-allow scan all to run while db is loading
-
-investigate why the memory usage is still high after a full scan compared to a cache load
-
 only allow single instance
 
-should be able to cancel scan all
+should be able to cancel/rerun scan all
 
 
 MAJOR:

@@ -57,9 +57,11 @@
 
                                                 <Rectangle Name="UpperHighlight" Visibility="Collapsed" Fill="#75FFFFFF" />
 
-                                                <WebAlbumList:AlbumDetailsView Grid.RowSpan="2" 
-                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
-                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+												<ContentControl Content="{Binding}"
+																ContentTemplate="{StaticResource ListAlbumDetails}"
+																Grid.RowSpan="2"
+																VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                              									SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                             </Grid>
                                         </Border>
                                     </Border>
