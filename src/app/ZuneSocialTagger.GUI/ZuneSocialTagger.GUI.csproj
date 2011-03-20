@@ -144,7 +144,6 @@
     <Compile Include="ViewsViewModels\Shared\MinCache.cs" />
     <Compile Include="ViewsViewModels\Shared\SafeObservableCollection.cs" />
     <Compile Include="ViewsViewModels\Shared\SharedModel.cs" />
-    <Compile Include="ViewsViewModels\Shared\IViewLocator.cs" />
     <Compile Include="ViewsViewModels\Shared\ViewModelBase.cs" />
     <Compile Include="ViewsViewModels\About\AboutViewModel.cs" />
     <Compile Include="ViewsViewModels\Shared\ViewLocator.cs" />

@@ -20,8 +20,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {
     public class WebAlbumListViewModel : ViewModelBase
     {
-        private readonly IZuneDatabaseReader _dbReader;
-        private readonly IViewLocator _locator;
+        private readonly ViewLocator _locator;
         private bool _canShowScanAllButton;
         private int _loadingProgress;
         private readonly bool _isTaskbarSupported;
@@ -30,9 +29,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         private readonly SafeObservableCollection<AlbumDetailsViewModel> _albums;
         private readonly CollectionViewSource _cvs;
 
-        public WebAlbumListViewModel(IZuneDatabaseReader dbReader,
-                                     SafeObservableCollection<AlbumDetailsViewModel> albums,
-                                     IViewLocator locator)
+        public WebAlbumListViewModel(SafeObservableCollection<AlbumDetailsViewModel> albums,
+                                     ViewLocator locator)
         {
             _albums = albums;
             _albums.CollectionChanged += AlbumsCollectionChanged;
@@ -40,7 +38,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             _cvs.Source = albums;
             _cvs.Filter += CvsFilter;
 
-            _dbReader = dbReader;
             _locator = locator;
             _isTaskbarSupported = TaskbarManager.IsPlatformSupported;
 

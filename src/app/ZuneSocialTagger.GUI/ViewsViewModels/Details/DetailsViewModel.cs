@@ -19,10 +19,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 {
     public class DetailsViewModel : ViewModelBase
     {
-        private readonly IViewLocator _locator;
+        private readonly ViewLocator _locator;
         private readonly SharedModel _sharedModel;
 
-        public DetailsViewModel(IViewLocator locator, SharedModel sharedModel)
+        public DetailsViewModel(ViewLocator locator, SharedModel sharedModel)
         {
             _locator = locator;
             _sharedModel = sharedModel;

@@ -16,11 +16,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 {
     public class SelectAudioFilesViewModel : ViewModelBase
     {
-        private readonly IViewLocator _locator;
+        private readonly ViewLocator _locator;
         private readonly IZuneAudioFileRetriever _fileRetriever;
         private readonly SharedModel _sharedModel;
 
-        public SelectAudioFilesViewModel(IViewLocator locator, IZuneAudioFileRetriever fileRetriever,
+        public SelectAudioFilesViewModel(ViewLocator locator, IZuneAudioFileRetriever fileRetriever,
                                          SharedModel sharedModel)
         {
             _sharedModel = sharedModel;

@@ -12,7 +12,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
     {
         private ViewModelBase _currentViewModel;
 
-        public ApplicationView(IViewLocator locator)
+        public ApplicationView(ViewLocator locator)
         {
             locator.SwitchToViewRequested += (arg1, arg2) => _currentViewModel = arg2;
             InitializeComponent();

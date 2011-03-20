@@ -21,7 +21,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
     public class AlbumDetailsViewModel : ViewModelBase
     {
         private readonly IZuneDatabaseReader _dbReader;
-        private readonly IViewLocator _locator;
+        private readonly ViewLocator _locator;
         private readonly IZuneAudioFileRetriever _fileRetriever;
         private readonly SharedModel _sharedModel;
         private int _mediaId;
@@ -29,7 +29,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public AlbumDetailsViewModel(){}//for design time
         public AlbumDetailsViewModel(IZuneDatabaseReader dbReader,
-                                IViewLocator locator,
+                                ViewLocator locator,
                                 IZuneAudioFileRetriever fileRetriever,
                                 SharedModel sharedModel)
         {

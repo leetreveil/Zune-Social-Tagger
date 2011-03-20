@@ -10,7 +10,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
     /// <summary>
     /// Handles switching between views
     /// </summary>
-    public class ViewLocator : IViewLocator
+    public class ViewLocator
     {
         private readonly IKernel _container;
         private UserControl _firstView;

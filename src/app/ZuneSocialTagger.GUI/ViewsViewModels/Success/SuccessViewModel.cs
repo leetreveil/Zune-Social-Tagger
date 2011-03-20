@@ -7,10 +7,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Success
 {
     public class SuccessViewModel : ViewModelBase
     {
-        private IViewLocator _locator;
+        private ViewLocator _locator;
         private SharedModel _sharedModel;
 
-        public SuccessViewModel(IViewLocator locator, SharedModel sharedModel)
+        public SuccessViewModel(ViewLocator locator, SharedModel sharedModel)
         {
             _locator = locator;
             _sharedModel = sharedModel;

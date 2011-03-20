@@ -8,10 +8,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 {
     public class SearchViewModel : ViewModelBase
     {
-        private readonly IViewLocator _locator;
+        private readonly ViewLocator _locator;
         private readonly SharedModel _sharedModel;
 
-        public SearchViewModel(IViewLocator locator, SharedModel sharedModel)
+        public SearchViewModel(ViewLocator locator, SharedModel sharedModel)
         {
             _locator = locator;
             _sharedModel = sharedModel;

@@ -30,13 +30,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
     {
         private readonly IZuneDatabaseReader _dbReader;
         private readonly SafeObservableCollection<AlbumDetailsViewModel> _albums;
-        private readonly IViewLocator _viewLocator;
+        private readonly ViewLocator _viewLocator;
         private WebAlbumListViewModel _webAlbumListViewModel;
         private List<MinCache> _cache;
 
         public ApplicationViewModel(IZuneDatabaseReader dbReader,
                                     SafeObservableCollection<AlbumDetailsViewModel> albums,
-                                    IViewLocator locator)
+                                    ViewLocator locator)
         {
             _dbReader = dbReader;
             _albums = albums;

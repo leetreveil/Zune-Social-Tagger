@@ -60,7 +60,7 @@ namespace ZuneSocialTagger.GUI
             container.Bind<IZuneDatabaseReader>().To<ZuneDatabaseReader>().InSingletonScope();
 #endif
             //Container.Bind<IApplicationViewModel>().To<ApplicationViewModel>();
-            container.Bind<IViewLocator>().To<ViewLocator>().InSingletonScope();
+            container.Bind<ViewLocator>().ToSelf().InSingletonScope();
 
             //songs the user loads from file are stored here
             container.Bind<IZuneAudioFileRetriever>().To<ZuneAudioFileRetriever>().InSingletonScope();
