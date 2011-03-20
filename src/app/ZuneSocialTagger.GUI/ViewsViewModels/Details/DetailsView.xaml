@@ -179,13 +179,8 @@
                                 <ColumnDefinition Width="295"/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Width="23" Text="{Binding SongDetails.TrackNumber}"
-                                               FontSize="18" VerticalAlignment="Center"  />
-
-                                <TextBlock ToolTip="{Binding SongDetails.TrackTitle}" Text="{Binding SongDetails.TrackTitle}" 
-                                              VerticalAlignment="Center" FontSize="13.333" Margin="10,0,0,0"/>
-                            </StackPanel>
+                            <ContentControl Content="{Binding SongDetails}"
+                                            ContentTemplate="{StaticResource TrackNumWithTitle}" />
 
                             <ComboBox Style="{StaticResource SelectSongCombobox}" 
                                           ItemsSource="{Binding AvailableZuneTracks}" 

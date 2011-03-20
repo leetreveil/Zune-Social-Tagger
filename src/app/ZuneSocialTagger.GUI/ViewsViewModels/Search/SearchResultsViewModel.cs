@@ -18,11 +18,25 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         public SearchResultsViewModel(SearchViewModel parent)
         {
             _parent = parent;
+            SelectedAlbumSongs = new ObservableCollection<TrackWithTrackNum>();
         }
 
         public WebAlbum DownloadedAlbum { get; private set; }
 
         #region Bindings
+
+        public ObservableCollection<TrackWithTrackNum> SelectedAlbumSongs { get; set; }
+
+        private string _selectedAlbumTitle;
+        public string SelectedAlbumTitle
+        {
+            get { return _selectedAlbumTitle; }
+            set
+            {
+                _selectedAlbumTitle = value;
+                RaisePropertyChanged(() => SelectedAlbumTitle);
+            }
+        }
 
         private ObservableCollection<object> _searchResults;
         public ObservableCollection<object> SearchResults 
@@ -72,23 +86,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
                     _resultClickedCommand = new RelayCommand<object>(ResultClicked);
 
                 return _resultClickedCommand;
-            }
-        }
-
-        private SearchResultsDetailViewModel _searchResultsDetailViewModel;
-        public SearchResultsDetailViewModel SearchResultsDetailViewModel
-        {
-            get 
-            {
-                if (_searchResultsDetailViewModel == null)
-                    _searchResultsDetailViewModel = new SearchResultsDetailViewModel();
-
-                return _searchResultsDetailViewModel;
-            }
-            set
-            {
-                _searchResultsDetailViewModel = value;
-                RaisePropertyChanged(() => this.SearchResultsDetailViewModel);
             }
         }
 
@@ -143,9 +140,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
                 else
                 {
                     DisplayArtists();
-                    this.SearchResultsDetailViewModel = null;
                 }
-
 
                 RaisePropertyChanged(() => this.IsAlbumsEnabled);
             }
@@ -182,7 +177,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
                 }
                 else
                 {
-                    this.SearchResultsDetailViewModel.SelectedAlbumTitle =
+                    SelectedAlbumTitle =
                         "Could not get album details";
                 }
 
@@ -255,8 +250,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
         private void UpdateDetail(WebAlbum albumMetaData)
         {
-            this.SearchResultsDetailViewModel = new SearchResultsDetailViewModel();
-            this.SearchResultsDetailViewModel.SelectedAlbumTitle = albumMetaData.Title;
+            SelectedAlbumTitle = albumMetaData.Title;
 
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
@@ -266,7 +260,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
                     tnum.TrackNumber = track.TrackNumber;
                     tnum.TrackTitle = track.Title;
 
-                    this.SearchResultsDetailViewModel.SelectedAlbumSongs.Add(tnum);
+                   SelectedAlbumSongs.Add(tnum);
                 }
 
             });

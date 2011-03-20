@@ -99,6 +99,15 @@
     </Controls:DraggableWindow.Resources>
     
     
+    <Controls:DraggableWindow.CommandBindings>
+        <CommandBinding Command="NavigationCommands.BrowseBack"
+                        Executed="NavigationCommands_BrowseBack" />
+
+        <CommandBinding Command="NavigationCommands.BrowseForward"
+                        Executed="NavigationCommands_BrowseForward" />
+    </Controls:DraggableWindow.CommandBindings>
+    
+    
     <Grid>
         <Grid.RowDefinitions>
         	<RowDefinition Height="Auto"/>

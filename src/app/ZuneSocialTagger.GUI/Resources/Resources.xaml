@@ -537,5 +537,23 @@
 
 	    </StackPanel>
 	</DataTemplate>
+    
+    <!-- TRACK NUMBER WITH TRACK TITLE USED IN SEARCH DETAILS / DETAILS VIEW-->
+    <DataTemplate x:Key="TrackNumWithTitle">
+        <StackPanel Orientation="Horizontal"
+                    Margin="0,3,3,3">
+
+            <TextBlock Width="23"
+                       Text="{Binding TrackNumber}"
+                       VerticalAlignment="Center"
+                       FontSize="18" />
+
+            <TextBlock ToolTip="{Binding TrackTitle}"
+                       Text="{Binding TrackTitle}"
+                       VerticalAlignment="Center"
+                       FontSize="13.333"
+                       Margin="10,0,0,0" />
+        </StackPanel>
+    </DataTemplate>
 
 </ResourceDictionary>

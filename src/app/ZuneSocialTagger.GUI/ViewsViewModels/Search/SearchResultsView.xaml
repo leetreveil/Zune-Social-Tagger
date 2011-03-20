@@ -209,7 +209,7 @@
                                                     <i:Interaction.Triggers>
                                                         <i:EventTrigger EventName="MouseUp">
                                                             <cmd:EventToCommand Command="{Binding ResultClickedCommand}"
-                                        CommandParameter="{Binding ElementName=lvAlbums,Path=SelectedItem}"/>
+                                                                                CommandParameter="{Binding ElementName=lvAlbums,Path=SelectedItem}"/>
                                                         </i:EventTrigger>
                                                     </i:Interaction.Triggers>
 
@@ -225,16 +225,42 @@
 
             </ContentControl>
 
-            <Search:SearchResultsDetailView
-            d:DataContext="{d:DesignInstance dt:SearchResultsDetailDesignViewModel,IsDesignTimeCreatable=True}"
-            Grid.Row="2" Grid.Column="2" DataContext="{Binding SearchResultsDetailViewModel}"/>
+            <ContentControl Grid.Row="2" Grid.Column="2"
+                            Content="{Binding}">
+                <ContentControl.ContentTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0"
+                                       ToolTip="{Binding SelectedAlbumTitle}"
+                                       FontSize="18.667"
+                                       Text="{Binding SelectedAlbumTitle}" />
+
+                            <ItemsControl Margin="3,10,0,0"
+                                          Grid.Row="1"
+                                          Height="Auto"
+                                          Background="Transparent"
+                                          ItemsSource="{Binding SelectedAlbumSongs}"
+                                          ItemTemplate="{StaticResource TrackNumWithTitle}">
+                                <ItemsControl.Template>
+                                    <ControlTemplate>
+                                        <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                                                      VerticalScrollBarVisibility="Auto"
+                                                      x:Name="ScrollViewer"
+                                                      Padding="{TemplateBinding Padding}">
+                                            <ItemsPresenter />
+                                        </ScrollViewer>
+                                    </ControlTemplate>
+                                </ItemsControl.Template>
+                            </ItemsControl>
+                        </Grid>
+                    </DataTemplate>
+                </ContentControl.ContentTemplate>
+            </ContentControl>
 
         </DockPanel>
-
-
-
-
-
-
         </Grid>
 </UserControl>

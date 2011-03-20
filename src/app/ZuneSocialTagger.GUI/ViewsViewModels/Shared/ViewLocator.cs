@@ -1,7 +1,6 @@
 using System;
 using System.Windows.Controls;
 using Ninject;
-using Ninject.Parameters;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using GalaSoft.MvvmLight.Threading;
@@ -16,7 +15,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
         private readonly IKernel _container;
         private UserControl _firstView;
 
-        public event Action<UserControl> SwitchToViewRequested = delegate { };
+        public event Action<UserControl,ViewModelBase> SwitchToViewRequested = delegate { };
 
         public ViewLocator(IKernel container)
         {
@@ -25,7 +24,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
 
         public object SwitchToFirstView()
         {
-            object viewModel = null;
+            ViewModelBase viewModel = null;
             if (_firstView is WebAlbumListView)
             {
                 viewModel = Resolve<WebAlbumListViewModel>();
@@ -34,11 +33,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
             {
                 viewModel = Resolve<SelectAudioFilesViewModel>();
             }
-            SwitchToViewRequested.Invoke(_firstView);
+            SwitchToViewRequested.Invoke(_firstView, viewModel);
             return viewModel;
         }
 
-        public TViewModel SwitchToView<TView, TViewModel>() where TView : UserControl
+        public TViewModel SwitchToView<TView, TViewModel>() where TView : UserControl where TViewModel : ViewModelBase
         {
             TView viewToSwitchTo;
             TViewModel viewModel = Resolve<TViewModel>();
@@ -50,7 +49,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
                     _firstView = viewToSwitchTo;
 
                  viewToSwitchTo.DataContext = viewModel;
-                 SwitchToViewRequested.Invoke(viewToSwitchTo);
+                 SwitchToViewRequested.Invoke(viewToSwitchTo, viewModel);
                  
             });
 

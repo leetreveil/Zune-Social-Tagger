@@ -152,7 +152,6 @@
     <Compile Include="ViewsViewModels\Details\DesignTime\DetailsDesignViewModel.cs" />
     <Compile Include="ViewsViewModels\Search\DesignTime\SearchDesignViewModel.cs" />
     <Compile Include="ViewsViewModels\Search\DesignTime\SearchResultsDesignViewModel.cs" />
-    <Compile Include="ViewsViewModels\Search\DesignTime\SearchResultsDetailDesignViewModel.cs" />
     <Compile Include="ViewsViewModels\Success\DesignTime\SuccessDesignViewModel.cs" />
     <Compile Include="ViewsViewModels\WebAlbumList\AlbumDetailsViewModel.cs" />
     <Compile Include="ViewsViewModels\WebAlbumList\AlbumThumbDetails.cs" />
@@ -163,7 +162,6 @@
     <Compile Include="ViewsViewModels\Details\DetailsViewModel.cs" />
     <Compile Include="Models\ErrorMode.cs" />
     <Compile Include="ViewsViewModels\Shared\ExpandedAlbumDetailsViewModel.cs" />
-    <Compile Include="ViewsViewModels\Search\SearchResultsDetailViewModel.cs" />
     <Compile Include="ViewsViewModels\Search\SearchResultsViewModel.cs" />
     <Compile Include="ViewsViewModels\Search\SearchViewModel.cs" />
     <Compile Include="ViewsViewModels\SelectAudioFiles\SelectAudioFilesViewModel.cs" />
@@ -181,9 +179,6 @@
     </Compile>
     <Compile Include="Controls\ErrorReportDialog.xaml.cs">
       <DependentUpon>ErrorReportDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewsViewModels\Search\SearchResultsDetailView.xaml.cs">
-      <DependentUpon>SearchResultsDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsViewModels\Search\SearchResultsView.xaml.cs">
       <DependentUpon>SearchResultsView.xaml</DependentUpon>
@@ -307,10 +302,6 @@
     <Page Include="Controls\ErrorReportDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ViewsViewModels\Search\SearchResultsDetailView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="ViewsViewModels\Search\SearchResultsView.xaml">
       <Generator>MSBuild:Compile</Generator>

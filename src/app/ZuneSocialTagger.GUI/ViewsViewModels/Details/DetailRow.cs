@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using ZuneSocialTagger.GUI.Models;
+using System.Linq;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
@@ -8,7 +8,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
     {
         public DetailRow()
         {
-            this.AvailableZuneTracks = new List<TrackWithTrackNum>();
+            AvailableZuneTracks = new List<TrackWithTrackNum>();
         }
 
         public TrackWithTrackNum SongDetails { get; set; }
@@ -21,7 +21,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
         /// <returns></returns>
         public void MatchTheSelectedSongToTheAvailableSongs()
         {
-            this.SelectedSong = SharedMethods.GetMatchingTrack(this.AvailableZuneTracks, this.SongDetails);
+            //this matches album songs to zune website songs in the details view
+            //Hold Your Colour ---- hold your colour (Album) = MATCH
+            //Hold your colour ---- hold your face = NO MATCH
+            this.SelectedSong = AvailableZuneTracks.Where(song => song.TrackTitle.ToLower()
+                    .Contains(SongDetails.TrackTitle.ToLower()))
+                    .FirstOrDefault();
         }
     }
 }

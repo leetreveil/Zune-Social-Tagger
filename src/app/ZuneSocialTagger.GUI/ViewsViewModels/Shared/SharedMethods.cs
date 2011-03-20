@@ -11,17 +11,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
 {
     public static class SharedMethods
     {
-
-        public static TrackWithTrackNum GetMatchingTrack(IEnumerable<TrackWithTrackNum> tracksToMatchWith, TrackWithTrackNum trackToMatch)
-        {
-            //this matches album songs to zune website songs in the details view
-            //Hold Your Colour ---- hold your colour (Album) = MATCH
-            //Hold your colour ---- hold your face = NO MATCH
-            return tracksToMatchWith.Where(song => song.TrackTitle.ToLower()
-                    .Contains(trackToMatch.TrackTitle.ToLower()))
-                    .FirstOrDefault();
-        }
-
         public static bool DoesAlbumTitleMatch(IEnumerable<string> albumTitlesToMatch, string albumTitleToMatch)
         {
             return albumTitlesToMatch.Any(albumTitle => albumTitle.ToLower().Contains(albumTitleToMatch.ToLower()));

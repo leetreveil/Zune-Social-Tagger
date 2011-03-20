@@ -42,7 +42,7 @@ namespace ZuneSocialTagger.GUI
             var container = new StandardKernel();
             SetupBindings(container);
 
-            var appView = new ApplicationView();
+            var appView = container.Get<ApplicationView>();
             appView.Show();
 
             var appViewModel = container.Get<ApplicationViewModel>();

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
@@ -44,7 +45,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             //register for notification messages
             Messenger.Default.Register<ErrorMessage>(this, Notifications.Add);
 
-            locator.SwitchToViewRequested += view => {
+            locator.SwitchToViewRequested += (view, viewModel) => {
                 CurrentPage = view;
             };
         }
@@ -153,10 +154,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         {
             if (InitializeDatabase())
             {
-                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                DispatcherHelper.UIDispatcher.Invoke(new Action(() =>
                 {
                     _webAlbumListViewModel = _viewLocator.SwitchToView<WebAlbumListView, WebAlbumListViewModel>();
-                });
+                }), null);
                 
                 ReadActualDatabase();
             }
@@ -252,6 +253,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     so = Core.ZuneDatabase.SortOrder.DateAdded;
                     break;
             }
+
+            _webAlbumListViewModel.Sort();
+
             foreach (DbAlbum newAlbum in _dbReader.ReadAlbums(so))
             {
                 var newalbumDetails = _viewLocator.Resolve<AlbumDetailsViewModel>();
