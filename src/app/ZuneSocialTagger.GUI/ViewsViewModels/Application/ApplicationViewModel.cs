@@ -231,7 +231,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         {
             using (var file = File.Create(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache3.dat")))
             {
-                Serializer.Serialize(file, _albums.Select(x=> new MinCache{MediaId = x.MediaId, Right = x.Right}).ToList());
+                Serializer.Serialize(file, _albums.Select(x=> new MinCache{MediaId = x.MediaId, LinkStatus = x.LinkStatus, Right = x.Right}).ToList());
             }
         }
 
@@ -290,7 +290,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                         }
                         else
                         {
-                            newalbumDetails.LinkStatus = LinkStatus.Unlinked;
+                            newalbumDetails.LinkStatus = cachedObject.LinkStatus;
                         }
                     }
                 }
