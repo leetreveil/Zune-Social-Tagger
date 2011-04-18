@@ -1,9 +1,10 @@
-https://github.com/leetreveil/Zune-Social-Tagger/raw/master/docs/zunesoc2.3.png!
+!https://github.com/leetreveil/Zune-Social-Tagger/raw/master/docs/zunesoc2.3.PNG!
 
 
 ### Changelog
 
 __Release 2.3:__
+
 * Region settings are now read correctly
 * UI Improvements
 
