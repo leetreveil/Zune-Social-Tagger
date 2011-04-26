@@ -3,6 +3,10 @@
 
 ### Changelog
 
+__Release 2.3.1:__
+
+* Fixed bug were some albums were showing as unlinked but were actually linked
+
 __Release 2.3:__
 
 * Region settings are now read correctly
