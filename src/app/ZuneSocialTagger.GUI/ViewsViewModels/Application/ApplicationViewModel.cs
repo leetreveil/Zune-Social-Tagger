@@ -295,9 +295,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     }
                 }
 
-                _albums.Add(newalbumDetails);
-
                 newalbumDetails.Init(newAlbum.MediaId, newAlbum.AlbumMediaId);
+                _albums.Add(newalbumDetails);
             }
         }
 
