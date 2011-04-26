@@ -7,6 +7,14 @@
     <item>
       <title>Zune Social Tagger</title>
       <link>http://wiki.github.com/leetreveil/Zune-Social-Tagger/</link>
+      <description>Fixed bug where albums that are linked where showing as unlinked</description>
+      <pubDate>Tuesday, 26 April 2011 18:55:00 GMT</pubDate>
+      <appcast:version>2.3.1</appcast:version>
+      <enclosure url="https://github.com/leetreveil/Zune-Social-Tagger/downloads" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Zune Social Tagger</title>
+      <link>http://wiki.github.com/leetreveil/Zune-Social-Tagger/</link>
       <description>Autoupdate support and stuffs</description>
       <pubDate>Tuesday, 01 December 2010 13:22:00 GMT</pubDate>
       <appcast:version>2.2.0</appcast:version>
