@@ -217,7 +217,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private  void ReadCache()
         {
-            var filePath = Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache3.dat");
+            var filePath = Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache231.dat");
             if (File.Exists(filePath))
             {
                 using (var file = File.Open(filePath, FileMode.Open))
@@ -229,7 +229,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void WriteCache()
         {
-            using (var file = File.Create(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache3.dat")))
+            using (var file = File.Create(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache231.dat")))
             {
                 Serializer.Serialize(file, _albums.Select(x=> new MinCache{MediaId = x.MediaId, LinkStatus = x.LinkStatus, Right = x.Right}).ToList());
             }
