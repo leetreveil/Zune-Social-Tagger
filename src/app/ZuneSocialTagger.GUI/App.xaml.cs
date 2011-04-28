@@ -27,12 +27,8 @@ namespace ZuneSocialTagger.GUI
             this.Startup += App_Startup;
         }
 
-        public Application CurrentApp;
-
         void App_Startup(object sender, StartupEventArgs e)
         {
-            CurrentApp = Application.Current;
-
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
 
             DispatcherHelper.Initialize();
@@ -92,8 +88,16 @@ namespace ZuneSocialTagger.GUI
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            ErrorReportDialog.Show(ExceptionLogger.LogException(e.Exception), () => Application.Current.Shutdown());
+            DisplayException(e.Exception);
             e.Handled = true;
+        }
+
+        public static void DisplayException(Exception ex) 
+        {
+            DispatcherHelper.CheckBeginInvokeOnUI(() => 
+            {
+                ErrorReportDialog.Show(ExceptionLogger.LogException(ex), () => Application.Current.Shutdown());
+            });
         }
     }
 }

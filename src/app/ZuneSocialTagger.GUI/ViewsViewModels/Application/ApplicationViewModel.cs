@@ -63,27 +63,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                 }
                 catch (Exception ex)
                 {
-                    // Are we not on the main UI thread?
-                    if (!App.Current.Dispatcher.CheckAccess())
-                    {
-                        // Unhandled exceptions on worker threads will halt the application. We want to
-                        // use our global exception handler(s), so dispatch or "forward" to the UI thread.
-                        App.Current.Dispatcher.Invoke(
-                            System.Windows.Threading.DispatcherPriority.Normal,
-                            new Action<Exception>(WorkerThreadException), ex);
-                    }
-                    else
-                    {
-                        throw;  // Already on UI thread; just rethrow the exception to global handlers
-                    }
+                    App.DisplayException(ex);
                 }
 
             }).Start();
-        }
-
-        private static void WorkerThreadException(Exception ex)
-        {
-            throw ex;
         }
 
         #region View Bindings
