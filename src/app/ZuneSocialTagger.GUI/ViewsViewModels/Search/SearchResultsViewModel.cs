@@ -6,6 +6,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 {
@@ -254,6 +255,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
+                SelectedAlbumSongs.Clear();
                 foreach (var track in albumMetaData.Tracks)
                 {
                     var tnum = new TrackWithTrackNum();
