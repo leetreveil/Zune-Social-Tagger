@@ -35,9 +35,9 @@
 
         <StackPanel Orientation="Horizontal"  Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             
-            <Button Content="OK" Click="OK_Click" Margin="0,0,10,0" />
+            <Button x:Name="btnOk" Content="OK" Click="OK_Click" Margin="0,0,10,0" />
 
-            <Button Grid.Row="2" HorizontalAlignment="Right" 
+            <Button x:Name="btnCancel" Grid.Row="2" HorizontalAlignment="Right" 
                     VerticalAlignment="Bottom" Content="CANCEL" Click="Cancel_Click" />
             
         </StackPanel>

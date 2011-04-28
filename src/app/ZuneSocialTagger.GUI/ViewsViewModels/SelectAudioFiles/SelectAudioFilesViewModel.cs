@@ -63,7 +63,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
                     Multiselect = true, 
                     Filter = "Audio files .mp3,.wma |*.mp3;*.wma", 
                     AutoUpgradeEnabled = true,
-                    Title = "Select the audio files that you want to link to the zune social"
+                    Title = "Select the audio files that you want to link to the zune social",
+                    CheckFileExists = true
                 };
 
                 if (ofd.ShowDialog() == DialogResult.OK)

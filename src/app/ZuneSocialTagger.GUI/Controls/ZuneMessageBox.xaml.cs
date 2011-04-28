@@ -13,10 +13,18 @@ namespace ZuneSocialTagger.GUI.Controls
     public partial class ZuneMessageBox : DraggableWindow
     {
         private readonly Action _okClickedCallback;
+        public MessageBoxResult result;
 
         public ZuneMessageBox()
         {
             this.Owner = System.Windows.Application.Current.MainWindow;
+        }
+
+        public static MessageBoxResult Show(ErrorMessage message, MessageBoxButton buttons)
+        {
+            var msgBox = new ZuneMessageBox(message.Message, message.ErrorMode, buttons);
+            msgBox.ShowDialog();
+            return msgBox.result;
         }
 
         public static void Show(ErrorMessage message, Action okClickedCallback)
@@ -24,7 +32,18 @@ namespace ZuneSocialTagger.GUI.Controls
             new ZuneMessageBox(message.Message, message.ErrorMode,okClickedCallback).Show();
         }
 
-        public ZuneMessageBox(string errorMessage, ErrorMode mode) : this()
+        public static void Show(ErrorMessage message, MessageBoxButton buttons,  Action okClickedCallback)
+        {
+            new ZuneMessageBox(message.Message, message.ErrorMode, okClickedCallback).Show();
+        }
+
+        public ZuneMessageBox(string errorMessage, ErrorMode mode, Action okClickedCallback)
+            : this(errorMessage, mode, MessageBoxButton.OKCancel)
+        {
+            _okClickedCallback = okClickedCallback;
+        }
+
+        public ZuneMessageBox(string errorMessage, ErrorMode mode, MessageBoxButton buttons) : this()
         {
             InitializeComponent();
 
@@ -43,14 +62,15 @@ namespace ZuneSocialTagger.GUI.Controls
                     throw new ArgumentOutOfRangeException();
             }
 
+            if (buttons == MessageBoxButton.YesNo)
+            {
+                btnOk.Content = "YES";
+                btnCancel.Content = "NO";
+            }
+
             this.imgErrorIcon.Source = new BitmapImage(new Uri(GetIconUriForErrorMode(mode), UriKind.RelativeOrAbsolute));
             this.tbErrorMessage.Text = errorMessage;
             this.tbErrorMessage.ToolTip = errorMessage;
-        }
-
-        public ZuneMessageBox(string errorMessage,ErrorMode mode, Action okClickedCallback) :this(errorMessage,mode)
-        {
-            _okClickedCallback = okClickedCallback;
         }
 
         private string GetIconUriForErrorMode(ErrorMode mode)
@@ -70,14 +90,13 @@ namespace ZuneSocialTagger.GUI.Controls
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
+            result = MessageBoxResult.OK;
             this.Close();
-
-            if (_okClickedCallback != null)
-                _okClickedCallback.Invoke();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
+            result = MessageBoxResult.Cancel;
             this.Close();
         }
     }
