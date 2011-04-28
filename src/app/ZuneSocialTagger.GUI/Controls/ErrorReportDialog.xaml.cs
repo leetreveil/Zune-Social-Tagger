@@ -37,6 +37,7 @@ namespace ZuneSocialTagger.GUI.Controls
 
         private void btnSendErrorRep_Click(object sender, RoutedEventArgs e)
         {
+            this.Close();
             this.Cursor = System.Windows.Input.Cursors.Wait;
 
             if (_sendErrorCallback != null)

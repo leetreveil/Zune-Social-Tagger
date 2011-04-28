@@ -96,7 +96,7 @@ namespace ZuneSocialTagger.GUI
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() => 
             {
-                ErrorReportDialog.Show(ExceptionLogger.LogException(ex), () => Application.Current.Shutdown());
+                ErrorReportDialog.Show(ExceptionLogger.LogException(ex), null);
             });
         }
     }
