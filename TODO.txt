@@ -1,7 +1,3 @@
-improve marketplace not avail notification and link to github faq answer for more detail
-
-only allow single instance
-
 should be able to cancel/rerun scan all
 
 handle folder path not being available if it no longer exists (select audio files) (vista/7)

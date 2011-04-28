@@ -24,6 +24,7 @@ namespace ZuneSocialTagger.GUI
     {
         public App()
         {
+            WpfSingleInstanceByEventWaitHandle.WpfSingleInstance.Make();
             this.Startup += App_Startup;
         }
 

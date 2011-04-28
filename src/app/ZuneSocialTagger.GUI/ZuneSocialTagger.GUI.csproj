@@ -200,6 +200,7 @@
     <Compile Include="ViewsViewModels\WebAlbumList\ZuneProgressBar.xaml.cs">
       <DependentUpon>ZuneProgressBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WpfSingleInstance.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\DraggableWindow.cs" />
