@@ -6,19 +6,26 @@ using System.Xml.Linq;
 
 namespace ZuneSocialTagger.Core.ZuneWebsite
 {
+    public enum MarketplaceStatus
+    {
+        Available,
+        NotAvailable,
+        Error
+    }
+
     public class LocaleDownloader
     {
-        public static void IsMarketPlaceEnabledForLocaleAsync(string locale, Action<bool> callback)
+        public static void IsMarketPlaceEnabledForLocaleAsync(string locale, Action<MarketplaceStatus> callback)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(
                 String.Format("http://tuners.zune.net/{0}/ZunePCClient/v4.7/configuration.xml", locale));
 
-            httpWebRequest.BeginGetResponse(ReqCallback, new AsyncResult<bool>(httpWebRequest, callback));
+            httpWebRequest.BeginGetResponse(ReqCallback, new AsyncResult<MarketplaceStatus>(httpWebRequest, callback));
         }
 
         private static void ReqCallback(IAsyncResult asyncResult)
         {
-            var result = asyncResult.AsyncState as AsyncResult<bool>;
+            var result = asyncResult.AsyncState as AsyncResult<MarketplaceStatus>;
             try
             {
                 HttpWebRequest httpWebRequest = result.HttpWebRequest;
@@ -34,17 +41,16 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                         .First().Value;
 
                     if (isMarketPlaceEnabled == "enabled")
-                        result.Callback(true);
+                        result.Callback(MarketplaceStatus.Available);
 
                     if (isMarketPlaceEnabled == "disabled")
-                        result.Callback(false);
+                        result.Callback(MarketplaceStatus.NotAvailable);
                 }
             }
             catch (Exception)
             {
-                result.Callback(false);
+                result.Callback(MarketplaceStatus.Error);
             }
-
         }
 
         internal class AsyncResult<T>

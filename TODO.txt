@@ -4,8 +4,6 @@ only allow single instance
 
 should be able to cancel/rerun scan all
 
-handle no internet connectivity
-
 handle folder path not being available if it no longer exists (select audio files) (vista/7)
 
 the zune database crashing or not loading shouldn't kill the program. It should default back to 'select audio files'

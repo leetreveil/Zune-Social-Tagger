@@ -286,17 +286,22 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         private void CheckLocale()
         {
             string locale = Locale.GetLocale();
-            LocaleDownloader.IsMarketPlaceEnabledForLocaleAsync(locale, isEnabled =>
+            LocaleDownloader.IsMarketPlaceEnabledForLocaleAsync(locale, status =>
             {
-                if (!isEnabled)
+                DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {
-                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    if (status == MarketplaceStatus.NotAvailable)
                     {
                         var msg = String.Format("The Zune Marketplace is not yet available in your region ({0}). You" +
-                            " may not get any search results when trying to link an album to the marketplace.", locale);
+                            " won't get any search results when trying to link an album to the marketplace.", locale);
                         Notifications.Add(new ErrorMessage(ErrorMode.Info, msg));
-                    });
-                }
+                    }
+                    if (status == MarketplaceStatus.Error) 
+                    {
+                        var msg = String.Format("Error connecting to the ({0}) marketplace.", locale);
+                        Notifications.Add(new ErrorMessage(ErrorMode.Info, msg));
+                    }
+                });
             });
         }
 
