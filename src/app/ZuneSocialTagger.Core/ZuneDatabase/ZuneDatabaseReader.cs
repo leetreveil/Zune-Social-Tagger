@@ -18,33 +18,30 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
         public bool Initialize()
         {
-            try
+            if (!File.Exists("ZuneDBApi.dll"))
+                throw new FileNotFoundException(
+                    "Could not find ZuneDBApi.dll. Are you sure Zune Social Tagger is installed in the Zune application folder?");
+
+            //Just copying what the zune software does internally here to initialize the database
+            _zuneLibrary = new ZuneLibrary();
+
+            bool dbRebult;
+
+            //anything other than 0 means an error occured reading the database
+            int num = _zuneLibrary.Initialize(null, out dbRebult);
+
+            if (num > -1)
             {
-                //Just copying what the zune software does internally here to initialize the database
-                _zuneLibrary = new ZuneLibrary();
-
-                bool dbRebult;
-
-                //anything other than 0 means an error occured reading the database
-                int num = _zuneLibrary.Initialize(null, out dbRebult);
-
-                if (num > -1)
-                {
-                    int phase2;
-                    _zuneLibrary.Phase2Initialization(out phase2);
-                    _zuneLibrary.CleanupTransientMedia();
-                }
-                else
-                {
-                    return false;
-                }
-
-                return true;
+                int phase2;
+                _zuneLibrary.Phase2Initialization(out phase2);
+                _zuneLibrary.CleanupTransientMedia();
             }
-            catch
+            else
             {
                 return false;
             }
+
+            return true;
         }
 
         private static T GetFieldValue<T>(int mediaId, EListType listType, int atom, T defaultValue)
@@ -279,19 +276,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         public void AddTrackToDatabase(string filePath)
         {
             _zuneLibrary.AddMedia(filePath);
-        }
-
-        public bool CanInitialize
-        {
-            get
-            {
-                //The version that this program was written to support, in future versions methods could change
-                //so updates will probably be needed
-                if (!File.Exists("ZuneDBApi.dll"))
-                    throw new FileNotFoundException(
-                        "Could not find ZuneDBApi.dll. Are you sure Zune Social Tagger is installed in the Zune application folder?");
-                return true;
-            }
         }
 
         public void Dispose()

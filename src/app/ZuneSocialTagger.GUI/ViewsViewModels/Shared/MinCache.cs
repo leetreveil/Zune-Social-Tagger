@@ -12,7 +12,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
     public class MinCache
     {
         [ProtoMember(1)]
-        public int MediaId { get; set; }
+        public Guid AlbumMediaId { get; set; }
         [ProtoMember(2)]
         public LinkStatus LinkStatus { get; set; }
         [ProtoMember(3)]

@@ -15,11 +15,5 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
         void RemoveAlbumFromDatabase(int albumId );
         void AddTrackToDatabase(string filePath);
-
-        /// <summary>
-        /// Put file system depedency checks in here
-        /// </summary>
-        /// <returns></returns>
-        bool CanInitialize { get; }
     }
 }

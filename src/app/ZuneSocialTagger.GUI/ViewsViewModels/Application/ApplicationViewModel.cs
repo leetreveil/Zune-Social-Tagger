@@ -175,21 +175,15 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         {
             try
             {
-                if (_dbReader.CanInitialize)
+                bool initalized = _dbReader.Initialize();
+
+                if (!initalized)
                 {
-                    bool initalized = _dbReader.Initialize();
-
-                    if (!initalized)
-                    {
-                        Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
-                        return false;
-                    }
-
-                    return true;
+                    Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
+                    return false;
                 }
 
-                Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
-                return false;
+                return true;
             }
             catch (Exception e)
             {
@@ -200,7 +194,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private  void ReadCache()
         {
-            var filePath = Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache231.dat");
+            var filePath = Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache232.dat");
             if (File.Exists(filePath))
             {
                 using (var file = File.Open(filePath, FileMode.Open))
@@ -212,9 +206,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void WriteCache()
         {
-            using (var file = File.Create(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache231.dat")))
+            using (var file = File.Create(Path.Combine(Settings.Default.AppDataFolder, @"zunesoccache232.dat")))
             {
-                Serializer.Serialize(file, _albums.Select(x=> new MinCache{MediaId = x.MediaId, LinkStatus = x.LinkStatus, Right = x.Right}).ToList());
+                Serializer.Serialize(file, _albums.Select(x=> new MinCache{AlbumMediaId = x.AlbumMediaId, LinkStatus = x.LinkStatus, Right = x.Right}).ToList());
             }
         }
 
@@ -258,23 +252,22 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     if (_cache != null)
                     {
                         DbAlbum album = newAlbum;
-                        var cachedObject = _cache.Find(x => x.MediaId == album.MediaId);
+                        var cachedObjects = _cache.Where(x=> x.AlbumMediaId == album.AlbumMediaId);
 
-                        if (cachedObject != null && cachedObject.Right != null)
+                        if (cachedObjects.Count() > 0) 
                         {
-                            newalbumDetails.Right = new AlbumThumbDetails
-                                                        {
-                                Artist = cachedObject.Right.Artist,
-                                ArtworkUrl = cachedObject.Right.ArtworkUrl,
-                                Title = cachedObject.Right.Title
-                            };
+                            var co = cachedObjects.First();
+                            if (co.Right != null)
+                            {
+                                newalbumDetails.Right = co.Right;
+                                newalbumDetails.LinkStatus = LinkStatus.Linked;
+                            }
+                            else
+                            {
+                                newalbumDetails.LinkStatus = co.LinkStatus;
+                            }
+                        }
 
-                            newalbumDetails.LinkStatus = LinkStatus.Linked;
-                        }
-                        else
-                        {
-                            newalbumDetails.LinkStatus = cachedObject.LinkStatus;
-                        }
                     }
                 }
 
