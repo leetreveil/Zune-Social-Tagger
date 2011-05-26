@@ -137,6 +137,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 var toScan = (from object album in _cvs.View select album as AlbumDetailsViewModel)
                     .ToList().Where(x => x.LinkStatus != LinkStatus.Unlinked);
 
+                var toScanCount = toScan.Count();
+
                 foreach (AlbumDetailsViewModel album in toScan)
                 {
                     album.LinkStatus = LinkStatus.Unknown; // reset the linkstatus so we can scan all multiple times
@@ -163,8 +165,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                         }
 
                         counter++;
-                        Trace.WriteLine(counter);
-                        ReportProgress(counter, toScan.Count());
+                        ReportProgress(counter, toScanCount);
                     });
                 } 
             }
