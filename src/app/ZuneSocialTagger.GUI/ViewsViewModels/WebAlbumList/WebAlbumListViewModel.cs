@@ -126,20 +126,22 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         public void LoadFromZuneWebsite()
         {
             var warningMsg = new ErrorMessage(ErrorMode.Warning, "This process could take a very long time, are you sure?");
-            ZuneMessageBox.Show(warningMsg, () =>
+            var result = ZuneMessageBox.Show(warningMsg, System.Windows.MessageBoxButton.OKCancel);
+
+            if (result == System.Windows.MessageBoxResult.OK)
             {
                 this.CanShowScanAllButton = false;
                 int counter = 0;
 
                 //we have to get the list from the CollectionView because of how its sorted
                 var toScan = (from object album in _cvs.View select album as AlbumDetailsViewModel)
-                    .ToList().Where(x=> x.LinkStatus != LinkStatus.Unlinked);
+                    .ToList().Where(x => x.LinkStatus != LinkStatus.Unlinked);
 
                 foreach (AlbumDetailsViewModel album in toScan)
                 {
                     album.LinkStatus = LinkStatus.Unknown; // reset the linkstatus so we can scan all multiple times
                     album.Right = null;
-                    
+
                     AlbumDetailsViewModel closedAlbum = album;
                     //TODO: don't like having to call back into the zune db just to get the albumMediaId
                     var url = String.Concat(Urls.Album, album.AlbumMediaId);
@@ -165,7 +167,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                         ReportProgress(counter, toScan.Count());
                     });
                 } 
-            });
+            }
         }
 
         public void SwitchToClassicMode()
