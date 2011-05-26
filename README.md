@@ -3,6 +3,10 @@
 
 ### Changelog
 
+__Release 2.3.3:__
+
+* Fixed a number of bugs related to last release
+
 __Release 2.3.1:__
 
 * Fixed bug were some albums were showing as unlinked but were actually linked
