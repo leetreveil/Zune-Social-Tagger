@@ -4,5 +4,13 @@
     <title>Zune Social Tagger Software Update Feed</title>
     <link>http://github.com/leetreveil/Zune-Social-Tagger/downloads</link>
     <description>Link an album to the zune social with any album available on the zune marketplace!</description>
+    <item>
+      <title>Zune Social Tagger</title>
+      <link>http://wiki.github.com/leetreveil/Zune-Social-Tagger/</link>
+      <description>Fidescription>
+      <pubDate>Thurs, 28 April 2011 20:28:00 GMT</pubDate>
+      <appcast:version>2.3.3</appcast:version>
+      <enclosure url="https://github.com/leetreveil/Zune-Social-Tagger/downloads" length="612424" type="application/octet-stream" />
+    </item>
   </channel>
 </rss>
