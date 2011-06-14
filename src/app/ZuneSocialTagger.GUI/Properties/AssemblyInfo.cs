@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Lee Treveil, leetreveil@gmail.com")]
 [assembly: AssemblyProduct("Zune Social Tagger")]
-[assembly: AssemblyCopyright("Copyright ©  2010 Lee Treveil")]
+[assembly: AssemblyCopyright("Copyright ©  2011 Lee Treveil")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -49,5 +49,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.3.3.0")]
-[assembly: AssemblyFileVersion("2.3.3.0")]
+[assembly: AssemblyVersion("2.3.4.0")]
+[assembly: AssemblyFileVersion("2.3.4.0")]
