@@ -22,6 +22,7 @@ using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ProtoBuf;
 using System.Windows.Input;
 using SortOrder = ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.SortOrder;
+using ZuneSocialTagger.Core;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 {
@@ -278,20 +279,38 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
         private void CheckLocale()
         {
-            string locale = Locale.GetLocale();
-            LocaleDownloader.IsMarketPlaceEnabledForLocaleAsync(locale, status =>
+            string locale = WindowsLocale.GetLocale();
+
+            //default the marketplace culture to the current computers culture.
+            //This should be overidden by whats read from the marketplace
+            CultureInfo.MarketplaceCulture = locale;
+
+            LocaleDownloader.IsMarketPlaceEnabledForLocaleAsync(locale, details =>
             {
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {
-                    if (status == MarketplaceStatus.NotAvailable)
+                    if (details != null)
                     {
-                        var msg = String.Format("The Zune Marketplace is not yet available in your region ({0}). You" +
-                            " won't get any search results when trying to link an album to the marketplace.", locale);
-                        Notifications.Add(new ErrorMessage(ErrorMode.Info, msg));
+                        if (details.MarketplaceStatus == MarketplaceStatus.NotAvailable)
+                        {
+                            var msg = String.Format("The Zune Marketplace is not yet available in your region ({0}). You" +
+                                " won't get any search results when trying to link an album to the marketplace.", locale);
+                            Notifications.Add(new ErrorMessage(ErrorMode.Info, msg));
+                        }
+                        if (details.MarketplaceStatus == MarketplaceStatus.Error)
+                        {
+                            var msg = String.Format("Error connecting to the ({0}) marketplace.", locale);
+                            Notifications.Add(new ErrorMessage(ErrorMode.Info, msg));
+                        }
+
+                        if (!String.IsNullOrEmpty(details.MarketplaceLocale))
+                        {
+                            CultureInfo.MarketplaceCulture = details.MarketplaceLocale;
+                        }
                     }
-                    if (status == MarketplaceStatus.Error) 
+                    else
                     {
-                        var msg = String.Format("Error connecting to the ({0}) marketplace.", locale);
+                        var msg = "Unable to connect to marketplace. You won't be able to get any search results.";
                         Notifications.Add(new ErrorMessage(ErrorMode.Info, msg));
                     }
                 });

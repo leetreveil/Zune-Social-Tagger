@@ -118,7 +118,8 @@
     <Compile Include="IO\ZuneTagContainerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IO\MetaData.cs" />
-    <Compile Include="ZuneWebsite\Locale.cs" />
+    <Compile Include="ZuneWebsite\CultureInfo.cs" />
+    <Compile Include="WindowsLocale.cs" />
     <Compile Include="ZuneWebsite\LocaleDownloader.cs" />
     <Compile Include="ZuneWebsite\SyndicationExtensions.cs" />
     <Compile Include="ZuneWebsite\AlbumDetailsDownloader.cs" />

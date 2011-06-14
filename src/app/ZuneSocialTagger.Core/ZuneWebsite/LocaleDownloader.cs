@@ -13,19 +13,25 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         Error
     }
 
+    public class MarketplaceDetails
+    {
+        public MarketplaceStatus MarketplaceStatus { get; set; }
+        public string MarketplaceLocale { get; set; }
+    }
+
     public class LocaleDownloader
     {
-        public static void IsMarketPlaceEnabledForLocaleAsync(string locale, Action<MarketplaceStatus> callback)
+        public static void IsMarketPlaceEnabledForLocaleAsync(string locale, Action<MarketplaceDetails> callback)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(
                 String.Format("http://tuners.zune.net/{0}/ZunePCClient/v4.7/configuration.xml", locale));
 
-            httpWebRequest.BeginGetResponse(ReqCallback, new AsyncResult<MarketplaceStatus>(httpWebRequest, callback));
+            httpWebRequest.BeginGetResponse(ReqCallback, new AsyncResult<MarketplaceDetails>(httpWebRequest, callback));
         }
 
         private static void ReqCallback(IAsyncResult asyncResult)
         {
-            var result = asyncResult.AsyncState as AsyncResult<MarketplaceStatus>;
+            var result = asyncResult.AsyncState as AsyncResult<MarketplaceDetails>;
             try
             {
                 HttpWebRequest httpWebRequest = result.HttpWebRequest;
@@ -34,22 +40,34 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                 {
                     XDocument document = XDocument.Load(XmlReader.Create(httpWebResponse.GetResponseStream()));
 
-                    var isMarketPlaceEnabled = document
+                    var marketplace = document
                         .Descendants().Where(x => x.Name.LocalName == "featureEnablement")
-                        .Descendants().Where(x => x.Name.LocalName == "marketplace")
+                        .Descendants().Where(x => x.Name.LocalName == "marketplace");
+
+                    var isMarketPlaceEnabled = marketplace
                         .Descendants().Where(x => x.Name.LocalName == "status")
                         .First().Value;
 
+                    var locale = marketplace
+                        .Descendants().Where(x => x.Name.LocalName == "culture")
+                        .First().Value;
+
+                    MarketplaceDetails details = new MarketplaceDetails();
+
                     if (isMarketPlaceEnabled == "enabled")
-                        result.Callback(MarketplaceStatus.Available);
+                        details.MarketplaceStatus = MarketplaceStatus.Available;
 
                     if (isMarketPlaceEnabled == "disabled")
-                        result.Callback(MarketplaceStatus.NotAvailable);
+                        details.MarketplaceStatus = MarketplaceStatus.NotAvailable;
+
+                    details.MarketplaceLocale = locale;
+
+                    result.Callback(details);
                 }
             }
             catch (Exception)
             {
-                result.Callback(MarketplaceStatus.Error);
+                result.Callback(null);
             }
         }
 
