@@ -3,6 +3,10 @@
 
 ### Changelog
 
+__Release 2.3.4:__
+
+* Fixed bug with non english speaking cultures for marketplace search
+
 __Release 2.3.3:__
 
 * Fixed a number of bugs related to last release
