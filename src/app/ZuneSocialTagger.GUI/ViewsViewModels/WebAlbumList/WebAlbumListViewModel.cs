@@ -142,7 +142,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
                 //we have to get the list from the CollectionView because of how its sorted
                 var toScan = (from object album in _cvs.View select album as AlbumDetailsViewModel)
-                    .ToList().Where(x => x.LinkStatus != LinkStatus.Unlinked);
+                    .ToList().Where(x => x.AlbumMediaId != Guid.Empty);
 
                 //TODO: we actually want to scan things that are unlinked
                 //e.g. an album could have an albumediaid but could not be downloaded from zune server
