@@ -59,9 +59,6 @@ namespace ZuneSocialTagger.GUI
             //Container.Bind<IApplicationViewModel>().To<ApplicationViewModel>();
             container.Bind<ViewLocator>().ToSelf().InSingletonScope();
 
-            //songs the user loads from file are stored here
-            container.Bind<IZuneAudioFileRetriever>().To<ZuneAudioFileRetriever>().InSingletonScope();
-
             //we need the web view model to be a singleton because we want to be able to continue
             //downloading data while linking etc
             container.Bind<SharedModel>().ToSelf().InSingletonScope();

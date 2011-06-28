@@ -6,11 +6,43 @@ using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Models;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
 {
     public static class SharedMethods
     {
+        public static List<IZuneTagContainer> GetContainers(IEnumerable<string> filePaths)
+        {
+            var containers = new List<IZuneTagContainer>();
+
+            foreach (var filePath in filePaths)
+            {
+                try
+                {
+                    var container = ZuneTagContainerFactory.GetContainer(filePath);
+                    containers.Add(container);
+                }
+                catch (Exception ex)
+                {
+                    Messenger.Default.Send(new ErrorMessage(ErrorMode.Error, ex.Message));
+                }
+            }
+
+            return containers;
+        }
+
+        public static List<IZuneTagContainer> SortByTrackNumber(IList<IZuneTagContainer> containers)
+        {
+            var sorter = new Func<IZuneTagContainer, int>(arg => {
+                int result;
+                Int32.TryParse(arg.MetaData.TrackNumber, out result);
+                return result;
+            });
+
+            return containers.OrderBy(sorter).ToList();
+        }
+
         public static bool DoesAlbumTitleMatch(IEnumerable<string> albumTitlesToMatch, string albumTitleToMatch)
         {
             return albumTitlesToMatch.Any(albumTitle => albumTitle.ToLower().Contains(albumTitleToMatch.ToLower()));

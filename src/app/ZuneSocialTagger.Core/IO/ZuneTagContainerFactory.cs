@@ -29,14 +29,16 @@ namespace ZuneSocialTagger.Core.IO
                     if (status.Id3V1TagFound && !status.Id3V2TagFound)
                         throw new Id3TagException("cannot read id3v1.1");
 
-                    return new ZuneMP3TagContainer(tagManager.ReadV2Tag(path),path);
+                    return new ZuneMP3TagContainer(tagManager.ReadV2Tag(path), path);
                 }
                 catch (Id3TagException ex)
                 {
-                    if (ex.InnerException != null)
-                        throw new AudioFileReadException(ex.InnerException.Message, ex.InnerException);
+                    Exception excep = ex;
 
-                    throw new AudioFileReadException(ex.Message);
+                    if (ex.InnerException != null)
+                        excep = ex.InnerException;
+                    
+                    throw new AudioFileReadException("Couldn't read: " + path + " Error: " + ex.Message, excep);
                 }
             }
 
@@ -44,11 +46,11 @@ namespace ZuneSocialTagger.Core.IO
             {
                 try
                 {
-                    return new ZuneWMATagContainer(ASFTagManager.ReadTag(path),path);
+                    return new ZuneWMATagContainer(ASFTagManager.ReadTag(path), path);
                 }
                 catch (Exception ex)
                 {
-                    throw new AudioFileReadException(ex.Message,ex);
+                    throw new AudioFileReadException("Couldn't read: " + path + " Error: " + ex.Message);
                 }
             }
 

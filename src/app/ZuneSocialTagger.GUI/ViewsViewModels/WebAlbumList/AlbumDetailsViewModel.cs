@@ -22,7 +22,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
     {
         private readonly IZuneDatabaseReader _dbReader;
         private readonly ViewLocator _locator;
-        private readonly IZuneAudioFileRetriever _fileRetriever;
         private readonly SharedModel _sharedModel;
         private int _mediaId;
         private Guid _albumMediaId;
@@ -30,12 +29,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         public AlbumDetailsViewModel(){}//for design time
         public AlbumDetailsViewModel(IZuneDatabaseReader dbReader,
                                 ViewLocator locator,
-                                IZuneAudioFileRetriever fileRetriever,
                                 SharedModel sharedModel)
         {
             _dbReader = dbReader;
             _locator = locator;
-            _fileRetriever = fileRetriever;
             _sharedModel = sharedModel;
             LinkCommand = new RelayCommand(LinkAlbum);
             RefreshCommand = new RelayCommand(RefreshAlbum);
@@ -142,7 +139,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
             var filePaths = _dbReader.GetTracksForAlbum(MediaId).Select(x => x.FilePath);
 
-            var containers = _fileRetriever.GetContainers(filePaths);
+            var containers = SharedMethods.GetContainers(filePaths);
 
             foreach (var container in containers)
             {
@@ -179,7 +176,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 _sharedModel.DbAlbum = dbAlbum;
 
                 IEnumerable<string> filePaths = dbAlbum.Tracks.Select(x => x.FilePath);
-                _sharedModel.SongsFromFile = _fileRetriever.GetContainers(filePaths);
+
+                var containers = SharedMethods.GetContainers(filePaths);
+                containers = SharedMethods.SortByTrackNumber(containers);
+
+                _sharedModel.SongsFromFile = containers;
 
                 var searchVm = _locator.SwitchToView<SearchView, SearchViewModel>();
                 searchVm.Search(dbAlbum.Artist, dbAlbum.Title);

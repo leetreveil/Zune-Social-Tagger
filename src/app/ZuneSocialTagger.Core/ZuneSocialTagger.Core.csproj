@@ -78,6 +78,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\id3tag.net\ID3Tag.Net.dll</HintPath>
     </Reference>
+    <Reference Include="policy.2.0.taglib-sharp">
+      <HintPath>..\..\..\libs\taglibsharp\policy.2.0.taglib-sharp.dll</HintPath>
+    </Reference>
     <Reference Include="protobuf-net">
       <HintPath>..\..\..\libs\protobuf\protobuf-net.dll</HintPath>
     </Reference>
@@ -92,6 +95,9 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="taglib-sharp">
+      <HintPath>..\..\..\libs\taglibsharp\taglib-sharp.dll</HintPath>
+    </Reference>
     <Reference Include="ZuneDBApi">
       <HintPath>..\..\..\libs\zuneApi\ZuneDBApi.dll</HintPath>
       <Private>False</Private>
@@ -101,12 +107,10 @@
     <Compile Include="IO\AudioFileReadException.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IO\ID3Tagger\ID3Frames.cs" />
-    <Compile Include="IO\IZuneAudioFileRetriever.cs" />
     <Compile Include="IO\WMATagger\ASFAttributes.cs" />
     <Compile Include="IO\WMATagger\ZuneWMATagContainer.cs" />
     <Compile Include="IO\IZuneTagContainer.cs" />
     <Compile Include="IO\ZuneAttribute.cs" />
-    <Compile Include="IO\ZuneAudioFileRetriever.cs" />
     <Compile Include="ZuneDatabase\DbAlbum.cs" />
     <Compile Include="ZuneDatabase\DbTrack.cs" />
     <Compile Include="ZuneDatabase\IZuneDatabaseReader.cs" />

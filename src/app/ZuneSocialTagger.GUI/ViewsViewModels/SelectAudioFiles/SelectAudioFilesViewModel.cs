@@ -17,15 +17,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
     public class SelectAudioFilesViewModel : ViewModelBase
     {
         private readonly ViewLocator _locator;
-        private readonly IZuneAudioFileRetriever _fileRetriever;
         private readonly SharedModel _sharedModel;
 
-        public SelectAudioFilesViewModel(ViewLocator locator, IZuneAudioFileRetriever fileRetriever,
-                                         SharedModel sharedModel)
+        public SelectAudioFilesViewModel(ViewLocator locator, SharedModel sharedModel)
         {
             _sharedModel = sharedModel;
             _locator = locator;
-            _fileRetriever = fileRetriever;
             CanSwitchToNewMode = true;
             SelectFilesCommand = new RelayCommand(SelectFiles);
             SwitchToNewModeCommand = new RelayCommand(SwitchToNewMode);    
@@ -77,8 +74,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
             try
             {
                 //get the files and sort by trackNumber
-                var containers = _fileRetriever.GetContainers(files);
-                containers = ZuneAudioFileRetriever.SortByTrackNumber(containers);
+                var containers = SharedMethods.GetContainers(files);
+                containers = SharedMethods.SortByTrackNumber(containers);
 
                 //get the first tracks metadata which is used to set some details
                 MetaData firstTrackMetaData = containers.First().MetaData;
@@ -94,7 +91,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
             catch (Exception ex)
             {
                 Messenger.Default.Send(new ErrorMessage(ErrorMode.Error, ex.Message));
-                return;  //if we hit an error on any track in the albums then just fail and dont read anymore
             }
         }
     }
