@@ -169,7 +169,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 
             string fullUrlToAlbumXmlDetails = String.Concat(Urls.Album, album.AlbumMediaId);
 
-            AlbumDetailsDownloader.DownloadAsync(fullUrlToAlbumXmlDetails, (webAlbum)=>
+            AlbumDetailsDownloader.DownloadAsync(fullUrlToAlbumXmlDetails, (exception, webAlbum)=>
             {
                 if (webAlbum != null)
                 {

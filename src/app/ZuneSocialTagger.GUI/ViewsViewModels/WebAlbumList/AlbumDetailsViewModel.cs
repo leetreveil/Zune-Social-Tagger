@@ -201,7 +201,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             if (albumMediaId != Guid.Empty)
             {
                 var url = String.Concat(Urls.Album, albumMediaId);
-                AlbumDetailsDownloader.DownloadAsync(url, album =>
+                AlbumDetailsDownloader.DownloadAsync(url, (exception, album) =>
                 {
                     if (album != null)
                     {

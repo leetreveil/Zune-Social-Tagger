@@ -21,13 +21,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
     public class WebAlbumListViewModel : ViewModelBase
     {
         private readonly ViewLocator _locator;
-        private bool _canShowScanAllButton;
         private int _loadingProgress;
         private readonly bool _isTaskbarSupported;
         private SortOrder _sortOrder;
         private string _filterText;
         private readonly SafeObservableCollection<AlbumDetailsViewModel> _albums;
         private readonly CollectionViewSource _cvs;
+        private string _scanButtonText = "SCAN ALL";
+        private bool _isScanning = false;
 
         public WebAlbumListViewModel(SafeObservableCollection<AlbumDetailsViewModel> albums,
                                      ViewLocator locator)
@@ -45,7 +46,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
             this.SortCommand = new RelayCommand(Sort);
             this.SearchCommand = new RelayCommand<string>(Search);
-            this.CanShowScanAllButton = true;
             this.SortOrder = Settings.Default.SortOrder;
         }
 
@@ -64,6 +64,16 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             }
         }
 
+        public string ScanButtonText
+        {
+            get { return _scanButtonText; }
+            set
+            {
+                _scanButtonText = value;
+                RaisePropertyChanged(() => this.ScanButtonText);
+            }
+        }
+
         public SortOrder SortOrder
         {
             get { return _sortOrder; }
@@ -72,16 +82,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 _sortOrder = value;
                 Settings.Default.SortOrder = value;
                 RaisePropertyChanged(() => this.SortOrder);
-            }
-        }
-
-        public bool CanShowScanAllButton
-        {
-            get { return _canShowScanAllButton; }
-            set
-            {
-                _canShowScanAllButton = value;
-                RaisePropertyChanged(() => this.CanShowScanAllButton);
             }
         }
 
@@ -125,17 +125,27 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public void LoadFromZuneWebsite()
         {
+            if (_isScanning)
+            {
+                _isScanning = false;
+                AlbumDetailsDownloader.AbortAllCurrentRequests();
+                return;
+            }
             var warningMsg = new ErrorMessage(ErrorMode.Warning, "This process could take a very long time, are you sure?");
             var result = ZuneMessageBox.Show(warningMsg, System.Windows.MessageBoxButton.OKCancel);
 
             if (result == System.Windows.MessageBoxResult.OK)
             {
-                this.CanShowScanAllButton = false;
+                this._isScanning = true;
+                this.ScanButtonText = "STOP";
                 int counter = 0;
 
                 //we have to get the list from the CollectionView because of how its sorted
                 var toScan = (from object album in _cvs.View select album as AlbumDetailsViewModel)
                     .ToList().Where(x => x.LinkStatus != LinkStatus.Unlinked);
+
+                //TODO: we actually want to scan things that are unlinked
+                //e.g. an album could have an albumediaid but could not be downloaded from zune server
 
                 var toScanCount = toScan.Count();
 
@@ -145,10 +155,15 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                     album.Right = null;
 
                     AlbumDetailsViewModel closedAlbum = album;
-                    //TODO: don't like having to call back into the zune db just to get the albumMediaId
                     var url = String.Concat(Urls.Album, album.AlbumMediaId);
-                    AlbumDetailsDownloader.DownloadAsync(url, dledAlbum =>
+                    AlbumDetailsDownloader.DownloadAsync(url, (exception, dledAlbum) =>
                     {
+                        //if the request was cancelled by the user then we dont want to do anything
+                        if (exception != null && exception.Status != System.Net.WebExceptionStatus.RequestCanceled)
+                        {
+                            closedAlbum.LinkStatus = LinkStatus.Unlinked;
+                        }
+
                         if (dledAlbum != null)
                         {
                             closedAlbum.LinkStatus = LinkStatus.Linked;
@@ -158,10 +173,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                                 ArtworkUrl = dledAlbum.ArtworkUrl,
                                 Title = dledAlbum.Title
                             };
-                        }
-                        else
-                        {
-                            closedAlbum.LinkStatus = LinkStatus.Unlinked;
                         }
 
                         counter++;
@@ -173,7 +184,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public void SwitchToClassicMode()
         {
-            _locator.SwitchToView<SelectAudioFilesView,SelectAudioFilesViewModel>();
+            _locator.SwitchToView<SelectAudioFilesView, SelectAudioFilesViewModel>();
         }
 
         private void ReportProgress(int current, int total)
@@ -199,11 +210,16 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             }
 
             if (current == total)
+            {
                 ResetLoadingProgress();
+            }    
         }
 
         private void ResetLoadingProgress()
         {
+            this._isScanning = false;
+            this.ScanButtonText = "SCAN ALL";
+
             try
             {
                 if (_isTaskbarSupported)

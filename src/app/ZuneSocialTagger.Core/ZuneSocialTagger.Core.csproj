@@ -78,9 +78,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\id3tag.net\ID3Tag.Net.dll</HintPath>
     </Reference>
-    <Reference Include="policy.2.0.taglib-sharp">
-      <HintPath>..\..\..\libs\taglibsharp\policy.2.0.taglib-sharp.dll</HintPath>
-    </Reference>
     <Reference Include="protobuf-net">
       <HintPath>..\..\..\libs\protobuf\protobuf-net.dll</HintPath>
     </Reference>
@@ -94,9 +91,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="taglib-sharp">
-      <HintPath>..\..\..\libs\taglibsharp\taglib-sharp.dll</HintPath>
     </Reference>
     <Reference Include="ZuneDBApi">
       <HintPath>..\..\..\libs\zuneApi\ZuneDBApi.dll</HintPath>

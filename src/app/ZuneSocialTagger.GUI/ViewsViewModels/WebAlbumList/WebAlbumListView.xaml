@@ -244,11 +244,10 @@
             </Grid.ColumnDefinitions>
 
             <Button ToolTip="Download the details for every album in the list"
-                    IsEnabled="{Binding Path=CanShowScanAllButton}"
                     Margin="0,0,10,0"
                     Grid.Column="1"
                     Command="{Binding LoadFromZuneWebsiteCommand}"
-                    Content="SCAN ALL" />
+                    Content="{Binding ScanButtonText}" />
 
             <Button HorizontalAlignment="Right"
                     Grid.Column="3"

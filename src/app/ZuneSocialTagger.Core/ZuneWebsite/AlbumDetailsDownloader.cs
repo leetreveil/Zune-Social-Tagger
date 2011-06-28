@@ -14,10 +14,13 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
     /// </summary>
     public static class AlbumDetailsDownloader
     {
-        public static void DownloadAsync(string url, Action<WebAlbum> callback)
+        private static List<WebRequest> _currentRequests = new List<WebRequest>();
+
+        public static void DownloadAsync(string url, Action<WebException, WebAlbum> callback)
         {
-            Trace.WriteLine("Creating web request for: " + url);
             var request = WebRequest.Create(new Uri(url));
+            _currentRequests.Add(request);
+
             request.BeginGetResponse(ar => 
             {
                 try
@@ -25,14 +28,24 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                     using (var response = request.EndGetResponse(ar))
                     {
                         var reader = XmlReader.Create(response.GetResponseStream());
-                        callback.Invoke(GetAlbumDetails(reader));
+                        callback.Invoke(null, GetAlbumDetails(reader));
                     }
                 }
-                catch (Exception)
+                catch (WebException ex)
                 {   
-                    callback.Invoke(null);
+                    callback.Invoke(ex, null);
                 }
-            },new object());
+            }, null);
+        }
+
+        public static void AbortAllCurrentRequests()
+        {
+            foreach (var request in _currentRequests)
+            {
+                request.Abort();
+            }
+
+            _currentRequests.Clear();
         }
 
         private static WebAlbum GetAlbumDetails(XmlReader reader)
