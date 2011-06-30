@@ -15,6 +15,7 @@ using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using GalaSoft.MvvmLight.Threading;
 using System.Diagnostics;
+using System.Windows.Input;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {
@@ -97,7 +98,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         public int LinkedTotal
         {
-            get { return _albums.Where(x => x.LinkStatus == LinkStatus.Linked).Count(); }
+            get 
+            {
+                return _albums.Where(x => x.LinkStatus == LinkStatus.Linked).Count(); 
+            }
         }
 
         public int UnlinkedTotal
@@ -123,10 +127,20 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             _cvs.View.Refresh();
         }
 
+        private static List<List<T>> Split<T>(IEnumerable<T> source)
+        {
+            return source
+                .Select((x, i) => new { Index = i, Value = x })
+                .GroupBy(x => x.Index / 10)
+                .Select(x => x.Select(v => v.Value).ToList())
+                .ToList();
+        }
+
         public void LoadFromZuneWebsite()
         {
             if (_isScanning)
             {
+                Mouse.OverrideCursor = Cursors.Wait;
                 _isScanning = false;
                 AlbumDetailsDownloader.AbortAllCurrentRequests();
                 return;
@@ -138,47 +152,70 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             {
                 this._isScanning = true;
                 this.ScanButtonText = "STOP";
-                int counter = 0;
 
-                //we have to get the list from the CollectionView because of how its sorted
+                AlbumDetailsDownloader.Aborted = false;
+
                 var toScan = (from object album in _cvs.View select album as AlbumDetailsViewModel)
                     .ToList().Where(x => x.AlbumMediaId != Guid.Empty);
 
-                //TODO: we actually want to scan things that are unlinked
-                //e.g. an album could have an albumediaid but could not be downloaded from zune server
+                var splitted = Split(toScan);
+                //we are scanning the albums in chunks because it is easier for the abortion mechanism
+                //and causes less exceptions
+                ScanChunkOne(splitted, splitted.First(), 0);
+            }
+        }
 
-                var toScanCount = toScan.Count();
+        private void ScanChunkOne(List<List<AlbumDetailsViewModel>> toScan, IEnumerable<AlbumDetailsViewModel> chunk, int position)
+        {
+            int counter = 0;
 
-                foreach (AlbumDetailsViewModel album in toScan)
+            foreach (AlbumDetailsViewModel album in chunk)
+            {
+                album.LinkStatus = LinkStatus.Unknown; // reset the linkstatus so we can scan all multiple times
+                album.Right = null;
+
+                AlbumDetailsViewModel closedAlbum = album;
+                var url = String.Concat(Urls.Album, album.AlbumMediaId);
+                AlbumDetailsDownloader.DownloadAsync(url, (exception, dledAlbum) =>
                 {
-                    album.LinkStatus = LinkStatus.Unknown; // reset the linkstatus so we can scan all multiple times
-                    album.Right = null;
-
-                    AlbumDetailsViewModel closedAlbum = album;
-                    var url = String.Concat(Urls.Album, album.AlbumMediaId);
-                    AlbumDetailsDownloader.DownloadAsync(url, (exception, dledAlbum) =>
+                    //if the request was cancelled by the user then we dont want to do anything
+                    if (exception != null && exception.Status != System.Net.WebExceptionStatus.RequestCanceled)
                     {
-                        //if the request was cancelled by the user then we dont want to do anything
-                        if (exception != null && exception.Status != System.Net.WebExceptionStatus.RequestCanceled)
-                        {
-                            closedAlbum.LinkStatus = LinkStatus.Unlinked;
-                        }
+                        closedAlbum.LinkStatus = LinkStatus.Unlinked;
+                    }
 
-                        if (dledAlbum != null)
+                    if (dledAlbum != null)
+                    {
+                        closedAlbum.LinkStatus = LinkStatus.Linked;
+                        closedAlbum.Right = new AlbumThumbDetails
                         {
-                            closedAlbum.LinkStatus = LinkStatus.Linked;
-                            closedAlbum.Right = new AlbumThumbDetails
+                            Artist = dledAlbum.Artist,
+                            ArtworkUrl = dledAlbum.ArtworkUrl,
+                            Title = dledAlbum.Title
+                        };
+                    }
+
+                    counter++;
+                    ReportProgress(position, toScan.Count);
+
+                    if (counter == chunk.Count())
+                    {
+                        if (AlbumDetailsDownloader.Aborted == false)
+                        {
+                            Trace.WriteLine("scanned: " + counter);
+                            position++;
+
+                            if (position < toScan.Count)
                             {
-                                Artist = dledAlbum.Artist,
-                                ArtworkUrl = dledAlbum.ArtworkUrl,
-                                Title = dledAlbum.Title
-                            };
+                                ScanChunkOne(toScan, toScan[position], position);
+                            }
                         }
-
-                        counter++;
-                        ReportProgress(counter, toScanCount);
-                    });
-                } 
+                        else
+                        {
+                            ResetLoadingProgress();
+                        }
+                    }
+                });
             }
         }
 
@@ -219,7 +256,9 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
         {
             this._isScanning = false;
             this.ScanButtonText = "SCAN ALL";
-
+            this.LoadingProgress = 0;
+            DispatcherHelper.CheckBeginInvokeOnUI(delegate { Mouse.OverrideCursor = null; });
+            
             try
             {
                 if (_isTaskbarSupported)

@@ -16,6 +16,8 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
     {
         private static List<WebRequest> _currentRequests = new List<WebRequest>();
 
+        public static bool Aborted = false;
+
         public static void DownloadAsync(string url, Action<WebException, WebAlbum> callback)
         {
             var request = WebRequest.Create(new Uri(url));
@@ -23,6 +25,13 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
 
             request.BeginGetResponse(ar => 
             {
+                var currrentRequests = (List<WebRequest>)ar.AsyncState;
+
+                //if (currrentRequests.Contains(request))
+                //{
+                //    currrentRequests.Remove(request);
+                //}
+                
                 try
                 {
                     using (var response = request.EndGetResponse(ar))
@@ -32,20 +41,30 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
                     }
                 }
                 catch (WebException ex)
-                {   
+                {
                     callback.Invoke(ex, null);
                 }
-            }, null);
+                catch (IOException ex)
+                {
+                    //callback.Invoke(ex, null);
+                    //TODO: log web response fail (usually after abort)
+                }
+                finally
+                {
+                    currrentRequests.Remove(request);
+                }
+            }, _currentRequests);
         }
 
         public static void AbortAllCurrentRequests()
         {
-            foreach (var request in _currentRequests)
+            foreach (var request in _currentRequests.ToList())
             {
                 request.Abort();
             }
 
-            _currentRequests.Clear();
+            Aborted = true;
+            //_currentRequests.Clear();
         }
 
         private static WebAlbum GetAlbumDetails(XmlReader reader)
