@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Models;
-using GalaSoft.MvvmLight.Messaging;
 
-namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
+namespace ZuneSocialTagger.GUI.Shared
 {
     public static class SharedMethods
     {

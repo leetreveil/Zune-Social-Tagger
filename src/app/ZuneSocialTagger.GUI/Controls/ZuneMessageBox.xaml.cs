@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.ViewsViewModels;
-using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 
 namespace ZuneSocialTagger.GUI.Controls
 {

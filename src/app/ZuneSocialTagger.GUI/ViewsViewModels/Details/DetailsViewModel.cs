@@ -7,7 +7,7 @@ using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using System.Linq;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
-using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using ZuneSocialTagger.GUI.Shared;
 using ZuneSocialTagger.Core.IO;
 using System;
 using GalaSoft.MvvmLight.Messaging;

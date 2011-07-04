@@ -2,7 +2,8 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.ViewsViewModels.Details;
-using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using ZuneSocialTagger.GUI.Shared;
+using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
 {
@@ -142,7 +143,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             {
                 DispatcherHelper.CheckBeginInvokeOnUI(() => {
                     this.SearchResultsViewModel.LoadAlbums(albums);
-                    //this.CanMoveNext = albums.Count() > 0;
                     this.CanShowResults = true;
                     this.IsSearching = false;
                 });

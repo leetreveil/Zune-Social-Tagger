@@ -3,7 +3,7 @@ using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ProtoBuf;
 using ZuneSocialTagger.GUI.Models;
 
-namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
+namespace ZuneSocialTagger.GUI.Models
 {
     /// <summary>
     /// The minimum amount of data required for the cache to do its job

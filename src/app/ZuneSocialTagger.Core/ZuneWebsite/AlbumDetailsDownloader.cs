@@ -27,11 +27,6 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             {
                 var currrentRequests = (List<WebRequest>)ar.AsyncState;
 
-                //if (currrentRequests.Contains(request))
-                //{
-                //    currrentRequests.Remove(request);
-                //}
-                
                 try
                 {
                     using (var response = request.EndGetResponse(ar))
@@ -64,7 +59,6 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
             }
 
             Aborted = true;
-            //_currentRequests.Clear();
         }
 
         private static WebAlbum GetAlbumDetails(XmlReader reader)

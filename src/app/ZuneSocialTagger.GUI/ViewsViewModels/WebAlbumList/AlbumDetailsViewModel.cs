@@ -13,7 +13,7 @@ using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
-using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using ZuneSocialTagger.GUI.Shared;
 using GalaSoft.MvvmLight.Threading;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList

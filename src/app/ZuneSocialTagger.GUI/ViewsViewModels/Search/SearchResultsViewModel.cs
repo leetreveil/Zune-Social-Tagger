@@ -5,7 +5,7 @@ using System.Linq;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using ZuneSocialTagger.Core.ZuneWebsite;
-using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using ZuneSocialTagger.GUI.Models;
 using System.Diagnostics;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Search

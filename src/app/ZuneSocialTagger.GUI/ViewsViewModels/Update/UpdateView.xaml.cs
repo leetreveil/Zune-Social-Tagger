@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using ZuneSocialTagger.GUI.Controls;
-using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Update
 {

@@ -11,9 +11,10 @@ using ZuneSocialTagger.GUI.ViewsViewModels.Application;
 using ZuneSocialTagger.GUI.ViewsViewModels.Details;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
-using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
 using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
+using ZuneSocialTagger.GUI.Shared;
+using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI
 {
@@ -62,14 +63,14 @@ namespace ZuneSocialTagger.GUI
             //we need the web view model to be a singleton because we want to be able to continue
             //downloading data while linking etc
             container.Bind<SharedModel>().ToSelf().InSingletonScope();
-            container.Bind<SelectAudioFilesViewModel>().ToSelf().InSingletonScope();
+            container.Bind<SelectAudioFilesViewModel>();
             container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
             container.Bind<SearchViewModel>().ToSelf().InSingletonScope();
-            container.Bind<DetailsViewModel>().ToSelf().InSingletonScope();
+            container.Bind<DetailsViewModel>().ToSelf();
             container.Bind<SafeObservableCollection<AlbumDetailsViewModel>>().ToSelf().InSingletonScope();
             container.Bind<ApplicationViewModel>().ToSelf().InSingletonScope();
 
-            //set some views to remember their state
+            //set some views to remember their state (we need to do this so we can remember the selected row etc)
             container.Bind<WebAlbumListView>().ToSelf().InSingletonScope();
         }
 

@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Threading;
 
-namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
+namespace ZuneSocialTagger.GUI.ViewsViewModels
 {
     public class ViewModelBase : INotifyPropertyChanged
     {

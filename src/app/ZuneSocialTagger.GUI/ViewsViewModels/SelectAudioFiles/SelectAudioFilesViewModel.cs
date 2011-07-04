@@ -9,7 +9,7 @@ using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.ViewsViewModels.Application;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
-using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using ZuneSocialTagger.GUI.Shared;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles

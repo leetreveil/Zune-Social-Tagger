@@ -140,15 +140,15 @@
       <DependentUpon>SearchControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
-    <Compile Include="ExceptionLogger.cs" />
+    <Compile Include="Shared\ExceptionLogger.cs" />
     <Compile Include="PreApp.cs" />
     <Compile Include="ViewsViewModels\Details\DiscHeader.cs" />
-    <Compile Include="ViewsViewModels\Shared\MinCache.cs" />
-    <Compile Include="ViewsViewModels\Shared\SafeObservableCollection.cs" />
-    <Compile Include="ViewsViewModels\Shared\SharedModel.cs" />
-    <Compile Include="ViewsViewModels\Shared\ViewModelBase.cs" />
+    <Compile Include="Models\MinCache.cs" />
+    <Compile Include="Shared\SafeObservableCollection.cs" />
+    <Compile Include="Models\SharedModel.cs" />
+    <Compile Include="ViewsViewModels\ViewModelBase.cs" />
     <Compile Include="ViewsViewModels\About\AboutViewModel.cs" />
-    <Compile Include="ViewsViewModels\Shared\ViewLocator.cs" />
+    <Compile Include="Shared\ViewLocator.cs" />
     <Compile Include="ViewsViewModels\Application\ApplicationViewModel.cs" />
     <Compile Include="ViewsViewModels\Details\DesignTime\DetailsDesignViewModel.cs" />
     <Compile Include="ViewsViewModels\Search\DesignTime\SearchDesignViewModel.cs" />
@@ -159,10 +159,10 @@
     <Compile Include="ViewsViewModels\WebAlbumList\DesignTime\AlbumDetailsDesignViewModel.cs" />
     <Compile Include="ViewsViewModels\WebAlbumList\DesignTime\WebAlbumListDesignViewModel.cs" />
     <Compile Include="ViewsViewModels\Details\DetailRow.cs" />
-    <Compile Include="ViewsViewModels\Shared\TrackWithTrackNum.cs" />
+    <Compile Include="Models\TrackWithTrackNum.cs" />
     <Compile Include="ViewsViewModels\Details\DetailsViewModel.cs" />
     <Compile Include="Models\ErrorMode.cs" />
-    <Compile Include="ViewsViewModels\Shared\ExpandedAlbumDetailsViewModel.cs" />
+    <Compile Include="Models\ExpandedAlbumDetailsViewModel.cs" />
     <Compile Include="ViewsViewModels\Search\SearchResultsViewModel.cs" />
     <Compile Include="ViewsViewModels\Search\SearchViewModel.cs" />
     <Compile Include="ViewsViewModels\SelectAudioFiles\SelectAudioFilesViewModel.cs" />
@@ -220,7 +220,7 @@
     <Compile Include="Converters\TextToBoolConverter.cs" />
     <Compile Include="Models\ErrorMessage.cs" />
     <Compile Include="Models\LinkStatus.cs" />
-    <Compile Include="ViewsViewModels\Shared\SharedMethods.cs" />
+    <Compile Include="Shared\SharedMethods.cs" />
     <Compile Include="ViewsViewModels\WebAlbumList\SortOrder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -360,6 +360,7 @@
   <ItemGroup>
     <Resource Include="Resources\Assets\zstlogo.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets. -->

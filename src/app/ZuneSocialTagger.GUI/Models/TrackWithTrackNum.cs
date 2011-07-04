@@ -1,6 +1,7 @@
 ﻿using ZuneSocialTagger.GUI.Models;
+using ZuneSocialTagger.GUI.Shared;
 
-namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
+namespace ZuneSocialTagger.GUI.Models
 {
     public class TrackWithTrackNum
     {

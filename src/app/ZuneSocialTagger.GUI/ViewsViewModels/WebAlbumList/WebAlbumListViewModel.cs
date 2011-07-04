@@ -12,7 +12,7 @@ using ZuneSocialTagger.GUI.Controls;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
-using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using ZuneSocialTagger.GUI.Shared;
 using GalaSoft.MvvmLight.Threading;
 using System.Diagnostics;
 using System.Windows.Input;
@@ -200,7 +200,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
                     if (counter == chunk.Count())
                     {
-                        if (AlbumDetailsDownloader.Aborted == false)
+                        if (!AlbumDetailsDownloader.Aborted)
                         {
                             Trace.WriteLine("scanned: " + counter);
                             position++;
@@ -210,10 +210,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                                 ScanChunkOne(toScan, toScan[position], position);
                             }
                         }
-                        else
-                        {
-                            ResetLoadingProgress();
-                        }
+
+                        ResetLoadingProgress();
                     }
                 });
             }

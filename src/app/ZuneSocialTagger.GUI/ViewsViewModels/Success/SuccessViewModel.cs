@@ -1,19 +1,23 @@
-using GalaSoft.MvvmLight.Command;
-using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
-using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using System.Windows.Input;
+using Ninject;
+using GalaSoft.MvvmLight.Command;
+using ZuneSocialTagger.GUI.Models;
+using ZuneSocialTagger.GUI.Shared;
+using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Success
 {
     public class SuccessViewModel : ViewModelBase
     {
-        private ViewLocator _locator;
-        private SharedModel _sharedModel;
+        private readonly ViewLocator _locator;
+        private readonly SharedModel _sharedModel;
+        private readonly IKernel _kernel;
 
-        public SuccessViewModel(ViewLocator locator, SharedModel sharedModel)
+        public SuccessViewModel(ViewLocator locator, SharedModel sharedModel, IKernel kernel)
         {
             _locator = locator;
             _sharedModel = sharedModel;
+            _kernel = kernel;
         }
 
         private ICommand _okCommand;
@@ -54,11 +58,12 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Success
 
         private void RefreshAlbum()
         {
-            var viewModel = _locator.SwitchToFirstView();
+            var view = _locator.SwitchToFirstView();
 
-            if (viewModel is WebAlbumListViewModel)
+            if (view is WebAlbumListView)
             {
-                var webAlbumListViewModel = (WebAlbumListViewModel) viewModel;
+                var webAlbumListViewModel = _kernel.Get<WebAlbumListViewModel>();
+
                 if (webAlbumListViewModel.SelectedAlbum != null)
                     webAlbumListViewModel.SelectedAlbum.RefreshAlbum();
             }

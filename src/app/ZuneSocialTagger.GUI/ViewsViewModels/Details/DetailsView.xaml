@@ -6,7 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" 
     xmlns:dt="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Details.DesignTime"
-    xmlns:Shared="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Shared" 
     xmlns:Details="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Details" 
     d:DesignHeight="350"
     d:DesignWidth="619">

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ZuneSocialTagger.GUI
+namespace ZuneSocialTagger.GUI.Shared
 {
     /// <summary>
     /// Class to log unhandled exceptions

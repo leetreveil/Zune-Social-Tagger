@@ -6,8 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:Search="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Search"
-    xmlns:dt="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Search.DesignTime" 
-    xmlns:Shared="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Shared" 
+    xmlns:dt="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Search.DesignTime"
     xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls"
     d:DesignWidth="500">
 

@@ -4,7 +4,7 @@ using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Command;
 using System.Windows.Input;
 
-namespace ZuneSocialTagger.GUI.ViewsViewModels.Shared
+namespace ZuneSocialTagger.GUI.Models
 {
     public class ExpandedAlbumDetailsViewModel
     {

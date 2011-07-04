@@ -16,13 +16,14 @@ using ZuneSocialTagger.GUI.Properties;
 using System.Diagnostics;
 using ZuneSocialTagger.GUI.ViewsViewModels.About;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
-using ZuneSocialTagger.GUI.ViewsViewModels.Shared;
+using ZuneSocialTagger.GUI.Shared;
 using ZuneSocialTagger.GUI.ViewsViewModels.Update;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ProtoBuf;
 using System.Windows.Input;
 using SortOrder = ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.SortOrder;
 using ZuneSocialTagger.Core;
+using Ninject;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 {
@@ -32,23 +33,25 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         private readonly IZuneDatabaseReader _dbReader;
         private readonly SafeObservableCollection<AlbumDetailsViewModel> _albums;
         private readonly ViewLocator _viewLocator;
+        private readonly IKernel _kernel;
         private WebAlbumListViewModel _webAlbumListViewModel;
         private List<MinCache> _cache;
 
         public ApplicationViewModel(IZuneDatabaseReader dbReader,
                                     SafeObservableCollection<AlbumDetailsViewModel> albums,
-                                    ViewLocator locator)
+                                    ViewLocator locator,
+                                    IKernel kernel)
         {
             _dbReader = dbReader;
             _albums = albums;
             _viewLocator = locator;
+            _kernel = kernel;
 
             //register for notification messages
             Messenger.Default.Register<ErrorMessage>(this, Notifications.Add);
 
-            locator.SwitchToViewRequested += (view, viewModel) => {
-                CurrentPage = view;
-            };
+
+            Messenger.Default.Register<UserControl>(this, (view) => { CurrentPage = view; });
         }
 
         public void ViewHasLoaded()
@@ -236,7 +239,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
             foreach (DbAlbum newAlbum in _dbReader.ReadAlbums(so))
             {
-                var newalbumDetails = _viewLocator.Resolve<AlbumDetailsViewModel>();
+                var newalbumDetails = _kernel.Get<AlbumDetailsViewModel>();
 
                 newalbumDetails.LinkStatus = newAlbum.AlbumMediaId.GetLinkStatusFromGuid();
                 newalbumDetails.DateAdded = newAlbum.DateAdded;
@@ -331,13 +334,13 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         private static void ShowUpdate()
         {
             var updateViewModel = new UpdateViewModel(UpdateManager.Instance.NewUpdate.Version);
-            var updateView = new UpdateView {DataContext = updateViewModel};
+            var updateView = new UpdateView { DataContext = updateViewModel };
             updateView.Show();
         }
 
         private void ShowAboutSettings()
         {
-            new AboutView {DataContext = _viewLocator.Resolve<AboutViewModel>()}.Show();
+            new AboutView { DataContext = _kernel.Get<AboutViewModel>() }.Show();
         }
 
         private void CheckForUpdates()
