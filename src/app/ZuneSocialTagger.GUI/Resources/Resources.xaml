@@ -6,8 +6,7 @@
                     xmlns:Search="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Search"
                     xmlns:Details="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Details"
                     xmlns:Success="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Success"
-                    xmlns:SelectAudioFiles="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles"
-					xmlns:Shared="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Shared">
+                    xmlns:SelectAudioFiles="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles">
 
     <DataTemplate DataType="{x:Type SelectAudioFiles:SelectAudioFilesViewModel}">
         <SelectAudioFiles:SelectAudioFilesView />

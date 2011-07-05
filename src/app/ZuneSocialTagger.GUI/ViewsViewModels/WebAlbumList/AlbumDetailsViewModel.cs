@@ -177,10 +177,17 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
                 IEnumerable<string> filePaths = dbAlbum.Tracks.Select(x => x.FilePath);
 
-                var containers = SharedMethods.GetContainers(filePaths);
-                containers = SharedMethods.SortByTrackNumber(containers);
-
-                _sharedModel.SongsFromFile = containers;
+                if (filePaths.Count() == 1)
+                {
+                    var container = ZuneTagContainerFactory.GetContainer(filePaths.First());
+                    _sharedModel.SongsFromFile.Add(container);
+                }
+                else
+                {
+                    var containers = SharedMethods.GetContainers(filePaths);
+                    containers = SharedMethods.SortByTrackNumber(containers);
+                    _sharedModel.SongsFromFile = containers;
+                }
 
                 var searchVm = _locator.SwitchToView<SearchView, SearchViewModel>();
                 searchVm.Search(dbAlbum.Artist, dbAlbum.Title);

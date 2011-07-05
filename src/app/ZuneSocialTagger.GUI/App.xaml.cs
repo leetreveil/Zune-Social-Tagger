@@ -63,7 +63,7 @@ namespace ZuneSocialTagger.GUI
             //we need the web view model to be a singleton because we want to be able to continue
             //downloading data while linking etc
             container.Bind<SharedModel>().ToSelf().InSingletonScope();
-            container.Bind<SelectAudioFilesViewModel>();
+            container.Bind<SelectAudioFilesViewModel>().ToSelf();
             container.Bind<WebAlbumListViewModel>().ToSelf().InSingletonScope();
             container.Bind<SearchViewModel>().ToSelf().InSingletonScope();
             container.Bind<DetailsViewModel>().ToSelf();
