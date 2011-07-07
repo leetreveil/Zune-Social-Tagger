@@ -61,8 +61,15 @@ namespace ZuneSocialTagger.GUI.Models
             {
                 try
                 {
-                    var uri = new Uri(this.ArtworkUrl, UriKind.RelativeOrAbsolute); 
-                    var image = new BitmapImage(uri);
+                    var imageUri = this.ArtworkUrl;
+
+                    if (this.ArtworkUrl.Contains("?"))
+                    {
+                        imageUri = this.ArtworkUrl.Remove(this.ArtworkUrl.IndexOf('?'));
+                        imageUri += "?width=320&height=320";
+                    }
+
+                    var image = new BitmapImage(new Uri(imageUri, UriKind.RelativeOrAbsolute));
 
                     if (!image.IsDownloading)
                     {
