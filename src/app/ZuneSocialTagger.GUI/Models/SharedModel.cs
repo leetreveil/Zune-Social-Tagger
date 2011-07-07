@@ -7,7 +7,12 @@ using ZuneSocialTagger.GUI.Shared;
 namespace ZuneSocialTagger.GUI.Models
 {
     public class SharedModel
-    {
+    {  
+        public SharedModel()
+        {
+            SongsFromFile = new List<IZuneTagContainer>();        
+        }
+
         private ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
         public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile
         {
