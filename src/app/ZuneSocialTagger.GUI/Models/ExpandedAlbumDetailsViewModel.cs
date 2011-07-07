@@ -61,13 +61,26 @@ namespace ZuneSocialTagger.GUI.Models
             {
                 try
                 {
-                    var image = new BitmapImage();
+                    var uri = new Uri(this.ArtworkUrl, UriKind.RelativeOrAbsolute); 
+                    var image = new BitmapImage(uri);
 
-                    image.BeginInit();
-                    image.UriSource = new Uri(this.ArtworkUrl, UriKind.RelativeOrAbsolute);
-                    image.EndInit();
+                    if (!image.IsDownloading)
+                    {
+                        Clipboard.SetImage(image);
+                        return;
+                    }
 
-                    Clipboard.SetImage(image);
+                    Mouse.OverrideCursor = Cursors.Wait;
+
+                    image.DownloadCompleted += delegate {
+                        Clipboard.SetImage(image);
+                        Mouse.OverrideCursor = null;
+                    };
+
+                    image.DownloadFailed += delegate {
+                        Mouse.OverrideCursor = null;
+                    };
+                    
                 }
                 catch{ }
             }
