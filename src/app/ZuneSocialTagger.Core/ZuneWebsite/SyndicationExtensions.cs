@@ -124,7 +124,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         private static string GetImageUrlFromElement(XElement imageElement)
         {
             return imageElement != null
-                       ? String.Format("{0}{1}?width=234&height=320", Urls.Image,
+                       ? String.Format("{0}{1}?width=50&height=50", Urls.Image,
                                        imageElement.Elements().First().Value.ExtractGuidFromUrnUuid())
                        : null;
         }
