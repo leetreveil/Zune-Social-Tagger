@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using MicrosoftZuneInterop;
 using MicrosoftZuneLibrary;
+using ZuneUI;
 
 namespace ZuneSocialTagger.Core.ZuneDatabase
 {
@@ -46,19 +47,27 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
         private static T GetFieldValue<T>(int mediaId, EListType listType, int atom, T defaultValue)
         {
+            var propBag = new QueryPropertyBag();
+            propBag.SetValue("UserId", 1);
+
             int[] columnIndexes = new int[] {atom};
             object[] fieldValues = new object[] {defaultValue};
             ZuneLibrary.GetFieldValues(mediaId, listType, 1, columnIndexes, fieldValues,
-                                       new QueryPropertyBag());
+                                       propBag);
 
             return (T) fieldValues[0];
         }
 
         private static T SetFieldValue<T>(int mediaId, EListType listType, int atom, T newValue)
         {
+            var propBag = new QueryPropertyBag();
+            propBag.SetValue("UserId", 1);
+            propBag.SetValue("QueryView", 0);
+
+
             int[] columnIndexes = new int[] { atom };
             object[] fieldValues = new object[] { newValue };
-            ZuneLibrary.SetFieldValues(mediaId, listType, 1, columnIndexes, fieldValues, new QueryPropertyBag());
+            ZuneLibrary.SetFieldValues(mediaId, listType, 1, columnIndexes, fieldValues, propBag);
             return (T)fieldValues[0];
         }
 
@@ -105,8 +114,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             //    }
             //}
 
-
-
             return _zuneLibrary.QueryDatabase(EQueryType.eQueryTypeAllAlbums, 0, 
                 sortType, sortAtom, new QueryPropertyBag());
 
@@ -142,6 +149,10 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             for (int i = 0; i < uniqueIds.Count; i++)
             {
                 object uniqueId = uniqueIds[i];
+
+                var metaData = _zuneLibrary.GetAlbumMetadata((int)uniqueId);
+                var result = albums.GetFieldValue((uint)metaData.MediaId, typeof(Guid), (uint)ZuneQueryList.AtomNameToAtom("ZuneMediaID"), null);
+                Trace.WriteLine(result);
                 yield return GetAlbumMin((int)uniqueId);
                 ProgressChanged.Invoke(i, uniqueIds.Count - 1);
             }
@@ -158,6 +169,13 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
             var albumMediaId = GetFieldValue(index, EListType.eAlbumList,
                                                 ZuneQueryList.AtomNameToAtom("ZuneMediaID"), Guid.Empty);
+
+
+            SetFieldValue(index, EListType.eAlbumList,
+                            ZuneQueryList.AtomNameToAtom("ZuneMediaID"), Guid.Empty);
+
+            albumMediaId = GetFieldValue(index, EListType.eAlbumList,
+                                    ZuneQueryList.AtomNameToAtom("ZuneMediaID"), Guid.Empty);
 
             var dateAdded = GetFieldValue(index, EListType.eAlbumList,
                                             ZuneQueryList.AtomNameToAtom("DateAdded"), new DateTime());
