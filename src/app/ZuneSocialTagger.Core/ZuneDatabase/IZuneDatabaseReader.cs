@@ -12,8 +12,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         event Action StartedReadingAlbums;
         event Action FinishedReadingAlbums;
         event Action<int, int> ProgressChanged;
-
-        void RemoveAlbumFromDatabase(int albumId );
-        void AddTrackToDatabase(string filePath);
+        void RemoveAlbumFromDatabase(int albumId);
     }
 }

@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using MicrosoftZuneInterop;
 using MicrosoftZuneLibrary;
-using ZuneUI;
 
 namespace ZuneSocialTagger.Core.ZuneDatabase
 {
@@ -47,28 +46,12 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
         private static T GetFieldValue<T>(int mediaId, EListType listType, int atom, T defaultValue)
         {
-            var propBag = new QueryPropertyBag();
-            propBag.SetValue("UserId", 1);
-
             int[] columnIndexes = new int[] {atom};
             object[] fieldValues = new object[] {defaultValue};
             ZuneLibrary.GetFieldValues(mediaId, listType, 1, columnIndexes, fieldValues,
-                                       propBag);
+                                       new QueryPropertyBag());
 
             return (T) fieldValues[0];
-        }
-
-        private static T SetFieldValue<T>(int mediaId, EListType listType, int atom, T newValue)
-        {
-            var propBag = new QueryPropertyBag();
-            propBag.SetValue("UserId", 1);
-            propBag.SetValue("QueryView", 0);
-
-
-            int[] columnIndexes = new int[] { atom };
-            object[] fieldValues = new object[] { newValue };
-            ZuneLibrary.SetFieldValues(mediaId, listType, 1, columnIndexes, fieldValues, propBag);
-            return (T)fieldValues[0];
         }
 
         private ZuneQueryList GetAlbumQueryList()
@@ -84,40 +67,9 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
                                ? EQuerySortType.eQuerySortOrderDescending
                                : EQuerySortType.eQuerySortOrderAscending;
 
-            //var artists = _zuneLibrary.QueryDatabase(EQueryType.eQueryTypeAllAlbumArtists, 0, EQuerySortType.eQuerySortOrderAscending,
-            //               (uint)SchemaMap.kiIndex_AlbumArtistID, new QueryPropertyBag());
-
-            //Console.WriteLine(artists.Count);
-
-            //var ast = artists.GetUniqueIds();
-
-            //Console.WriteLine(ast.Count);
-
-            ////var val = artists.GetFieldValue(9, typeof (string), "ZuneAlbumArtistMediaID");
-
-
-            //for (int j = 0; j < 2000; j++)
-            //{
-            //    try
-            //    {
-            //        var test = artists.GetFieldValue(9, typeof(string), (uint)j);
-
-            //        if (test != null)
-            //        {
-            //            Trace.WriteLine(ZuneQueryList.AtomToAtomName(j));
-            //            Trace.WriteLine(test);
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Trace.WriteLine("FAILED ON");
-            //    }
-            //}
 
             return _zuneLibrary.QueryDatabase(EQueryType.eQueryTypeAllAlbums, 0, 
                 sortType, sortAtom, new QueryPropertyBag());
-
-
         }
 
         public IEnumerable<DbAlbum> ReadAlbums(SortOrder sortOrder)
@@ -148,12 +100,7 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
             for (int i = 0; i < uniqueIds.Count; i++)
             {
-                object uniqueId = uniqueIds[i];
-
-                var metaData = _zuneLibrary.GetAlbumMetadata((int)uniqueId);
-                var result = albums.GetFieldValue((uint)metaData.MediaId, typeof(Guid), (uint)ZuneQueryList.AtomNameToAtom("ZuneMediaID"), null);
-                Trace.WriteLine(result);
-                yield return GetAlbumMin((int)uniqueId);
+                yield return GetAlbumMin((int)uniqueIds[i]);
                 ProgressChanged.Invoke(i, uniqueIds.Count - 1);
             }
 
@@ -169,13 +116,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
             var albumMediaId = GetFieldValue(index, EListType.eAlbumList,
                                                 ZuneQueryList.AtomNameToAtom("ZuneMediaID"), Guid.Empty);
-
-
-            SetFieldValue(index, EListType.eAlbumList,
-                            ZuneQueryList.AtomNameToAtom("ZuneMediaID"), Guid.Empty);
-
-            albumMediaId = GetFieldValue(index, EListType.eAlbumList,
-                                    ZuneQueryList.AtomNameToAtom("ZuneMediaID"), Guid.Empty);
 
             var dateAdded = GetFieldValue(index, EListType.eAlbumList,
                                             ZuneQueryList.AtomNameToAtom("DateAdded"), new DateTime());
@@ -234,24 +174,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
             {
                 var track = new ZuneQueryItem(zuneQueryList, i);
 
-                //for (int j = 0; j < 2000; j++)
-                //{
-                //    try
-                //    {
-                //        var test = track.GetFieldValue(typeof(long), (uint)j);
-
-                //        if (test != null)
-                //        {
-                //            Trace.WriteLine(ZuneQueryList.AtomToAtomName(j));
-                //            Trace.WriteLine(test);
-                //        }
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        Trace.WriteLine("FAILED ON");
-                //    }
-                //}
-
                 yield return new DbTrack
                  {
                      FilePath = GetTrackValue<string>(track, "SourceURL"),
@@ -289,11 +211,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
             _zuneLibrary.CleanupTransientMedia();
             zuneQueryList.Dispose();
-        }
-
-        public void AddTrackToDatabase(string filePath)
-        {
-            _zuneLibrary.AddMedia(filePath);
         }
 
         public void Dispose()

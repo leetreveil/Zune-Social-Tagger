@@ -83,11 +83,5 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
         {
             throw new NotImplementedException();
         }
-
-        public void AddTrackToDatabase(string filePath)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }
