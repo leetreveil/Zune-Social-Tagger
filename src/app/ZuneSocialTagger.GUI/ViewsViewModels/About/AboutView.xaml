@@ -44,7 +44,7 @@
                     <TextBlock Text="https://github.com/leetreveil/Zune-Social-Tagger"/>
                 </Hyperlink>
             </TextBlock>
-            <TextBlock VerticalAlignment="Bottom" Text="© 2009 Lee Treveil"/>
+            <TextBlock VerticalAlignment="Bottom" Text="© 2011 Lee Treveil"/>
         </StackPanel>
         <Button Content="CLOSE"  Grid.Row="2"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click" />
