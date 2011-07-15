@@ -163,7 +163,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         {
             if (CurrentPage.GetType() == typeof(WebAlbumListViewModel))
             {
-                if (!SharedMethods.CheckIfZuneSoftwareIsRunning())
+                if (!Helpers.CheckIfZuneSoftwareIsRunning())
                 {
                     Notifications.Add(new ErrorMessage(ErrorMode.Warning,
                                                     "Any albums you link / delink will not show their changes until the zune software is running."));

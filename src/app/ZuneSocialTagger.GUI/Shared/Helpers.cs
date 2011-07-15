@@ -10,7 +10,7 @@ using ZuneSocialTagger.GUI.Models;
 
 namespace ZuneSocialTagger.GUI.Shared
 {
-    public static class SharedMethods
+    public static class Helpers
     {
         public static List<IZuneTagContainer> GetContainers(IEnumerable<string> filePaths)
         {
@@ -42,6 +42,16 @@ namespace ZuneSocialTagger.GUI.Shared
 
             return containers.OrderBy(sorter).ToList();
         }
+
+        public static List<List<T>> Split<T>(this IEnumerable<T> source, int splitBy)
+        {
+            return source
+                .Select((x, i) => new { Index = i, Value = x })
+                .GroupBy(x => x.Index / splitBy)
+                .Select(x => x.Select(v => v.Value).ToList())
+                .ToList();
+        }
+
 
         public static bool DoesAlbumTitleMatch(IEnumerable<string> albumTitlesToMatch, string albumTitleToMatch)
         {

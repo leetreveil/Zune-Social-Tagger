@@ -85,11 +85,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
         {
             this.Rows.Clear();
 
-            var discs = FileTracks.Select(x=> SharedMethods.DiscNumberConverter(x.MetaData.DiscNumber)).Distinct().ToList();
+            var discs = FileTracks.Select(x=> Helpers.DiscNumberConverter(x.MetaData.DiscNumber)).Distinct().ToList();
 
             //get lists of tracks by discNumer
             var tracksByDiscNumber =
-                discs.Select(number => FileTracks.Where(x => SharedMethods.DiscNumberConverter(x.MetaData.DiscNumber) == number));
+                discs.Select(number => FileTracks.Where(x => Helpers.DiscNumberConverter(x.MetaData.DiscNumber) == number));
 
             //if the disc count is just one then dont add any headers
             if (tracksByDiscNumber.Count() == 1)

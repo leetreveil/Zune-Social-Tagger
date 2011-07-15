@@ -463,7 +463,7 @@
             		Source="{Binding Path=ArtworkUrl, 
 							 FallbackValue='pack://application:,,,/Resources/Assets/blankartwork.png'}"
                     Margin="0,0,10,0"/>
-
+            
             <StackPanel VerticalAlignment="Center">
             	<TextBlock ToolTip="{Binding Title}" Text="{Binding Title}" />
                 <TextBlock ToolTip="{Binding Artist}" Text="{Binding Artist}"  
@@ -474,12 +474,13 @@
 	
 	<DataTemplate x:Key="ListAlbumDetails">
 			<StackPanel Orientation="Horizontal">
-						
-			<ContentControl Width="300"
+
+            <ContentControl Width="300"
 							Content="{Binding Left}" 
 							ContentTemplate="{StaticResource SmallAlbumDetails}"/>
 
-	        <ContentControl Grid.Column="2" HorizontalAlignment="Left" Margin="20,0,0,0">
+
+            <ContentControl Grid.Column="2" HorizontalAlignment="Left" Margin="20,0,0,0">
 	            <ContentControl.Style>
 	                <Style TargetType="{x:Type ContentControl}">
 	                    <Style.Triggers>
@@ -489,7 +490,7 @@
 	                                <Setter.Value>
 	                                    <ControlTemplate>
 	                                        <StackPanel  Orientation="Horizontal">
-	                                            <Image Width="16" Height="16" Source="Assets/yes.png"
+	                                            <Image  Width="16" Height="16" Source="Assets/yes.png"
 	                                                                            Margin="0,0,10,0" />
 												<ContentControl Content="{Binding Right}" 
 																ContentTemplate="{StaticResource SmallAlbumDetails}"/>
@@ -497,7 +498,7 @@
 	                                    </ControlTemplate>
 	                                </Setter.Value>
 	                            </Setter>
-	                        </DataTrigger>
+                            </DataTrigger>
 
 	                        <DataTrigger Binding="{Binding LinkStatus}" Value="Unknown">
 	                            <Setter Property="Template">

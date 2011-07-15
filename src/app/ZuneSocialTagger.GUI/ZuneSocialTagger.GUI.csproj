@@ -220,7 +220,7 @@
     <Compile Include="Converters\TextToBoolConverter.cs" />
     <Compile Include="Models\ErrorMessage.cs" />
     <Compile Include="Models\LinkStatus.cs" />
-    <Compile Include="Shared\SharedMethods.cs" />
+    <Compile Include="Shared\Helpers.cs" />
     <Compile Include="ViewsViewModels\WebAlbumList\SortOrder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

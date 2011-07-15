@@ -16,6 +16,7 @@ using ZuneSocialTagger.GUI.Shared;
 using GalaSoft.MvvmLight.Threading;
 using System.Diagnostics;
 using System.Windows.Input;
+using System.Threading;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {
@@ -127,24 +128,17 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             _cvs.View.Refresh();
         }
 
-        private static List<List<T>> Split<T>(IEnumerable<T> source)
-        {
-            return source
-                .Select((x, i) => new { Index = i, Value = x })
-                .GroupBy(x => x.Index / 10)
-                .Select(x => x.Select(v => v.Value).ToList())
-                .ToList();
-        }
-
         public void LoadFromZuneWebsite()
         {
             if (_isScanning)
             {
-                Mouse.OverrideCursor = Cursors.Wait;
                 _isScanning = false;
                 AlbumDetailsDownloader.AbortAllCurrentRequests();
+                ResetLoadingProgress();
+                ScanButtonText = "SCAN ALL";
                 return;
             }
+
             var warningMsg = new ErrorMessage(ErrorMode.Warning, "This process could take a very long time, are you sure?");
             var result = ZuneMessageBox.Show(warningMsg, System.Windows.MessageBoxButton.OKCancel);
 
@@ -158,23 +152,23 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 var toScan = (from object album in _cvs.View select album as AlbumDetailsViewModel)
                     .ToList().Where(x => x.AlbumMediaId != Guid.Empty);
 
-                var splitted = Split(toScan);
+                var splitted = toScan.Split(10);
                 //we are scanning the albums in chunks because it is easier for the abortion mechanism
-                //and causes less exceptions
-                ScanChunkOne(splitted, splitted.First(), 0);
+                ScanChunk(splitted, 0, toScan.Count());
             }
         }
 
-        private void ScanChunkOne(List<List<AlbumDetailsViewModel>> toScan, IEnumerable<AlbumDetailsViewModel> chunk, int position)
+        private int scanCount = 0;
+
+        private void ScanChunk(List<List<AlbumDetailsViewModel>> toScan, int position, int albumsTotal)
         {
             int counter = 0;
+            var currentChunk = toScan[position];
 
-            foreach (AlbumDetailsViewModel album in chunk)
+            foreach (var album in currentChunk)
             {
-                album.LinkStatus = LinkStatus.Unknown; // reset the linkstatus so we can scan all multiple times
-                album.Right = null;
-
                 AlbumDetailsViewModel closedAlbum = album;
+
                 var url = String.Concat(Urls.Album, album.AlbumMediaId);
                 AlbumDetailsDownloader.DownloadAsync(url, (exception, dledAlbum) =>
                 {
@@ -195,23 +189,25 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                         };
                     }
 
+                    scanCount++;
+                    ReportProgress(scanCount, albumsTotal);
+
                     counter++;
-                    ReportProgress(position, toScan.Count);
-
-                    if (counter == chunk.Count())
+                    if (counter == currentChunk.Count())
                     {
-                        if (!AlbumDetailsDownloader.Aborted)
+                        if (AlbumDetailsDownloader.Aborted == false)
                         {
-                            Trace.WriteLine("scanned: " + counter);
                             position++;
-
+                            Trace.WriteLine(position);
                             if (position < toScan.Count)
                             {
-                                ScanChunkOne(toScan, toScan[position], position);
+                                ScanChunk(toScan, position, albumsTotal);
+                            }
+                            else
+                            {
+                                Debugger.Break();
                             }
                         }
-
-                        ResetLoadingProgress();
                     }
                 });
             }
@@ -252,6 +248,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
         private void ResetLoadingProgress()
         {
+            scanCount = 0;
             this._isScanning = false;
             this.ScanButtonText = "SCAN ALL";
             this.LoadingProgress = 0;

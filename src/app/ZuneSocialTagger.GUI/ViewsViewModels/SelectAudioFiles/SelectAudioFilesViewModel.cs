@@ -74,14 +74,14 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
             try
             {
                 //get the files and sort by trackNumber
-                var containers = SharedMethods.GetContainers(files);
-                containers = SharedMethods.SortByTrackNumber(containers);
+                var containers = Helpers.GetContainers(files);
+                containers = Helpers.SortByTrackNumber(containers);
 
                 //get the first tracks metadata which is used to set some details
                 MetaData firstTrackMetaData = containers.First().MetaData;
 
                 //set the album details that is used throughout the app
-                _sharedModel.AlbumDetailsFromFile = SharedMethods.SetAlbumDetails(firstTrackMetaData, containers.Count);
+                _sharedModel.AlbumDetailsFromFile = Helpers.SetAlbumDetails(firstTrackMetaData, containers.Count);
                 _sharedModel.SongsFromFile = containers;
 
                 //as soon as the view has switched start searching

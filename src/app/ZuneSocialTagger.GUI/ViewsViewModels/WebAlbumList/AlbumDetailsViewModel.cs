@@ -139,7 +139,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
             var filePaths = _dbReader.GetTracksForAlbum(MediaId).Select(x => x.FilePath);
 
-            var containers = SharedMethods.GetContainers(filePaths);
+            var containers = Helpers.GetContainers(filePaths);
 
             foreach (var container in containers)
             {
@@ -184,8 +184,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 }
                 else
                 {
-                    var containers = SharedMethods.GetContainers(filePaths);
-                    containers = SharedMethods.SortByTrackNumber(containers);
+                    var containers = Helpers.GetContainers(filePaths);
+                    containers = Helpers.SortByTrackNumber(containers);
                     _sharedModel.SongsFromFile = containers;
                 }
 
