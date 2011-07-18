@@ -1,32 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ctrls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
-                    xmlns:converters="clr-namespace:ZuneSocialTagger.GUI.Converters"
-                    xmlns:WebAlbumList="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList"
-                    xmlns:Search="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Search"
-                    xmlns:Details="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Details"
-                    xmlns:Success="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Success"
-                    xmlns:SelectAudioFiles="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles">
-
-    <DataTemplate DataType="{x:Type SelectAudioFiles:SelectAudioFilesViewModel}">
-        <SelectAudioFiles:SelectAudioFilesView />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type WebAlbumList:WebAlbumListViewModel}">
-        <WebAlbumList:WebAlbumListView />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type Search:SearchViewModel}">
-        <Search:SearchView />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type Details:DetailsViewModel}">
-        <Details:DetailsView />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type Success:SuccessViewModel}">
-        <Success:SuccessView />
-    </DataTemplate>
+                    xmlns:converters="clr-namespace:ZuneSocialTagger.GUI.Converters">
 
     <converters:TextToVisibilityConverter x:Key="TextToVisibilityConverter" />
     <converters:TextToBoolConverter x:Key="TextToBoolConverter" />
