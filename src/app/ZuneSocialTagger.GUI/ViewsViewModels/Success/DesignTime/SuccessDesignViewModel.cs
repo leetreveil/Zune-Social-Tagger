@@ -8,18 +8,17 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Success.DesignTime
         {
             this.AlbumDetailsFromFile = new ExpandedAlbumDetailsViewModel
             {
-                Artist = "Pendulum",
+                Artist = "LeftArtist",
                 SongCount = "10",
-                Title = "Immersion",
+                Title = "LeftTitle",
                 Year = "2010"
             };
 
             this.AlbumDetailsFromWebsite = new ExpandedAlbumDetailsViewModel
             {
-                Artist = "Pendulum",
-                ArtworkUrl = "http://images.play.com/covers/12691916x.jpg",
+                Artist = "RightArtist",
                 SongCount = "10",
-                Title = "Immersion",
+                Title = "RightTitle",
                 Year = "2010"
             };
         }

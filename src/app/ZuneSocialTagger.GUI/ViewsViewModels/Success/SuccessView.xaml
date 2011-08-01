@@ -28,7 +28,7 @@
 
             <Image Margin="10,10,10,10" Grid.Column="1" Source="../../Resources/Assets/arrow.png"/>
 
-			<ContentControl Content="{Binding AlbumDetailsFromFile}"
+			<ContentControl Content="{Binding AlbumDetailsFromWebsite}"
 					ContentTemplate="{StaticResource LargeAlbumDetails}"
 					Grid.Column="2"/>
         </Grid>

@@ -36,7 +36,6 @@ namespace ZuneSocialTagger.GUI.Models
 
                 return _albumDetailsFromWeb;
             }
-            set { _albumDetailsFromWeb = value; }
         }
 
         public IList<IZuneTagContainer> SongsFromFile { get; set; }
