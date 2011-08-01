@@ -14,9 +14,9 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
         [Test]
         public void Then_it_should_be_able_to_read_the_tracks_metadata()
         {
-            var zuneMp3TagContainer = ZuneTagContainerFactory.GetContainer(FilePath);
+            var container = ZuneTagContainerFactory.GetContainer(FilePath);
 
-            MetaData data = zuneMp3TagContainer.ReadMetaData();
+            MetaData data = container.MetaData;
 
             Assert.That(data.AlbumArtist, Is.EqualTo("Subkulture"));
             Assert.That(data.ContributingArtists.First(), Is.EqualTo("Subkulture"));
@@ -29,17 +29,13 @@ namespace ZuneSocialTagger.IntegrationTests.Core.ID3Tagger
         [Test]
         public void Then_it_should_be_able_to_remove_all_the_media_ids()
         {
-            var zuneMp3TagContainer = (ZuneMP3TagContainer) ZuneTagContainerFactory.GetContainer(FilePath);
+            var container = (ZuneMP3TagContainer) ZuneTagContainerFactory.GetContainer(FilePath);
 
-            zuneMp3TagContainer.RemoveZuneAttribute(ZuneIds.Artist);
-            zuneMp3TagContainer.RemoveZuneAttribute(ZuneIds.Track);
-            zuneMp3TagContainer.RemoveZuneAttribute(ZuneIds.Album);
+            container.RemoveZuneAttribute(ZuneIds.Artist);
+            container.RemoveZuneAttribute(ZuneIds.Track);
+            container.RemoveZuneAttribute(ZuneIds.Album);
 
-            zuneMp3TagContainer.WriteToFile(FilePath);
- 
-            IEnumerable<ZuneAttribute> ids = ZuneTagContainerFactory.GetContainer(FilePath).ReadZuneAttributes();
-
-            Assert.That(ids,Is.Empty);
+            Assert.That(container.ZuneAttributes, Is.Empty);
         }
 
     }
