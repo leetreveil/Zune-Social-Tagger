@@ -30,7 +30,7 @@ namespace ZuneSocialTagger.Core.IO.WMATagger
                 {
                     AlbumArtist = GetValue(ASFAttributes.AlbumArtist),
                     AlbumName = GetValue(ASFAttributes.AlbumName),
-                    ContributingArtists = GetValues(ASFAttributes.ContributingArtists).ToList(),
+                    ContributingArtists = GetValues(ASFAttributes.ContributingArtists).Cast<string>().ToList(),
                     DiscNumber = GetValue(ASFAttributes.DiscNumber),
                     Genre = GetValue(ASFAttributes.Genre),
                     Title = GetValue(ASFAttributes.Title),
@@ -46,7 +46,7 @@ namespace ZuneSocialTagger.Core.IO.WMATagger
             {
                 return from tag in _container
                        where ZuneIds.GetAll.Contains(tag.Name)
-                       select new ZuneAttribute(tag.Name, new Guid(tag.Value));
+                       select new ZuneAttribute(tag.Name, new Guid(tag.Value.ToString()));
             }
         }
 
@@ -64,7 +64,7 @@ namespace ZuneSocialTagger.Core.IO.WMATagger
             foreach (var attribute in attributes)
             {
                 //TODO: needs testing
-                if (!String.IsNullOrEmpty(attribute.Value))
+                if (!String.IsNullOrEmpty(attribute.Value.ToString()))
                 {
                     _container.Add(attribute);
                 }
@@ -99,7 +99,7 @@ namespace ZuneSocialTagger.Core.IO.WMATagger
                 yield return new Attribute(ASFAttributes.ContributingArtists, contributingArtist, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
         }
 
-        private IEnumerable<string> GetValues(string key)
+        private IEnumerable<object> GetValues(string key)
         {
             return _container.Where(x => x.Name == key).Select(x => x.Value);
         }
@@ -110,7 +110,7 @@ namespace ZuneSocialTagger.Core.IO.WMATagger
 
             Attribute result = _container.Where(x => x.Name == key).FirstOrDefault();
 
-            return result != null ? result.Value : string.Empty;
+            return result != null ? result.Value.ToString() : string.Empty;
         }
     }
 }

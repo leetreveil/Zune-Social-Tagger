@@ -9,10 +9,6 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
     [ProtoContract]
     public class WebTrack
     {
-        public WebTrack()
-        {
-            //Trace.WriteLine("hit");
-        }
         [ProtoMember(1)]
         public Guid AlbumMediaId { get; set; }
         [ProtoMember(2)]
@@ -31,14 +27,5 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         public List<string> ContributingArtists { get; set; }
         [ProtoMember(9)]
         public string Artist { get; set; }
-
-        public bool HasAllZuneIds
-        {
-            get
-            {
-                //A songGuid is valid if its guid is not empty and its title is not empty or null
-                return MediaId != Guid.Empty && ArtistMediaId != Guid.Empty && AlbumMediaId != Guid.Empty;
-            }
-        }
     }
 }
