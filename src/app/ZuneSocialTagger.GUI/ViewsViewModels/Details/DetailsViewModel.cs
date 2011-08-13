@@ -184,6 +184,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
                                 container.AddMetaData(CreateMetaDataFromWebDetails((WebTrack)row.SelectedSong.BackingData));
 
                             container.WriteToFile();
+                            container.Dispose();
                             //TODO: run a verifier over whats been written to ensure that the tags have actually been written to file
                         }
                     }

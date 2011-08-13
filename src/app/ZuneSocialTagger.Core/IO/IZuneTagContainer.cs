@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 
 namespace ZuneSocialTagger.Core.IO
 {
-    public interface IZuneTagContainer
+    public interface IZuneTagContainer : IDisposable
     {
         void AddZuneAttribute(ZuneAttribute zuneAttribute);
         void AddMetaData(MetaData metaData);

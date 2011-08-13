@@ -112,5 +112,10 @@ namespace ZuneSocialTagger.Core.IO.WMATagger
 
             return result != null ? result.Value.ToString() : string.Empty;
         }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

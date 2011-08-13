@@ -92,6 +92,9 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="taglib-sharp">
+      <HintPath>..\..\..\libs\taglibsharp\taglib-sharp.dll</HintPath>
+    </Reference>
     <Reference Include="ZuneDBApi">
       <HintPath>..\..\..\libs\zuneApi\ZuneDBApi.dll</HintPath>
       <Private>False</Private>
@@ -101,6 +104,7 @@
     <Compile Include="IO\AudioFileReadException.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IO\ID3Tagger\ID3Frames.cs" />
+    <Compile Include="IO\ID3Tagger\ZuneMP3TagContainer.cs" />
     <Compile Include="IO\WMATagger\ASFAttributes.cs" />
     <Compile Include="IO\WMATagger\ZuneWMATagContainer.cs" />
     <Compile Include="IO\IZuneTagContainer.cs" />
@@ -112,7 +116,6 @@
     <Compile Include="ZuneDatabase\TestZuneDatabaseReader.cs" />
     <Compile Include="ZuneDatabase\ZuneDatabaseReader.cs" />
     <Compile Include="IO\ZuneIds.cs" />
-    <Compile Include="IO\ID3Tagger\ZuneMP3TagContainer.cs" />
     <Compile Include="IO\ZuneTagContainerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IO\MetaData.cs" />
