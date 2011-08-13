@@ -1,8 +1,5 @@
 using System;
 using System.IO;
-using ASFTag;
-using Id3Tag;
-using TagLib;
 using ZuneSocialTagger.Core.IO.ID3Tagger;
 using ZuneSocialTagger.Core.IO.WMATagger;
 using File = System.IO.File;
@@ -24,7 +21,7 @@ namespace ZuneSocialTagger.Core.IO
                 {
                     return new ZuneMP3TagContainer(TagLib.File.Create(path));
                 }
-                catch (Id3TagException ex)
+                catch (Exception ex)
                 {
                     Exception excep = ex;
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -14,7 +13,6 @@ using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.Shared;
-using GalaSoft.MvvmLight.Threading;
 using Helpers = ZuneSocialTagger.GUI.Shared.Helpers;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
