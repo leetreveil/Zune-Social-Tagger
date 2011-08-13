@@ -39,8 +39,13 @@
             <TextBlock Text="Developed by: Lee Treveil"/>
             <TextBlock Text="leetreveil@gmail.com"/>
             <TextBlock Height="14.4">
-                <Hyperlink NavigateUri="https://github.com/leetreveil/Zune-Social-Tagger"
-                           Foreground="#FA6EC9" Command="{Binding OpenWebsiteCommand}">
+                <Hyperlink Foreground="#FA6EC9"
+                           Command="{Binding OpenTwitterCommand}">
+                    <TextBlock Text="@leetreveil" />
+                </Hyperlink>
+            </TextBlock>
+            <TextBlock Height="14.4">
+                <Hyperlink Foreground="#FA6EC9" Command="{Binding OpenWebsiteCommand}">
                     <TextBlock Text="https://github.com/leetreveil/Zune-Social-Tagger"/>
                 </Hyperlink>
             </TextBlock>

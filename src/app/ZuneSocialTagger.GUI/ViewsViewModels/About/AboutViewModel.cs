@@ -20,6 +20,18 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.About
             }
         }
 
+        private ICommand _openTwitterCommand;
+        public ICommand OpenTwitterCommand
+        {
+            get
+            {
+                if (_openTwitterCommand == null)
+                    _openTwitterCommand = new RelayCommand(OpenTwitter);
+
+                return _openTwitterCommand;
+            }
+        }
+
         public string Version
         {
             get { return String.Format("Version {0}", Assembly.GetExecutingAssembly().GetName().Version); }
@@ -28,6 +40,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.About
         private void OpenWebsite()
         {
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(Settings.Default.AppBaseUrl));
+        }
+
+        private void OpenTwitter()
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("http://twitter.com/#!/leetreveil"));
         }
     }
 }
