@@ -11,6 +11,7 @@ using ZuneSocialTagger.GUI.ViewsViewModels.Application;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.Shared;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
+using Helpers = ZuneSocialTagger.GUI.Shared.Helpers;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 {

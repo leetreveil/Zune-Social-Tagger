@@ -15,6 +15,7 @@ using ZuneSocialTagger.GUI.Models;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.Shared;
 using GalaSoft.MvvmLight.Threading;
+using Helpers = ZuneSocialTagger.GUI.Shared.Helpers;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 {

@@ -14,6 +14,7 @@ using GalaSoft.MvvmLight.Messaging;
 using ZuneSocialTagger.GUI.ViewsViewModels.Success;
 using ZuneSocialTagger.GUI.Controls;
 using System.Diagnostics;
+using Helpers = ZuneSocialTagger.GUI.Shared.Helpers;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 {
@@ -181,7 +182,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
                             container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Track, webTrack.MediaId));
 
                             if (UpdateAlbumInfo)
-                                container.AddMetaData(CreateMetaDataFromWebDetails((WebTrack)row.SelectedSong.BackingData));
+                                container.UpdateMetaData(CreateMetaDataFromWebDetails((WebTrack)row.SelectedSong.BackingData));
 
                             container.WriteToFile();
                             container.Dispose();

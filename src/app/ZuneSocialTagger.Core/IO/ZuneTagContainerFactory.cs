@@ -39,7 +39,7 @@ namespace ZuneSocialTagger.Core.IO
             {
                 try
                 {
-                    return new ZuneWMATagContainer(ASFTagManager.ReadTag(path), path);
+                    return new ZuneWMATagContainer(TagLib.File.Create(path));
                 }
                 catch (Exception ex)
                 {

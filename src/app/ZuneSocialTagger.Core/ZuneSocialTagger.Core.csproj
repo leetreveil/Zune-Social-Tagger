@@ -103,9 +103,10 @@
   <ItemGroup>
     <Compile Include="IO\AudioFileReadException.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="IO\BaseZuneTagContainer.cs" />
+    <Compile Include="IO\Helpers.cs" />
     <Compile Include="IO\ID3Tagger\ID3Frames.cs" />
     <Compile Include="IO\ID3Tagger\ZuneMP3TagContainer.cs" />
-    <Compile Include="IO\WMATagger\ASFAttributes.cs" />
     <Compile Include="IO\WMATagger\ZuneWMATagContainer.cs" />
     <Compile Include="IO\IZuneTagContainer.cs" />
     <Compile Include="IO\ZuneAttribute.cs" />
