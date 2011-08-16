@@ -297,7 +297,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                         if (details.MarketplaceStatus == MarketplaceStatus.NotAvailable)
                         {
                             var msg = String.Format("The Zune Marketplace is not yet available in your region ({0}). You" +
-                                " won't get any search results when trying to link an album to the marketplace.", locale);
+                                " may not get any search results.", locale);
                             Notifications.Add(new ErrorMessage(ErrorMode.Info, msg));
                         }
                         if (details.MarketplaceStatus == MarketplaceStatus.Error)
@@ -313,7 +313,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     }
                     else
                     {
-                        var msg = "Unable to connect to marketplace. You won't be able to get any search results.";
+                        var msg = "Unable to connect to marketplace. You may not be able to get any search results.";
                         Notifications.Add(new ErrorMessage(ErrorMode.Info, msg));
                     }
                 });
