@@ -9,8 +9,6 @@ the zune database crashing or not loading shouldn't kill the program. It should 
 
 Add logging
 
-Improve search filtering, currently you have to type the first letter of the artist so typing "clash" wouldn't find "the clash"
-
 
 MAJOR:
 when running 'scan all' it should search the zune marketplace for any matches and notify the user if any are found

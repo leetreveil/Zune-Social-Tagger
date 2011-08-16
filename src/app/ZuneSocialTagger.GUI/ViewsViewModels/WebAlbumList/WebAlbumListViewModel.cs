@@ -311,10 +311,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 //match the artist or the album title
                 e.Accepted = (details.Left.Artist
                     .ToLower()
-                    .StartsWith(_filterText.ToLower())
+                    .Contains(_filterText.ToLower())
                     ||
                     details.Left.Title.ToLower()
-                    .StartsWith(_filterText.ToLower()));
+                    .Contains(_filterText.ToLower()));
 
             }
         }
