@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using TagLib;
 
@@ -18,11 +17,10 @@ namespace ZuneSocialTagger.Core.IO
 
         public abstract void AddZuneAttribute(ZuneAttribute zuneAttribute);
         public abstract void RemoveZuneAttribute(string name);
-        public abstract IEnumerable<ZuneAttribute> ZuneAttributes { get; }
 
         public void UpdateMetaData(MetaData metaData)
         {
-            //TODO: only update bits if the string being passed is not emply
+            //TODO: only update bits if the string being passed is not empty
             _tag.AlbumArtists = new[] { metaData.AlbumArtist };
             _tag.Album = metaData.AlbumName;
             _tag.Performers = metaData.ContributingArtists.ToArray();
@@ -40,6 +38,7 @@ namespace ZuneSocialTagger.Core.IO
         {
             get
             {
+                //not object literals, too hard to debug
                 var albumArtist = _tag.AlbumArtists.FirstOrDefault();
                 var contributingArtists = _tag.Performers.ToList();
                 var albumName = _tag.Album;

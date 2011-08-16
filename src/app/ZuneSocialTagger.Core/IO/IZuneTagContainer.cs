@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace ZuneSocialTagger.Core.IO
 {
@@ -10,6 +9,5 @@ namespace ZuneSocialTagger.Core.IO
         void WriteToFile();
         void RemoveZuneAttribute(string name);
         MetaData MetaData { get; }
-        IEnumerable<ZuneAttribute> ZuneAttributes { get; }
     }
 }

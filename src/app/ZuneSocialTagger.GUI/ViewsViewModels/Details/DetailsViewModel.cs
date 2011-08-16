@@ -171,11 +171,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
                             container.RemoveZuneAttribute("ZuneCollectionID");
                             container.RemoveZuneAttribute("WM/UniqueFileIdentifier");
 
-                            foreach (var attribute in container.ZuneAttributes)
-                            {
-                                Trace.WriteLine(attribute.Name + " " + attribute.Guid);
-                            }
-
                             var webTrack = (WebTrack)row.SelectedSong.BackingData;
                             container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Album, webTrack.AlbumMediaId));
                             container.AddZuneAttribute(new ZuneAttribute(ZuneIds.Artist, webTrack.ArtistMediaId));

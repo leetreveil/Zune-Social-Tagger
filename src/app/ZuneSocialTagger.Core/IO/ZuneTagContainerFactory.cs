@@ -3,6 +3,7 @@ using System.IO;
 using ZuneSocialTagger.Core.IO.ID3Tagger;
 using ZuneSocialTagger.Core.IO.WMATagger;
 using File = System.IO.File;
+using ZuneSocialTagger.Core.IO.Mp4Tagger;
 
 namespace ZuneSocialTagger.Core.IO
 {
@@ -37,6 +38,18 @@ namespace ZuneSocialTagger.Core.IO
                 try
                 {
                     return new ZuneWMATagContainer(TagLib.File.Create(path));
+                }
+                catch (Exception ex)
+                {
+                    throw new AudioFileReadException("Couldn't read: " + path + " Error: " + ex.Message);
+                }
+            }
+
+            if (extension.ToLower() == ".m4a")
+            {
+                try
+                {
+                    return new ZuneMp4TagContainer(TagLib.File.Create(path));
                 }
                 catch (Exception ex)
                 {

@@ -44,16 +44,5 @@ namespace ZuneSocialTagger.Core.IO.WMATagger
                 _tag.MetadataLibraryObject.RemoveRecords(0, 0, name);
             }
         }
-
-
-        public override IEnumerable<ZuneAttribute> ZuneAttributes
-        {
-            get 
-            {
-                return from atrrib in _tag.MetadataLibraryObject
-                       where ZuneIds.GetAll.Contains(atrrib.Name)
-                       select new ZuneAttribute(atrrib.Name, atrrib.ToGuid());
-            }
-        }
     }
 }

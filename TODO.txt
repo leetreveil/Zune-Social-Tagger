@@ -4,9 +4,9 @@ handle folder path not being available if it no longer exists (select audio file
 
 the zune database crashing or not loading shouldn't kill the program. It should default back to 'select audio files'
 
-when you select audio files if one cannot be read it shouldn't prevent all of them from being read
-
 Add logging
+
+Improve search filtering, currently you have to type the first letter of the artist so typing "clash" wouldn't find "the clash"
 
 
 MAJOR:
