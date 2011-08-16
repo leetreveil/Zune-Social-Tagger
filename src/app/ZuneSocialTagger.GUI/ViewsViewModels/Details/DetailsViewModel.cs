@@ -15,6 +15,7 @@ using ZuneSocialTagger.GUI.ViewsViewModels.Success;
 using ZuneSocialTagger.GUI.Controls;
 using System.Diagnostics;
 using Helpers = ZuneSocialTagger.GUI.Shared.Helpers;
+using System.IO;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
 {
@@ -143,7 +144,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
         {
             Mouse.OverrideCursor = Cursors.Wait;
 
-            var uaeExceptions = new List<UnauthorizedAccessException>();
+            var exceptions = new List<Exception>();
 
             bool canContinue = true;
             if (UpdateAlbumInfo)
@@ -186,20 +187,16 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
                     }
                     catch (UnauthorizedAccessException uae)
                     {
-                        uaeExceptions.Add(uae);
-                        //TODO: better error handling
+                        Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,
+                                         "One or more files could not be written to. Have you checked the files are not marked read-only?"));
+                    }
+                    catch(IOException ex)
+                    {
+                        Messenger.Default.Send(new ErrorMessage(ErrorMode.Error, ex.Message));
                     }
                 }
 
-                if (uaeExceptions.Count > 0)
-                {   //usually occurs when a file is readonly
-                    Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,
-                                        "One or more files could not be written to. Have you checked the files are not marked read-only?"));
-                }
-                else
-                {
-                    _locator.SwitchToView<SuccessView, SuccessViewModel>();
-                }
+                _locator.SwitchToView<SuccessView, SuccessViewModel>();
             }
 
             Mouse.OverrideCursor = null;

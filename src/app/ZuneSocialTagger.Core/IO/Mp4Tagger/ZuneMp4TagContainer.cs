@@ -9,7 +9,7 @@ using File = TagLib.File;
 
 namespace ZuneSocialTagger.Core.IO.Mp4Tagger
 {
-    class ZuneMp4TagContainer : BaseZuneTagContainer
+    public class ZuneMp4TagContainer : BaseZuneTagContainer
     {
         private readonly File _mp4File;
 
@@ -30,13 +30,25 @@ namespace ZuneSocialTagger.Core.IO.Mp4Tagger
                 parts.Remove(existingPart);
 
             parts.Add(new GuidPart(zuneAttribute.Name, zuneAttribute.Guid));
+
+            var udataBox = GetUdataBox();
+
+            if (udataBox == null)
+                return;
+
+            udataBox.RemoveChild(new ByteVector("Xtra"));
+
+            var newXtraBox = new XtraBox(new ByteVector("Xtra"));
+            newXtraBox.Data = ZuneXtraParser.ConstructRawData(parts);
+
+            udataBox.AddChild(newXtraBox);
         }
 
         public override void RemoveZuneAttribute(string name)
         {
             var parts = GetParts().ToList();
 
-            var toRemove = parts.OfType<GuidPart>().Where(x => x.Name == name);
+            var toRemove = parts.Where(x => x.Name == name);
 
             if (toRemove.Count() == 0)
                 return;
@@ -45,30 +57,22 @@ namespace ZuneSocialTagger.Core.IO.Mp4Tagger
 
             var udataBox = GetUdataBox();
 
-            var xtraBox = udataBox.GetChild(new ByteVector("Xtra"));
-
-            if (xtraBox == null)
+            if (udataBox == null)
                 return;
 
-            var rawData = ZuneXtraParser.ConstructRawData(parts);
+            udataBox.RemoveChild(new ByteVector("Xtra"));
 
-            xtraBox.Data = rawData;
+            var newXtraBox = new XtraBox(new ByteVector("Xtra"));
+            newXtraBox.Data = ZuneXtraParser.ConstructRawData(parts);
+
+            udataBox.AddChild(newXtraBox);
         }
 
         private IEnumerable<IBasePart> GetParts()
         {
             var attribs = new List<IBasePart>();
 
-            //we can be sure that these two calls are working because
-            //they have been called by TagLib itself
-            var fp = new TagLib.Mpeg4.FileParser(_mp4File);
-            fp.ParseTagAndProperties();
-
-            if (fp.UserDataBoxes.Count() == 0)
-                return attribs;
-
-            var udataBox = fp.UserDataBoxes.Where(x => x.BoxType == new ByteVector("udta"))
-                                          .FirstOrDefault();
+            var udataBox = GetUdataBox();
 
             if (udataBox == null)
                 return attribs;
