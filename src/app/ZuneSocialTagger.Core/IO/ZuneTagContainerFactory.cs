@@ -1,9 +1,9 @@
 using System;
 using System.IO;
-using ASFTag;
-using Id3Tag;
 using ZuneSocialTagger.Core.IO.ID3Tagger;
 using ZuneSocialTagger.Core.IO.WMATagger;
+using File = System.IO.File;
+using ZuneSocialTagger.Core.IO.Mp4Tagger;
 
 namespace ZuneSocialTagger.Core.IO
 {
@@ -20,18 +20,9 @@ namespace ZuneSocialTagger.Core.IO
             {
                 try
                 {
-                    var tagManager = new Id3TagManager();
-
-                    //TODO: app crashes here when a file is loaded from a remote directory, i.e. on network
-                    FileState status = tagManager.GetTagsStatus(path);
-
-                    //if we just have id3v1.1 tags
-                    if (status.Id3V1TagFound && !status.Id3V2TagFound)
-                        throw new Id3TagException("Couldn't read: " + path + " Error: " + " cannot read id3v1.1");
-
-                    return new ZuneMP3TagContainer(tagManager.ReadV2Tag(path), path);
+                    return new ZuneMP3TagContainer(TagLib.File.Create(path));
                 }
-                catch (Id3TagException ex)
+                catch (Exception ex)
                 {
                     Exception excep = ex;
 
@@ -46,7 +37,19 @@ namespace ZuneSocialTagger.Core.IO
             {
                 try
                 {
-                    return new ZuneWMATagContainer(ASFTagManager.ReadTag(path), path);
+                    return new ZuneWMATagContainer(TagLib.File.Create(path));
+                }
+                catch (Exception ex)
+                {
+                    throw new AudioFileReadException("Couldn't read: " + path + " Error: " + ex.Message);
+                }
+            }
+
+            if (extension.ToLower() == ".m4a")
+            {
+                try
+                {
+                    return new ZuneMp4TagContainer(TagLib.File.Create(path));
                 }
                 catch (Exception ex)
                 {

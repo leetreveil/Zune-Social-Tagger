@@ -104,7 +104,7 @@ namespace ZuneSocialTagger.IntegrationTests.Core.WMATagger
                     Year = "2009"
                 };
 
-            container.AddMetaData(metaData);
+            container.UpdateMetaData(metaData);
 
             MetaData newMetaData = container.MetaData;
 

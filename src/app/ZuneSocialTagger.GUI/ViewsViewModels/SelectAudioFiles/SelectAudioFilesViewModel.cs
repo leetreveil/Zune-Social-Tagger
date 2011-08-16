@@ -11,6 +11,7 @@ using ZuneSocialTagger.GUI.ViewsViewModels.Application;
 using ZuneSocialTagger.GUI.ViewsViewModels.Search;
 using ZuneSocialTagger.GUI.Shared;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
+using Helpers = ZuneSocialTagger.GUI.Shared.Helpers;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
 {
@@ -47,9 +48,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
                                                    EnsureFileExists = true
                                                };
 
-                commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("Audio Files", "*.mp3;*.wma"));
+                commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("Audio Files", "*.mp3;*.wma;*.m4a"));
                 commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("MP3 Files", "*.mp3"));
                 commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("WMA Files", "*.wma"));
+                commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("M4A Files", "*.m4a"));
 
                 if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.OK)
                     ReadFiles(commonOpenFileDialog.FileNames);
@@ -58,7 +60,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
             {
                 var ofd = new OpenFileDialog { 
                     Multiselect = true, 
-                    Filter = "Audio files .mp3,.wma |*.mp3;*.wma", 
+                    Filter = "Audio files .mp3,.wma,.m4a |*.mp3;*.wma;*.m4a", 
                     AutoUpgradeEnabled = true,
                     Title = "Select the audio files that you want to link to the zune social",
                     CheckFileExists = true

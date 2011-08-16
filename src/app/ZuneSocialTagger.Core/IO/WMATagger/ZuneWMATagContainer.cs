@@ -1,116 +1,48 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ASFTag;
-using Attribute = ASFTag.Attribute;
+using TagLib;
+using TagLib.Asf;
+using File = TagLib.File;
+using Tag = TagLib.Asf.Tag;
 
 namespace ZuneSocialTagger.Core.IO.WMATagger
 {
-    public class ZuneWMATagContainer : IZuneTagContainer
+    public class ZuneWMATagContainer : BaseZuneTagContainer
     {
-        private readonly TagContainer _container;
-        private readonly string _filePath;
+        private readonly File _file;
+        private readonly Tag _tag;
 
-        public ZuneWMATagContainer(TagContainer container)
+        public ZuneWMATagContainer(File file) : base(file)
         {
-            _container = container;
+            _file = file;
+            _tag = (Tag)file.GetTag(TagTypes.Asf);
         }
 
-        public ZuneWMATagContainer(TagContainer container, string filePath)
+        public override void AddZuneAttribute(ZuneAttribute zuneAttribute)
         {
-            _container = container;
-            _filePath = filePath;
-        }
+            var descRecord = new DescriptionRecord(0, 0, zuneAttribute.Name, zuneAttribute.Guid);
 
-        public MetaData MetaData
-        {
-            get
+            var attrib = _tag.MetadataLibraryObject.Where(x => x.Name == zuneAttribute.Name).FirstOrDefault();
+
+            if (attrib != null)
             {
-                return new MetaData
-                {
-                    AlbumArtist = GetValue(ASFAttributes.AlbumArtist),
-                    AlbumName = GetValue(ASFAttributes.AlbumName),
-                    ContributingArtists = GetValues(ASFAttributes.ContributingArtists).Cast<string>().ToList(),
-                    DiscNumber = GetValue(ASFAttributes.DiscNumber),
-                    Genre = GetValue(ASFAttributes.Genre),
-                    Title = GetValue(ASFAttributes.Title),
-                    TrackNumber = GetValue(ASFAttributes.TrackNumber),
-                    Year = GetValue(ASFAttributes.Year)
-                };
+                _tag.MetadataLibraryObject.SetRecords(0, 0, attrib.Name, descRecord);
+            }
+            else
+            {
+                _tag.MetadataLibraryObject.AddRecord(descRecord);
             }
         }
 
-        public IEnumerable<ZuneAttribute> ZuneAttributes
+        public override void RemoveZuneAttribute(string name)
         {
-            get
+            var attribs = _tag.MetadataLibraryObject.Where(x => x.Name == name).ToList();
+
+            foreach (var attrib in attribs)
             {
-                return from tag in _container
-                       where ZuneIds.GetAll.Contains(tag.Name)
-                       select new ZuneAttribute(tag.Name, new Guid(tag.Value.ToString()));
+                _tag.MetadataLibraryObject.RemoveRecords(0, 0, name);
             }
-        }
-
-        public void AddZuneAttribute(ZuneAttribute zuneAttribute)
-        {
-            RemoveZuneAttribute(zuneAttribute.Name);
-
-            _container.Add(new Attribute(zuneAttribute.Name, zuneAttribute.Guid.ToString(), WMT_ATTR_DATATYPE.WMT_TYPE_GUID));
-        }
-
-        public void AddMetaData(MetaData metaData)
-        {
-            IEnumerable<Attribute> attributes = CreateTextFramesFromMetaData(metaData);
-
-            foreach (var attribute in attributes)
-            {
-                //TODO: needs testing
-                if (!String.IsNullOrEmpty(attribute.Value.ToString()))
-                {
-                    _container.Add(attribute);
-                }
-            }
-        }
-
-        public void WriteToFile()
-        {
-            if (String.IsNullOrEmpty(_filePath))
-                throw new ArgumentException("filePath is not set");
-
-            ASFTagManager.WriteTag(_filePath, _container);
-        }
-
-        public void RemoveZuneAttribute(string name)
-        {
-            //we are removing all from the list just incase there are repeating attributes
-            _container.Where(x => x.Name == name).ToList().ForEach(attrib => _container.Remove(attrib));
-        }
-
-        private static IEnumerable<Attribute> CreateTextFramesFromMetaData(MetaData metaData)
-        {
-            yield return new Attribute(ASFAttributes.AlbumArtist, metaData.AlbumArtist,WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
-            yield return new Attribute(ASFAttributes.AlbumName, metaData.AlbumName,WMT_ATTR_DATATYPE.WMT_TYPE_STRING );
-            yield return new Attribute(ASFAttributes.DiscNumber, metaData.DiscNumber, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
-            yield return new Attribute(ASFAttributes.Genre, metaData.Genre, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
-            yield return new Attribute(ASFAttributes.Title, metaData.Title, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
-            yield return new Attribute(ASFAttributes.TrackNumber, metaData.TrackNumber, WMT_ATTR_DATATYPE.WMT_TYPE_DWORD);
-            yield return new Attribute(ASFAttributes.Year, metaData.Year, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
-
-            foreach (var contributingArtist in metaData.ContributingArtists)
-                yield return new Attribute(ASFAttributes.ContributingArtists, contributingArtist, WMT_ATTR_DATATYPE.WMT_TYPE_STRING);
-        }
-
-        private IEnumerable<object> GetValues(string key)
-        {
-            return _container.Where(x => x.Name == key).Select(x => x.Value);
-        }
-
-        private string GetValue(string key)
-        {
-            //TODO: a track could have multiple genres, need to implment like we do for contribartists
-
-            Attribute result = _container.Where(x => x.Name == key).FirstOrDefault();
-
-            return result != null ? result.Value.ToString() : string.Empty;
         }
     }
 }
