@@ -99,7 +99,6 @@
     <Compile Include="IO\Helpers.cs" />
     <Compile Include="IO\ID3Tagger\ID3Frames.cs" />
     <Compile Include="IO\ID3Tagger\ZuneMP3TagContainer.cs" />
-    <Compile Include="IO\Mp4Tagger\BitConExt.cs" />
     <Compile Include="IO\Mp4Tagger\GuidPart.cs" />
     <Compile Include="IO\Mp4Tagger\IBasePart.cs" />
     <Compile Include="IO\Mp4Tagger\RawPart.cs" />

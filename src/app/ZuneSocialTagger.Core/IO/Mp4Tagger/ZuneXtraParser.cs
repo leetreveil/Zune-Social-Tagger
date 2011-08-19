@@ -118,24 +118,24 @@ namespace ZuneSocialTagger.Core.IO.Mp4Tagger
         private static IEnumerable<byte> ConstructRawPartFromOtherPart(RawPart rawPart)
         {
             byte[] totalLength;
-            byte[] nameLength = BitConExt.GetBytesIsLi(rawPart.Name.Length);
+            byte[] nameLength = GetBytesIsLi(rawPart.Name.Length);
             byte[] name = Encoding.Default.GetBytes(rawPart.Name);
             byte[] guidPartFlag = new byte[] { 0x00, 0x00, 0x00, 0x01 }; // 4byte flag
-            byte[] contentLength = BitConExt.GetBytesIsLi(rawPart.Content.Length + 6);
-            byte[] partType = BitConExt.GetBytesIsLi(rawPart.Type);
+            byte[] contentLength = GetBytesIsLi(rawPart.Content.Length + 6);
+            byte[] partType = GetBytesIsLi(rawPart.Type);
             byte[] content = rawPart.Content;
 
             IEnumerable<byte> allConstructed =
                 nameLength.Concat(name).Concat(guidPartFlag).Concat(contentLength).Concat(partType).Concat(content);
 
-            totalLength = BitConExt.GetBytesIsLi(allConstructed.Count() + 4);
+            totalLength = GetBytesIsLi(allConstructed.Count() + 4);
 
             return totalLength.Concat(allConstructed);
         }
 
         private static IEnumerable<byte> ConstructRawPartFromGuidPart(GuidPart guidPart)
         {
-            var nameLength = BitConExt.GetBytesIsLi(guidPart.Name.Length);
+            var nameLength = GetBytesIsLi(guidPart.Name.Length);
             var name = Encoding.Default.GetBytes(guidPart.Name);
             var guidPartFlag = new byte[] { 0x00, 0x00, 0x00, 0x01 }; // 4byte flag
             var guidLength = new byte[] { 0x00, 0x00, 0x00, 0x16 }; //16 bytes guid length
@@ -144,9 +144,18 @@ namespace ZuneSocialTagger.Core.IO.Mp4Tagger
             var guid = guidPart.MediaId.ToByteArray(); // guid
             var partContentWithoutLength = nameLength.Concat(name).Concat(guidPartFlag).Concat(guidLength).Concat(partType).Concat(guid);
 
-            byte[] totalPartLength = BitConExt.GetBytesIsLi(partContentWithoutLength.Count() + 4);
+            byte[] totalPartLength = GetBytesIsLi(partContentWithoutLength.Count() + 4);
 
             return totalPartLength.Concat(partContentWithoutLength).ToArray();
+        }
+
+        private static byte[] GetBytesIsLi(int value)
+        {
+            byte[] bytes = BitConverter.GetBytes(value);
+
+            if (BitConverter.IsLittleEndian) Array.Reverse(bytes);
+
+            return bytes;
         }
     }
 }

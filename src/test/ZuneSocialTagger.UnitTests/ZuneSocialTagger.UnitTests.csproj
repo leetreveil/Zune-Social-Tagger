@@ -68,21 +68,9 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GalaSoft.MvvmLight, Version=3.0.0.31869, Culture=neutral, PublicKeyToken=3e875cdb3903c512, processorArchitecture=MSIL" />
-    <Reference Include="ID3Tag.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=59639b700fcbf7ba, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\id3tag.net\ID3Tag.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="Machine.Specifications">
-      <HintPath>..\..\..\libs\MSpec\Machine.Specifications.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libs\nunit\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="Rhino.Mocks">
-      <HintPath>..\..\..\libs\rhinomocks\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -90,18 +78,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\ExtensionMethodsTests_ExtractGuidFromUrnUuid.cs" />
-    <None Include="Core\ID3Tagger\ZuneMP3TagContainerTests.cs" />
+    <Compile Include="Core\ExtensionMethodsTests.cs" />
+    <Compile Include="Core\IO\Mp4Tagger\SampleData.cs" />
+    <Compile Include="Core\IO\Mp4Tagger\ZuneXtraParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\app\ZuneSocialTagger.Core\ZuneSocialTagger.Core.csproj">
       <Project>{C5F5D93F-50BC-4BE1-9594-5D3D3CB5BCE6}</Project>
       <Name>ZuneSocialTagger.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\app\ZuneSocialTagger.GUI\ZuneSocialTagger.GUI.csproj">
-      <Project>{7F663811-0888-47E0-A1DC-0A067DAFA144}</Project>
-      <Name>ZuneSocialTagger.GUI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

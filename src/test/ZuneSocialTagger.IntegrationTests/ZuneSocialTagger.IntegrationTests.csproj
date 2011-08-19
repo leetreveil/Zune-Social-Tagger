@@ -91,8 +91,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Core\ID3Tagger\ZuneMP3TagContainerTests.cs" />
-    <None Include="Core\WMATagger\ZuneWMATagContainerTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -127,7 +125,9 @@
       <Name>ZuneSocialTagger.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Core\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

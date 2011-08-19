@@ -31,17 +31,7 @@ namespace ZuneSocialTagger.Core.IO.Mp4Tagger
 
             parts.Add(new GuidPart(zuneAttribute.Name, zuneAttribute.Guid));
 
-            var udataBox = GetUdataBox();
-
-            if (udataBox == null)
-                return;
-
-            udataBox.RemoveChild(new ByteVector("Xtra"));
-
-            var newXtraBox = new XtraBox(new ByteVector("Xtra"));
-            newXtraBox.Data = ZuneXtraParser.ConstructRawData(parts);
-
-            udataBox.AddChild(newXtraBox);
+            UpdateXtraBox(parts);
         }
 
         public override void RemoveZuneAttribute(string name)
@@ -55,6 +45,11 @@ namespace ZuneSocialTagger.Core.IO.Mp4Tagger
 
             parts.Remove(toRemove.First());
 
+            UpdateXtraBox(parts);
+        }
+
+        private void UpdateXtraBox(IEnumerable<IBasePart> parts)
+        {
             var udataBox = GetUdataBox();
 
             if (udataBox == null)
@@ -70,9 +65,8 @@ namespace ZuneSocialTagger.Core.IO.Mp4Tagger
 
         private IEnumerable<IBasePart> GetParts()
         {
-            var attribs = new List<IBasePart>();
-
             var udataBox = GetUdataBox();
+            var attribs = new List<IBasePart>();
 
             if (udataBox == null)
                 return attribs;
@@ -87,7 +81,9 @@ namespace ZuneSocialTagger.Core.IO.Mp4Tagger
 
         private IsoUserDataBox GetUdataBox()
         {
-            FieldInfo fi = _mp4File.GetType().GetField("udta_boxes", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            FieldInfo fi = _mp4File.GetType().GetField("udta_boxes", 
+                BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+
             var boxes = fi.GetValue(_mp4File) as List<IsoUserDataBox>;
 
             if (boxes != null)
