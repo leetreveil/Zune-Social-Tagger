@@ -3,6 +3,11 @@
 
 ### Changelog
 
+__Release 2.4:__
+
+* Added support for mpeg4 files (.m4a)
+* Better support for mp3 & wma files
+
 __Release 2.3.4:__
 
 * Fixed bug with non english speaking cultures for marketplace search
@@ -28,7 +33,3 @@ __Release 2.2:__
 __Release 2.1:__
 
 * Now compatible with the latest release of the zune software (4.7)
-
-### TODO
-
-* Add support for .m4a files (aac)
