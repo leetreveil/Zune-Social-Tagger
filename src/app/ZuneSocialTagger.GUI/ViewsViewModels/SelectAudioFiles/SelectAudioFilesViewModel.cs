@@ -51,7 +51,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles
                 commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("Audio Files", "*.mp3;*.wma;*.m4a"));
                 commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("MP3 Files", "*.mp3"));
                 commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("WMA Files", "*.wma"));
-                commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("M4A Files", "*.m4a"));
+                commonOpenFileDialog.Filters.Add(new CommonFileDialogFilter("Mpeg4 Files", "*.m4a"));
 
                 if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.OK)
                     ReadFiles(commonOpenFileDialog.FileNames);

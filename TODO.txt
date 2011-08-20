@@ -1,4 +1,3 @@
-bring in tests for ZuneXtraParser
 check for other valid mpeg4 audio file types
 allow installer to select user account see: http://forum.xda-developers.com/showpost.php?p=16474277&postcount=8
 bring in artwork from tags if we are using 'select audio files'
