@@ -7,6 +7,14 @@
     <item>
       <title>Zune Social Tagger</title>
       <link>http://wiki.github.com/leetreveil/Zune-Social-Tagger/</link>
+      <description>.m4a support, better mp3 and wma support</description>
+      <pubDate>Sat, 20 August 2011 16:27:00 GMT</pubDate>
+      <appcast:version>2.4</appcast:version>
+      <enclosure url="https://github.com/leetreveil/Zune-Social-Tagger/downloads" length="749635" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Zune Social Tagger</title>
+      <link>http://wiki.github.com/leetreveil/Zune-Social-Tagger/</link>
       <description>N/A</description>
       <pubDate>Wed, 15 June 2011 10:10:00 GMT</pubDate>
       <appcast:version>2.3.4</appcast:version>
