@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using ZuneSocialTagger.Core;
 
-namespace ZuneSocialTagger.UnitTests.Core
+namespace ZuneSocialTagger.Tests.Unit
 {
     [TestFixture]
     public class ExtensionMethodTests

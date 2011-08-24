@@ -5,19 +5,18 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{245DAFC8-932E-4EE3-96C7-BD1438260268}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{C5F5D93F-50BC-4BE1-9594-5D3D3CB5BCE6}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ZuneSocialTagger.IntegrationTests</RootNamespace>
-    <AssemblyName>ZuneSocialTagger.IntegrationTests</AssemblyName>
+    <RootNamespace>ZuneSocialTagger.Core</RootNamespace>
+    <AssemblyName>ZuneSocialTagger.Core</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <StartupObject>ZuneSocialTagger.IntegrationTests.Program</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,6 +34,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -42,23 +43,23 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Debug\ZuneSocialTagger.IntegrationTests.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisLogFile>bin\Debug\ZuneSocialTagger.Core.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\..\Program Files\Zune\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Release\ZuneSocialTagger.IntegrationTests.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\ZuneSocialTagger.Core.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
@@ -69,65 +70,74 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ASFTag.Net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\asftag.net\ASFTag.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="ID3Tag.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=59639b700fcbf7ba, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\id3tag.net\ID3Tag.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\nunit\nunit.framework.dll</HintPath>
+    <Reference Include="protobuf-net">
+      <HintPath>..\..\..\libs\protobuf\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="taglib-sharp">
       <HintPath>..\..\..\libs\taglibsharp\taglib-sharp.dll</HintPath>
     </Reference>
+    <Reference Include="ZuneDBApi">
+      <HintPath>..\..\libs\zuneApi\ZuneDBApi.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="IO\AudioFileReadException.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="IO\BaseZuneTagContainer.cs" />
+    <Compile Include="IO\Helpers.cs" />
+    <Compile Include="IO\ID3Tagger\ID3Frames.cs" />
+    <Compile Include="IO\ID3Tagger\ZuneMP3TagContainer.cs" />
+    <Compile Include="IO\Mp4Tagger\ByteHelpers.cs" />
+    <Compile Include="IO\Mp4Tagger\GuidPart.cs" />
+    <Compile Include="IO\Mp4Tagger\IBasePart.cs" />
+    <Compile Include="IO\Mp4Tagger\RawPart.cs" />
+    <Compile Include="IO\Mp4Tagger\XtraBox.cs" />
+    <Compile Include="IO\Mp4Tagger\ZuneMp4TagContainer.cs" />
+    <Compile Include="IO\Mp4Tagger\ZuneXtraParser.cs" />
+    <Compile Include="IO\WMATagger\ZuneWMATagContainer.cs" />
+    <Compile Include="IO\IZuneTagContainer.cs" />
+    <Compile Include="IO\ZuneAttribute.cs" />
+    <Compile Include="ZuneDatabase\DbAlbum.cs" />
+    <Compile Include="ZuneDatabase\DbTrack.cs" />
+    <Compile Include="ZuneDatabase\IZuneDatabaseReader.cs" />
+    <Compile Include="ZuneDatabase\SortOrder.cs" />
+    <Compile Include="ZuneDatabase\TestZuneDatabaseReader.cs" />
+    <Compile Include="ZuneDatabase\ZuneDatabaseReader.cs" />
+    <Compile Include="IO\ZuneIds.cs" />
+    <Compile Include="IO\ZuneTagContainerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IO\MetaData.cs" />
+    <Compile Include="ZuneWebsite\CultureInfo.cs" />
+    <Compile Include="WindowsLocale.cs" />
+    <Compile Include="ZuneWebsite\LocaleDownloader.cs" />
+    <Compile Include="ZuneWebsite\SyndicationExtensions.cs" />
+    <Compile Include="ZuneWebsite\AlbumDetailsDownloader.cs" />
+    <Compile Include="ZuneWebsite\AlbumSearch.cs" />
+    <Compile Include="ZuneWebsite\WebArtist.cs" />
+    <Compile Include="ZuneWebsite\ArtistSearch.cs" />
+    <Compile Include="ZuneWebsite\DownloadState.cs" />
+    <Compile Include="ZuneWebsite\Urls.cs" />
+    <Compile Include="ZuneWebsite\WebAlbum.cs" />
+    <Compile Include="ZuneWebsite\WebTrack.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SampleData\albumsearch.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\id3v1.1.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\id3v2.2.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\id3v2.3withartwork.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\albumdetailswithmissingdata.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\albumdetails.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="ZuneDatabase\testzunedatabase.xml">
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="SampleData\asfheadercomplete.wma">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\app\ZuneSocialTagger.Core\ZuneSocialTagger.Core.csproj">
-      <Project>{C5F5D93F-50BC-4BE1-9594-5D3D3CB5BCE6}</Project>
-      <Name>ZuneSocialTagger.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
