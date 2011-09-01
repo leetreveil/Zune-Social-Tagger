@@ -8,8 +8,6 @@ the zune database crashing or not loading shouldn't kill the program. It should 
 
 Add logging
 
-'Could not find album, you may need to refresh the database' also displays download now link!?
-
 
 MAJOR:
 when running 'scan all' it should search the zune marketplace for any matches and notify the user if any are found

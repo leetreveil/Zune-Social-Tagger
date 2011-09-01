@@ -122,7 +122,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             catch (COMException)
             {
                 Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,
-                    "Could not find album, you may need to refresh the database."));
+                    "Could not find album, please close and reopen Zune Social Tagger."));
             }
             catch(Exception ex)
             {
@@ -194,7 +194,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             catch (COMException)
             {
                 Messenger.Default.Send(new ErrorMessage(ErrorMode.Error,
-                    "Could not find album, you may need to refresh the database."));
+                    "Could not find album, please close and reopen Zune Social Tagger."));
             }
             catch (Exception ex)
             {
