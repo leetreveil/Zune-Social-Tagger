@@ -91,27 +91,27 @@
   <ItemGroup>
     <Reference Include="GalaSoft.MvvmLight, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3e875cdb3903c512, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\mvvmlight3\GalaSoft.MvvmLight.dll</HintPath>
+      <HintPath>..\..\libs\mvvmlight3\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight.Extras">
-      <HintPath>..\..\..\libs\mvvmlight3\GalaSoft.MvvmLight.Extras.dll</HintPath>
+      <HintPath>..\..\libs\mvvmlight3\GalaSoft.MvvmLight.Extras.dll</HintPath>
     </Reference>
     <Reference Include="leetreveil.AutoUpdate.Framework">
-      <HintPath>..\..\..\libs\leetreveil.AutoUpdate\leetreveil.AutoUpdate.Framework.dll</HintPath>
+      <HintPath>..\..\libs\leetreveil.AutoUpdate\leetreveil.AutoUpdate.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack">
-      <HintPath>..\..\..\libs\win7apicodepack\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <HintPath>..\..\libs\win7apicodepack\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell">
-      <HintPath>..\..\..\libs\win7apicodepack\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+      <HintPath>..\..\libs\win7apicodepack\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
     <Reference Include="Ninject, Version=2.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libs\ninject\Ninject.dll</HintPath>
+      <HintPath>..\..\libs\ninject\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="protobuf-net">
-      <HintPath>..\..\..\libs\protobuf\protobuf-net.dll</HintPath>
+      <HintPath>..\..\libs\protobuf\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
