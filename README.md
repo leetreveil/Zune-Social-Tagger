@@ -3,6 +3,9 @@
 
 ### Changelog
 
+__Release 2.4.1:__
+* Fixed bug with some .m4a files not linking correctly
+
 __Release 2.4:__
 
 * Added support for mpeg4 files (.m4a)
