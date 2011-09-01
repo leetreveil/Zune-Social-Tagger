@@ -1,13 +1,7 @@
-check for other valid mpeg4 audio file types
-allow installer to select user account see: http://forum.xda-developers.com/showpost.php?p=16474277&postcount=8
-bring in artwork from tags if we are using 'select audio files'
-
-handle folder path not being available if it no longer exists (select audio files) (vista/7)
-
 the zune database crashing or not loading shouldn't kill the program. It should default back to 'select audio files'
-
 Add logging
 
 
 MAJOR:
+bring in artwork from tags if we are using 'select audio files'
 when running 'scan all' it should search the zune marketplace for any matches and notify the user if any are found
