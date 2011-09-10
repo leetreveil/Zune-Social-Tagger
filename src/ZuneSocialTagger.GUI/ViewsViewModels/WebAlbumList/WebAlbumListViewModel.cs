@@ -203,10 +203,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                             {
                                 ScanChunk(toScan, position, albumsTotal);
                             }
-                            else
-                            {
-                                Debugger.Break();
-                            }
                         }
                     }
                 });
