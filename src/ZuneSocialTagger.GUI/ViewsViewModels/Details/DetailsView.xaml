@@ -94,7 +94,7 @@
                             Content="{TemplateBinding SelectionBoxItem}"
                             ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                             ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                            Margin="4,5,23,4"
+                            Margin="4,0,0,0"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left" />
                                         <TextBox x:Name="PART_EditableTextBox"
@@ -102,7 +102,6 @@
                                             Template="{StaticResource ComboBoxTextBox}" 
                                             HorizontalAlignment="Left" 
                                             VerticalAlignment="Center" 
-                                            Margin="3,3,23,3"
                                             Focusable="True" 
                                             Background="Transparent"
                                             FontWeight="Bold"
@@ -110,6 +109,7 @@
                                             Foreground="#858585"
                                             IsHitTestVisible="False"
                                             IsReadOnly="{TemplateBinding IsReadOnly}"
+                                                 Margin="4,0,0,0"
                                         Text="Please select a song title"/>
                                         <Popup 
                             Name="Popup"
@@ -128,7 +128,7 @@
                                     Background="#FFFFFF"
                                     BorderThickness="1"
                                     BorderBrush="#888888"/>
-                                                <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                                <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True" VerticalScrollBarVisibility="Auto">
                                                     <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                                                 </ScrollViewer>
                                             </Grid>
@@ -182,24 +182,34 @@
                                             ContentTemplate="{StaticResource TrackNumWithTitle}" />
 
                             <ComboBox Style="{StaticResource SelectSongCombobox}" 
-                                          ItemsSource="{Binding AvailableZuneTracks}" 
-                                          SelectedItem="{Binding SelectedSong,Mode=TwoWay}" 
-                                          IsReadOnly="True" Grid.Column="1"  
-                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                                          ScrollViewer.VerticalScrollBarVisibility="Visible"
-                                          VerticalAlignment="Center" HorizontalAlignment="Stretch" Tag="Please select a song title"
-                                          Height="25">
+                                      ItemsSource="{Binding AvailableZuneTracks}" 
+                                      SelectedItem="{Binding SelectedSong, Mode=TwoWay}" 
+                                      IsReadOnly="True" 
+                                      Grid.Column="1"  
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                      VerticalAlignment="Center" 
+                                      HorizontalAlignment="Stretch" 
+                                      Tag="Please select a song title"
+                                      Height="25">
+                                <ComboBox.Resources>
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}">#E7E8E8</SolidColorBrush>
+                                </ComboBox.Resources>
 
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
 
                                         <StackPanel Height="25" Orientation="Horizontal">
+                                            
                                             <TextBlock Width="15" 
-                                                           Text="{Binding TrackNumber}" 
-                                                           VerticalAlignment="Top" FontSize="12" 
-                                                           FontWeight="Bold"/>
+                                                       Text="{Binding TrackNumber}" 
+                                                       VerticalAlignment="Center" 
+                                                       Foreground="Black"/>
 
-                                            <TextBlock Text="{Binding TrackTitle}" VerticalAlignment="Top" Margin="10,0,0,0"/>
+                                            <TextBlock Text="{Binding TrackTitle}"
+                                                       VerticalAlignment="Center" 
+                                                       Margin="10,0,0,0"
+                                                       Foreground="Black"/>
 
                                         </StackPanel>
 

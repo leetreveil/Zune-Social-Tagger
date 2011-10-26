@@ -521,7 +521,7 @@
             <TextBlock Width="23"
                        Text="{Binding TrackNumber}"
                        VerticalAlignment="Center"
-                       FontSize="18" />
+                       FontSize="17" />
 
             <TextBlock ToolTip="{Binding TrackTitle}"
                        Text="{Binding TrackTitle}"
