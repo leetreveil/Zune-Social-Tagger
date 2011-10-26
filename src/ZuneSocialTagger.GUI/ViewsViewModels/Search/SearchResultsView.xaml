@@ -7,7 +7,7 @@
     x:Class="ZuneSocialTagger.GUI.ViewsViewModels.Search.SearchResultsView"
     xmlns:ZuneWebsite="clr-namespace:ZuneSocialTagger.Core.ZuneWebsite;assembly=ZuneSocialTagger.Core" 
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
-    xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
+    xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command"
     xmlns:dt="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Search.DesignTime" 
     xmlns:Search="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Search" 
     d:DesignHeight="200">

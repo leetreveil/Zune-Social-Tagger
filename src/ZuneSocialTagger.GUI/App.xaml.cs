@@ -2,9 +2,9 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Threading;
-using GalaSoft.MvvmLight.Threading;
 using Ninject;
 using ZuneSocialTagger.Core.ZuneDatabase;
+using GalaSoft.MvvmLight.Threading;
 using ZuneSocialTagger.GUI.Controls;
 using ZuneSocialTagger.GUI.Properties;
 using ZuneSocialTagger.GUI.ViewsViewModels.Application;
@@ -15,6 +15,7 @@ using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using ZuneSocialTagger.GUI.Shared;
 using ZuneSocialTagger.GUI.Models;
+using System.Windows.Controls;
 
 namespace ZuneSocialTagger.GUI
 {
@@ -23,28 +24,33 @@ namespace ZuneSocialTagger.GUI
     /// </summary>
     public partial class App
     {
+        private static ApplicationView _appView;
         public App()
         {
             WpfSingleInstanceByEventWaitHandle.WpfSingleInstance.Make();
+            DispatcherHelper.Initialize();
             this.Startup += App_Startup;
         }
 
         void App_Startup(object sender, StartupEventArgs e)
         {
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+            //improved perceived application startup by allowing the main
+            //application view to load before anything else, be it code, dll's etc.
+            _appView = new ApplicationView();
+            _appView.Loaded += new RoutedEventHandler(_appView_Loaded);
+            _appView.Show();
+        }
 
-            DispatcherHelper.Initialize();
-
+        void _appView_Loaded(object sender, RoutedEventArgs e)
+        {
             Settings.Default.AppDataFolder = GetUserDataPath();
 
             var container = new StandardKernel();
             SetupBindings(container);
 
-            var appView = container.Get<ApplicationView>();
-            appView.Show();
-
             var appViewModel = container.Get<ApplicationViewModel>();
-            appView.DataContext = appViewModel;
+            _appView.DataContext = appViewModel;
             Current.Exit += delegate { appViewModel.ApplicationIsShuttingDown(); };
 
             appViewModel.ViewHasLoaded();
@@ -93,10 +99,8 @@ namespace ZuneSocialTagger.GUI
 
         public static void DisplayException(Exception ex) 
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(() => 
-            {
-                ErrorReportDialog.Show(ExceptionLogger.LogException(ex), null);
-            });
+            DispatcherHelper.CheckBeginInvokeOnUI(() 
+                => { ErrorReportDialog.Show(ExceptionLogger.LogException(ex), null); });
         }
     }
 }

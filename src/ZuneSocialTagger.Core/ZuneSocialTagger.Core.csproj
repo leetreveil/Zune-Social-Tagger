@@ -72,6 +72,7 @@
   <ItemGroup>
     <Reference Include="protobuf-net">
       <HintPath>..\..\..\libs\protobuf\protobuf-net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -86,6 +87,7 @@
     </Reference>
     <Reference Include="taglib-sharp">
       <HintPath>..\..\..\libs\taglibsharp\taglib-sharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ZuneDBApi">
       <HintPath>..\..\libs\zuneApi\ZuneDBApi.dll</HintPath>

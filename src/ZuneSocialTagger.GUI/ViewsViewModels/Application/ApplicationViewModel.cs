@@ -24,6 +24,8 @@ using System.Windows.Input;
 using SortOrder = ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.SortOrder;
 using ZuneSocialTagger.Core;
 using Ninject;
+using System.Windows.Navigation;
+using System.Windows;
 
 namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 {
@@ -40,7 +42,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         public ApplicationViewModel(IZuneDatabaseReader dbReader,
                                     SafeObservableCollection<AlbumDetailsViewModel> albums,
                                     ViewLocator locator,
-                                    IKernel kernel)
+                                    IKernel kernel,
+                                    ApplicationView av)
         {
             _dbReader = dbReader;
             _albums = albums;
@@ -49,8 +52,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
             //register for notification messages
             Messenger.Default.Register<ErrorMessage>(this, Notifications.Add);
-
-
             Messenger.Default.Register<UserControl>(this, (view) => { CurrentPage = view; });
         }
 

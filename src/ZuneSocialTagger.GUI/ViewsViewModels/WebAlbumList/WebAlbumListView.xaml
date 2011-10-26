@@ -8,7 +8,7 @@
              xmlns:dt="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.DesignTime" 
              xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls" 
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
-             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras">
+             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command">
 
     <UserControl.Resources>
         <ResourceDictionary>

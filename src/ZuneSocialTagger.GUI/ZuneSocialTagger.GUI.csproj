@@ -48,7 +48,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\..\Program Files\Zune\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -92,32 +92,36 @@
     <Reference Include="GalaSoft.MvvmLight, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3e875cdb3903c512, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\libs\mvvmlight3\GalaSoft.MvvmLight.dll</HintPath>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Extras">
-      <HintPath>..\..\libs\mvvmlight3\GalaSoft.MvvmLight.Extras.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="leetreveil.AutoUpdate.Framework">
       <HintPath>..\..\libs\leetreveil.AutoUpdate\leetreveil.AutoUpdate.Framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack">
       <HintPath>..\..\libs\win7apicodepack\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell">
       <HintPath>..\..\libs\win7apicodepack\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=2.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\libs\ninject\Ninject.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="protobuf-net">
       <HintPath>..\..\libs\protobuf\protobuf-net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\..\..\libs\mvvmlight3\System.Windows.Interactivity.dll</HintPath>
+    <Reference Include="System.Windows.Interactivity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\mvvmlight3\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -140,6 +144,9 @@
       <DependentUpon>SearchControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
+    <Compile Include="DispatcherHelper.cs" />
+    <Compile Include="EventToCommand.cs" />
+    <Compile Include="EventToCommand.WPF.cs" />
     <Compile Include="Shared\ExceptionLogger.cs" />
     <Compile Include="PreApp.cs" />
     <Compile Include="ViewsViewModels\Details\DiscHeader.cs" />
@@ -338,6 +345,7 @@
     <ProjectReference Include="..\ZuneSocialTagger.Core\ZuneSocialTagger.Core.csproj">
       <Project>{C5F5D93F-50BC-4BE1-9594-5D3D3CB5BCE6}</Project>
       <Name>ZuneSocialTagger.Core</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -360,7 +368,18 @@
   <ItemGroup>
     <Resource Include="Resources\Assets\zstlogo.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\taglib-sharp.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\GalaSoft.MvvmLight.dll" />
+    <EmbeddedResource Include="Resources\GalaSoft.MvvmLight.Extras.dll" />
+    <EmbeddedResource Include="Resources\leetreveil.AutoUpdate.Framework.dll" />
+    <EmbeddedResource Include="Resources\Microsoft.WindowsAPICodePack.dll" />
+    <EmbeddedResource Include="Resources\Ninject.dll" />
+    <EmbeddedResource Include="Resources\protobuf-net.dll" />
+    <EmbeddedResource Include="Resources\System.Windows.Interactivity.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets. -->
@@ -371,5 +390,9 @@
         <LogicalName>%(ReferenceCopyLocalPaths.DestinationSubDirectory)%(ReferenceCopyLocalPaths.Filename)%(ReferenceCopyLocalPaths.Extension)</LogicalName>
       </EmbeddedResource>
     </ItemGroup>
+  </Target>
+  <Target Name="AfterBuild">
+    <Message Text="Removing copy local references" />
+    <Delete Files="@(ReferenceCopyLocalPaths->'$(OutDir)%(DestinationSubDirectory)%(Filename)%(Extension)')" />
   </Target>
 </Project>

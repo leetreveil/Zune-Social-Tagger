@@ -1,111 +1,101 @@
-﻿<Controls:DraggableWindow
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls" 
-    x:Class="ZuneSocialTagger.GUI.ViewsViewModels.Application.ApplicationView" 
-    Style="{DynamicResource DefaultWindowStyle}"
-    WindowStartupLocation="CenterScreen">
+﻿<Controls:DraggableWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:Controls="clr-namespace:ZuneSocialTagger.GUI.Controls"
+                          x:Class="ZuneSocialTagger.GUI.ViewsViewModels.Application.ApplicationView"
+                          Style="{DynamicResource DefaultWindowStyle}"
+                          WindowStartupLocation="CenterScreen">
 
     <Controls:DraggableWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-            	<ResourceDictionary Source="../../Resources/Resources.xaml" />
-            	<ResourceDictionary>
+                <ResourceDictionary Source="../../Resources/Resources.xaml" />
+                <ResourceDictionary>
 
-            		<Style x:Key="CloseButton"
-            			TargetType="{x:Type Button}">
-            			<Setter Property="Template">
-            				<Setter.Value>
-            					<ControlTemplate TargetType="{x:Type Button}">
-            						<Grid>
+                    <Style x:Key="CloseButton"
+                           TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Grid>
 
-            							<Path x:Name="xPath"
-            								Stretch="Fill"
-            								Stroke="#A2ABAA"
-            								StrokeThickness="2" Data="M0,0 L25,25 M0,25 L25,0"/>
+                                        <Path x:Name="xPath"
+                                              Stretch="Fill"
+                                              Stroke="#A2ABAA"
+                                              StrokeThickness="2"
+                                              Data="M0,0 L25,25 M0,25 L25,0" />
 
-            							<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-            								VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-            								SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-            								RecognizesAccessKey="True" />
-            						</Grid>
-            						<ControlTemplate.Triggers>
-            							<Trigger Property="IsFocused"
-            								Value="True" />
-            							<Trigger Property="IsDefaulted"
-            								Value="True" />
-            							<Trigger Property="IsMouseOver"
-            								Value="True">
-            								<Setter TargetName="xPath"
-            									Property="Stroke"
-            									Value="#7F8685" />
-            							</Trigger>
-            							<Trigger Property="IsPressed"
-            								Value="True">
-            								<Setter TargetName="xPath"
-            									Property="Stroke"
-            									Value="#717776" />
-            							</Trigger>
-            							<Trigger Property="IsEnabled"
-            								Value="False" />
-            						</ControlTemplate.Triggers>
-            					</ControlTemplate>
-            				</Setter.Value>
-            			</Setter>
-            		</Style>
+                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                          RecognizesAccessKey="True" />
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsFocused"
+                                                 Value="True" />
+                                        <Trigger Property="IsDefaulted"
+                                                 Value="True" />
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="True">
+                                            <Setter TargetName="xPath"
+                                                    Property="Stroke"
+                                                    Value="#7F8685" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed"
+                                                 Value="True">
+                                            <Setter TargetName="xPath"
+                                                    Property="Stroke"
+                                                    Value="#717776" />
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled"
+                                                 Value="False" />
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
 
-            		<Style x:Key="MinimizeButton"
-            			TargetType="{x:Type Button}">
-            			<Setter Property="Template">
-            				<Setter.Value>
-            					<ControlTemplate TargetType="{x:Type Button}">
-            						<Grid>
-            							<Rectangle x:Name="rect"
-            								Fill="#A2ABAA" />
-            							<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-            								VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-            								SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-            								RecognizesAccessKey="True" />
-            						</Grid>
-            						<ControlTemplate.Triggers>
-            							<Trigger Property="IsFocused"
-            								Value="True" />
-            							<Trigger Property="IsDefaulted"
-            								Value="True" />
-            							<Trigger Property="IsMouseOver"
-            								Value="True">
-            								<Setter TargetName="rect"
-            									Property="Fill"
-            									Value="#7F8685" />
-            							</Trigger>
-            							<Trigger Property="IsPressed"
-            								Value="True">
-            								<Setter TargetName="rect"
-            									Property="Fill"
-            									Value="#717776" />
-            							</Trigger>
-            							<Trigger Property="IsEnabled"
-            								Value="False" />
-            						</ControlTemplate.Triggers>
-            					</ControlTemplate>
-            				</Setter.Value>
-            			</Setter>
-            		</Style>
-                    
-            	</ResourceDictionary>
+                    <Style x:Key="MinimizeButton"
+                           TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Grid>
+                                        <Rectangle x:Name="rect"
+                                                   Fill="#A2ABAA" />
+                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                          RecognizesAccessKey="True" />
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsFocused"
+                                                 Value="True" />
+                                        <Trigger Property="IsDefaulted"
+                                                 Value="True" />
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="True">
+                                            <Setter TargetName="rect"
+                                                    Property="Fill"
+                                                    Value="#7F8685" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed"
+                                                 Value="True">
+                                            <Setter TargetName="rect"
+                                                    Property="Fill"
+                                                    Value="#717776" />
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled"
+                                                 Value="False" />
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Controls:DraggableWindow.Resources>
-    
-    
-    <Controls:DraggableWindow.CommandBindings>
-        <CommandBinding Command="NavigationCommands.BrowseBack"
-                        Executed="NavigationCommands_BrowseBack" />
-
-        <CommandBinding Command="NavigationCommands.BrowseForward"
-                        Executed="NavigationCommands_BrowseForward" />
-    </Controls:DraggableWindow.CommandBindings>
-    
     
     <Grid>
         <Grid.RowDefinitions>
