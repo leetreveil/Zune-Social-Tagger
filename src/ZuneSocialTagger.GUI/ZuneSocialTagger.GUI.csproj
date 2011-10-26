@@ -368,18 +368,6 @@
   <ItemGroup>
     <Resource Include="Resources\Assets\zstlogo.png" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\taglib-sharp.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\GalaSoft.MvvmLight.dll" />
-    <EmbeddedResource Include="Resources\GalaSoft.MvvmLight.Extras.dll" />
-    <EmbeddedResource Include="Resources\leetreveil.AutoUpdate.Framework.dll" />
-    <EmbeddedResource Include="Resources\Microsoft.WindowsAPICodePack.dll" />
-    <EmbeddedResource Include="Resources\Ninject.dll" />
-    <EmbeddedResource Include="Resources\protobuf-net.dll" />
-    <EmbeddedResource Include="Resources\System.Windows.Interactivity.dll" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets. -->
