@@ -24,7 +24,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
     {
         private readonly ViewLocator _locator;
         private int _loadingProgress;
-        private readonly bool _isTaskbarSupported;
         private SortOrder _sortOrder;
         private string _filterText;
         private readonly SafeObservableCollection<AlbumDetailsViewModel> _albums;
@@ -42,7 +41,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             _cvs.Filter += CvsFilter;
 
             _locator = locator;
-            _isTaskbarSupported = TaskbarManager.IsPlatformSupported;
 
             this.LoadFromZuneWebsiteCommand = new RelayCommand(LoadFromZuneWebsite);
             this.SwitchToClassicModeCommand = new RelayCommand(SwitchToClassicMode);
@@ -226,7 +224,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
 
                 try
                 {
-                    if (_isTaskbarSupported)
+                    if (TaskbarManager.IsPlatformSupported)
                         TaskbarManager.Instance.SetProgressValue(current, total);
                 }
                 catch (InvalidOperationException)
@@ -252,7 +250,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             
             try
             {
-                if (_isTaskbarSupported)
+                if (TaskbarManager.IsPlatformSupported)
                     TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
             }
             catch (InvalidOperationException e)

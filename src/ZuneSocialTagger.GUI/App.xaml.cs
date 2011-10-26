@@ -25,6 +25,7 @@ namespace ZuneSocialTagger.GUI
     public partial class App
     {
         private static ApplicationView _appView;
+
         public App()
         {
             WpfSingleInstanceByEventWaitHandle.WpfSingleInstance.Make();
@@ -38,11 +39,12 @@ namespace ZuneSocialTagger.GUI
             //improved perceived application startup by allowing the main
             //application view to load before anything else, be it code, dll's etc.
             _appView = new ApplicationView();
-            _appView.Loaded += new RoutedEventHandler(_appView_Loaded);
+            _appView.ContentRendered += new EventHandler(_appView_ContentRendered);
             _appView.Show();
+            
         }
 
-        void _appView_Loaded(object sender, RoutedEventArgs e)
+        void _appView_ContentRendered(object sender, EventArgs e)
         {
             Settings.Default.AppDataFolder = GetUserDataPath();
 
