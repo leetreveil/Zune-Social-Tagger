@@ -179,7 +179,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 if (filePaths.Count() == 1)
                 {
                     var container = ZuneTagContainerFactory.GetContainer(filePaths.First());
-                    _sharedModel.SongsFromFile.Add(container);
+                    _sharedModel.SongsFromFile = new List<IZuneTagContainer>() { container };
                 }
                 else
                 {
