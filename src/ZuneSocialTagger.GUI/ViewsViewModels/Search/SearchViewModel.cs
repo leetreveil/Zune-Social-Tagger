@@ -25,6 +25,11 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
             get { return _sharedModel.AlbumDetailsFromFile; } 
         }
 
+        public bool IsMarketplaceAvailable
+        {
+            get { return MarketplaceInfo.IsMusicMarketplaceEnabled; }
+        }
+
         private RelayCommand _moveBackCommand;
         public RelayCommand MoveBackCommand
         {
@@ -129,12 +134,16 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search
         {
             this.CanShowResults = false;
             this.CanMoveNext = false;
-            this.IsSearching = true;
-            this.SearchResultsViewModel = null;
-            this.SearchResultsViewModel = new SearchResultsViewModel(this);
 
-            SearchForAlbums(album);
-            SearchForArtists(artist);
+            if (MarketplaceInfo.IsMusicMarketplaceEnabled)
+            {
+                this.IsSearching = true;
+                this.SearchResultsViewModel = null;
+                this.SearchResultsViewModel = new SearchResultsViewModel(this);
+
+                SearchForAlbums(album);
+                SearchForArtists(artist);
+            }
         }
 
         private void SearchForAlbums(string album)

@@ -287,7 +287,8 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
             //default the marketplace culture to the current computers culture.
             //This should be overidden by whats read from the marketplace
-            CultureInfo.MarketplaceCulture = locale;
+            MarketplaceInfo.MarketplaceCulture = locale;
+            MarketplaceInfo.IsMusicMarketplaceEnabled = true;
 
             LocaleDownloader.IsMarketPlaceEnabledForLocaleAsync(locale, details =>
             {
@@ -297,23 +298,25 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     {
                         if (details.MarketplaceStatus == MarketplaceStatus.NotAvailable)
                         {
+                            MarketplaceInfo.IsMusicMarketplaceEnabled = false;
                             var msg = String.Format("The Zune Marketplace is not yet available in your region ({0}). You" +
                                 " may not get any search results.", locale);
                             Notifications.Add(new ErrorMessage(ErrorMode.Info, msg));
                         }
                         if (details.MarketplaceStatus == MarketplaceStatus.Error)
                         {
+                            MarketplaceInfo.IsMusicMarketplaceEnabled = false;
                             var msg = String.Format("Error connecting to the ({0}) marketplace.", locale);
                             Notifications.Add(new ErrorMessage(ErrorMode.Info, msg));
                         }
-
                         if (!String.IsNullOrEmpty(details.MarketplaceLocale))
                         {
-                            CultureInfo.MarketplaceCulture = details.MarketplaceLocale;
+                            MarketplaceInfo.MarketplaceCulture = details.MarketplaceLocale;
                         }
                     }
                     else
                     {
+                        MarketplaceInfo.IsMusicMarketplaceEnabled = false;
                         var msg = "Unable to connect to marketplace. You may not be able to get any search results.";
                         Notifications.Add(new ErrorMessage(ErrorMode.Info, msg));
                     }

@@ -9,7 +9,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
 
         private static string Culture
         {
-            get { return CultureInfo.MarketplaceCulture; }
+            get { return MarketplaceInfo.MarketplaceCulture; }
 
         }
     }

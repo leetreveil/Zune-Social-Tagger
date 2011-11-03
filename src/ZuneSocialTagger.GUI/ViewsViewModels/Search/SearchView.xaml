@@ -35,6 +35,7 @@
                     Grid.Column="1" Width="250">
 
             <Controls:SearchControl Margin="20,0,0,0"
+                                    IsEnabled="{Binding IsMarketplaceAvailable}"
                                     Text="{Binding Path=SearchText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                     Command="{Binding SearchCommand}"/>
 
@@ -74,6 +75,16 @@
             </TextBlock>
 
         </StackPanel>
+        <TextBlock Margin="0,30,0,0"
+                   Grid.Row="1"
+                   Width="350"
+                   Grid.ColumnSpan="2"
+                   HorizontalAlignment="Left"
+                   FontWeight="Bold"
+                   FontSize="20"
+                   TextWrapping="Wrap"
+                   Text="THE ZUNE MARKETPLACE IS NOT AVAILABLE IN YOUR REGION"
+                   Visibility="{Binding IsMarketplaceAvailable, Converter={StaticResource BoolToVisConverter}, ConverterParameter=true}"/>
 
         <Search:SearchResultsView
              d:DataContext="{d:DesignInstance dt:SearchResultsDesignViewModel,IsDesignTimeCreatable=True}"

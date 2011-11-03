@@ -6,7 +6,7 @@
     <converters:TextToVisibilityConverter x:Key="TextToVisibilityConverter" />
     <converters:TextToBoolConverter x:Key="TextToBoolConverter" />
     <converters:SortOrderToTextConverter x:Key="SortOrderToTextConverter" />
-    <ctrls:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+    <converters:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
 
 
     <!--STANDARD BUTTON(STYLED LIKE THE ZUNE BUTTON (SORT OF))-->

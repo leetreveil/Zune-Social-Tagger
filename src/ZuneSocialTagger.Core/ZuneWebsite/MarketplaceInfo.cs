@@ -5,8 +5,9 @@ using System.Text;
 
 namespace ZuneSocialTagger.Core.ZuneWebsite
 {
-    public static class CultureInfo
+    public static class MarketplaceInfo
     {
         public static string MarketplaceCulture { get; set; }
+        public static bool IsMusicMarketplaceEnabled { get; set; }
     }
 }
