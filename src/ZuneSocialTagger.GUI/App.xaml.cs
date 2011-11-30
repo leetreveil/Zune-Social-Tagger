@@ -16,6 +16,8 @@ using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using ZuneSocialTagger.GUI.Shared;
 using ZuneSocialTagger.GUI.Models;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Reflection;
 
 namespace ZuneSocialTagger.GUI
 {
@@ -36,6 +38,14 @@ namespace ZuneSocialTagger.GUI
         void App_Startup(object sender, StartupEventArgs e)
         {
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+
+            //hack for setting the caret highlight colour in textboxes and the like
+            //taken from: http://www.nickdarnell.com/2009/12/wpf-change-textbox-selection-color-net-3-5/
+            SolidColorBrush current = SystemColors.HighlightBrush;
+            FieldInfo colorCacheField = typeof(SystemColors).GetField("_colorCache", BindingFlags.Static | BindingFlags.NonPublic);
+            Color[] _colorCache = (Color[])colorCacheField.GetValue(typeof(SystemColors));
+            _colorCache[14] = Color.FromRgb(0xF1, 0x0D, 0xA2); //pink
+
             //improved perceived application startup by allowing the main
             //application view to load before anything else, be it code, dll's etc.
             _appView = new ApplicationView();
