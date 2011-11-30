@@ -20,5 +20,27 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         {
             this.WindowState = WindowState.Minimized;
         }
+
+        private void Image_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            string url = "";
+
+            string business = "leetreveil@gmail.com";
+            string lc = "GB";
+            string item_name = "Zune Social Tagger";
+            string no_note = "0";
+            string currency_code = "USD";
+
+            url += "https://www.paypal.com/cgi-bin/webscr" +
+                "?cmd=" + "_donations" +
+                "&business=" + business +
+                "&lc=" + lc +
+                "&item_name=" + item_name +
+                "&no_note=" + no_note +
+                "&currency_code=" + currency_code +
+                "&bn=" + "PP-DonationsBF:btn_donate_SM.gif:NonHostedGuest";
+
+            System.Diagnostics.Process.Start(url);
+        }
     }
 }

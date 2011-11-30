@@ -110,10 +110,18 @@
         	<ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-
+        <Image Width="74"
+               Height="21"
+               Margin="0,0,150,0"
+               Grid.ColumnSpan="2"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top"
+               Cursor="Hand"
+               Source="../../Resources/Assets/donate.gif"
+               MouseLeftButtonDown="Image_MouseUp"/>
+        
         <StackPanel Grid.Column="1" Height="11" VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Horizontal">
-
-            <Button ToolTip="About" Margin="0,0,30,0" Style="{StaticResource SmallGreyButtonNoBorder}"
+                <Button ToolTip="About" Margin="0,0,30,0" Style="{StaticResource SmallGreyButtonNoBorder}"
                     VerticalAlignment="Top" VerticalContentAlignment="Bottom" Content="ABOUT"
                     Command="{Binding ShowAboutSettingsCommand}"/>
 

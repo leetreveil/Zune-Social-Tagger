@@ -1,4 +1,5 @@
 using System.Windows;
+using System;
 
 namespace ZuneSocialTagger.GUI.Controls
 {
@@ -6,7 +7,14 @@ namespace ZuneSocialTagger.GUI.Controls
     {
         public DraggableWindow()
         {
-            this.MouseLeftButtonDown += (sender, args) => this.DragMove();
+            try
+            {
+                this.MouseLeftButtonDown += (sender, args) => this.DragMove();
+            }
+            catch (InvalidOperationException)
+            {
+
+            }
         }
     }
 }
