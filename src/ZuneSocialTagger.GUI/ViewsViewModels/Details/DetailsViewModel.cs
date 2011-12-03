@@ -87,7 +87,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
         {
             this.Rows.Clear();
 
-            var discs = FileTracks.Select(x=> Helpers.DiscNumberConverter(x.MetaData.DiscNumber)).Distinct().ToList();
+            var discs = FileTracks.Select(x => Helpers.DiscNumberConverter(x.MetaData.DiscNumber)).Distinct().OrderBy(x => x).ToList();
 
             //get lists of tracks by discNumer
             var tracksByDiscNumber =
