@@ -199,7 +199,7 @@
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
 
-                                        <StackPanel Height="25" Orientation="Horizontal">
+                                        <StackPanel Height="25" Width="275" Orientation="Horizontal">
                                             
                                             <TextBlock Width="15" 
                                                        Text="{Binding TrackNumber}" 
