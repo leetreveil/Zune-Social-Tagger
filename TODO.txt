@@ -1,5 +1,6 @@
 MINOR:
 improve detailsview song matching
+add lightbox effect for aboutview
 
 MAJOR:
 when running 'scan all' it should search the zune marketplace for any matches and notify the user if any are found

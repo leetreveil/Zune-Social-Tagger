@@ -21,6 +21,15 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Details
         /// <returns></returns>
         public void MatchTheSelectedSongToTheAvailableSongs()
         {
+            if (SongDetails == null)
+                return;
+
+            if (string.IsNullOrEmpty(SongDetails.TrackTitle))
+                return;
+
+            if (AvailableZuneTracks.Count() == 0)
+                return;
+
             //this matches album songs to zune website songs in the details view
             //Hold Your Colour ---- hold your colour (Album) = MATCH
             //Hold your colour ---- hold your face = NO MATCH
