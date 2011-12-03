@@ -1,6 +1,9 @@
 MINOR:
 improve detailsview song matching
 add lightbox effect for aboutview
+text in combobox overlaps upsidedown triangle (doesn't look good)
+Mastodon - The Hunter Disc 0 should be before disk 1?? (weirdness)
+
 
 MAJOR:
 when running 'scan all' it should search the zune marketplace for any matches and notify the user if any are found
