@@ -1,4 +1,4 @@
-![haggis!](https://github.com/leetreveil/Zune-Social-Tagger/raw/master/docs/zunesoc2.3.PNG)
+![haggis!](https://github.com/leetreveil/Zune-Social-Tagger/raw/master/docs/zunesocialtagger_screenshot.PNG)
 
 
 ### Changelog
