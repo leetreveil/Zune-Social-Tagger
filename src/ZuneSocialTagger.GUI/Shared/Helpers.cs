@@ -7,6 +7,8 @@ using ZuneSocialTagger.Core.IO;
 using ZuneSocialTagger.Core.ZuneWebsite;
 using ZuneSocialTagger.Core.ZuneDatabase;
 using ZuneSocialTagger.GUI.Models;
+using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace ZuneSocialTagger.GUI.Shared
 {
@@ -87,14 +89,20 @@ namespace ZuneSocialTagger.GUI.Shared
 
         public static ExpandedAlbumDetailsViewModel GetAlbumDetailsFrom(this DbAlbum album)
         {
-            return new ExpandedAlbumDetailsViewModel
+            var eadvm = new ExpandedAlbumDetailsViewModel
             {
                 Artist = album.Artist,
                 Title = album.Title,
-                ArtworkUrl = album.ArtworkUrl,
                 SongCount = album.TrackCount.ToString(),
                 Year = album.ReleaseYear
             };
+
+            if (!String.IsNullOrEmpty(album.ArtworkUrl))
+            {
+                eadvm.Artwork = new BitmapImage(new Uri(album.ArtworkUrl));
+            }
+
+            return eadvm;
         }
 
         public static ExpandedAlbumDetailsViewModel GetAlbumDetailsFrom(this WebAlbum albumMetaData)
@@ -106,7 +114,7 @@ namespace ZuneSocialTagger.GUI.Shared
             {
                 Title = albumMetaData.Title,
                 Artist = albumMetaData.Artist,
-                ArtworkUrl = albumMetaData.ArtworkUrl,
+                Artwork = new BitmapImage(new Uri(albumMetaData.ArtworkUrl)),
                 Year = albumMetaData.ReleaseYear,
                 SongCount = albumMetaData.Tracks.Count().ToString()
             };
@@ -128,13 +136,24 @@ namespace ZuneSocialTagger.GUI.Shared
 
         public static ExpandedAlbumDetailsViewModel SetAlbumDetails(MetaData metaData, int trackCount)
         {
-            return new ExpandedAlbumDetailsViewModel
+           var details = new  ExpandedAlbumDetailsViewModel
                    {
                        Artist = metaData.AlbumArtist,
                        Title = metaData.AlbumName,
                        SongCount = trackCount.ToString(),
-                       Year = metaData.Year
+                       Year = metaData.Year,
                    };
+
+           if (metaData.Picture != null)
+           {
+               BitmapImage bi = new BitmapImage();
+               bi.BeginInit();
+               bi.StreamSource = new MemoryStream(metaData.Picture);
+               bi.EndInit();
+               details.Artwork = bi;
+           }
+
+            return details;
         }
 
         /// <summary>

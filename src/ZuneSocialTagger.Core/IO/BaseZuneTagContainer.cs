@@ -47,6 +47,12 @@ namespace ZuneSocialTagger.Core.IO
                 var title = _tag.Title;
                 var trackNumber = _tag.Track.ToString();
                 var year = _tag.Year.ToString();
+                
+                byte[] picture = null;
+                if (_tag.Pictures.Count() > 0)
+                {
+                    picture = _tag.Pictures[0].Data.Data;
+                }
 
                 return new MetaData
                 {
@@ -57,7 +63,8 @@ namespace ZuneSocialTagger.Core.IO
                     Genre = genre,
                     Title = title,
                     TrackNumber = trackNumber,
-                    Year = year
+                    Year = year,
+                    Picture = picture
                 };
             }
         }

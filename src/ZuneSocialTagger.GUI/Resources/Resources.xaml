@@ -7,6 +7,7 @@
     <converters:TextToBoolConverter x:Key="TextToBoolConverter" />
     <converters:SortOrderToTextConverter x:Key="SortOrderToTextConverter" />
     <converters:BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+    <converters:BadImageToFallbackConverter x:Key="BadImageToFallbackConverter" />
 
 
     <!--STANDARD BUTTON(STYLED LIKE THE ZUNE BUTTON (SORT OF))-->
@@ -407,9 +408,8 @@
 	<DataTemplate x:Key="LargeAlbumDetails">
 		<StackPanel Orientation="Horizontal">
 	        <Border BorderBrush="White" BorderThickness="1" >
-                <Image Source="{Binding Path=ArtworkUrl, 
-								   		FallbackValue='pack://application:,,,/Resources/Assets/blankartwork.png'}"
-                                       Stretch="Fill" Height="84" Width="84">
+                <Image Source="{Binding Path=Artwork, Converter={StaticResource BadImageToFallbackConverter}}"
+                                        Stretch="Fill" Height="84" Width="84">
                     <Image.ContextMenu>
                         <ContextMenu x:Name="RightClickMenu" >
                             <MenuItem Header="Copy Artwork" Command="{Binding CopyArtworkToClipboardCommand}" />

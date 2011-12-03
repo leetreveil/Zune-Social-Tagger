@@ -48,48 +48,22 @@ namespace ZuneSocialTagger.GUI.Models
             set { _songCount = value; }
         }
 
-        private string _artworkUrl;
-        public string ArtworkUrl
+        private BitmapImage _artwork;
+        public BitmapImage Artwork
         {
-            get { return _artworkUrl ?? @"../../Resources/Assets/blankartwork.png"; }
-            set { _artworkUrl = value; }
+            get { return _artwork; }
+            set { _artwork = value; }
         }
 
         public void CopyArtworkToClipboard()
         {
-            if (ArtworkUrl != @"../../Resources/Assets/blankartwork.png")
+            if (Artwork != null)
             {
                 try
                 {
-                    var imageUri = this.ArtworkUrl;
-
-                    if (this.ArtworkUrl.Contains("?"))
-                    {
-                        imageUri = this.ArtworkUrl.Remove(this.ArtworkUrl.IndexOf('?'));
-                        imageUri += "?width=320&height=320";
-                    }
-
-                    var image = new BitmapImage(new Uri(imageUri, UriKind.RelativeOrAbsolute));
-
-                    if (!image.IsDownloading)
-                    {
-                        Clipboard.SetImage(image);
-                        return;
-                    }
-
-                    Mouse.OverrideCursor = Cursors.Wait;
-
-                    image.DownloadCompleted += delegate {
-                        Clipboard.SetImage(image);
-                        Mouse.OverrideCursor = null;
-                    };
-
-                    image.DownloadFailed += delegate {
-                        Mouse.OverrideCursor = null;
-                    };
-                    
+                    Clipboard.SetImage(Artwork);
                 }
-                catch{ }
+                catch { }
             }
         }
     }

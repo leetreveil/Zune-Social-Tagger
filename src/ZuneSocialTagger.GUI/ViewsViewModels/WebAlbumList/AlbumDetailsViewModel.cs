@@ -173,6 +173,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
             {
                 DbAlbum dbAlbum = _dbReader.GetAlbum(MediaId);
                 _sharedModel.DbAlbum = dbAlbum;
+                _sharedModel.AlbumDetailsFromFile = dbAlbum.GetAlbumDetailsFrom();
 
                 IEnumerable<string> filePaths = dbAlbum.Tracks.Select(x => x.FilePath);
 

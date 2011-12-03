@@ -10,34 +10,11 @@ namespace ZuneSocialTagger.GUI.Models
     {  
         public SharedModel()
         {
-            SongsFromFile = new List<IZuneTagContainer>();        
+            SongsFromFile = new List<IZuneTagContainer>();
         }
 
-        private ExpandedAlbumDetailsViewModel _albumDetailsFromFile;
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile
-        {
-            get
-            {
-                if (DbAlbum != null)
-                    _albumDetailsFromFile = DbAlbum.GetAlbumDetailsFrom();
-
-                return _albumDetailsFromFile;
-            }
-            set { _albumDetailsFromFile = value; }
-        }
-
-        private ExpandedAlbumDetailsViewModel _albumDetailsFromWeb;
-        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWeb
-        {
-            get
-            {
-                if (WebAlbum != null)
-                    _albumDetailsFromWeb = WebAlbum.GetAlbumDetailsFrom();
-
-                return _albumDetailsFromWeb;
-            }
-        }
-
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromWeb { get; set; }
+        public ExpandedAlbumDetailsViewModel AlbumDetailsFromFile { get; set; }
         public IList<IZuneTagContainer> SongsFromFile { get; set; }
         public WebAlbum WebAlbum { get; set; }
         public DbAlbum DbAlbum { get; set; }

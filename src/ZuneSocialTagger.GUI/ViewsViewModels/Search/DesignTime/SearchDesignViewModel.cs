@@ -10,7 +10,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Search.DesignTime
             this.AlbumDetails = new ExpandedAlbumDetailsViewModel()
                                     {
                                         Artist = "Pendulum",
-                                        ArtworkUrl = "http://images.play.com/covers/12691916x.jpg",
+                                        //ArtworkUrl = "http://images.play.com/covers/12691916x.jpg",
                                         SongCount = "10",
                                         Title = "Immersion",
                                         Year = "2010"

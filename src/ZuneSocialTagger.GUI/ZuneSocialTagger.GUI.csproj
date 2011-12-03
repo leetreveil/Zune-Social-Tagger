@@ -143,6 +143,7 @@
     <Compile Include="Controls\SearchControl.xaml.cs">
       <DependentUpon>SearchControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BadImageToFallbackConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="DispatcherHelper.cs" />
