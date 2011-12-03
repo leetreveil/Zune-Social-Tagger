@@ -154,6 +154,10 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList
                 //we are scanning the albums in chunks because it is easier for the abortion mechanism
                 ScanChunk(splitted, 0, toScan.Count());
             }
+            else
+            {
+                ResetLoadingProgress();
+            }
         }
 
         private int scanCount = 0;
