@@ -110,14 +110,20 @@ namespace ZuneSocialTagger.GUI.Shared
             if (albumMetaData == null)
                 return null;
 
-            return new ExpandedAlbumDetailsViewModel
+            var eadvm =  new ExpandedAlbumDetailsViewModel
             {
                 Title = albumMetaData.Title,
                 Artist = albumMetaData.Artist,
-                Artwork = new BitmapImage(new Uri(albumMetaData.ArtworkUrl)),
                 Year = albumMetaData.ReleaseYear,
                 SongCount = albumMetaData.Tracks.Count().ToString()
             };
+
+            if (!String.IsNullOrEmpty(albumMetaData.ArtworkUrl))
+            {
+                eadvm.Artwork = new BitmapImage(new Uri(albumMetaData.ArtworkUrl));
+            }
+
+            return eadvm;
         }
 
         public static ExpandedAlbumDetailsViewModel GetAlbumDetailsFrom(MetaData metaData, int trackCount)
