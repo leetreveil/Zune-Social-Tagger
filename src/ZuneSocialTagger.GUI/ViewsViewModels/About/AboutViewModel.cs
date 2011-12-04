@@ -39,7 +39,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.About
 
         private void OpenWebsite()
         {
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(Settings.Default.AppBaseUrl));
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(AppSettings.AppBaseUrl));
         }
 
         private void OpenTwitter()

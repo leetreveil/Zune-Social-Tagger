@@ -353,7 +353,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             {
                 //do update checking stuff here
                 UpdateManager updateManager = UpdateManager.Instance;
-                updateManager.AppFeedUrl = Settings.Default.UpdateFeedUrl;
+                updateManager.AppFeedUrl = AppSettings.UpdateFeedUrl;
 
                 ThreadPool.QueueUserWorkItem(state => {
                     try
