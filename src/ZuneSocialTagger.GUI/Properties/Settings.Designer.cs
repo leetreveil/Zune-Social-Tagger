@@ -58,17 +58,5 @@ namespace ZuneSocialTagger.GUI.Properties {
                 this["SortOrder"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string AppDataFolder {
-            get {
-                return ((string)(this["AppDataFolder"]));
-            }
-            set {
-                this["AppDataFolder"] = value;
-            }
-        }
     }
 }

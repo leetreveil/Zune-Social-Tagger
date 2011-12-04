@@ -8,11 +8,8 @@
     <Setting Name="CheckForUpdates" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="SortOrder" Type="ZuneSocialTagger.GUI.Models.SortOrder" Scope="User">
+    <Setting Name="SortOrder" Type="ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList.SortOrder" Scope="User">
       <Value Profile="(Default)">DateAdded</Value>
-    </Setting>
-    <Setting Name="AppDataFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

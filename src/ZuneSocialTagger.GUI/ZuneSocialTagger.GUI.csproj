@@ -153,6 +153,7 @@
     <Compile Include="DispatcherHelper.cs" />
     <Compile Include="EventToCommand.cs" />
     <Compile Include="EventToCommand.WPF.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Shared\ExceptionLogger.cs" />
     <Compile Include="PreApp.cs" />
     <Compile Include="ViewsViewModels\Details\DiscHeader.cs" />

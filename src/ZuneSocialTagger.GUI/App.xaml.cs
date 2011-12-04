@@ -57,7 +57,7 @@ namespace ZuneSocialTagger.GUI
 
         void _appView_ContentRendered(object sender, EventArgs e)
         {
-            Settings.Default.AppDataFolder = GetUserDataPath();
+            AppSettings.AppDataFolder = GetUserDataPath();
 
             var container = new StandardKernel();
             SetupBindings(container);
@@ -114,6 +114,8 @@ namespace ZuneSocialTagger.GUI
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() 
                 => { ErrorReportDialog.Show(ExceptionLogger.LogException(ex), null); });
+
+
         }
     }
 }
