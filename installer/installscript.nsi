@@ -89,10 +89,13 @@ Section "Dummy Section" SecDummy
 
   ;Remove any files that may interfere with the installation
   Delete "$INSTDIR\Zune Social Tagger.exe"
+  Delete "$INSTDIR\Zune Social Tagger.exe.config"
+  Delete "$INSTDIR\ZuneSocialTagger.Core.dll"
 	
   
   ;ADD YOUR OWN FILES HERE...
   File "installfiles\Zune Social Tagger.exe"
+  File "installfiles\Zune Social Tagger.exe.config"
   
   ;Store installation folder
   WriteRegStr HKCU "Software\Zune Social Tagger" "" $INSTDIR
@@ -132,6 +135,7 @@ Section "Uninstall"
 
   Delete "$INSTDIR\ZuneSocialTaggerUninstall.exe"
   Delete "$INSTDIR\Zune Social Tagger.exe"
+  Delete "$INSTDIR\Zune Social Tagger.exe.config"
   
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
     
