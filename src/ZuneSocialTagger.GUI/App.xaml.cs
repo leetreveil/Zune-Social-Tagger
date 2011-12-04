@@ -110,10 +110,15 @@ namespace ZuneSocialTagger.GUI
             e.Handled = true;
         }
 
+        public static void ShutdownApp()
+        {
+            System.Windows.Application.Current.Shutdown(1);
+        }
+
         public static void DisplayException(Exception ex) 
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() 
-                => { ErrorReportDialog.Show(ExceptionLogger.LogException(ex), null); });
+                => { ErrorReportDialog.Show(ExceptionLogger.LogException(ex), ShutdownApp); });
 
 
         }
