@@ -192,7 +192,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
             }
             catch (Exception e)
             {
-                Notifications.Add(new ErrorMessage(ErrorMode.Error, e.Message));
+                Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
                 return false;
             }
         }
