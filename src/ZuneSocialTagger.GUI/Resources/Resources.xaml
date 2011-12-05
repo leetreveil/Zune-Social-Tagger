@@ -137,8 +137,13 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Window}">
-                    <Border BorderBrush="#FFF0F0F0"
-                            BorderThickness="2">
+                    <Border BorderThickness="2">
+                        <Border.BorderBrush>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFF0F0F0" Offset="0" />
+                                <GradientStop Color="#E0E0E0" Offset="1" />
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
                         <Grid>
                             <Grid.Background>
                                 <LinearGradientBrush EndPoint="0.5,1"
