@@ -18,10 +18,6 @@ namespace ZuneSocialTagger.Core.ZuneDatabase
 
         public bool Initialize()
         {
-            if (!File.Exists("ZuneDBApi.dll"))
-                throw new FileNotFoundException(
-                    "Could not find ZuneDBApi.dll. Are you sure Zune Social Tagger is installed in the Zune application folder?");
-
             //Just copying what the zune software does internally here to initialize the database
             _zuneLibrary = new ZuneLibrary();
 

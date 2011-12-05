@@ -184,15 +184,20 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
 
                 if (!initalized)
                 {
-                    Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
+                    Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading Zune database"));
                     return false;
                 }
 
                 return true;
             }
+            catch (FileNotFoundException ex)
+            {
+                Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading Zune database. Are you sure Zune Social Tagger is installed in the Zune application folder?"));
+                return false;
+            }
             catch (Exception e)
             {
-                Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading zune database"));
+                Notifications.Add(new ErrorMessage(ErrorMode.Error, "Error loading Zune database"));
                 return false;
             }
         }
