@@ -24,7 +24,7 @@ namespace ZuneSocialTagger.Core.ZuneWebsite
         public static void IsMarketPlaceEnabledForLocaleAsync(string locale, Action<MarketplaceDetails> callback)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(
-                String.Format("http://tuners.zune.net/{0}/ZunePCClient/v4.7/configuration.xml", locale));
+                String.Format("http://tuners.zune.net/{0}/ZunePCClient/v4.8/configuration.xml", locale));
 
             httpWebRequest.BeginGetResponse(ReqCallback, new AsyncResult<MarketplaceDetails>(httpWebRequest, callback));
         }
