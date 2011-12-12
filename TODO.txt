@@ -1,6 +1,4 @@
-MINOR:
-add lightbox effect for aboutview
-
+integrate core with gui and rename ZuneSocialTagger.GUI to ZuneSocialTagger
 
 MAJOR:
 when running 'scan all' it should search the zune marketplace for any matches and notify the user if any are found
