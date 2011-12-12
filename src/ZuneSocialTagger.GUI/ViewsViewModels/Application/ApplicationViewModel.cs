@@ -17,7 +17,6 @@ using System.Diagnostics;
 using ZuneSocialTagger.GUI.ViewsViewModels.About;
 using ZuneSocialTagger.GUI.ViewsViewModels.SelectAudioFiles;
 using ZuneSocialTagger.GUI.Shared;
-using ZuneSocialTagger.GUI.ViewsViewModels.Update;
 using ZuneSocialTagger.GUI.ViewsViewModels.WebAlbumList;
 using ProtoBuf;
 using System.Windows.Input;
@@ -75,18 +74,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         }
 
         #region View Bindings
-
-        private ICommand _updateCommand;
-        public ICommand UpdateCommand 
-        {
-            get
-            {
-                if (_updateCommand == null)
-                    _updateCommand = new RelayCommand(ShowUpdate);
-
-                return _updateCommand;
-            }
-        }
 
         private ICommand _showAboutSettingsCommand;
         public ICommand ShowAboutSettingsCommand
@@ -338,13 +325,6 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
         {
             WriteCache();
             Settings.Default.Save();
-        }
-
-        private static void ShowUpdate()
-        {
-            var updateViewModel = new UpdateViewModel(UpdateManager.Instance.NewUpdate.Version);
-            var updateView = new UpdateView { DataContext = updateViewModel };
-            updateView.Show();
         }
 
         private void ShowAboutSettings()
