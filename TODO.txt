@@ -1,4 +1,8 @@
 integrate core with gui and rename ZuneSocialTagger.GUI to ZuneSocialTagger
 
+PROBLEM: because linked / unlinked statuses are persisted to file an album could be become linked and zst wont pick it up until it's refreshed
+
+should have the blank artwork image showing while images are loading
+
 MAJOR:
 when running 'scan all' it should search the zune marketplace for any matches and notify the user if any are found
