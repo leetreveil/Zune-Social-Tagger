@@ -365,7 +365,7 @@ namespace ZuneSocialTagger.GUI.ViewsViewModels.Application
                     {
                         if (updateManager.CheckForUpdate())
                         {
-                            var msg = String.Format("A new update ({0}) is availble for zune social tagger. |https://github.com/leetreveil/Zune-Social-Tagger/downloads |Click here to download now.", updateManager.NewUpdate.Version);
+                            var msg = String.Format("A new update ({0}) is available for Zune Social Tagger. |https://github.com/leetreveil/Zune-Social-Tagger/downloads |Click here to download now.", updateManager.NewUpdate.Version);
                             Notifications.Add(new ErrorMessage(ErrorMode.Info, msg));
                         }
                             
