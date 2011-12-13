@@ -181,7 +181,6 @@
     <Compile Include="ViewsViewModels\Search\SearchViewModel.cs" />
     <Compile Include="ViewsViewModels\SelectAudioFiles\SelectAudioFilesViewModel.cs" />
     <Compile Include="ViewsViewModels\Success\SuccessViewModel.cs" />
-    <Compile Include="ViewsViewModels\Update\UpdateViewModel.cs" />
     <Compile Include="ViewsViewModels\WebAlbumList\WebAlbumListViewModel.cs" />
     <Compile Include="ViewsViewModels\About\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
@@ -206,9 +205,6 @@
     </Compile>
     <Compile Include="ViewsViewModels\Success\SuccessView.xaml.cs">
       <DependentUpon>SuccessView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewsViewModels\Update\UpdateView.xaml.cs">
-      <DependentUpon>UpdateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsViewModels\WebAlbumList\WebAlbumListView.xaml.cs">
       <DependentUpon>WebAlbumListView.xaml</DependentUpon>
@@ -332,10 +328,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ViewsViewModels\Success\SuccessView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ViewsViewModels\Update\UpdateView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
