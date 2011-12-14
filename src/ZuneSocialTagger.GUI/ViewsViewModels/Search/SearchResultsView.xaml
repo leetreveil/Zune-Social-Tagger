@@ -9,7 +9,8 @@
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
     xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command"
     xmlns:dt="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Search.DesignTime" 
-    xmlns:Search="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Search" 
+    xmlns:Search="clr-namespace:ZuneSocialTagger.GUI.ViewsViewModels.Search"
+    xmlns:controls="clr-namespace:ZuneSocialTagger.GUI.Controls"
     d:DesignHeight="200">
 
     <UserControl.Resources>
@@ -20,7 +21,10 @@
                 <ResourceDictionary>
                     <DataTemplate DataType="{x:Type ZuneWebsite:WebAlbum}">
                         <StackPanel Orientation="Horizontal"  Margin="10">
-                            <Image Source="{Binding ArtworkUrl}" Width="60" Height="60" />
+                            <controls:PlaceImage Height="60"
+                                                 Width="60"
+                                                 Source="{Binding Path=ArtworkUrl, FallbackValue='pack://application:,,,/Resources/Assets/blankartwork.png'}"
+                                                 PlaceholderSource="pack://application:,,,/Resources/Assets/blankartwork.png" />
                             <StackPanel Margin="5,0,0,0">
                                 <StackPanel.ToolTip>
                                     <TextBlock Text="{Binding Title}"/>
